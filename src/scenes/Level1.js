@@ -187,6 +187,47 @@ const ABUELA_X = 135;
 const CHIHUAHUA_X = 88;
 const BELL_X = 2450;
 
+// Ambient wildlife. Cats hiss, birds scatter/chirp, and the rooster crows at
+// dawn. None of them are hazards.
+const CATS = [
+  { x: 200, key: 'cat', s: 0.9, flip: true },
+  { x: 850, key: 'catGray', s: 1, flip: false },
+  { x: 1850, key: 'cat', s: 0.85, flip: false },
+  { x: 3150, key: 'catGray', s: 0.9, flip: true },
+];
+const BIRDS = [
+  { x: 230, s: 0.9 },
+  { x: 1120, s: 1 },
+  { x: 2500, s: 0.85 },
+  { x: 3700, s: 1 },
+];
+const ROOSTER_X = 500;
+
+const AGAVE_FIELDS = [830, 1300, 1830, 2350, 2780, 3380];
+
+// Agave clumps on the edges of the block. These sit behind cars and Bonjo so
+// the street still reads while the old agricultural surroundings peek through.
+const AGAVES = [
+  { x: 180, key: 'agaveBloom', s: 0.8, flip: false },
+  { x: 250, key: 'agave', s: 0.85, flip: true },
+  { x: 400, key: 'agave', s: 1, flip: false },
+  { x: 417, key: 'agave', s: 0.75, flip: true },
+  { x: 915, key: 'agave', s: 1, flip: true },
+  { x: 935, key: 'agave', s: 0.8, flip: false },
+  { x: 1220, key: 'agave', s: 1.05, flip: false },
+  { x: 1255, key: 'agaveBloom', s: 0.9, flip: true },
+  { x: 1680, key: 'agave', s: 0.9, flip: true },
+  { x: 1700, key: 'agave', s: 1.1, flip: false },
+  { x: 2120, key: 'agave', s: 1, flip: false },
+  { x: 2150, key: 'agaveBloom', s: 0.85, flip: true },
+  { x: 2700, key: 'agave', s: 1.05, flip: true },
+  { x: 2730, key: 'agave', s: 0.8, flip: false },
+  { x: 3440, key: 'agave', s: 1, flip: true },
+  { x: 3470, key: 'agaveBloom', s: 0.9, flip: false },
+  { x: 4140, key: 'agave', s: 1.05, flip: false },
+  { x: 4165, key: 'agave', s: 0.8, flip: true },
+];
+
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super('Level1');
@@ -239,9 +280,15 @@ export default class Level1 extends Phaser.Scene {
     this.bellRung = false;
     this.nextAlarm = 0;
     this.nextAllyBark = 0;
+    this.nextChirp = 0;
+    this.nextDistantBark = 0;
+    this.nextRooster = 0;
 
     this.buildBackground();
     this.createStreetDressing();
+    this.createAgave();
+    this.createCritters();
+    this.createBoundary();
     this.buildLevel();
     this.createLedges();
     this.createInteractiveProps();
@@ -343,6 +390,8 @@ export default class Level1 extends Phaser.Scene {
     this.updateCamera(delta);
     this.updateHud(delta);
     this.updateInteractions();
+    this.updateCritters();
+    this.keepDogInBounds();
     this.updateAlphaCrown();
 
     if (!this.won && !this.gameOverFlag && this.dog.y > WORLD_H + 40 * S) {
@@ -363,6 +412,21 @@ export default class Level1 extends Phaser.Scene {
         .setVisible(true);
     } else {
       this.alphaCrown.setVisible(false);
+    }
+  }
+
+  keepDogInBounds() {
+    if (!this.dog || this.dog.dead) return;
+    const margin = 42 * S;
+    const min = margin;
+    const max = WORLD_W - margin;
+
+    if (this.dog.x < min) {
+      this.dog.x = min;
+      if (this.dog.body.velocity.x < 0) this.dog.body.velocity.x = 0;
+    } else if (this.dog.x > max) {
+      this.dog.x = max;
+      if (this.dog.body.velocity.x > 0) this.dog.body.velocity.x = 0;
     }
   }
 
@@ -426,7 +490,7 @@ export default class Level1 extends Phaser.Scene {
     // parked street dressing but below the platform/props and every gameplay
     // sprite, so the playable street stays bright and readable.
     this.envHaze = this.add
-      .rectangle(W / 2, 72 * S, W, 144 * S, 0x1b1029, 0.3)
+      .rectangle(W / 2, 72 * S, W, 144 * S, 0x2b5a86, 0.14)
       .setScrollFactor(0)
       .setDepth(0.5);
   }
@@ -508,6 +572,177 @@ export default class Level1 extends Phaser.Scene {
       ledge.body.checkCollision.left = false;
       ledge.body.checkCollision.right = false;
       ledge.body.updateFromGameObject?.();
+    });
+  }
+
+  createAgave() {
+    for (const x of AGAVE_FIELDS) {
+      this.add
+        .image(x * S, 600 * S, 'agaveField')
+        .setOrigin(0.5, 1)
+        .setDepth(-1);
+    }
+
+    for (const plant of AGAVES) {
+      this.add
+        .image(plant.x * S, 600 * S, plant.key)
+        .setOrigin(0.5, 1)
+        .setScale(plant.s)
+        .setFlipX(!!plant.flip)
+        .setDepth(-1);
+    }
+  }
+
+  createBoundary() {
+    this.add
+      .image(12 * S, 600 * S, 'fence')
+      .setOrigin(0.5, 1)
+      .setDepth(3);
+    this.add
+      .image(WORLD_W - 12 * S, 600 * S, 'fence')
+      .setOrigin(0.5, 1)
+      .setDepth(3);
+  }
+
+  createCritters() {
+    this.cats = CATS.map((c) => {
+      const cat = this.add
+        .image(c.x * S, 600 * S, c.key)
+        .setOrigin(0.5, 1)
+        .setScale(c.s)
+        .setFlipX(!!c.flip)
+        .setDepth(3);
+      cat.setData('nextHiss', 0);
+      return cat;
+    });
+
+    this.birds = BIRDS.map((b) => {
+      const bird = this.add
+        .image(b.x * S, 600 * S, 'bird')
+        .setOrigin(0.5, 1)
+        .setScale(b.s)
+        .setDepth(3);
+      bird.setData('homeX', b.x * S);
+      bird.setData('scattered', false);
+      bird.setData('nextChirp', 0);
+      return bird;
+    });
+
+    this.rooster = this.add
+      .image(ROOSTER_X * S, 600 * S, 'rooster')
+      .setOrigin(0.5, 1)
+      .setDepth(3);
+  }
+
+  updateCritters() {
+    if (this.won || this.gameOverFlag || this.dog.dead) return;
+
+    const now = this.time.now;
+    const dog = this.dog;
+
+    for (const cat of this.cats) {
+      if (
+        now > cat.getData('nextHiss') &&
+        Phaser.Math.Distance.Between(cat.x, cat.y, dog.x, dog.y) < 54 * S
+      ) {
+        cat.setData('nextHiss', now + 4200);
+        sfx.hiss();
+        this.floatText(cat.x, cat.y - 18 * S, t('float.hiss'), '#f26b5e');
+        this.tweens.add({
+          targets: cat,
+          scaleX: cat.scaleX * 0.85,
+          scaleY: cat.scaleY * 1.15,
+          duration: 90,
+          yoyo: true,
+          ease: 'Quad.out',
+        });
+      }
+    }
+
+    for (const bird of this.birds) {
+      if (bird.getData('scattered')) continue;
+      if (
+        Phaser.Math.Distance.Between(bird.x, bird.y, dog.x, dog.y) < 62 * S
+      ) {
+        this.scatterBird(bird);
+      }
+    }
+
+    if (this.phase === 'day') {
+      if (now > this.nextChirp) {
+        const bird = this.birds.find(
+          (b) =>
+            !b.getData('scattered') &&
+            Phaser.Math.Distance.Between(b.x, b.y, dog.x, dog.y) < 260 * S,
+        );
+        if (bird) {
+          sfx.chirp();
+          this.nextChirp = now + 6200 + Math.random() * 3600;
+        }
+      }
+
+      if (
+        this.rooster &&
+        now > this.nextRooster &&
+        Phaser.Math.Distance.Between(
+          this.rooster.x,
+          this.rooster.y,
+          dog.x,
+          dog.y,
+        ) < 210 * S
+      ) {
+        this.nextRooster = now + 16000;
+        sfx.rooster();
+        this.floatText(
+          this.rooster.x,
+          this.rooster.y - 26 * S,
+          t('float.crow'),
+          '#ffd166',
+        );
+        this.tweens.add({
+          targets: this.rooster,
+          scaleY: 1.12,
+          duration: 120,
+          yoyo: true,
+        });
+      }
+    }
+
+    if (this.phase === 'night' && now > this.nextDistantBark) {
+      const rival = this.rivalGroup
+        ?.getChildren()
+        .find((r) => r?.active && !r.defeated);
+      if (rival) {
+        sfx.bark();
+        this.nextDistantBark = now + 5000 + Math.random() * 4000;
+      }
+    }
+  }
+
+  scatterBird(bird) {
+    if (bird.getData('scattered')) return;
+    bird.setData('scattered', true);
+
+    const dir = bird.x <= this.dog.x ? -1 : 1;
+    sfx.chirp();
+    this.floatText(bird.x, bird.y - 16 * S, t('float.chirp'), '#ffd166');
+    this.tweens.add({
+      targets: bird,
+      x: bird.x + dir * 38 * S,
+      y: bird.y - 52 * S,
+      angle: dir * 22,
+      alpha: 0,
+      duration: 420,
+      ease: 'Quad.out',
+    });
+
+    this.time.delayedCall(9000, () => {
+      if (!bird.active) return;
+      bird
+        .setPosition(bird.getData('homeX'), 600 * S)
+        .setAlpha(1)
+        .setAngle(0);
+      bird.setData('scattered', false);
     });
   }
 
@@ -1452,6 +1687,9 @@ export default class Level1 extends Phaser.Scene {
     this.showPhaseBanner(`${t('hud.day')} ${this.dayNumber}`, '#6ec6a8');
     sfx.bell();
     sfx.day();
+    this.time.delayedCall(420, () => {
+      if (!this.won && !this.gameOverFlag) sfx.rooster();
+    });
 
     this.spawnFoodAt(70 * S, 590 * S);
     this.updateSurvivalHud();

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
+import { sfx } from '../sfx.js';
+import { t } from '../i18n.js';
 
 const S = SCALE;
 
@@ -26,6 +28,7 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
     this.baseY = y;
     this.t = Math.random() * Math.PI * 2;
     this.defeated = false;
+    this.nextCaw = 600 + Math.random() * 1800;
 
     this.body.setVelocity(42 * S, 0);
   }
@@ -37,6 +40,18 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
 
     if (this.x >= this.maxX) this.dir = -1;
     if (this.x <= this.minX) this.dir = 1;
+
+    const dog = this.scene.dog;
+    if (
+      dog &&
+      !dog.dead &&
+      Phaser.Math.Distance.Between(this.x, this.y, dog.x, dog.y) < 190 * S &&
+      this.scene.time.now > this.nextCaw
+    ) {
+      this.nextCaw = this.scene.time.now + 2600 + Math.random() * 1800;
+      sfx.caw();
+      this.scene.floatText(this.x, this.y - 12 * S, t('float.caw'), '#ffd166');
+    }
 
     this.body.setVelocity(this.dir * 42 * S, Math.cos(this.t) * 8 * S);
     this.setFlipX(this.dir < 0);

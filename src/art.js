@@ -57,6 +57,14 @@ export function buildTextures(scene) {
   makeCloudBand(scene, 'cloudsNear', 3, 2, 4242);
   makeTown(scene);
   makeNearTown(scene);
+  makeAgave(scene, 'agave', false);
+  makeAgave(scene, 'agaveBloom', true);
+  makeAgaveField(scene);
+  makeCat(scene, 'cat', 0xd98a4f, 0xffd166);
+  makeCat(scene, 'catGray', 0x6a5a70, 0xffd166);
+  makeBird(scene);
+  makeRooster(scene);
+  makeFence(scene);
   makeBanner(scene);
   makeStreetProps(scene);
   makeCar(scene, 'carA', 0xf26b5e, 0xfff4e0, 'sedan');
@@ -119,23 +127,19 @@ function makeSky(scene) {
   const g = gfx(scene);
 
   // Graphics gradients don't survive generateTexture (canvas renderer), so
-  // paint the sunset as horizontal bands instead.
+  // paint the clear-day sky as horizontal bands instead.
   const bands = 90;
-  const top = 0x1b1029;
-  const bottom = 0xe0715f;
+  const top = 0x2b5b96;
+  const mid = 0x82b6df;
+  const bottom = 0xf7d5a8;
   for (let i = 0; i < bands; i++) {
     const t = i / (bands - 1);
-    g.fillStyle(mixColor(top, bottom, t * t * 0.85 + t * 0.15), 1);
+    const color =
+      t < 0.55
+        ? mixColor(top, mid, t / 0.55)
+        : mixColor(mid, bottom, (t - 0.55) / 0.45);
+    g.fillStyle(color, 1);
     g.fillRect(0, Math.floor((i * 144) / bands), 256, Math.ceil(144 / bands) + 1);
-  }
-
-  // a few early stars, only in the cool upper sky
-  g.fillStyle(0x9a8aa8, 1);
-  for (const [x, y] of [
-    [22, 16], [58, 9], [96, 22], [140, 11], [188, 18],
-    [236, 8], [284, 20], [304, 44], [36, 40], [120, 34],
-  ]) {
-    if (x < 256 && y < 144) g.fillRect(x, y, 1, 1);
   }
 
   g.generateTexture('sky', 256, 144);
@@ -153,7 +157,7 @@ function makeSun(scene) {
 }
 
 function drawCloud(g, x, y, s) {
-  g.fillStyle(0xffe8d6, 1);
+  g.fillStyle(0xfff8ef, 1);
   g.fillRect(x, y + 6 * s, 26 * s, 5 * s);
   g.fillRect(x + 4 * s, y + 3 * s, 16 * s, 5 * s);
   g.fillRect(x + 9 * s, y, 9 * s, 5 * s);
@@ -179,8 +183,8 @@ function makeTown(scene) {
   const W = 320;
   const H = 100;
 
-  // distant mountains
-  g.fillStyle(0x4a3550, 1);
+  // distant mountains, cool with distance
+  g.fillStyle(0x4a6f8a, 1);
   for (const off of [-W, 0, W]) {
     g.fillTriangle(off + 10, 82, off + 70, 44, off + 130, 82);
     g.fillTriangle(off + 110, 82, off + 165, 52, off + 225, 82);
@@ -188,17 +192,27 @@ function makeTown(scene) {
   }
 
   // agricultural fields at the edge of town
-  g.fillStyle(0x5c7048, 1);
+  g.fillStyle(0x6f8f5a, 1);
   g.fillRect(0, 79, W, 21);
-  g.fillStyle(0x4a5d3a, 1);
+  g.fillStyle(0x557044, 1);
   for (let x = 0; x < W; x += 9) g.fillRect(x, 81, 4, 19);
-  g.fillStyle(0x3f5233, 1);
-  for (const ax of [16, 74, 138, 208, 286]) {
+  g.fillStyle(0x4f8877, 1);
+  for (const ax of [10, 44, 78, 116, 150, 184, 218, 252, 286, 312]) {
     for (const off of [-W, 0, W]) {
       const x = ax + off;
-      g.fillTriangle(x, 92, x + 5, 74, x + 10, 92);
-      g.fillTriangle(x, 92, x - 5, 79, x, 92);
-      g.fillTriangle(x + 10, 92, x + 15, 79, x + 10, 92);
+      g.fillTriangle(x, 93, x + 5, 75, x + 10, 93);
+      g.fillTriangle(x, 93, x - 5, 80, x, 93);
+      g.fillTriangle(x + 10, 93, x + 15, 80, x + 10, 93);
+      g.fillTriangle(x + 2, 93, x + 7, 70, x + 8, 93);
+    }
+  }
+  g.fillStyle(0x7fb8a0, 1);
+  for (const ax of [10, 44, 78, 116, 150, 184, 218, 252, 286, 312]) {
+    for (const off of [-W, 0, W]) {
+      const x = ax + off;
+      g.fillRect(x + 4, 76, 1, 4);
+      g.fillRect(x + 6, 71, 1, 4);
+      g.fillRect(x + 11, 80, 1, 3);
     }
   }
 
@@ -304,6 +318,21 @@ function makeNearTown(scene) {
   for (let x = 210; x < 252; x += 6) g.fillRect(x, 86, 1, 12);
   g.fillStyle(0x3a2836, 1);
   g.fillRect(0, 96, W, 4);
+
+  // a little agave patch growing in the church alley
+  const alleyAgave = (x) => {
+    g.fillStyle(0x315f54, 1);
+    g.fillTriangle(x, 94, x + 3, 84, x + 6, 94);
+    g.fillTriangle(x, 94, x - 4, 86, x, 94);
+    g.fillTriangle(x + 6, 94, x + 9, 86, x + 6, 94);
+    g.fillStyle(0x4f8a79, 1);
+    g.fillTriangle(x, 94, x + 3, 87, x + 5, 94);
+    g.fillTriangle(x + 1, 94, x - 2, 88, x + 1, 94);
+    g.fillRect(x + 3, 85, 1, 3);
+  };
+  alleyAgave(215);
+  alleyAgave(231);
+  alleyAgave(245);
 
   const drawBlock = (b) => {
     const x = b.x;
@@ -871,6 +900,243 @@ function makeCrown(scene) {
   g.fillStyle(CORAL, 1);
   g.fillRect(6, 5, 2, 1);
   g.generateTexture('crown', W, H);
+  g.destroy();
+}
+
+// Blue-green agave rosettes for the fields and street edges.
+function makeAgave(scene, key, bloom) {
+  const g = gfx(scene);
+  const W = 26;
+  const H = bloom ? 38 : 26;
+  const baseY = bloom ? 34 : 24;
+
+  g.fillStyle(0x2b3e2d, 0.45);
+  g.fillRect(3, baseY - 1, 20, 2);
+
+  const tips = [
+    [1, 12], [3, 6], [8, 1], [13, 0],
+    [18, 1], [23, 6], [25, 12], [22, 17], [4, 17],
+  ];
+
+  // broad dark rosette
+  g.fillStyle(0x315f54, 1);
+  for (const [tx, ty] of tips) {
+    g.fillTriangle(tx, ty, 9, baseY, 17, baseY);
+  }
+
+  // mid + highlight leaves
+  g.fillStyle(0x4f8a79, 1);
+  for (const [tx, ty] of tips) {
+    g.fillTriangle(tx, ty, 11, baseY, 15, baseY);
+  }
+  g.fillStyle(0x82b8a0, 1);
+  for (const [tx, ty] of tips) {
+    g.fillTriangle(tx, ty, 12, baseY, 14, baseY);
+  }
+
+  // pale tips
+  g.fillStyle(0xd7e3c3, 1);
+  for (const [tx, ty] of tips) {
+    g.fillRect(tx, ty, 1, 2);
+  }
+
+  // short trunk / center
+  g.fillStyle(0x24483f, 1);
+  g.fillRect(11, baseY - 4, 4, 4);
+
+  if (bloom) {
+    g.fillStyle(0x4f8a79, 1);
+    g.fillRect(12, 3, 2, baseY - 5);
+    g.fillStyle(0xd7e3c3, 1);
+    g.fillRect(12, 3, 1, 4);
+    g.fillStyle(GOLD, 1);
+    g.fillCircle(13, 2, 2);
+    g.fillStyle(CORAL, 1);
+    g.fillRect(13, 0, 2, 2);
+  }
+
+  g.generateTexture(key, W, H);
+  g.destroy();
+}
+
+// A low field plot with agave rows: the agricultural edge pushing into town.
+function makeAgaveField(scene) {
+  const g = gfx(scene);
+  const W = 90;
+  const H = 26;
+
+  // tilled soil
+  g.fillStyle(0x6b4a35, 1);
+  g.fillRect(0, 8, W, 18);
+  g.fillStyle(0x54382b, 1);
+  for (let y = 11; y < 25; y += 4) g.fillRect(0, y, W, 1);
+  g.fillStyle(0x7d5a3e, 1);
+  for (let x = 2; x < W; x += 9) g.fillRect(x, 12, 5, 1);
+
+  // low stone edge
+  g.fillStyle(0x2b1b3d, 0.65);
+  g.fillRect(0, 23, W, 3);
+  g.fillStyle(0x6a5a70, 1);
+  for (let x = 0; x < W; x += 12) g.fillRect(x, 23, 8, 1);
+
+  // rows of small agave rosettes
+  const plant = (x, y, s) => {
+    g.fillStyle(0x315f54, 1);
+    g.fillTriangle(x, y, x + 3 * s, y - 8 * s, x + 6 * s, y);
+    g.fillTriangle(x, y, x - 4 * s, y - 6 * s, x, y);
+    g.fillTriangle(x + 6 * s, y, x + 9 * s, y - 6 * s, x + 6 * s, y);
+    g.fillStyle(0x4f8a79, 1);
+    g.fillTriangle(x, y, x + 3 * s, y - 6 * s, x + 5 * s, y);
+    g.fillTriangle(x + 1 * s, y, x - 2 * s, y - 4 * s, x + 1 * s, y);
+    g.fillStyle(0xd7e3c3, 1);
+    g.fillRect(x + 3 * s, y - 8 * s, 1, 2);
+  };
+
+  plant(9, 20, 1);
+  plant(28, 20, 0.85);
+  plant(48, 20, 1.05);
+  plant(68, 20, 0.9);
+  plant(82, 20, 0.7);
+
+  g.generateTexture('agaveField', W, H);
+  g.destroy();
+}
+
+// Alley cats and birds for the quieter parts of the block.
+function makeCat(scene, key, body, eye) {
+  const g = gfx(scene);
+  const W = 18;
+  const H = 16;
+
+  // body and curled tail
+  g.fillStyle(body, 1);
+  g.fillRect(4, 7, 10, 7);
+  g.fillRect(6, 4, 6, 5);
+  g.fillTriangle(6, 4, 7, 1, 9, 4);
+  g.fillTriangle(9, 4, 11, 1, 12, 4);
+  g.fillStyle(0x1b1029, 0.35);
+  g.fillRect(5, 13, 9, 1);
+  g.fillRect(2, 10, 2, 1);
+  g.fillRect(1, 9, 1, 2);
+  g.fillStyle(body, 1);
+  g.fillRect(2, 8, 3, 2);
+  g.fillRect(1, 7, 2, 2);
+
+  // pale chest, eyes and nose
+  g.fillStyle(0xfff4e0, 0.55);
+  g.fillRect(7, 9, 4, 4);
+  g.fillStyle(eye, 1);
+  g.fillRect(7, 6, 1, 1);
+  g.fillRect(10, 6, 1, 1);
+  g.fillStyle(0xf26b5e, 1);
+  g.fillRect(9, 8, 1, 1);
+
+  // paws
+  g.fillStyle(body, 1);
+  g.fillRect(4, 14, 4, 2);
+  g.fillRect(10, 14, 4, 2);
+
+  g.generateTexture(key, W, H);
+  g.destroy();
+}
+
+function makeBird(scene) {
+  const g = gfx(scene);
+  const W = 12;
+  const H = 10;
+
+  g.fillStyle(0x6f8a9e, 1);
+  g.fillRect(2, 4, 7, 4);
+  g.fillRect(7, 2, 4, 4);
+  g.fillTriangle(9, 3, 12, 4, 9, 5);
+  g.fillStyle(0x8fc3d6, 1);
+  g.fillRect(3, 5, 5, 2);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(9, 3, 1, 1);
+  g.fillStyle(CORAL, 1);
+  g.fillRect(5, 8, 1, 2);
+  g.fillRect(7, 8, 1, 2);
+  g.fillRect(2, 6, 2, 1);
+  g.generateTexture('bird', W, H);
+  g.destroy();
+}
+
+function makeRooster(scene) {
+  const g = gfx(scene);
+  const W = 20;
+  const H = 24;
+
+  // tail fan
+  g.fillStyle(0x315f54, 1);
+  g.fillTriangle(2, 16, 0, 5, 6, 12);
+  g.fillTriangle(3, 16, 5, 3, 9, 12);
+  g.fillStyle(0x4f8a79, 1);
+  g.fillTriangle(4, 16, 7, 5, 10, 13);
+  // body
+  g.fillStyle(0xd98a4f, 1);
+  g.fillRect(7, 10, 9, 9);
+  g.fillRect(12, 7, 5, 5);
+  // comb + wattle
+  g.fillStyle(0xd94f4f, 1);
+  g.fillRect(13, 4, 4, 2);
+  g.fillRect(14, 2, 2, 3);
+  g.fillRect(12, 10, 1, 2);
+  // beak, eye, legs
+  g.fillStyle(GOLD, 1);
+  g.fillRect(17, 8, 2, 1);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(15, 7, 1, 1);
+  g.fillRect(9, 19, 1, 4);
+  g.fillRect(13, 19, 1, 4);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(8, 23, 3, 1);
+  g.fillRect(12, 23, 3, 1);
+  // wing
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(8, 12, 4, 3);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(9, 13, 2, 1);
+
+  g.generateTexture('rooster', W, H);
+  g.destroy();
+}
+
+// Wood-and-wire boundary fence for the ends of the block.
+function makeFence(scene) {
+  const g = gfx(scene);
+  const W = 28;
+  const H = 32;
+
+  // posts
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(1, 2, 4, 30);
+  g.fillRect(23, 2, 4, 30);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(2, 2, 2, 30);
+  g.fillRect(24, 2, 2, 30);
+
+  // rails and pickets
+  g.fillStyle(0x5a3328, 1);
+  g.fillRect(4, 9, 20, 3);
+  g.fillRect(4, 21, 20, 3);
+  g.fillStyle(0xd9b26a, 1);
+  for (let x = 7; x < 23; x += 5) {
+    g.fillRect(x, 6, 2, 22);
+    g.fillStyle(0x2b1b3d, 0.35);
+    g.fillRect(x + 1, 6, 1, 22);
+    g.fillStyle(0xd9b26a, 1);
+  }
+
+  // little “no further” sign
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(7, 13, 14, 7);
+  g.fillStyle(0xf26b5e, 1);
+  g.fillRect(8, 14, 12, 5);
+  g.fillStyle(0xfff4e0, 1);
+  g.fillRect(10, 16, 8, 1);
+  g.fillRect(13, 15, 1, 3);
+
+  g.generateTexture('fence', W, H);
   g.destroy();
 }
 

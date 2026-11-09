@@ -43,8 +43,18 @@ export default class Title extends Phaser.Scene {
     this.add.image(W * 0.05, groundY, 'streetlamp').setOrigin(0.5, 1);
     this.add.image(W * 0.95, groundY, 'streetlamp').setOrigin(0.5, 1);
 
+    this.add
+      .image(W * 0.07, groundY, 'agave')
+      .setOrigin(0.5, 1)
+      .setScale(0.9)
+      .setFlipX(true);
+    this.add
+      .image(W * 0.93, groundY, 'agaveBloom')
+      .setOrigin(0.5, 1)
+      .setScale(0.85);
+
     // atmospheric haze: city recedes, sitting dog and title copy stay clear
-    this.add.rectangle(W / 2, H / 2, W, H, 0x1b1029, 0.3);
+    this.add.rectangle(W / 2, H / 2, W, H, 0x2b5a86, 0.14);
 
     // a very good dog, sitting and panting
     this.dogGroup = this.add.container(W / 2, 92 * S).setDepth(3);

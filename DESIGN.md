@@ -217,12 +217,13 @@ Night 2 and repelling the top dog.
 World 4200×900 design px. The camera shows 144 design units vertically (288px
 render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
-Ground line y=600. The background is a tiled town: mountains, fields/agave,
-low houses with lit windows, a church tower and cross, papel picado. A closer,
-faster parallax storefront row adds awnings, balconies and signs; parked cars,
-bicycles, hydrants, planters and street lamps line the far curb (background
-only, no collision). The town layers are anchored to the street's world Y so
-they sit on the sidewalk, and a light haze keeps the play lane readable.
+Ground line y=600. The background is a tiled town under a clear blue day sky:
+blue mountains, fields/agave, low houses with lit windows, a church tower and
+cross, papel picado. A closer, faster parallax storefront row adds awnings,
+balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
+line the far curb (background only, no collision). Agave clumps and agricultural
+edges surround the street. The town layers are anchored to the street's world Y
+so they sit on the sidewalk, and a light blue haze keeps the play lane readable.
 
 Beat sheet:
 
@@ -302,6 +303,10 @@ Synthesized WebAudio, no files:
 | Squirrel steal | two-note chatter |
 | Rival bark | low double woof |
 | Rival subdued | descending yelp |
+| Cat hiss | short saw/square snarl |
+| Bird scatter / chirp | two quick high sine chirps |
+| Crow caw | low saw/square squawk |
+| Rooster | three-note dawn crow |
 | Piñata hit / burst | wooden thock / short arpeggio |
 | Awning | springy sine sweep |
 | Concha | short crunch |
@@ -327,6 +332,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **NPCs/quests:** Abuela's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
 - Rival dogs (bark/chase/subdue), squirrels (bone thieves), two crows
+- Ambient cats, birds and a rooster; fenced level ends
 - Piñatas, bouncing awnings
 - Bones, rings, checkpoints
 - Walk cycle, sit/pant idle

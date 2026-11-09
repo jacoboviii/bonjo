@@ -23,8 +23,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 
 - **Setting:** a small city in México. Level 1, **La Cuadra**, is the urban
   core: flat-roofed houses, a parish church, papel picado, adobe walls and
-  terracotta roofs. The fields and agave at the horizon are the agricultural
-  edges — **Las Orillas** — where the next level will go.
+  terracotta roofs under a clear blue day sky. The fields and blue-green agave
+  at the horizon and along the lots are the agricultural edges — **Las
+  Orillas** — where the next level will go.
 - **Bonjo:** the only chow on the block. Not a killer — he **subdues** his
   rivals by out-jumping them. When beaten, a rival yelps and runs home.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
@@ -32,7 +33,8 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   **bone thieves**, **brutes**, and on Night 2 the **top dog**.
 - **Squirrels:** smaller nuisances with a big tail. They steal bones and bolt
   for the edge of the platform.
-- **Crows:** one rare aerial pest, plus a far-block crow.
+- **Crows:** one rare aerial pest, plus a far-block crow; they caw when Bonjo gets close.
+- **Alley life:** cats hiss, small birds scatter with a chirp, and a rooster crows at dawn.
 - **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
@@ -169,6 +171,7 @@ there to make them permanent.
 - Walk cycle; sits and pants (purple tongue) after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
 - **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
+- **Ambient wildlife**: enemy dog barks, alley-cat hisses, bird chirps, crow caws and a dawn rooster
 - **Visible goal HUD**, two-night countdown and dawn warnings
 - **Rival roles** — fast dogs, bone thieves, brutes, gate rushers and the Night 2 **top dog** showdown
 - **One-way fire escapes and laundry lines** with high bones/conchas
@@ -183,6 +186,7 @@ there to make them permanent.
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
 - Atmospheric haze pushes the city back while keeping Bonjo and the hazards readable
 - A longer east block, extra hazards and a second checkpoint
+- Fenced level boundaries so Bonjo cannot run off the last platform
 - Pits cost a heart and respawn; 0 hearts ends the run
 - Camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)
@@ -288,6 +292,10 @@ files):
 | `abuela` / `chihuahua` | 16×28 / 14×14 | day NPC / warning ally |
 | `bell`, `bellpost` | 14×14, 18×42 | day blessing |
 | `crown` | 14×9 | top-dog marker |
+| `agave`, `agaveBloom` | 26×26, 26×38 | blue-green street/field plants |
+| `agaveField` | 90×26 | tilled field patch |
+| `cat`, `catGray` / `bird` / `rooster` | 18×16 / 12×10 / 20×24 | ambient wildlife |
+| `fence` | 28×32 | level-edge boundary |
 | `ledge_*` | 90–110×12 | one-way fire escape / laundry line |
 
 ---
