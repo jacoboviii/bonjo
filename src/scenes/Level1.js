@@ -1253,10 +1253,12 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showGameOverOverlay() {
-    this.add
+    const overlay = this.add
       .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x120a1c, 0.82)
       .setScrollFactor(0)
       .setDepth(200);
+
+    this.enableReplay(overlay);
 
     this.add
       .text(128 * S, 40 * S, t('gameover.title'), {
@@ -1291,6 +1293,12 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
+      .rectangle(128 * S, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
+      .setStrokeStyle(1 * S, 0x6ec6a8, 1)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    this.add
       .text(128 * S, 112 * S, t('gameover.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
@@ -1300,7 +1308,7 @@ export default class Level1 extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(201);
+      .setDepth(202);
   }
 
   win() {
@@ -1336,10 +1344,12 @@ export default class Level1 extends Phaser.Scene {
   showWinOverlay() {
     const elapsed = ((this.time.now - this.startedAt) / 1000).toFixed(1);
 
-    this.add
+    const overlay = this.add
       .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x120a1c, 0.82)
       .setScrollFactor(0)
       .setDepth(200);
+
+    this.enableReplay(overlay);
 
     this.add
       .text(128 * S, 40 * S, t('win.title'), {
@@ -1366,6 +1376,12 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
+      .rectangle(128 * S, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
+      .setStrokeStyle(1 * S, 0x6ec6a8, 1)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    this.add
       .text(128 * S, 112 * S, t('win.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
@@ -1375,6 +1391,16 @@ export default class Level1 extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(201);
+      .setDepth(202);
+  }
+
+  enableReplay(overlay) {
+    // Give the end screen a beat before accepting a tap, so a stray touch
+    // during the death/win transition doesn't instantly restart.
+    this.time.delayedCall(500, () => {
+      if (!overlay.active) return;
+      overlay.setInteractive({ useHandCursor: true });
+      overlay.once('pointerdown', () => this.scene.restart());
+    });
   }
 }

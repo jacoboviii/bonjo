@@ -85,6 +85,7 @@ On a touch device the on-screen controls appear automatically:
 
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
+- On the end screen, **tap anywhere** to replay (no R key needed).
 - Multi-touch works, so you can run and flap at the same time.
 - In portrait, the game pauses behind a **rotate your phone** screen with a
   "play anyway" escape.
