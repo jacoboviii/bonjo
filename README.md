@@ -163,7 +163,7 @@ there to make them permanent.
 - **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**
 - Wind rings that refill flaps mid-air
 - Bones, concha food, checkpoint balloon, a safe **porch**
-- La Cuadra: adobe/terracotta town, church, papel picado, fields and agave
+- La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
 - Pits cost a heart and respawn; 0 hearts ends the run
 - Camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)
@@ -260,6 +260,10 @@ files):
 | `ring` | 32×32 | |
 | `balloon` | 24×40 | checkpoint |
 | `puff` | 16×16 | dust particle |
+| `nearTown` | 320×100 | tiling foreground storefronts |
+| `carA`, `carB`, `carC` | 44×22 | parked sedan / hatchback / pickup |
+| `bikeMint`, `bikeCoral` | 20×18 | leaning bicycles |
+| `hydrant` / `trashcan` / `planter` / `streetlamp` | 9×13 – 12×58 | street dressing |
 
 ---
 

@@ -30,6 +30,19 @@ export default class Title extends Phaser.Scene {
       .tileSprite(0, 30 * S, W, 100 * S, 'town')
       .setOrigin(0, 0);
 
+    this.nearTown = this.add
+      .tileSprite(0, 30 * S, W, 100 * S, 'nearTown')
+      .setOrigin(0, 0);
+
+    // street-level dressing framing the sitting dog
+    const groundY = 130 * S;
+    this.add.image(W * 0.15, groundY, 'carB').setOrigin(0.5, 1);
+    this.add.image(W * 0.85, groundY, 'carC').setOrigin(0.5, 1).setFlipX(true);
+    this.add.image(W * 0.3, groundY, 'bikeMint').setOrigin(0.5, 1);
+    this.add.image(W * 0.7, groundY, 'bikeCoral').setOrigin(0.5, 1).setFlipX(true);
+    this.add.image(W * 0.05, groundY, 'streetlamp').setOrigin(0.5, 1);
+    this.add.image(W * 0.95, groundY, 'streetlamp').setOrigin(0.5, 1);
+
     // a very good dog, sitting and panting
     this.dogGroup = this.add.container(W / 2, 92 * S).setDepth(3);
     const dog = this.add.sprite(0, 0, 'dogSit').setScale(2);

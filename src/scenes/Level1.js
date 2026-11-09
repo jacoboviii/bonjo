@@ -89,6 +89,40 @@ const FOODS = [
   [2900, 590],
 ];
 
+// Street dressing. These are background-only props at the far curb: they sit
+// behind Bonjo and the sidewalk (depth 0) so they never block movement.
+const PARKED_CARS = [
+  { x: 215, key: 'carB', flip: false },
+  { x: 760, key: 'carA', flip: true },
+  { x: 1290, key: 'carC', flip: false },
+  { x: 1790, key: 'carB', flip: true },
+  { x: 2390, key: 'carC', flip: true },
+  { x: 2980, key: 'carA', flip: false },
+];
+
+const BIKES = [
+  { x: 120, key: 'bikeMint', flip: false },
+  { x: 980, key: 'bikeCoral', flip: true },
+  { x: 1430, key: 'bikeMint', flip: true },
+  { x: 1950, key: 'bikeCoral', flip: false },
+  { x: 2460, key: 'bikeMint', flip: false },
+  { x: 2940, key: 'bikeCoral', flip: true },
+  { x: 3140, key: 'bikeMint', flip: false },
+];
+
+const STREET_PROPS = [
+  { x: 470, key: 'hydrant' },
+  { x: 960, key: 'trashcan' },
+  { x: 1450, key: 'planter' },
+  { x: 1730, key: 'hydrant' },
+  { x: 2280, key: 'trashcan' },
+  { x: 2470, key: 'planter' },
+  { x: 2840, key: 'hydrant' },
+  { x: 660, key: 'streetlamp' },
+  { x: 1660, key: 'streetlamp' },
+  { x: 2660, key: 'streetlamp' },
+];
+
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super('Level1');
@@ -121,6 +155,7 @@ export default class Level1 extends Phaser.Scene {
     this.runStats = { damage: 0, falls: 0, food: 0, waves: 0, starved: 0 };
 
     this.buildBackground();
+    this.createStreetDressing();
     this.buildLevel();
     this.createPorch();
     this.createInput();
@@ -167,6 +202,7 @@ export default class Level1 extends Phaser.Scene {
     this.cloudsFar?.setSize(W, 64 * S);
     this.cloudsNear?.setSize(W, 64 * S);
     this.town?.setSize(W, 100 * S);
+    this.nearTown?.setSize(W, 100 * S);
     this.banner?.setSize(W, 14 * S);
     this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
 
@@ -253,6 +289,12 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(-20);
 
+    this.nearTown = this.add
+      .tileSprite(0, 30 * S, W, 100 * S, 'nearTown')
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setDepth(-19);
+
     this.banner = this.add
       .tileSprite(0, 32 * S, W, 14 * S, 'banner')
       .setOrigin(0, 0)
@@ -268,9 +310,35 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0);
   }
 
+  createStreetDressing() {
+    const groundY = 600 * S;
+
+    for (const car of PARKED_CARS) {
+      this.add
+        .image(car.x * S, groundY, car.key)
+        .setOrigin(0.5, 1)
+        .setDepth(0)
+        .setFlipX(!!car.flip);
+    }
+
+    for (const bike of BIKES) {
+      this.add
+        .image(bike.x * S, groundY, bike.key)
+        .setOrigin(0.5, 1)
+        .setDepth(0)
+        .setFlipX(!!bike.flip);
+    }
+
+    for (const prop of STREET_PROPS) {
+      this.add
+        .image(prop.x * S, groundY, prop.key)
+        .setOrigin(0.5, 1)
+        .setDepth(0);
+    }
+  }
+
   buildLevel() {
     this.platforms = this.physics.add.staticGroup();
-
     for (const p of PLATFORMS) {
       const key = `plat_${p.x}_${p.y}_${p.w}_${p.h}`;
       const seed = (p.x * 73856093) ^ (p.y * 19349663) ^ (p.w * 83492791);
@@ -659,6 +727,7 @@ export default class Level1 extends Phaser.Scene {
     this.cloudsFar.tilePositionX = cam.scrollX * 0.05;
     this.cloudsNear.tilePositionX = cam.scrollX * 0.13;
     this.town.tilePositionX = cam.scrollX * 0.3;
+    this.nearTown.tilePositionX = cam.scrollX * 0.55;
     this.banner.tilePositionX = cam.scrollX * 0.12;
   }
 

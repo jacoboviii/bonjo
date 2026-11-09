@@ -56,7 +56,14 @@ export function buildTextures(scene) {
   makeCloudBand(scene, 'cloudsFar', 5, 1, 1337);
   makeCloudBand(scene, 'cloudsNear', 3, 2, 4242);
   makeTown(scene);
+  makeNearTown(scene);
   makeBanner(scene);
+  makeStreetProps(scene);
+  makeCar(scene, 'carA', 0xf26b5e, 0xfff4e0, 'sedan');
+  makeCar(scene, 'carB', 0x6ec6a8, 0xfff4e0, 'hatch');
+  makeCar(scene, 'carC', 0xffd166, 0x2b1b3d, 'pickup');
+  makeBike(scene, 'bikeMint', 0x6ec6a8);
+  makeBike(scene, 'bikeCoral', 0xf26b5e);
 
   makeDog(scene, 'dog', 'idle');
   makeDog(scene, 'dogSit', 'sit');
@@ -264,6 +271,334 @@ function makeTown(scene) {
   g.generateTexture('town', W, H);
   g.destroy();
 }
+
+// Closer storefronts that sit in front of the tiled town. This layer is mostly
+// transparent above the rooflines, so the church tower and distant hills still
+// show through; the ground floor is hidden behind the sidewalk/platform art.
+function makeNearTown(scene) {
+  const g = gfx(scene);
+  const W = 320;
+  const H = 100;
+
+  const blocks = [
+    { x: 0, w: 44, top: 50, body: 0x7d4b58, roof: 0x382431, trim: 0xa86570, a: 0xf26b5e, b: 0xfff4e0, sign: 0xffd166 },
+    { x: 48, w: 38, top: 60, body: 0x5d7a74, roof: 0x2c3b39, trim: 0x82a39a, a: 0x6ec6a8, b: 0x1b1029, sign: 0xf26b5e },
+    { x: 90, w: 34, top: 46, body: 0x8a5a44, roof: 0x3f2927, trim: 0xb07a5a, a: 0xffd166, b: 0x8a4f3a, sign: 0x6ec6a8 },
+    { x: 128, w: 40, top: 63, body: 0x655a78, roof: 0x30263c, trim: 0x8b7ea0, a: 0xb45cd6, b: 0xfff4e0, sign: 0xffd166 },
+    { x: 172, w: 32, top: 53, body: 0x7a4f3a, roof: 0x38241f, trim: 0xa26b4d, a: 0xf0a03c, b: 0xfff4e0, sign: 0x6ec6a8 },
+    // 208..252 is an alley: leave the parish church tower visible behind it.
+    { x: 252, w: 38, top: 57, body: 0x4f6f6a, roof: 0x293c3a, trim: 0x78a39a, a: 0x6ec6a8, b: 0xfff4e0, sign: 0xf26b5e },
+    { x: 294, w: 26, top: 66, body: 0x8a4f5f, roof: 0x3a2430, trim: 0xb06a78, a: 0xf26b5e, b: 0xfff4e0, sign: 0xffd166 },
+  ];
+
+  // low fence / retaining wall in the church alley
+  g.fillStyle(0x2b1b3d, 0.85);
+  g.fillRect(208, 88, 44, 1);
+  for (let x = 210; x < 252; x += 6) g.fillRect(x, 86, 1, 12);
+  g.fillStyle(0x3a2836, 1);
+  g.fillRect(0, 96, W, 4);
+
+  const drawBlock = (b) => {
+    const x = b.x;
+    const w = b.w;
+    const top = b.top;
+
+    // body + side falloff
+    g.fillStyle(b.body, 1);
+    g.fillRect(x, top, w, H - top);
+    g.fillStyle(0x1b1029, 0.22);
+    g.fillRect(x + w - 4, top, 4, H - top);
+
+    // parapet and roof trim
+    g.fillStyle(b.roof, 1);
+    g.fillRect(x - 1, top - 3, w + 2, 4);
+    g.fillRect(x - 1, top - 3, 2, 7);
+    g.fillRect(x + w - 1, top - 3, 2, 7);
+    g.fillStyle(b.trim, 0.55);
+    g.fillRect(x + 3, top - 1, w - 6, 1);
+
+    // upper windows
+    const rows = top < 52 ? 3 : 2;
+    const cols = Math.max(1, Math.floor((w - 11) / 10));
+    for (let row = 0; row < rows; row++) {
+      const wy = top + 7 + row * 10;
+      if (wy > 62) break;
+      for (let c = 0; c < cols; c++) {
+        const wx = x + 6 + c * 10;
+        if (wx + 6 > x + w - 4) continue;
+        const lit = (c + row + b.x) % 3 !== 0;
+        g.fillStyle(0x1b1029, 0.85);
+        g.fillRect(wx - 1, wy - 1, 7, 7);
+        g.fillStyle(lit ? 0xffcf6a : 0x3a2d43, 1);
+        g.fillRect(wx, wy, 5, 5);
+        g.fillStyle(0x1b1029, 0.65);
+        g.fillRect(wx + 2, wy, 1, 5);
+      }
+    }
+
+    // sign band above the awning
+    g.fillStyle(0x1b1029, 0.45);
+    g.fillRect(x + 6, 60, w - 12, 8);
+    g.fillStyle(b.sign, 1);
+    g.fillRect(x + 7, 61, w - 14, 5);
+    g.fillStyle(0x1b1029, 0.8);
+    const letters = Math.max(1, Math.floor((w - 18) / 6));
+    for (let i = 0; i < letters; i++) {
+      g.fillRect(x + 9 + i * 6, 63, 3, 1);
+    }
+
+    // striped awning
+    const aw = w - 8;
+    g.fillStyle(b.roof, 0.7);
+    g.fillRect(x + 4, 68, aw, 2);
+    for (let i = 0; i < Math.ceil(aw / 6); i++) {
+      g.fillStyle(i % 2 ? b.b : b.a, 1);
+      g.fillRect(x + 4 + i * 6, 70, Math.min(6, aw - i * 6), 5);
+    }
+    for (let i = 0; i < Math.ceil(aw / 6); i += 2) {
+      g.fillStyle(b.a, 1);
+      g.fillRect(x + 4 + i * 6, 75, Math.min(4, aw - i * 6), 2);
+    }
+
+    // storefront glass and door
+    g.fillStyle(0x1b1029, 0.9);
+    g.fillRect(x + 5, 78, w - 16, 15);
+    g.fillStyle(0xffcf6a, 0.9);
+    g.fillRect(x + 6, 79, w - 18, 13);
+    g.fillStyle(0x1b1029, 0.75);
+    g.fillRect(x + 6 + Math.floor((w - 18) / 2), 79, 1, 13);
+    g.fillRect(x + 6, 85, w - 18, 1);
+
+    // door
+    g.fillStyle(0x241625, 1);
+    g.fillRect(x + w - 10, 78, 6, 19);
+    g.fillStyle(0xffd166, 1);
+    g.fillRect(x + w - 5, 87, 1, 1);
+
+    // rooftop water tank / antenna
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(x + 7, top - 10, 9, 8);
+    g.fillStyle(0x6a5a70, 1);
+    g.fillRect(x + 7, top - 10, 9, 2);
+    g.fillRect(x + 8, top - 3, 1, 3);
+    g.fillRect(x + 14, top - 3, 1, 3);
+    g.fillRect(x + w - 9, top - 9, 1, 7);
+    g.fillRect(x + w - 12, top - 6, 7, 1);
+
+    // a little roof garden on some buildings
+    if (b.x % 3 === 0) {
+      g.fillStyle(MINT, 1);
+      g.fillRect(x + w - 16, top - 4, 4, 2);
+      g.fillRect(x + w - 13, top - 6, 1, 4);
+      g.fillStyle(CORAL, 1);
+      g.fillRect(x + w - 15, top - 6, 2, 2);
+    }
+  };
+
+  for (const b of blocks) drawBlock(b);
+
+  // laundry line between two rooftops
+  g.lineStyle(0.5, 0x2b1b3d, 0.65);
+  g.lineBetween(80, 42, 126, 42);
+  const clothes = [
+    [84, 43, 5, 4, CORAL],
+    [94, 43, 4, 5, MINT],
+    [104, 43, 5, 3, GOLD],
+    [114, 43, 4, 4, 0xb45cd6],
+  ];
+  for (const [x, y, w, h, c] of clothes) {
+    g.fillStyle(c, 1);
+    g.fillRect(x, y, w, h);
+  }
+
+  g.generateTexture('nearTown', W, H);
+  g.destroy();
+}
+
+// Parked cars for the far curb. One texture per colour/variant; flip at place.
+function makeCar(scene, key, body, roof, variant) {
+  const g = gfx(scene);
+  const W = 44;
+  const H = 22;
+
+  // shadow
+  g.fillStyle(0x1b1029, 0.3);
+  g.fillRect(3, 19, 38, 3);
+
+  if (variant === 'pickup') {
+    // bed at the rear (left), cab at the front (right)
+    g.fillStyle(body, 1);
+    g.fillRect(3, 10, 38, 8);
+    g.fillStyle(0x2b1b3d, 0.25);
+    g.fillRect(4, 10, 17, 2);
+    g.fillStyle(body, 1);
+    g.fillRect(23, 6, 16, 12);
+    g.fillStyle(roof, 1);
+    g.fillRect(25, 4, 13, 3);
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(26, 7, 5, 4);
+    g.fillRect(33, 7, 4, 4);
+    g.fillStyle(0xffcf6a, 0.85);
+    g.fillRect(35, 8, 2, 2);
+    // cargo in the bed
+    g.fillStyle(MINT, 1);
+    g.fillRect(6, 7, 6, 3);
+    g.fillStyle(GOLD, 1);
+    g.fillRect(12, 8, 4, 2);
+  } else {
+    const cabinTop = variant === 'hatch' ? 3 : 4;
+    const cabinX = variant === 'hatch' ? 10 : 9;
+    const cabinW = variant === 'hatch' ? 25 : 23;
+
+    // lower body and hood
+    g.fillStyle(body, 1);
+    g.fillRect(3, 10, 38, 8);
+    g.fillRect(2, 13, 40, 4);
+    // cabin
+    g.fillRect(cabinX, 5, cabinW, 6);
+    g.fillStyle(roof, 1);
+    g.fillRect(cabinX + 2, cabinTop, cabinW - 4, 2);
+    // windows
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(cabinX + 3, 6, Math.floor(cabinW / 2) - 4, 4);
+    g.fillRect(cabinX + Math.floor(cabinW / 2) + 1, 6, Math.floor(cabinW / 2) - 4, 4);
+    g.fillStyle(0xffcf6a, 0.55);
+    g.fillRect(cabinX + 4, 7, 2, 1);
+    // side details
+    g.fillStyle(0x1b1029, 0.35);
+    g.fillRect(22, 10, 1, 7);
+    g.fillStyle(0xffd166, 1);
+    g.fillRect(38, 12, 2, 2);
+    g.fillStyle(CORAL, 1);
+    g.fillRect(3, 12, 2, 2);
+  }
+
+  // wheels
+  g.fillStyle(0x1b1029, 1);
+  g.fillCircle(11, 18, 4);
+  g.fillCircle(33, 18, 4);
+  g.fillStyle(0x6a5a70, 1);
+  g.fillCircle(11, 18, 1.5);
+  g.fillCircle(33, 18, 1.5);
+  g.fillStyle(0x1b1029, 0.6);
+  g.fillRect(1, 15, 2, 2);
+  g.fillRect(41, 15, 2, 2);
+
+  g.generateTexture(key, W, H);
+  g.destroy();
+}
+
+function makeBike(scene, key, frameColor) {
+  const g = gfx(scene);
+  const W = 20;
+  const H = 18;
+
+  // wheels
+  g.lineStyle(1, 0x1b1029, 1);
+  g.strokeCircle(5, 12, 4);
+  g.strokeCircle(15, 12, 4);
+  g.fillStyle(frameColor, 1);
+  g.fillCircle(5, 12, 1);
+  g.fillCircle(15, 12, 1);
+
+  // frame
+  g.lineStyle(1, frameColor, 1);
+  g.lineBetween(5, 12, 9, 6);
+  g.lineBetween(9, 6, 15, 12);
+  g.lineBetween(9, 6, 7, 12);
+  g.lineBetween(7, 12, 15, 12);
+  g.lineBetween(9, 6, 10, 4);
+
+  // seat, handlebar, basket
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(7, 4, 4, 2);
+  g.fillRect(14, 4, 2, 1);
+  g.fillRect(15, 4, 1, 3);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(14, 6, 4, 3);
+  g.fillStyle(0x1b1029, 0.6);
+  g.fillRect(15, 7, 2, 1);
+
+  g.generateTexture(key, W, H);
+  g.destroy();
+}
+
+function makeStreetProps(scene) {
+  // hydrant
+  {
+    const g = gfx(scene);
+    g.fillStyle(0x1b1029, 1);
+    g.fillRect(2, 11, 5, 2);
+    g.fillStyle(CORAL, 1);
+    g.fillRect(2, 4, 5, 7);
+    g.fillCircle(4.5, 3, 2);
+    g.fillStyle(0xffcf6a, 1);
+    g.fillRect(3, 5, 3, 1);
+    g.fillStyle(0x1b1029, 1);
+    g.fillRect(0, 6, 2, 2);
+    g.fillRect(7, 6, 2, 2);
+    g.generateTexture('hydrant', 9, 13);
+    g.destroy();
+  }
+
+  // trash can
+  {
+    const g = gfx(scene);
+    g.fillStyle(0x1b1029, 0.3);
+    g.fillRect(1, 13, 8, 2);
+    g.fillStyle(0x4f6f6a, 1);
+    g.fillRect(2, 4, 6, 9);
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(1, 2, 8, 3);
+    g.fillRect(5, 1, 3, 2);
+    g.fillStyle(0x78a39a, 1);
+    g.fillRect(3, 6, 1, 6);
+    g.fillRect(6, 6, 1, 6);
+    g.generateTexture('trashcan', 10, 15);
+    g.destroy();
+  }
+
+  // flower planter
+  {
+    const g = gfx(scene);
+    g.fillStyle(0x8a4f3a, 1);
+    g.fillRect(1, 6, 10, 5);
+    g.fillStyle(0x5a3328, 1);
+    g.fillRect(0, 5, 12, 2);
+    g.fillStyle(MINT, 1);
+    g.fillRect(2, 2, 2, 4);
+    g.fillRect(5, 1, 2, 5);
+    g.fillRect(8, 2, 2, 4);
+    g.fillStyle(CORAL, 1);
+    g.fillRect(2, 1, 2, 2);
+    g.fillStyle(GOLD, 1);
+    g.fillRect(5, 0, 2, 2);
+    g.fillStyle(0xb45cd6, 1);
+    g.fillRect(8, 1, 2, 2);
+    g.generateTexture('planter', 13, 11);
+    g.destroy();
+  }
+
+  // street lamp
+  {
+    const g = gfx(scene);
+    g.fillStyle(0x1b1029, 1);
+    g.fillRect(2, 54, 6, 3);
+    g.fillRect(4, 8, 2, 47);
+    g.fillRect(3, 8, 4, 2);
+    g.fillStyle(0xffd166, 0.13);
+    g.fillCircle(5, 8, 6);
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(2, 5, 6, 4);
+    g.fillStyle(GOLD, 1);
+    g.fillRect(3, 6, 4, 2);
+    g.fillStyle(0xfff4e0, 0.7);
+    g.fillRect(4, 6, 2, 1);
+    g.generateTexture('streetlamp', 12, 58);
+    g.destroy();
+  }
+}
+
 
 // Strings of papel picado across the street.
 function makeBanner(scene) {

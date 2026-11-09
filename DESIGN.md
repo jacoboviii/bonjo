@@ -196,7 +196,10 @@ World 3200×900 design px. The camera shows 144 design units vertically (288px
 render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town: mountains, fields/agave,
-low houses with lit windows, a church tower and cross, papel picado.
+low houses with lit windows, a church tower and cross, papel picado. A closer,
+faster parallax storefront row adds awnings, balconies and signs; parked cars,
+bicycles, hydrants, planters and street lamps line the far curb (background
+only, no collision).
 
 Beat sheet:
 
