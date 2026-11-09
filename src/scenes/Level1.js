@@ -204,6 +204,7 @@ export default class Level1 extends Phaser.Scene {
     this.town?.setSize(W, 100 * S);
     this.nearTown?.setSize(W, 100 * S);
     this.banner?.setSize(W, 14 * S);
+    this.envHaze?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
 
     if (this.boneText) this.boneText.x = W / 2;
@@ -284,15 +285,15 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0.75);
 
     this.town = this.add
-      .tileSprite(0, 30 * S, W, 100 * S, 'town')
+      .tileSprite(0, 500 * S, W, 100 * S, 'town')
       .setOrigin(0, 0)
-      .setScrollFactor(0)
+      .setScrollFactor(0, 1)
       .setDepth(-20);
 
     this.nearTown = this.add
-      .tileSprite(0, 30 * S, W, 100 * S, 'nearTown')
+      .tileSprite(0, 500 * S, W, 100 * S, 'nearTown')
       .setOrigin(0, 0)
-      .setScrollFactor(0)
+      .setScrollFactor(0, 1)
       .setDepth(-19);
 
     this.banner = this.add
@@ -308,6 +309,14 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(60)
       .setAlpha(0);
+
+    // Push the city back visually. This sits above the background and the
+    // parked street dressing but below the platform/props and every gameplay
+    // sprite, so the playable street stays bright and readable.
+    this.envHaze = this.add
+      .rectangle(W / 2, 72 * S, W, 144 * S, 0x1b1029, 0.3)
+      .setScrollFactor(0)
+      .setDepth(0.5);
   }
 
   createStreetDressing() {
@@ -1359,6 +1368,7 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setTexture('dogSit');
     this.dog.setRotation(0);
     this.dog.clearTint();
+    this.dog.outline?.setVisible(false);
     this.dog.tongue.setVisible(false);
 
     this.hideEndHud();
@@ -1440,6 +1450,7 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setVelocity(0, 0);
     this.dog.setTexture('dogSit');
     this.dog.setRotation(0);
+    this.dog.outline?.setVisible(false);
     this.dog.tongue.setVisible(false);
 
     this.hideEndHud();

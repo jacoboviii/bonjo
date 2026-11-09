@@ -164,6 +164,7 @@ there to make them permanent.
 - Wind rings that refill flaps mid-air
 - Bones, concha food, checkpoint balloon, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
+- Atmospheric haze and a cream rim light keep Bonjo and the hazards readable
 - Pits cost a heart and respawn; 0 hearts ends the run
 - Camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)

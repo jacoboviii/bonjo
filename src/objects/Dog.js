@@ -29,6 +29,17 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.body.setSize(10 * S, 13 * S).setOffset(3 * S, 2 * S);
     this.body.setMaxVelocity(430 * S, 1200 * S);
 
+    // A slightly larger cream silhouette sits behind the black chow so he
+    // stays readable against shop windows and parked cars. The dog itself
+    // covers the centre, leaving only a thin rim light around the pose.
+    this.outline = scene.add
+      .sprite(x, y, 'dog')
+      .setDepth(9.5)
+      .setTintFill(0xffe6c0)
+      .setAlpha(0.5)
+      .setScale(1.06)
+      .setVisible(false);
+
     this.controls = { cursors: null, wasd: null };
 
     this.facing = 1;
@@ -105,6 +116,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
   update(dtMs) {
     if (this.dead) {
+      this.outline.setVisible(false);
       this.tongue.setVisible(false);
       return;
     }
@@ -237,6 +249,14 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.setRotation(0);
     }
+
+    this.outline
+      .setPosition(this.x, this.y)
+      .setTexture(this.texture.key)
+      .setFlipX(this.flipX)
+      .setRotation(this.rotation)
+      .setAlpha(this.alpha * 0.5)
+      .setVisible(true);
 
     this.updateTongue(dt, onGround);
 

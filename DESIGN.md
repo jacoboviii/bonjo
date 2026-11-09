@@ -199,7 +199,9 @@ Ground line y=600. The background is a tiled town: mountains, fields/agave,
 low houses with lit windows, a church tower and cross, papel picado. A closer,
 faster parallax storefront row adds awnings, balconies and signs; parked cars,
 bicycles, hydrants, planters and street lamps line the far curb (background
-only, no collision).
+only, no collision). The town layers are anchored to the street's world Y so
+they sit on the sidewalk, and a light haze plus a cream rim on Bonjo keep the
+play lane readable.
 
 Beat sheet:
 
