@@ -64,6 +64,13 @@ export function buildTextures(scene) {
   makeCar(scene, 'carC', 0xffd166, 0x2b1b3d, 'pickup');
   makeBike(scene, 'bikeMint', 0x6ec6a8);
   makeBike(scene, 'bikeCoral', 0xf26b5e);
+  makeGate(scene);
+  makeTacoCart(scene);
+  makeAbuela(scene);
+  makeChihuahua(scene);
+  makeBell(scene);
+  makeBellPost(scene);
+  makeCrown(scene);
 
   makeDog(scene, 'dog', 'idle');
   makeDog(scene, 'dogSit', 'sit');
@@ -600,6 +607,273 @@ function makeStreetProps(scene) {
 }
 
 
+// One-way ledges: fire escapes and laundry lines over the street.
+export function makeLedgeTexture(scene, key, w, kind = 'fire') {
+  if (scene.textures.exists(key)) return;
+  const g = gfx(scene);
+  const H = 12;
+
+  if (kind === 'laundry') {
+    // posts and line
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(0, 0, 2, 12);
+    g.fillRect(w - 2, 0, 2, 12);
+    g.fillStyle(0xd9b26a, 1);
+    g.fillRect(1, 2, w - 2, 1);
+    g.fillStyle(MINT, 0.8);
+    g.fillRect(5, 1, 1, 2);
+    g.fillRect(w - 8, 1, 1, 2);
+
+    const colors = [CORAL, MINT, GOLD, 0xb45cd6];
+    for (let i = 0, x = 8; x < w - 10; i++, x += 13) {
+      g.fillStyle(colors[i % 4], 1);
+      g.fillRect(x, 3, 7, 5);
+      g.fillStyle(0x1b1029, 0.45);
+      g.fillRect(x + 2, 4, 1, 3);
+      g.fillRect(x, 8, 7, 1);
+      g.fillStyle(0xd9b26a, 1);
+      g.fillRect(x + 3, 2, 1, 2);
+    }
+    g.fillStyle(0x2b1b3d, 0.55);
+    g.fillRect(0, 10, w, 2);
+  } else {
+    // metal fire escape grating
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(0, 1, w, 3);
+    g.fillRect(0, 8, w, 2);
+    g.fillRect(0, 4, 2, 6);
+    g.fillRect(w - 2, 4, 2, 6);
+    g.fillStyle(MINT, 1);
+    g.fillRect(2, 2, w - 4, 1);
+    g.fillStyle(GOLD, 1);
+    g.fillRect(4, 9, 3, 1);
+    g.fillRect(w - 8, 9, 3, 1);
+    for (let x = 6; x < w - 6; x += 8) {
+      g.fillStyle(0x6a5a70, 1);
+      g.fillRect(x, 4, 1, 4);
+    }
+    // hanging ladder supports
+    g.fillStyle(0x2b1b3d, 0.8);
+    g.fillRect(3, 9, 1, 3);
+    g.fillRect(w - 5, 9, 1, 3);
+  }
+
+  g.generateTexture(key, w, H);
+  g.destroy();
+}
+
+function makeGate(scene) {
+  const g = gfx(scene);
+  const W = 36;
+  const H = 30;
+
+  // posts and top beam
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(0, 0, 36, 4);
+  g.fillRect(0, 0, 4, 30);
+  g.fillRect(32, 0, 4, 30);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(1, 3, 34, 2);
+  g.fillRect(2, 4, 2, 26);
+  g.fillRect(32, 4, 2, 26);
+
+  // iron bars
+  for (let x = 7; x < 32; x += 5) {
+    g.fillStyle(0x1b1029, 1);
+    g.fillRect(x, 6, 2, 23);
+    g.fillStyle(0x6a5a70, 1);
+    g.fillRect(x, 6, 1, 23);
+  }
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(4, 16, 28, 2);
+
+  // latch and little lamp
+  g.fillStyle(GOLD, 1);
+  g.fillRect(25, 17, 3, 3);
+  g.fillStyle(0xffcf6a, 0.15);
+  g.fillCircle(18, 2, 5);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(16, 0, 4, 3);
+
+  // warm house light behind the gate
+  g.fillStyle(0xffcf6a, 0.18);
+  g.fillRect(6, 6, 26, 22);
+
+  g.generateTexture('gate', W, H);
+  g.destroy();
+}
+
+function makeTacoCart(scene) {
+  const g = gfx(scene);
+  const W = 44;
+  const H = 30;
+
+  // umbrella
+  for (let i = 0; i < 5; i++) {
+    g.fillStyle(i % 2 ? CORAL : CREAM, 1);
+    g.fillTriangle(6 + i * 7, 8, 13 + i * 7, 8, 9.5 + i * 7, 0);
+  }
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(21, 4, 1, 14);
+
+  // cart body
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(4, 14, 36, 11);
+  g.fillStyle(0x5a3328, 1);
+  g.fillRect(3, 13, 38, 3);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(6, 17, 11, 5);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(7, 18, 9, 1);
+  g.fillRect(18, 17, 9, 5);
+  g.fillRect(29, 17, 8, 5);
+
+  // grill + tacos
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(18, 15, 11, 2);
+  g.fillStyle(CREAM, 1);
+  g.fillRect(18, 14, 3, 2);
+  g.fillRect(22, 13, 3, 3);
+  g.fillRect(26, 14, 3, 2);
+  g.fillStyle(MINT, 1);
+  g.fillRect(21, 15, 1, 1);
+  g.fillRect(25, 16, 1, 1);
+
+  // wheels
+  g.fillStyle(0x1b1029, 1);
+  g.fillCircle(12, 26, 4);
+  g.fillCircle(32, 26, 4);
+  g.fillStyle(0x6a5a70, 1);
+  g.fillCircle(12, 26, 1.5);
+  g.fillCircle(32, 26, 1.5);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(3, 24, 2, 3);
+  g.fillRect(39, 24, 2, 3);
+
+  g.generateTexture('tacocart', W, H);
+  g.destroy();
+}
+
+function makeAbuela(scene) {
+  const g = gfx(scene);
+  const W = 16;
+  const H = 28;
+
+  // skirt / shawl
+  g.fillStyle(0x6f5c86, 1);
+  g.fillRect(4, 14, 8, 12);
+  g.fillStyle(0x4a3550, 1);
+  g.fillRect(3, 25, 10, 3);
+  g.fillStyle(0xb45cd6, 1);
+  g.fillRect(3, 13, 10, 3);
+  g.fillStyle(0xffcf6a, 1);
+  g.fillRect(7, 15, 2, 2);
+
+  // face, hair, glasses
+  g.fillStyle(0xd9a47a, 1);
+  g.fillRect(5, 5, 6, 8);
+  g.fillStyle(0xd9d0dc, 1);
+  g.fillRect(4, 3, 8, 3);
+  g.fillRect(3, 5, 2, 5);
+  g.fillRect(11, 5, 2, 5);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(6, 8, 1, 1);
+  g.fillRect(9, 8, 1, 1);
+  g.fillRect(7, 9, 2, 1);
+  g.fillStyle(0xf26b5e, 1);
+  g.fillRect(7, 11, 3, 1);
+
+  g.generateTexture('abuela', W, H);
+  g.destroy();
+}
+
+function makeChihuahua(scene) {
+  const g = gfx(scene);
+  const W = 14;
+  const H = 14;
+
+  g.fillStyle(0xd9a47a, 1);
+  g.fillRect(3, 5, 8, 6);
+  g.fillRect(9, 3, 4, 4);
+  g.fillStyle(0xb07855, 1);
+  g.fillRect(2, 6, 2, 4);
+  g.fillRect(3, 11, 2, 2);
+  g.fillRect(9, 11, 2, 2);
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(11, 4, 1, 1);
+  g.fillRect(12, 7, 1, 1);
+  g.fillRect(10, 2, 2, 2);
+  g.fillRect(12, 2, 2, 2);
+  g.fillStyle(CORAL, 1);
+  g.fillRect(9, 6, 4, 1);
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(1, 8, 2, 1);
+
+  g.generateTexture('chihuahua', W, H);
+  g.destroy();
+}
+
+function makeBell(scene) {
+  const g = gfx(scene);
+  const W = 14;
+  const H = 14;
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(3, 1, 8, 2);
+  g.fillRect(4, 3, 6, 5);
+  g.fillTriangle(3, 8, 11, 8, 7, 12);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(4, 3, 5, 4);
+  g.fillRect(5, 7, 3, 2);
+  g.fillStyle(0xffcf6a, 1);
+  g.fillRect(5, 4, 2, 1);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(6, 12, 2, 2);
+  g.generateTexture('bell', W, H);
+  g.destroy();
+}
+
+function makeBellPost(scene) {
+  const g = gfx(scene);
+  const W = 18;
+  const H = 42;
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(7, 10, 4, 32);
+  g.fillRect(4, 38, 10, 4);
+  g.fillRect(1, 9, 16, 3);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(2, 4, 1, 6);
+  g.fillRect(15, 4, 1, 6);
+  g.fillRect(2, 4, 14, 2);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(7, 6, 4, 4);
+  g.fillTriangle(6, 10, 12, 10, 9, 14);
+  g.fillStyle(0xffcf6a, 1);
+  g.fillRect(7, 7, 2, 1);
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(8, 14, 2, 3);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(9, 17, 1, 15);
+  g.generateTexture('bellpost', W, H);
+  g.destroy();
+}
+
+function makeCrown(scene) {
+  const g = gfx(scene);
+  const W = 14;
+  const H = 9;
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(1, 5, 12, 3);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(2, 4, 10, 3);
+  g.fillTriangle(2, 4, 4, 4, 3, 0);
+  g.fillTriangle(5, 4, 7, 4, 6, 0);
+  g.fillTriangle(10, 4, 12, 4, 11, 0);
+  g.fillStyle(CORAL, 1);
+  g.fillRect(6, 5, 2, 1);
+  g.generateTexture('crown', W, H);
+  g.destroy();
+}
+
 // Strings of papel picado across the street.
 function makeBanner(scene) {
   const g = gfx(scene);
@@ -744,6 +1018,14 @@ function makeDog(scene, key, pose) {
 
   // sitting: a big folded haunch at the back reads as "sit" at 32px
   if (pose === 'sit') {
+    // Tail root: carry the curled tail down into the haunch so it doesn't
+    // float above the back when the silhouette folds into a sit.
+    g.fillStyle(CHOW_DARK, 1);
+    g.fillRect(2, 14, 5, 9);
+    g.fillStyle(CHOW_RIM, 1);
+    g.fillRect(2, 14, 1, 6);
+    g.fillRect(2, 19, 4, 1);
+
     g.fillStyle(CHOW_FUR, 1);
     g.fillRect(2, 20, 12, 11);
     g.fillStyle(CHOW_DARK, 1);

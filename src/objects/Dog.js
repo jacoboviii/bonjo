@@ -3,6 +3,7 @@ import { tuning } from '../tuning.js';
 import { SCALE } from '../scale.js';
 
 const S = SCALE;
+const SIT_DELAY = 0.45; // seconds of standing still before Bonjo folds into a sit
 
 // Move a value toward a target by at most maxDelta (used for smooth accel).
 function moveTowards(current, target, maxDelta) {
@@ -44,6 +45,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.jumpHold = 0;
     this.trailTimer = 0;
     this.animT = 0;
+    this.standT = 0;
 
     // Purple chow tongue, rendered as its own sprite so it can wiggle.
     this.tongue = scene.add
@@ -213,15 +215,20 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     let pose;
     if (this.diving) {
       pose = 'dogDive';
+      this.standT = 0;
     } else if (this.gliding) {
       pose = 'dogGlide';
+      this.standT = 0;
     } else if (onGround) {
       if (Math.abs(this.body.velocity.x) > 20 * S) {
+        this.standT = 0;
         pose = Math.floor(this.animT * 12) % 2 === 0 ? 'dogWalkA' : 'dogWalkB';
       } else {
-        pose = 'dogSit';
+        this.standT += dt;
+        pose = this.standT >= SIT_DELAY ? 'dogSit' : 'dog';
       }
     } else {
+      this.standT = 0;
       pose = 'dog';
     }
     if (this.texture.key !== pose) this.setTexture(pose);
@@ -246,7 +253,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
   // The tongue only comes out when the dog is standing still - it's a pant,
   // not a running flag. Stops moving, waits a beat, then starts panting.
   updateTongue(dt, onGround) {
-    const panting = onGround && Math.abs(this.body.velocity.x) < 20 * S;
+    const panting =
+      onGround &&
+      this.texture.key === 'dogSit' &&
+      Math.abs(this.body.velocity.x) < 20 * S;
     if (panting) this.idleT += dt;
     else this.idleT = 0;
 

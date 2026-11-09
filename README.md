@@ -7,7 +7,7 @@ dogs from other houses trying to take his turf.
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
 and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
 glide and dive; subdue rivals; bounce off market awnings; knock a piñata for
-supplies; survive two nights.
+supplies; survive two nights and repel the **top dog** before dawn.
 
 This is a **playable prototype**, not a finished game. The current build is for
 tuning the movement feel and testing the survival loop.
@@ -28,19 +28,28 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Bonjo:** the only chow on the block. Not a killer — he **subdues** his
   rivals by out-jumping them. When beaten, a rival yelps and runs home.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
-  chase. Dive on one to send it packing and earn a bone.
+  chase. Dive on one to send it packing. Night waves include **fast** dogs,
+  **bone thieves**, **brutes**, and on Night 2 the **top dog**.
 - **Squirrels:** smaller nuisances with a big tail. They steal bones and bolt
   for the edge of the platform.
-- **Crows:** one rare aerial pest.
+- **Crows:** one rare aerial pest, plus a far-block crow.
 - **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
   flaps. Chain them with the gold rings.
-- **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
-  hunger; an empty bar starts costing health. Day 1 is for scavenging. Night 1
-  sends rival dogs at you. Survive both nights to take the block.
+- **High routes:** one-way fire escapes and laundry lines hide bones and
+  conchas above the street. Jump up through them and land on top.
+- **Street life:** taco carts restore hunger, trash cans burst into bones,
+  bicycles can be knocked over, and one parked car has an alarm that stuns
+  nearby rivals.
 - **The porch:** Bonjo's house at the start of the street is a safe zone.
-  Rivals won't enter it, and dawn restores a heart.
+  A **porch gate** can be chewed down by gate rushers; if it breaks, the porch
+  is open until dawn. Abuela tosses a concha each day, the bell grants another,
+  and the chihuahua barks warnings.
+- **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
+  hunger; an empty bar starts costing health. Survive two nights; the final
+  night ends with the top dog, and you must repel it before the block is yours.
+  Bones, combo, subdued rivals and no-hit play feed your final score and rank.
 
 Tone: cozy, mischievous, non-lethal. The dog wins the block; nobody gets hurt.
 
@@ -99,8 +108,10 @@ On a desktop you can press **V** to show the touch buttons for testing.
 
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
 burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
-**conchas** to keep the hunger bar up, and survive two nights. Bones are score;
-hearts are your life. Gold rings refill your flaps in mid-air.
+**conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
+over bikes and trip the marked car alarm. Visit Abuela and ring the bell during
+the day. Survive two nights and repel the **top dog**; bones, combo and a clean
+run feed your score and rank.
 
 ---
 
@@ -155,24 +166,31 @@ there to make them permanent.
 
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide, dive — each with its own animation pose
-- Walk cycle; sits and pants (purple tongue) when idle; tongue hidden in motion
+- Walk cycle; sits and pants (purple tongue) after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
 - **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
-- **Rival neighborhood dogs** that patrol, bark, chase and can be subdued
-- **Squirrels** that steal bones; one rare **crow**
+- **Visible goal HUD**, two-night countdown and dawn warnings
+- **Rival roles** — fast dogs, bone thieves, brutes, gate rushers and the Night 2 **top dog** showdown
+- **One-way fire escapes and laundry lines** with high bones/conchas
+- **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
+- **Porch gate defense** with gate health and a compromised safe zone if it breaks
+- **Abuela's daily concha**, bell blessing, and chihuahua warnings
+- **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
+- **Squirrels** that steal bones; two crows
 - **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**
 - Wind rings that refill flaps mid-air
-- Bones, concha food, checkpoint balloon, a safe **porch**
+- Bones, concha food, two checkpoint balloons, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
 - Atmospheric haze pushes the city back while keeping Bonjo and the hazards readable
+- A longer east block, extra hazards and a second checkpoint
 - Pits cost a heart and respawn; 0 hearts ends the run
 - Camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
 - **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
-- Title, win and game-over screens
+- Title, top-dog finale, win and game-over screens
 
-**Not in this build:** menus, pause, save files, gamepad, bosses, base
+**Not in this build:** menus, pause, save files, gamepad, base
 upgrades, crafting, more than one level, real music.
 
 ---
@@ -265,17 +283,24 @@ files):
 | `carA`, `carB`, `carC` | 44×22 | parked sedan / hatchback / pickup |
 | `bikeMint`, `bikeCoral` | 20×18 | leaning bicycles |
 | `hydrant` / `trashcan` / `planter` / `streetlamp` | 9×13 – 12×58 | street dressing |
+| `gate` | 36×30 | porch gate |
+| `tacocart` | 44×30 | hunger refill |
+| `abuela` / `chihuahua` | 16×28 / 14×14 | day NPC / warning ally |
+| `bell`, `bellpost` | 14×14, 18×42 | day blessing |
+| `crown` | 14×9 | top-dog marker |
+| `ledge_*` | 90–110×12 | one-way fire escape / laundry line |
 
 ---
 
 ## Suggested next steps
 
-1. **Tune the survival pressure.** Play a full two-night run. Adjust hunger
-   drain, wave counts, dawn healing and i-frames until it's tense but fair.
-2. Add **wave telegraphs**: a gate/door animation, a bark off-screen, a short
-   pause before the first dog.
-3. More day scavenging: breakable clay pots, doorbells that summon a rival,
-   chickens/goats that scatter, laundry lines as one-way platforms.
+1. **Tune the new finale.** Play a full two-night run with the gate rusher,
+   thief waves and top dog. Adjust alpha health, gate timing and day gifts until
+   it's tense but fair.
+2. Add **wave telegraphs** at the porch: door slams, gate lanterns, a longer
+   bravo bark before the first dog.
+3. More **east-block landmarks**: a mercado interior, a basketball court,
+   rooftop murals, and a second Abuela window.
 4. Build **Las Orillas** — the agricultural edge: irrigation canals, agave
    fields, crop rows, farm dogs.
 5. Camera look-down while diving; landing squash; a proper bark on flap.

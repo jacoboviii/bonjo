@@ -136,6 +136,14 @@ one — or falling on it faster than 160 px/s — subsumes it: yelp, +1 bone, an
 flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
 defeat state beyond "runs home."
 
+Night waves vary by role:
+- **Fast** dogs are smaller and quicker.
+- **Thieves** steal one bone on contact and flee; dive them to recover it.
+- **Brutes** take two dives.
+- **Gate rushers** ignore Bonjo and run for the porch gate.
+- The **top dog** appears at the end of Night 2: gold-tinted, crowned, three
+  dives. The night cannot end until it is repelled.
+
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
 They freeze for 0.65 s (`HEY!`) then sprint to the edge with it. Dive/stomp to
@@ -158,9 +166,17 @@ Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
 
-### Bones
-Score pickups, 20 placed at start plus piñata drops. Later: currency for
-upgrades. Placed slightly off the critical path to reward scavenging.
+### Bones and score
+Bones are score pickups: 35 placed across both blocks plus piñata drops, trash
+cans and rival rewards. Pickups build a short combo; the end screen combines
+bones, max combo, subdued rivals, health, no-hit and time into a score and an
+S–D rank.
+
+### Street props and errands
+Taco carts restore hunger; trash cans burst into bones; bicycles can be knocked
+over; the marked parked car's alarm stuns nearby rivals. During the day Abuela
+tosses a concha, the bell grants another, and the chihuahua barks warnings at
+night. These are all optional, but they reward learning the block.
 
 ### Wind rings
 Gold rings in gaps. Passing through refills all flaps and gives a small upward
@@ -176,23 +192,29 @@ hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
 ### Day, night & waves
 Day 1 lasts 35 s, Night 1 is 28 s with 3 rival waves, Day 2 is 30 s, Night 2 is
 33 s with 4 waves. Night darkens the street (lit windows pop) and spawns rivals
-near Bonjo's block every ~6 s. Survive both nights to win. The HUD always shows
-phase, timer, hearts and hunger.
+near Bonjo's block every ~6 s. A visible goal HUD shows “survive 2 nights,” dawn
+warnings and the top-dog hit count. The final night adds gate rushers and, at
+roughly 12 s left, the top dog. Repel it to win; the timer will wait at zero
+until it is down. The HUD always shows phase, timer, hearts, hunger and gate
+health.
 
 ### The porch
 Bonjo's house at the start of the street. Rivals won't enter the first 160
-design px of the block, so the porch is a safe corner. Dawn drops a concha by
-the door. The street is the arena; the porch is where you catch your breath.
+design px of the block, so the porch is a safe corner. A **porch gate** marks
+that line: gate rushers chew it down, and if it breaks the safe zone is open
+until dawn repairs it. Abuela and the chihuahua live here. Dawn drops a concha
+by the door. The street is the arena; the porch is where you catch your breath.
 
 ### Checkpoints
-One balloon at the midpoint; touch it to set the respawn point after a pit.
-There is no goal balloon: the win condition is surviving Night 2.
+Balloons at the midpoint and on the east block; touch one to set the respawn
+point after a pit. There is no goal balloon: the win condition is surviving
+Night 2 and repelling the top dog.
 
 ---
 
 ## 7. Level 1 — La Cuadra (urban core)
 
-World 3200×900 design px. The camera shows 144 design units vertically (288px
+World 4200×900 design px. The camera shows 144 design units vertically (288px
 render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town: mountains, fields/agave,
@@ -214,9 +236,11 @@ Beat sheet:
 4. **The checkpoint.** Second awning/piñata; the midpoint balloon; a safe beat.
 5. **Night 1.** The street darkens; three rivals spawn near Bonjo. Dive them or
    retreat to the porch. Dawn heals a heart and drops a concha.
-6. **Day 2 / Night 2.** A shorter day, a harder night; the last rival guards the
-   far corner.
-7. **Win.** Survive Night 2: "THE BLOCK IS YOURS."
+6. **Day 2 / Night 2.** A shorter day, a harder night; thieves, brutes and a
+   gate rusher. The top dog arrives before dawn.
+7. **The east block.** New gaps, awnings, high laundry/fire-escape routes, a
+   second checkpoint and more scavenging.
+8. **Win.** Repel the top dog and survive Night 2: "THE BLOCK IS YOURS."
 
 Losing all hearts ends the run: "THE BLOCK WINS."
 
@@ -296,20 +320,25 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 ### In this slice
 - La Cuadra: town background, flat adobe street, papel picado, porch
 - Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
-- **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, two-night win
-- Rival dogs (bark/chase/subdue), squirrels (bone thieves), one crow
+- **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, top-dog finale, two-night win
+- **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog
+- **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
+- **Defense:** porch gate with health and a compromised safe zone
+- **NPCs/quests:** Abuela's concha, bell blessing, chihuahua warnings
+- **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
+- Rival dogs (bark/chase/subdue), squirrels (bone thieves), two crows
 - Piñatas, bouncing awnings
-- Bones, rings, checkpoint
+- Bones, rings, checkpoints
 - Walk cycle, sit/pant idle
-- Title + win + game-over, keyboard + touch, portrait guard
+- Title + top-dog + win + game-over, keyboard + touch, portrait guard
 - **Spanish default, English toggle**
 - Tuning panel
 
 ### Cut / later
 - Menus, pause, save data, gamepad
-- More levels, bosses, dog variants, upgrades
+- More levels, dog variants, upgrades
 - Base upgrades, crafting, persistent progression
-- Breakable pots, doorbells, chickens/goats, laundry lines
+- Breakable pots, doorbells, chickens/goats
 - Music
 
 ---
