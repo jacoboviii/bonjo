@@ -1,8 +1,27 @@
 # Bonjo — Day 1: Pillars & the 30-second loop
 
 **The fantasy (one sentence):** You are Bonjo, the only chow on the block — a
-proud little dog on his evening walk through a Mexican barrio, who will not let
-the neighbor dogs take his street.
+proud little dog who spends the day scavenging his Mexican barrio and the night
+holding it against the neighbor dogs.
+
+---
+
+## Survival layer
+
+The platformer is the body; survival is the pressure.
+
+- **Health:** 3 hearts. Enemy contact costs one; pits cost one; 0 ends the run.
+- **Hunger:** a slow bar. Conchas restore 30; at zero, health drains.
+- **Day/night:** Day 1 (35 s) scavenge → Night 1 (28 s, 3 waves) → Day 2
+  (30 s) → Night 2 (33 s, 4 waves) → win.
+- **The porch:** a safe zone at the start; rivals won't enter it, and dawn
+  restores a heart and drops a concha.
+- **The night is the antagonist.** Waves spawn at the edges of the block; the
+  player chooses to fight, retreat, or spend supplies.
+
+The survival layer is only worth keeping if a full two-night run creates
+*choices* — eat now or save the concha, fight the wave or retreat to the porch.
+If it only adds chores, cut it.
 
 ---
 
@@ -53,11 +72,13 @@ could be set in any generic platformer, it isn't specific enough.*
 
 Bonjo trots out of his gate and down the block; a neighbor dog barks and
 charges, so he hops it, flaps once for height, and dives — the rival yelps and
-runs home, leaving a bone. Bonjo grabs it, bounces off a striped market awning
-to reach a piñata, smacks it twice, bursts it on the third, and rides the bone
-shower onto the next roof. A gold ring refills his flaps; he glides across the
-street, past a squirrel dragging a stolen bone into a doorway, and lands at the
-next corner, where another dog is already barking.
+runs home, leaving a bone. Bonjo grabs it, eats a concha before his hunger bar
+dips, bounces off a striped market awning to reach a piñata, smacks it twice,
+bursts it on the third, and rides the bone shower onto the next corner. A gold
+ring refills his flaps; he glides across the street, past a squirrel dragging a
+stolen bone into a doorway. Then the light fades, the town windows glow, and
+three dogs from other houses come out — Bonjo plants himself in the middle of
+the block, hearts full, and holds the street until dawn.
 
 ---
 
@@ -65,12 +86,15 @@ next corner, where another dog is already barking.
 
 | Time | Beat | Teaches |
 | --- | --- | --- |
-| 0–5 s | Bonjo's gate; a bone ahead; the first piñata above the corner | move, collect; an optional toy to notice |
+| 0–5 s | Bonjo's gate; a bone and a concha ahead; the first piñata above the corner | move, collect; an optional toy to notice |
 | 5–15 s | A rival behind a low wall, barking; safe to watch | jump; the rival is a threat |
 | 15–25 s | The rival charges; dive on it; it flees and drops a bone | dive = subdue |
-| 25–35 s | The first gap: awning + gold ring | land on awning → bounce → ring |
-| 35–50 s | The next block; a squirrel drags a stolen bone | the chase; keep moving |
-| 50–60 s | The next climb and a second gap; the loop repeats | mastery, not a new toy |
+| 25–35 s | The first gap: awning + gold ring; the hunger bar dips | land on awning → bounce → ring; eat |
+| 35–45 s | **Night 1.** The street darkens; three rivals spawn at the edges | hearts, waves, retreat or fight |
+| 45–60 s | Hold the block or fall back to the porch; survive to dawn | the survival loop |
+
+The squirrel/checkpoint/piñata chain comes in Day 2, after the player has felt
+one full night.
 
 ---
 
@@ -82,6 +106,7 @@ Before adding anything, answer:
 2. Which existing verb does it use?
 3. Can a player meet it in the first minute?
 4. Would Bonjo do this?
+5. Does it increase the *night's* pressure without making the day a chore?
 
 If any answer is "none", it waits.
 
@@ -92,6 +117,8 @@ If any answer is "none", it waits.
 - Where did they stop moving?
 - Where did they die twice?
 - Did they find the awning and the piñata without being told?
+- Did they notice the hunger bar before it mattered?
+- Did they retreat to the porch, or did they try to fight everything?
 - What did they try that the game didn't allow?
 
-Fix only the top three. Then play the first minute again.
+Fix only the top three. Then play the first two nights again.

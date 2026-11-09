@@ -69,6 +69,9 @@ export function buildTextures(scene) {
   makeSquirrel(scene, 'squirrelRun', 'run');
   makeRivalDog(scene, 'rival', 'idle');
   makeRivalDog(scene, 'rivalRun', 'run');
+  makeHeart(scene);
+  makeFood(scene);
+  makePorch(scene);
   makePinata(scene);
   makeRope(scene);
   makeAwning(scene);
@@ -755,6 +758,83 @@ function makeAwning(scene) {
   g.fillRect(0, 11, W, 1);
 
   g.generateTexture('awning', W, H);
+  g.destroy();
+}
+
+// --- survival props ---------------------------------------------------------
+
+function makeHeart(scene) {
+  const g = rawGfx(scene);
+  g.fillStyle(0xd94f4f, 1);
+  g.fillRect(2, 1, 2, 2);
+  g.fillRect(6, 1, 2, 2);
+  g.fillRect(1, 3, 8, 4);
+  g.fillRect(2, 7, 6, 2);
+  g.fillRect(3, 9, 4, 1);
+  g.fillStyle(0xff9a9a, 1);
+  g.fillRect(2, 2, 1, 1);
+  g.generateTexture('heart', 10, 10);
+  g.destroy();
+}
+
+function makeFood(scene) {
+  const g = rawGfx(scene);
+  // concha: cream base, pink shell
+  g.fillStyle(0xf4dcc0, 1);
+  g.fillRect(1, 4, 10, 4);
+  g.fillStyle(0xf2a6b8, 1);
+  g.fillRect(0, 3, 12, 2);
+  g.fillRect(1, 2, 10, 2);
+  g.fillStyle(0xd97a8e, 1);
+  g.fillRect(3, 2, 1, 2);
+  g.fillRect(6, 2, 1, 2);
+  g.fillRect(9, 2, 1, 2);
+  g.fillStyle(0xe8b27a, 1);
+  g.fillRect(2, 7, 8, 1);
+  g.generateTexture('concha', 12, 8);
+  g.destroy();
+}
+
+function makePorch(scene) {
+  const g = gfx(scene);
+  // adobe wall + tiled eave
+  g.fillStyle(0xc98a5e, 1);
+  g.fillRect(0, 0, 56, 44);
+  g.fillStyle(0xb5533a, 1);
+  g.fillRect(0, 0, 56, 6);
+  g.fillStyle(0xd9775a, 1);
+  g.fillRect(0, 0, 56, 2);
+  g.fillStyle(0x8f3f2e, 1);
+  for (let x = 0; x < 56; x += 7) g.fillRect(x, 1, 1, 4);
+
+  // wooden door with a lit transom
+  g.fillStyle(0x5a3328, 1);
+  g.fillRect(14, 12, 20, 32);
+  g.fillStyle(0x8f5a2e, 1);
+  g.fillRect(16, 14, 16, 28);
+  g.fillStyle(0xffcf6a, 1);
+  g.fillRect(16, 16, 16, 4);
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(29, 28, 2, 2);
+
+  // step
+  g.fillStyle(0x9a5a3c, 1);
+  g.fillRect(10, 40, 28, 4);
+
+  // potted plant
+  g.fillStyle(0x8f3f2e, 1);
+  g.fillRect(42, 34, 6, 8);
+  g.fillStyle(0x4f8f5a, 1);
+  g.fillRect(43, 28, 4, 7);
+  g.fillRect(41, 31, 8, 3);
+
+  // dog bowl
+  g.fillStyle(0x6f8a80, 1);
+  g.fillRect(4, 38, 8, 3);
+  g.fillStyle(0xf4dcc0, 1);
+  g.fillRect(6, 36, 4, 2);
+
+  g.generateTexture('porch', 56, 44);
   g.destroy();
 }
 

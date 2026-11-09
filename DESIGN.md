@@ -1,13 +1,13 @@
 # Bonjo — Design Document
 
-**Version:** 0.3 (La Cuadra playable slice)
-**Genre:** 2D momentum platformer with environmental interactions
+**Version:** 0.4 (La Cuadra survival slice)
+**Genre:** Turf-defense survival platformer
 **Platform:** Browser (desktop first), mobile touch supported
 **Engine:** Phaser 3.90 + Vite + JavaScript, Arcade Physics
 **Render:** 512×288 (2× a 256×144 design view)
-**Pitch:** Bonjo is the only chow on the block. Walk him through a small Mexican
-city, bounce off market awnings, burst piñatas for bones, and subdue the
-neighborhood dogs who think this street belongs to them.
+**Pitch:** Bonjo is the only chow on the block. By day he scavenges the barrio;
+by night he holds the street against waves of rival dogs. Survive two nights,
+keep the block, and don't run out of conchas.
 
 ---
 
@@ -30,11 +30,18 @@ The working one-pager lives in [`PILLARS.md`](PILLARS.md). The short version:
 same route, the same corners, the same smells. He likes his walks.
 
 **La Cuadra** is the urban core: flat-roofed houses, a church tower, a tienda
-awning, strings of papel picado, dogs behind every gate. The streets are the
-platforms; the rooftops are the high road.
+awning, strings of papel picado, dogs behind every gate. The street is the
+arena: one flat run of pavement broken by a few gaps, with awnings and rings
+over the holes.
 
 At the edge of town are **Las Orillas**: irrigation ditches, crop rows, agave,
 dust, and farm dogs who have never seen a chow before. That's level 2.
+
+**The survival loop:** Day 1 is for scavenging — bones, conchas, piñatas, and
+the layout of the street. Night 1 sends the neighbor dogs. Day 2 is shorter and
+tense. Night 2 is the last stand. Bonjo has three hearts and a hunger bar; the
+porch is safe, dawn heals one heart, and surviving the second night takes the
+block.
 
 **The conflict** is turf, not evil. Other dogs from other houses bark, chase
 and guard their corners. Bonjo subsumes them by diving on them; they yelp and
@@ -47,15 +54,19 @@ flavor (`la cuadra`, `¡guau!`, `¡échale!`, `papel picado`), not as a punchlin
 
 ## 3. Core loop
 
-**30 seconds:** Walk → spot a rival → it barks and charges → jump/flap over it →
-dive to subdue → collect the dropped bone → bounce an awning for height → hit a
-piñata → land on the next roof.
+**30 seconds (day):** Walk the block → spot a rival → it barks and charges →
+jump/flap over it → dive to subdue → collect the dropped bone → bounce an awning
+→ hit a piñata → eat a concha before the hunger bar empties.
 
-**3 minutes:** Cross La Cuadra from Bonjo's house to the far corner, hitting
-checkpoints and optionally clearing piñatas and rivals.
+**30 seconds (night):** Hold the pavement → a rival spawns from a doorway →
+dive it before it reaches you → keep one eye on the heart bar → survive until
+dawn.
 
-**Session:** Finish the level with more bones / a faster time; replay to find
-the awnings and piñatas you missed.
+**3 minutes:** Day 1 scavenge (35 s) → Night 1 (28 s, 3 waves) → Day 2 (30 s)
+→ Night 2 (33 s, 4 waves) → take the block.
+
+**Session:** Survive two nights with more bones / a faster time; replay to find
+the conchas and piñatas you missed.
 
 ---
 
@@ -122,8 +133,8 @@ Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
 same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
 They stop at the edges of their turf rather than running into pits. Diving onto
 one — or falling on it faster than 160 px/s — subsumes it: yelp, +1 bone, and it
-flees home. Any other contact sends Bonjo back to the last checkpoint. No gore,
-no defeat state beyond "runs home."
+flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
+defeat state beyond "runs home."
 
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
@@ -133,31 +144,49 @@ nuisance" layer between rival encounters.
 
 ### Crows (rare aerial hazard)
 One crow patrols a stretch of sky with a sine bob. Dive through it to pop it
-(+1 bone); touch it otherwise and respawn. Kept rare so the dogs stay the story.
+(+1 bone); touch it otherwise and lose a heart. Kept rare so the dogs stay the
+story.
 
 ### Piñatas
 Two hang from ropes over the street. Any contact hits one (350 ms cooldown):
-wobble, `¡ÉCHALE!`, one bone drops. Three hits bursts it into `¡ÓRALE!` and a
-shower of bones. Purely a reward; never a hazard.
+wobble, `¡ÉCHALE!`, one bone drops. Three hits burst it into `¡ÓRALE!` — a
+shower of bones and a concha. Purely a reward; never a hazard.
 
 ### Market awnings
 Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
 ~120 design px, refills flaps, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
-rooftop bones.
+street bones.
 
 ### Bones
-Score pickups, 20 placed at start plus piñata drops. Later: currency for dog
-variants. Placed slightly off the critical path to reward curiosity.
+Score pickups, 20 placed at start plus piñata drops. Later: currency for
+upgrades. Placed slightly off the critical path to reward scavenging.
 
 ### Wind rings
 Gold rings in gaps. Passing through refills all flaps and gives a small upward
 kick (-140 px/s). 0.5 s re-trigger cooldown. The mid-air "checkpoint" of the
 movement economy.
 
-### Checkpoints & goal
-One balloon at the midpoint; touch to set the respawn point. The goal balloon
-ends the level with bones + time. R restarts.
+### Health & hunger
+Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
+knocks him back and grants 1.2 s of invulnerability. Pits cost a heart and respawn
+him at the last checkpoint. Hunger drains at 0.8/s; conchas restore 30. At zero
+hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
+
+### Day, night & waves
+Day 1 lasts 35 s, Night 1 is 28 s with 3 rival waves, Day 2 is 30 s, Night 2 is
+33 s with 4 waves. Night darkens the street (lit windows pop) and spawns rivals
+near Bonjo's block every ~6 s. Survive both nights to win. The HUD always shows
+phase, timer, hearts and hunger.
+
+### The porch
+Bonjo's house at the start of the street. Rivals won't enter the first 160
+design px of the block, so the porch is a safe corner. Dawn drops a concha by
+the door. The street is the arena; the porch is where you catch your breath.
+
+### Checkpoints
+One balloon at the midpoint; touch it to set the respawn point after a pit.
+There is no goal balloon: the win condition is surviving Night 2.
 
 ---
 
@@ -169,16 +198,21 @@ low houses with lit windows, a church tower and cross, papel picado.
 
 Beat sheet:
 
-1. **The block.** Bonjo starts outside his house. A piñata hangs ahead; a rival
-   dog patrols the near corner. Learn jump → flap → dive on a dog.
-2. **The gap.** First pit; a market awning and a gold ring above it. Bounce the
-   awning, pass through the ring.
-3. **The climb.** Two floating roofs and a squirrel with a bone.
-4. **The drop.** Glide down to the next street; a second rival.
-5. **The tienda.** Second awning + piñata; the long street with the checkpoint
-   balloon.
-6. **The last corner.** Final rival guards the goal; one crow overhead.
-7. **Goal balloon.** "THE BLOCK IS YOURS."
+1. **The porch.** Bonjo starts outside his house. A concha is nearby; a piñata
+   hangs over the corner; a rival dog patrols the near block. Learn jump → flap
+   → dive, and eat when the hunger bar dips.
+2. **The first gap.** A market awning and a gold ring over the hole. Bounce the
+   awning, pass through the ring, keep moving.
+3. **The long block.** A squirrel drags a bone; a rival guards the turf. Day 1
+   is for scavenging — clear what you can before dark.
+4. **The checkpoint.** Second awning/piñata; the midpoint balloon; a safe beat.
+5. **Night 1.** The street darkens; three rivals spawn near Bonjo. Dive them or
+   retreat to the porch. Dawn heals a heart and drops a concha.
+6. **Day 2 / Night 2.** A shorter day, a harder night; the last rival guards the
+   far corner.
+7. **Win.** Survive Night 2: "THE BLOCK IS YOURS."
+
+Losing all hearts ends the run: "THE BLOCK WINS."
 
 ---
 
@@ -186,9 +220,10 @@ Beat sheet:
 
 - Irrigation canal gaps with narrow stone bridges.
 - Agave rows as hazards: spiky, not bouncy.
-- Crop rows that hide bones; scare a goat and it runs, revealing a path.
+- Crop rows that hide bones and conchas; scare a goat and it runs, revealing a path.
 - Farm dogs: bigger, slower, higher HP? Keep the same subdue rule.
 - A windmill / water pump as a moving platform or updraft.
+- Nights are darker and longer; fewer conchas; the farmhouse porch is the safe zone.
 - Palette shifts from terracotta/teal to ochre/olive/dust; more sky.
 
 ---
@@ -208,13 +243,18 @@ Beat sheet:
 | Papel picado | coral `#f26b5e`, mint `#6ec6a8`, gold `#ffd166`, purple `#b45cd6` |
 | Bonjo fur | `#2a2135` (black chow), rim `#6f5c86`, tongue `#b45cd6` |
 | Rival dog | tan `#c98a4f`, red bandana `#d94f4f` |
+| Health | heart red `#d94f4f` |
+| Hunger | concha pink `#f2a6b8`, bar orange `#f0a03c` |
+| Night overlay | `#0b0614` at 38% |
 
 Rules:
 - Background town is darker and lower contrast than gameplay objects.
 - Roof/wall tops are terracotta + teal trim; the player reads "stand here."
 - Every interactive object gets a warm accent: piñata pink/gold, awning
-  coral/cream, ring gold.
+  coral/cream, ring gold, concha pink.
 - Black chow always carries a lavender rim light so he reads against dark walls.
+- At night the town goes dark but the windows stay lit; the HUD stays bright
+  above the overlay.
 - Avoid sombrero/serape clichés; the specificity is architecture, papel picado,
   church, fields and language.
 
@@ -234,7 +274,11 @@ Synthesized WebAudio, no files:
 | Rival subdued | descending yelp |
 | Piñata hit / burst | wooden thock / short arpeggio |
 | Awning | springy sine sweep |
+| Concha | short crunch |
+| Night falls | low bell |
+| Dawn | rising three-note chime |
 | Hurt | sawtooth fall |
+| Game over | descending sawtooth |
 | Checkpoint / win | chime / four-note fanfare |
 
 Music later: one loop per barrio, low-passed, with marimba/requinto colors.
@@ -244,20 +288,23 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 ## 11. Scope
 
 ### In this slice
-- La Cuadra: town background, adobe/roof platforms, papel picado
+- La Cuadra: town background, flat adobe street, papel picado, porch
 - Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
+- **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, two-night win
 - Rival dogs (bark/chase/subdue), squirrels (bone thieves), one crow
 - Piñatas, bouncing awnings
-- Bones, rings, checkpoint, goal
+- Bones, rings, checkpoint
 - Walk cycle, sit/pant idle
-- Title + win, keyboard + touch, portrait guard
+- Title + win + game-over, keyboard + touch, portrait guard
+- **Spanish default, English toggle**
 - Tuning panel
 
 ### Cut / later
 - Menus, pause, save data, gamepad
-- More levels, bosses, dog variants, unlocks
+- More levels, bosses, dog variants, upgrades
+- Base upgrades, crafting, persistent progression
 - Breakable pots, doorbells, chickens/goats, laundry lines
-- Music, localization
+- Music
 
 ---
 
@@ -266,9 +313,9 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | Step | Goal | Done when |
 | --- | --- | --- |
 | 1 | Feel | Jumps/flaps/glide feel right; sit/pant reads |
-| 2 | La Cuadra | Full traversal with rivals, piñatas, awnings, checkpoint |
-| 3 | Las Orillas | Second biome with farm hazards and a distinct palette |
-| 4 | Toy pass | Pots, doorbells, chickens, laundry lines |
+| 2 | Survive La Cuadra | Two-day/two-night loop with health, hunger, waves, porch |
+| 3 | Las Orillas | Second biome with farm hazards, scarcity and a distinct palette |
+| 4 | Survival depth | Upgrades, wave variants, day scavenging events |
 | 5 | Ship a demo | itch.io build, 5 playtesters, top 3 complaints |
 
 ---
@@ -278,17 +325,21 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | Risk | Mitigation |
 | --- | --- |
 | Rivals feel unfair at speed | Bark + hop telegraph; stop at turf edges; 0.65 s squirrel pause |
-| Piñata bones trivialize score | 3 hits, cooldown, modest drops |
+| Hunger is annoying rather than tense | Slow drain (0.8/s), generous conchas, dawn refill; no death spiral in one minute |
+| Night waves overwhelm | 3/4 waves, 6 s apart, spawn at block edges; porch safe |
+| Health too punishing with 3 hearts | Dawn heal, 1.2 s i-frames, knockback instead of teleport |
+| Piñata supplies trivialize survival | 3 hits, cooldown, modest food drop |
 | Awnings break level pacing | One-way, placed in gaps as optional high routes |
 | Black chow disappears at night | Lavender rim light + bright tongue/collar |
 | Mexican setting feels superficial | Specific architecture/food/plant details; Spanish used naturally; no costume humor |
 | Too many enemy types | Rivals are the story; squirrels/crow are seasoning |
 
 **Open questions**
-- Do rivals need a "guard a bone" behavior, or is chasing enough?
-- Should a subdued rival stay gone for the level, or respawn after a checkpoint?
-- Does the awning bounce refill too many flaps?
-- Is the dive useful enough outside of enemies/piñatas?
+- Does hunger add tension or just chores? Playtest a full two-night run.
+- Should nights get longer each cycle, or waves get denser?
+- Should subdued rivals stay gone for the night, or respawn?
+- Should food restore health as well as hunger?
+- Is the porch safe zone too safe? Does it need a cost?
 
 ---
 
@@ -306,3 +357,10 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | Rivals too aggressive | bark range 160, chase speed 100 |
 | Piñata too generous | 2 bones per burst, cooldown 500 ms |
 | Awnings too strong | bounce −520 instead of −620 |
+| Hunger is a chore | drain 0.5/s, conchas +40 |
+| Hunger never matters | drain 1.0/s, fewer conchas |
+| Night 1 overwhelms | waveTotal 2, spawn every 8 s |
+| Nights too easy | +1 wave, or night length +5 s |
+| Health too punishing | 4 hearts, or 1.5 s i-frames |
+| Porch too safe | shrink safe zone to 120 px, or add a concha cost |
+| Waves spawn too close | spawn at the platform edge, never within 70 px |

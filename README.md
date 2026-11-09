@@ -4,12 +4,13 @@
 his walks through a small Mexican city — and does not appreciate the neighbor
 dogs from other houses trying to take his turf.
 
-A 2D platformer prototype about walking the barrio: jump, flap, glide and dive;
-subdue rival dogs; bounce off market awnings; knock a piñata for bones; and get
-home before the streetlights come on.
+A **turf-defense survival platformer**: by day, scavenge the barrio for bones
+and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
+glide and dive; subdue rivals; bounce off market awnings; knock a piñata for
+supplies; survive two nights.
 
 This is a **playable prototype**, not a finished game. The current build is for
-tuning the feel and testing the interaction toys.
+tuning the movement feel and testing the survival loop.
 
 ![Bonjo contact sheet](screenshots/contact-sheet.png)
 
@@ -35,6 +36,11 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   bone, and the third hit bursts it into a shower of bones.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
   flaps. Chain them with the gold rings.
+- **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
+  hunger; an empty bar starts costing health. Day 1 is for scavenging. Night 1
+  sends rival dogs at you. Survive both nights to take the block.
+- **The porch:** Bonjo's house at the start of the street is a safe zone.
+  Rivals won't enter it, and dawn restores a heart.
 
 Tone: cozy, mischievous, non-lethal. The dog wins the block; nobody gets hurt.
 
@@ -91,8 +97,9 @@ On a desktop you can press **V** to show the touch buttons for testing.
 ### Interactions in one sentence
 
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
-burst it; **dive** a **rival dog** to make it drop a bone and flee. Bones are
-score. Gold rings refill your flaps in mid-air.
+burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
+**conchas** to keep the hunger bar up, and survive two nights. Bones are score;
+hearts are your life. Gold rings refill your flaps in mid-air.
 
 ---
 
@@ -140,20 +147,23 @@ there to make them permanent.
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide, dive — each with its own animation pose
 - Walk cycle; sits and pants (purple tongue) when idle; tongue hidden in motion
+- **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
+- **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
 - **Rival neighborhood dogs** that patrol, bark, chase and can be subdued
 - **Squirrels** that steal bones; one rare **crow**
-- **Piñatas** (3 hits → bone shower) and **bouncing market awnings**
+- **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**
 - Wind rings that refill flaps mid-air
-- Bones, checkpoint balloon, goal balloon
+- Bones, concha food, checkpoint balloon, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, papel picado, fields and agave
-- Death → quick respawn; camera look-ahead; synthesized SFX
+- Pits cost a heart and respawn; 0 hearts ends the run
+- Camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
 - **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
-- Title and win screens with bones + time
+- Title, win and game-over screens
 
-**Not in this build:** menus, pause, save files, gamepad, bosses, more than one
-level, real music.
+**Not in this build:** menus, pause, save files, gamepad, bosses, base
+upgrades, crafting, more than one level, real music.
 
 ---
 
@@ -181,7 +191,7 @@ bonjo/
 │   └── scenes/
 │       ├── Boot.js         builds textures, starts title
 │       ├── Title.js        BONJO title screen
-│       └── Level1.js       La Cuadra layout, enemies, props, HUD, tuning
+│       └── Level1.js       La Cuadra, survival loop, waves, HUD, tuning
 └── dist/                   production build (after `npm run build`)
 ```
 
@@ -232,23 +242,29 @@ files):
 | `rope` | 2×8 | tiling piñata rope |
 | `awning` | 40×12 | striped bounce canopy |
 | `bone` | 20×16 | |
+| `concha` | 24×16 | hunger pickup |
+| `heart` | 20×20 | health HUD |
+| `porch` | 112×88 | home safe zone |
 | `ring` | 32×32 | |
 | `balloon` | 24×40 | checkpoint |
-| `goalBalloon` | 40×60 | goal |
 | `puff` | 16×16 | dust particle |
 
 ---
 
 ## Suggested next steps
 
-1. **Tune the feel** (this is the real work). Play the first 15 seconds over and
-   over. Adjust gravity, flap power, and glide until it feels like *your* dog.
-2. More interactions: breakable clay pots (dive), doorbells that summon a rival,
+1. **Tune the survival pressure.** Play a full two-night run. Adjust hunger
+   drain, wave counts, dawn healing and i-frames until it's tense but fair.
+2. Add **wave telegraphs**: a gate/door animation, a bark off-screen, a short
+   pause before the first dog.
+3. More day scavenging: breakable clay pots, doorbells that summon a rival,
    chickens/goats that scatter, laundry lines as one-way platforms.
-3. Build **Las Orillas** — the agricultural edge: irrigation canals, agave
+4. Build **Las Orillas** — the agricultural edge: irrigation canals, agave
    fields, crop rows, farm dogs.
-4. Camera look-down while diving; landing squash; a proper bark on flap.
-5. Only then think about dog variants / unlocks.
+5. Camera look-down while diving; landing squash; a proper bark on flap.
+
+Only after the two-night loop feels right: dog variants, upgrades, saves,
+more blocks.
 
 ---
 

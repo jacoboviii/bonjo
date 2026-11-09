@@ -1,7 +1,7 @@
 {
   "name": "bonjo",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "Bonjo — the only chow on the block",
   "scripts": {

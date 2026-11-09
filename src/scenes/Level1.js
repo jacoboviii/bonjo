@@ -21,73 +21,73 @@ const WORLD_H = 900 * S;
 // Everything is multiplied by S when it is placed in the 2x world.
 const PLATFORMS = [
   { x: 0, y: 600, w: 520, h: 300 }, // starting ground
-  { x: 600, y: 600, w: 360, h: 300 },
-  { x: 1010, y: 512, w: 120, h: 16 },
-  { x: 1180, y: 440, w: 100, h: 16 },
-  { x: 1320, y: 600, w: 240, h: 300 },
-  { x: 1600, y: 520, w: 90, h: 16 },
-  { x: 1730, y: 450, w: 80, h: 16 },
-  { x: 1860, y: 380, w: 80, h: 16 },
-  { x: 1980, y: 600, w: 420, h: 300 },
-  { x: 2460, y: 520, w: 100, h: 16 },
-  { x: 2600, y: 450, w: 90, h: 16 },
-  { x: 2730, y: 380, w: 90, h: 16 },
-  { x: 2860, y: 310, w: 80, h: 16 },
-  { x: 2960, y: 600, w: 240, h: 300 }, // goal ground
+  { x: 600, y: 600, w: 400, h: 300 },
+  { x: 1100, y: 600, w: 400, h: 300 },
+  { x: 1620, y: 600, w: 380, h: 300 },
+  { x: 2100, y: 600, w: 400, h: 300 }, // checkpoint block
+  { x: 2620, y: 600, w: 380, h: 300 },
+  { x: 3080, y: 600, w: 120, h: 300 }, // goal block
 ];
 
 const BONES = [
-  [200, 590], [360, 590], [470, 590],
-  [700, 590], [820, 590], [900, 590],
-  [1060, 502], [1215, 430],
-  [1380, 590], [1480, 590],
-  [1650, 510], [1770, 440], [1900, 370],
-  [2060, 590], [2300, 590],
-  [2500, 510], [2640, 440], [2770, 370], [2900, 300],
-  [3060, 590],
+  [150, 590], [300, 590], [450, 590],
+  [700, 590], [850, 590], [950, 590],
+  [1150, 590], [1300, 590], [1450, 590],
+  [1700, 590], [1850, 590], [1950, 590],
+  [2150, 590], [2250, 590], [2400, 590],
+  [2700, 590], [2850, 590], [2950, 590],
+  [3100, 590], [3185, 590],
 ];
 
 // Wind rings refill your flaps and give a little lift.
 const RINGS = [
   [560, 540],
-  [2425, 470],
-  [2915, 415],
+  [1560, 540],
+  [2560, 540],
 ];
 
 const SQUIRRELS = [
-  { x: 760, y: 588, min: 640, max: 940 },
-  { x: 1110, y: 500, min: 1015, max: 1125 },
-  { x: 1450, y: 588, min: 1350, max: 1530 },
+  { x: 700, y: 588, min: 640, max: 960 },
+  { x: 1300, y: 588, min: 1140, max: 1460 },
+  { x: 2700, y: 588, min: 2660, max: 2960 },
 ];
 
 // Dogs from other houses, guarding their turf.
 const RIVALS = [
   { x: 360, y: 587, min: 180, max: 480 },
-  { x: 2300, y: 587, min: 2220, max: 2380 },
-  { x: 3050, y: 587, min: 2990, max: 3170 },
+  { x: 1750, y: 587, min: 1660, max: 1960 },
+  { x: 3120, y: 587, min: 3090, max: 3190 },
 ];
 
 // Hanging piñatas: jump/flap/dive into them.
 const PINATAS = [
   [240, 525],
-  [2100, 515],
+  [2150, 515],
 ];
 
 // Market awnings: land on them to bounce.
 const AWNINGS = [
   [560, 578],
-  [2430, 560],
+  [1560, 578],
+  [2560, 578],
 ];
 
 // One crow stays as a rarer aerial hazard.
 const CROWS = [
-  { x: 2690, y: 432, min: 2605, max: 2795 },
+  { x: 2900, y: 520, min: 2660, max: 2960 },
 ];
 
-const CHECKPOINT_X = 2150;
-const GOAL_X = 3120;
+const CHECKPOINT_X = 2300;
 const CHECKPOINT_Y = 582;
-const GOAL_Y = 580;
+
+// Concha pickups: restore hunger.
+const FOODS = [
+  [350, 590],
+  [900, 590],
+  [1450, 590],
+  [2250, 590],
+  [2900, 590],
+];
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -97,17 +97,35 @@ export default class Level1 extends Phaser.Scene {
   create() {
     this.bonesCount = 0;
     this.won = false;
+    this.gameOverFlag = false;
     this.guiOpen = true;
     this.hintTimer = 16;
     this.checkpointActive = false;
     this.spawnPoint = { x: 64 * S, y: 548 * S };
     this.startedAt = this.time.now;
 
+    // survival state
+    this.maxHealth = 3;
+    this.health = 3;
+    this.maxHunger = 100;
+    this.hunger = 100;
+    this.hungerTick = 0;
+    this.phase = 'day';
+    this.dayNumber = 1;
+    this.phaseTime = 35;
+    this.nightsSurvived = 0;
+    this.nightsToSurvive = 2;
+    this.waveSpawned = 0;
+    this.waveTotal = 0;
+    this.nextWave = 0;
+
     this.buildBackground();
     this.buildLevel();
+    this.createPorch();
     this.createInput();
     this.createDog();
     this.createPickups();
+    this.createFood();
     this.createCrows();
     this.createSquirrels();
     this.createRivals();
@@ -131,24 +149,31 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update(time, delta) {
-    if (!this.won) this.dog.update(delta);
+    const dt = delta / 1000;
 
-    this.crowGroup.children.iterate((crow) => {
-      if (crow) crow.update(delta / 1000);
-    });
+    if (!this.won && !this.gameOverFlag) {
+      this.dog.update(delta);
+      this.updateSurvival(dt);
 
-    this.squirrelGroup.children.iterate((squirrel) => {
-      if (squirrel) squirrel.update(delta / 1000);
-    });
+      this.crowGroup.children.iterate((crow) => {
+        if (crow) crow.update(dt);
+      });
 
-    this.rivalGroup.children.iterate((rival) => {
-      if (rival) rival.update(delta / 1000);
-    });
+      this.squirrelGroup.children.iterate((squirrel) => {
+        if (squirrel) squirrel.update(dt);
+      });
+
+      this.rivalGroup.children.iterate((rival) => {
+        if (rival) rival.update(dt);
+      });
+    }
 
     this.updateCamera(delta);
     this.updateHud(delta);
 
-    if (!this.won && this.dog.y > WORLD_H + 40 * S) this.hurt();
+    if (!this.won && !this.gameOverFlag && this.dog.y > WORLD_H + 40 * S) {
+      this.fall();
+    }
   }
 
   // --- world building ------------------------------------------------------
@@ -187,6 +212,13 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(-18)
       .setAlpha(0.95);
+
+    // Night falls over La Cuadra.
+    this.nightOverlay = this.add
+      .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x0b0614, 1)
+      .setScrollFactor(0)
+      .setDepth(60)
+      .setAlpha(0);
   }
 
   buildLevel() {
@@ -206,6 +238,52 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.platforms.refresh();
+  }
+
+  createPorch() {
+    this.add
+      .image(28 * S, 600 * S, 'porch')
+      .setOrigin(0.5, 1)
+      .setDepth(2);
+  }
+
+  createFood() {
+    this.foodGroup = this.physics.add.group({ allowGravity: false, immovable: true });
+
+    for (const [x, y] of FOODS) {
+      this.spawnFoodAt(x * S, y * S);
+    }
+
+    this.physics.add.overlap(this.dog, this.foodGroup, this.eatFood, null, this);
+  }
+
+  spawnFoodAt(x, y) {
+    const food = this.foodGroup.create(x, y, 'concha');
+    food.setDepth(7);
+    food.body.setSize(10 * S, 6 * S);
+
+    this.tweens.add({
+      targets: food,
+      alpha: 0.6,
+      duration: 800,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+
+    return food;
+  }
+
+  eatFood(dog, food) {
+    if (!food.active) return;
+
+    food.disableBody(true, true);
+    this.hunger = Math.min(this.maxHunger, this.hunger + 30);
+    this.updateSurvivalHud();
+
+    sfx.eat();
+    this.spawnPuff(food.x, food.y, 0.7);
+    this.floatText(food.x, food.y - 8 * S, t('float.food'), '#6ec6a8');
   }
 
   createInput() {
@@ -282,22 +360,6 @@ export default class Level1 extends Phaser.Scene {
       .setTint(0x6a5a76);
     this.checkpoint.body.setSize(12 * S, 18 * S);
     this.physics.add.overlap(this.dog, this.checkpoint, this.touchCheckpoint, null, this);
-
-    // goal balloon
-    this.goal = this.physics.add
-      .staticImage(GOAL_X * S, GOAL_Y * S, 'goalBalloon')
-      .setDepth(7);
-    this.goal.body.setSize(16 * S, 26 * S);
-    this.tweens.add({
-      targets: this.goal,
-      scaleX: 1.07,
-      scaleY: 1.07,
-      duration: 800,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.inOut',
-    });
-    this.physics.add.overlap(this.dog, this.goal, this.win, null, this);
   }
 
   createCrows() {
@@ -404,6 +466,41 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100)
       .setAlpha(0.85);
+
+    // hearts
+    this.hearts = [];
+    for (let i = 0; i < this.maxHealth; i++) {
+      this.hearts.push(
+        this.add
+          .image((8 + i * 14) * S, 23 * S, 'heart')
+          .setOrigin(0, 0)
+          .setScrollFactor(0)
+          .setDepth(100),
+      );
+    }
+
+    // hunger: concha icon + bar
+    this.hungerIcon = this.add
+      .image(60 * S, 34 * S, 'concha')
+      .setOrigin(0, 0)
+      .setScale(0.7)
+      .setScrollFactor(0)
+      .setDepth(100);
+
+    this.hungerBar = this.add.graphics().setScrollFactor(0).setDepth(100);
+
+    this.phaseText = this.add
+      .text(8 * S, 54 * S, '', {
+        fontFamily: 'monospace',
+        fontSize: 8 * S,
+        color: '#fff4e0',
+        stroke: '#2b1b3d',
+        strokeThickness: 2 * S,
+      })
+      .setScrollFactor(0)
+      .setDepth(100);
+
+    this.updateSurvivalHud();
 
     // On touch devices the buttons are the tutorial, and they occupy the
     // bottom of the screen where the keyboard hint would sit.
@@ -531,9 +628,181 @@ export default class Level1 extends Phaser.Scene {
     } else if (this.hint.alpha > 0) {
       this.hint.setAlpha(Math.max(0, this.hint.alpha - delta / 1200));
     }
+
+    this.updateSurvivalHud();
   }
 
-  // --- juice ---------------------------------------------------------------
+  updateSurvivalHud() {
+    if (!this.hearts) return;
+
+    this.hearts.forEach((heart, i) => {
+      heart.setAlpha(i < this.health ? 1 : 0.22);
+    });
+
+    this.hungerBar.clear();
+    this.hungerBar.fillStyle(0x2b1b3d, 0.65);
+    this.hungerBar.fillRect(8 * S, 35 * S, 48 * S, 6 * S);
+    this.hungerBar.lineStyle(1 * S, 0xfff4e0, 0.5);
+    this.hungerBar.strokeRect(8 * S, 35 * S, 48 * S, 6 * S);
+
+    const width = Math.max(0, (this.hunger / this.maxHunger) * 46 * S);
+    this.hungerBar.fillStyle(this.hunger < 25 ? 0xf26b5e : 0xf0a03c, 1);
+    this.hungerBar.fillRect(9 * S, 36 * S, width, 4 * S);
+
+    const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
+    const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
+    this.phaseText.setText(
+      `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`,
+    );
+    this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
+  }
+
+  // --- survival loop -------------------------------------------------------
+
+  updateSurvival(dt) {
+    if (this.won || this.gameOverFlag) return;
+
+    this.phaseTime -= dt;
+    this.hunger = Math.max(0, this.hunger - dt * 0.8);
+
+    if (this.hunger <= 0) {
+      this.hungerTick += dt;
+      if (this.hungerTick >= 8) {
+        this.hungerTick = 0;
+        this.starve();
+      }
+    } else {
+      this.hungerTick = 0;
+    }
+
+    if (this.won || this.gameOverFlag) return;
+
+    if (this.phase === 'day') {
+      if (this.phaseTime <= 0) this.startNight();
+    } else {
+      if (this.waveSpawned < this.waveTotal) {
+        this.nextWave -= dt;
+        if (this.nextWave <= 0) {
+          this.spawnWaveRival();
+          this.waveSpawned += 1;
+          this.nextWave = 6;
+        }
+      }
+
+      if (this.phaseTime <= 0) this.endNight();
+    }
+  }
+
+  startNight() {
+    this.phase = 'night';
+    this.phaseTime = 28 + this.nightsSurvived * 5;
+    this.waveTotal = 3 + this.nightsSurvived;
+    this.waveSpawned = 0;
+    this.nextWave = 2;
+
+    this.tweens.add({
+      targets: this.nightOverlay,
+      alpha: 0.38,
+      duration: 900,
+    });
+
+    this.showPhaseBanner(`${t('hud.night')} ${this.nightsSurvived + 1}`, '#ffd166');
+    sfx.night();
+  }
+
+  endNight() {
+    this.nightsSurvived += 1;
+
+    if (this.nightsSurvived >= this.nightsToSurvive) {
+      this.win();
+      return;
+    }
+
+    this.startDay();
+  }
+
+  startDay() {
+    this.phase = 'day';
+    this.dayNumber += 1;
+    this.phaseTime = 30;
+    this.waveSpawned = 0;
+    this.waveTotal = 0;
+
+    this.health = Math.min(this.maxHealth, this.health + 1);
+    this.hunger = Math.min(this.maxHunger, this.hunger + 10);
+
+    this.tweens.add({
+      targets: this.nightOverlay,
+      alpha: 0,
+      duration: 900,
+    });
+
+    this.showPhaseBanner(`${t('hud.day')} ${this.dayNumber}`, '#6ec6a8');
+    sfx.day();
+
+    this.spawnFoodAt(70 * S, 590 * S);
+    this.updateSurvivalHud();
+  }
+
+  spawnWaveRival() {
+    const designX = this.dog.x / S;
+
+    let platform = PLATFORMS.find(
+      (p) => designX >= p.x && designX <= p.x + p.w,
+    );
+
+    if (!platform) {
+      platform = PLATFORMS.reduce((best, p) => {
+        const bestDist = Math.abs(best.x + best.w / 2 - designX);
+        const dist = Math.abs(p.x + p.w / 2 - designX);
+        return dist < bestDist ? p : best;
+      }, PLATFORMS[0]);
+    }
+
+    const mid = platform.x + platform.w / 2;
+    let sx = designX < mid ? platform.x + platform.w - 24 : platform.x + 24;
+
+    if (Math.abs(sx - designX) < 70) {
+      sx = designX < mid ? platform.x + 24 : platform.x + platform.w - 24;
+    }
+
+    // The porch (x < 160 on the first block) is a safe zone.
+    const minX = (platform.x === 0 ? 160 : platform.x + 12) * S;
+    const maxX = (platform.x + platform.w - 12) * S;
+
+    const rival = new RivalDog(this, sx * S, 587 * S, minX, maxX);
+    this.rivalGroup.add(rival);
+
+    this.spawnPuff(sx * S, 580 * S, 1);
+    this.floatText(sx * S, 558 * S, t('bark'), '#ffd166');
+    sfx.bark();
+  }
+
+  showPhaseBanner(text, color) {
+    const banner = this.add
+      .text(128 * S, 72 * S, text, {
+        fontFamily: 'monospace',
+        fontSize: 22 * S,
+        color,
+        stroke: '#2b1b3d',
+        strokeThickness: 4 * S,
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(100)
+      .setAlpha(0);
+
+    this.tweens.add({
+      targets: banner,
+      alpha: 1,
+      duration: 250,
+      hold: 700,
+      yoyo: true,
+      onComplete: () => banner.destroy(),
+    });
+  }
+
+  // --- damage & end states -------------------------------------------------
 
   spawnPuff(x, y, scale = 1) {
     const puff = this.add.image(x, y, 'puff').setDepth(20).setScale(scale).setAlpha(0.8);
@@ -655,7 +924,7 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    this.hurt();
+    this.hurt(crow);
   }
 
   hitSquirrel(dog, squirrel) {
@@ -682,7 +951,7 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    this.hurt();
+    this.hurt(squirrel);
   }
 
   squirrelSteals(squirrel, bone) {
@@ -777,7 +1046,7 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    this.hurt();
+    this.hurt(rival);
   }
 
   hitPinata(dog, pinata) {
@@ -814,6 +1083,7 @@ export default class Level1 extends Phaser.Scene {
       }
       this.spawnPuff(pinata.x, pinata.y, 1.5);
       sfx.burst();
+      this.spawnFoodAt(pinata.x, pinata.y + 20 * S);
       pinata.destroy();
     }
   }
@@ -857,22 +1127,45 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(dog.x, dog.y + 8 * S, 1.2);
   }
 
-  hurt() {
-    if (this.won || this.dog.dead || this.dog.invuln > 0) return;
+  hurt(source = null) {
+    if (this.won || this.gameOverFlag || this.dog.dead) return;
+    if (this.dog.invuln > 0) return;
+
+    this.health -= 1;
+    this.updateSurvivalHud();
+
+    if (this.health <= 0) {
+      this.gameOver();
+      return;
+    }
 
     sfx.hurt();
-    this.dog.dead = true;
-    this.dog.setVelocity(0, 0);
+    this.dog.invuln = 1.2;
     this.dog.setTint(0xff6b6b);
+    this.time.delayedCall(180, () => this.dog.clearTint());
 
-    this.cameras.main.shake(160, 0.007);
+    const dir = source
+      ? Math.sign(this.dog.x - source.x) || 1
+      : -this.dog.facing;
+
+    this.dog.body.velocity.x = dir * 170 * S;
+    this.dog.body.velocity.y = -220 * S;
+
+    this.cameras.main.shake(150, 0.007);
     this.cameras.main.flash(100, 242, 107, 94);
-
-    this.time.delayedCall(300, () => this.respawn());
   }
 
-  respawn() {
-    this.dog.clearTint();
+  fall() {
+    if (this.won || this.gameOverFlag) return;
+
+    this.health -= 1;
+    this.updateSurvivalHud();
+
+    if (this.health <= 0) {
+      this.gameOver();
+      return;
+    }
+
     this.dog.body.reset(this.spawnPoint.x, this.spawnPoint.y);
     this.dog.setVelocity(0, 0);
     this.dog.setRotation(0);
@@ -885,23 +1178,109 @@ export default class Level1 extends Phaser.Scene {
     this.cameras.main.flash(120, 255, 244, 224);
   }
 
+  starve() {
+    if (this.won || this.gameOverFlag) return;
+
+    this.health -= 1;
+    this.updateSurvivalHud();
+    this.cameras.main.flash(100, 242, 107, 94);
+
+    if (this.health <= 0) this.gameOver();
+  }
+
+  hideEndHud() {
+    this.pips.setVisible(false);
+    this.boneText.setVisible(false);
+    this.hint.setVisible(false);
+    this.hearts.forEach((heart) => heart.setVisible(false));
+    this.hungerIcon.setVisible(false);
+    this.hungerBar.setVisible(false);
+    this.phaseText.setVisible(false);
+    this.gui?.hide();
+    this.touch?.show(false);
+  }
+
+  gameOver() {
+    if (this.gameOverFlag || this.won) return;
+
+    this.gameOverFlag = true;
+    this.dog.dead = true;
+    this.dog.setVelocity(0, 0);
+    this.dog.setTexture('dogSit');
+    this.dog.setRotation(0);
+    this.dog.clearTint();
+    this.dog.tongue.setVisible(false);
+
+    this.hideEndHud();
+    sfx.gameover();
+    this.cameras.main.shake(200, 0.008);
+
+    this.time.delayedCall(250, () => this.showGameOverOverlay());
+  }
+
+  showGameOverOverlay() {
+    this.add
+      .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x120a1c, 0.82)
+      .setScrollFactor(0)
+      .setDepth(200);
+
+    this.add
+      .text(128 * S, 40 * S, t('gameover.title'), {
+        fontFamily: 'monospace',
+        fontSize: 18 * S,
+        color: '#f26b5e',
+        stroke: '#2b1b3d',
+        strokeThickness: 4 * S,
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    this.add
+      .text(
+        128 * S,
+        64 * S,
+        t('gameover.stats', {
+          bones: this.bonesCount,
+          nights: this.nightsSurvived,
+        }),
+        {
+          fontFamily: 'monospace',
+          fontSize: 9 * S,
+          color: '#fff4e0',
+          stroke: '#2b1b3d',
+          strokeThickness: 2 * S,
+        },
+      )
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    this.add
+      .text(128 * S, 112 * S, t('gameover.again'), {
+        fontFamily: 'monospace',
+        fontSize: 8 * S,
+        color: '#6ec6a8',
+        stroke: '#2b1b3d',
+        strokeThickness: 2 * S,
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(201);
+  }
+
   win() {
     if (this.won) return;
     this.won = true;
 
     this.dog.dead = true;
     this.dog.setVelocity(0, 0);
-    this.dog.setTexture('dogGlide');
+    this.dog.setTexture('dogSit');
     this.dog.setRotation(0);
+    this.dog.tongue.setVisible(false);
 
-    // clear the HUD and tuning bar for the end screen
-    this.pips.setVisible(false);
-    this.boneText.setVisible(false);
-    this.hint.setVisible(false);
-    this.gui?.hide();
-    this.goal.setVisible(false);
+    this.hideEndHud();
     this.sun.setVisible(false);
-    this.touch?.show(false);
 
     sfx.win();
     this.cameras.main.flash(220, 255, 209, 102);
@@ -940,7 +1319,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
-      .text(128 * S, 64 * S, t('win.stats', { bones: this.bonesCount, time: elapsed }), {
+      .text(128 * S, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
         fontFamily: 'monospace',
         fontSize: 9 * S,
         color: '#fff4e0',

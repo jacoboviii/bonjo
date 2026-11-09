@@ -67,6 +67,18 @@ export const sfx = {
     [660, 880, 1100].forEach((f, i) => tone(f, 0.12, 'triangle', 0.04, 0, i * 0.06));
   },
   boing: () => tone(240, 0.18, 'sine', 0.05, 520),
+  eat: () => {
+    tone(320, 0.05, 'square', 0.04, 200);
+    tone(240, 0.06, 'triangle', 0.03, 150, 0.06);
+  },
+  night: () => {
+    tone(196, 0.5, 'sine', 0.04, 98);
+    tone(98, 0.6, 'triangle', 0.03, 70, 0.15);
+  },
+  day: () => {
+    [523, 659, 784].forEach((f, i) => tone(f, 0.15, 'triangle', 0.04, 0, i * 0.1));
+  },
+  gameover: () => tone(220, 0.5, 'sawtooth', 0.05, 70),
   ring: () => tone(520, 0.16, 'sine', 0.05, 1040),
   hurt: () => tone(180, 0.28, 'sawtooth', 0.05, 60),
   stomp: () => tone(150, 0.12, 'square', 0.05, 70),
