@@ -4,11 +4,20 @@ import Title from './scenes/Title.js';
 import Level1 from './scenes/Level1.js';
 import { GAME_W, GAME_H } from './scale.js';
 
-// The game renders at 512x288 (SCALE=2 of the 256x144 design view) and is
-// scaled up to fit the window. Everything is drawn at 2x density, so text and
-// sprites stay the same physical size but have twice the detail.
-export const GAME_WIDTH = GAME_W;
+// The height is fixed at 288 (2x the 144 design height). The width follows the
+// device's landscape aspect ratio, clamped to 512..960, so a 19.5:9 phone gets
+// a wider internal canvas that still fills the screen with no side bars.
+export const GAME_WIDTH = calculateWidth();
 export const GAME_HEIGHT = GAME_H;
+
+function calculateWidth() {
+  const vw = window.innerWidth || GAME_W;
+  const vh = window.innerHeight || GAME_H;
+  const long = Math.max(vw, vh);
+  const short = Math.max(1, Math.min(vw, vh));
+  const aspect = long / short;
+  return Math.max(GAME_W, Math.min(960, Math.round(GAME_H * aspect)));
+}
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -86,3 +95,4 @@ const portraitGuard = setInterval(() => {
   }
 }, 150);
 setTimeout(() => clearInterval(portraitGuard), 6000);
+

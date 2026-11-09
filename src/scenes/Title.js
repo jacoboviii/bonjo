@@ -12,23 +12,26 @@ export default class Title extends Phaser.Scene {
   create() {
     this.input.topOnly = true;
 
-    this.add.image(128 * S, 72 * S, 'sky');
-    this.add.image(205 * S, 52 * S, 'sun').setScale(1.4).setAlpha(0.95);
+    const W = this.scale.width;
+    const H = this.scale.height;
+
+    this.add.image(W / 2, H / 2, 'sky').setDisplaySize(W, H);
+    this.add.image(W - 102, 52 * S, 'sun').setScale(1.4).setAlpha(0.95);
 
     this.far = this.add
-      .tileSprite(0, 8 * S, 320 * S, 64 * S, 'cloudsFar')
+      .tileSprite(0, 8 * S, W, 64 * S, 'cloudsFar')
       .setOrigin(0, 0)
       .setAlpha(0.5);
     this.near = this.add
-      .tileSprite(0, 38 * S, 320 * S, 64 * S, 'cloudsNear')
+      .tileSprite(0, 38 * S, W, 64 * S, 'cloudsNear')
       .setOrigin(0, 0)
       .setAlpha(0.75);
     this.add
-      .tileSprite(0, 30 * S, 320 * S, 100 * S, 'town')
+      .tileSprite(0, 30 * S, W, 100 * S, 'town')
       .setOrigin(0, 0);
 
     // a very good dog, sitting and panting
-    this.dogGroup = this.add.container(128 * S, 92 * S).setDepth(3);
+    this.dogGroup = this.add.container(W / 2, 92 * S).setDepth(3);
     const dog = this.add.sprite(0, 0, 'dogSit').setScale(2);
     const tongue = this.add
       .image(14 * 2, 2 * 2, 'tongue')
@@ -62,7 +65,7 @@ export default class Title extends Phaser.Scene {
     });
 
     this.add
-      .text(128 * S, 28 * S, 'BONJO', {
+      .text(W / 2, 28 * S, 'BONJO', {
         fontFamily: 'monospace',
         fontSize: 64,
         color: '#ffd166',
@@ -72,7 +75,7 @@ export default class Title extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(128 * S, 48 * S, t('title.subtitle'), {
+      .text(W / 2, 48 * S, t('title.subtitle'), {
         fontFamily: 'monospace',
         fontSize: 16,
         color: '#fff4e0',
@@ -82,7 +85,7 @@ export default class Title extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(128 * S, 64 * S, t('title.place'), {
+      .text(W / 2, 64 * S, t('title.place'), {
         fontFamily: 'monospace',
         fontSize: 10,
         color: '#6ec6a8',
@@ -96,7 +99,7 @@ export default class Title extends Phaser.Scene {
 
     const prompt = this.add
       .text(
-        128 * S,
+        W / 2,
         114 * S,
         t(isTouch ? 'title.startTouch' : 'title.startKeyboard'),
         {
@@ -118,7 +121,7 @@ export default class Title extends Phaser.Scene {
     });
 
     this.add
-      .text(128 * S, 133 * S, t('title.controls'), {
+      .text(W / 2, 133 * S, t('title.controls'), {
         fontFamily: 'monospace',
         fontSize: 14,
         color: '#fff4e0',
@@ -164,8 +167,8 @@ export default class Title extends Phaser.Scene {
       return button;
     };
 
-    makeLangButton(430, 'en');
-    makeLangButton(468, 'es');
+    makeLangButton(W - 82, 'en');
+    makeLangButton(W - 44, 'es');
 
     this.input.keyboard.on('keydown-L', () => {
       toggleLang();
@@ -181,7 +184,7 @@ export default class Title extends Phaser.Scene {
     };
 
     const startZone = this.add
-      .zone(0, 0, 512, 288)
+      .zone(0, 0, W, H)
       .setOrigin(0)
       .setDepth(-10)
       .setInteractive();

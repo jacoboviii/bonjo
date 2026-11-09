@@ -4,7 +4,7 @@
 **Genre:** Turf-defense survival platformer
 **Platform:** Browser (desktop first), mobile touch supported
 **Engine:** Phaser 3.90 + Vite + JavaScript, Arcade Physics
-**Render:** 512×288 (2× a 256×144 design view)
+**Render:** 288px tall (2× the 144-unit design height); internal width follows the device landscape aspect (512px at 16:9, up to 960px on wide phones) so the canvas fills the screen
 **Pitch:** Bonjo is the only chow on the block. By day he scavenges the barrio;
 by night he holds the street against waves of rival dogs. Survive two nights,
 keep the block, and don't run out of conchas.
@@ -192,7 +192,9 @@ There is no goal balloon: the win condition is surviving Night 2.
 
 ## 7. Level 1 — La Cuadra (urban core)
 
-World 3200×900 design px. Camera shows 256×144 design units (512×288 render).
+World 3200×900 design px. The camera shows 144 design units vertically (288px
+render); visible width follows the internal canvas width (256 units at 16:9,
+wider on phones).
 Ground line y=600. The background is a tiled town: mountains, fields/agave,
 low houses with lit windows, a church tower and cross, papel picado.
 

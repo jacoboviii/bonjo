@@ -180,35 +180,41 @@ export default class Level1 extends Phaser.Scene {
   // --- world building ------------------------------------------------------
 
   buildBackground() {
-    this.add.image(128 * S, 72 * S, 'sky').setScrollFactor(0).setDepth(-30);
+    const W = this.scale.width;
+
+    this.add
+      .image(W / 2, 72 * S, 'sky')
+      .setDisplaySize(W, 144 * S)
+      .setScrollFactor(0)
+      .setDepth(-30);
     this.sun = this.add
-      .image(205 * S, 56 * S, 'sun')
+      .image(W - 102, 56 * S, 'sun')
       .setScrollFactor(0.04)
       .setDepth(-29)
       .setAlpha(0.95);
 
     this.cloudsFar = this.add
-      .tileSprite(0, 8 * S, 320 * S, 64 * S, 'cloudsFar')
+      .tileSprite(0, 8 * S, W, 64 * S, 'cloudsFar')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-25)
       .setAlpha(0.5);
 
     this.cloudsNear = this.add
-      .tileSprite(0, 38 * S, 320 * S, 64 * S, 'cloudsNear')
+      .tileSprite(0, 38 * S, W, 64 * S, 'cloudsNear')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-24)
       .setAlpha(0.75);
 
     this.town = this.add
-      .tileSprite(0, 30 * S, 320 * S, 100 * S, 'town')
+      .tileSprite(0, 30 * S, W, 100 * S, 'town')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-20);
 
     this.banner = this.add
-      .tileSprite(0, 32 * S, 320 * S, 14 * S, 'banner')
+      .tileSprite(0, 32 * S, W, 14 * S, 'banner')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-18)
@@ -216,7 +222,7 @@ export default class Level1 extends Phaser.Scene {
 
     // Night falls over La Cuadra.
     this.nightOverlay = this.add
-      .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x0b0614, 1)
+      .rectangle(W / 2, 72 * S, W, 144 * S, 0x0b0614, 1)
       .setScrollFactor(0)
       .setDepth(60)
       .setAlpha(0);
@@ -449,10 +455,12 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createHud() {
+    const W = this.scale.width;
+
     this.pips = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.boneText = this.add
-      .text(128 * S, 5 * S, `${t('hud.bones')} 0`, {
+      .text(W / 2, 5 * S, `${t('hud.bones')} 0`, {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -464,7 +472,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(100);
 
     this.hint = this.add
-      .text(128 * S, 138 * S, t('level.hint'), {
+      .text(W / 2, 138 * S, t('level.hint'), {
         fontFamily: 'monospace',
         fontSize: 7 * S,
         color: '#fff4e0',
@@ -572,7 +580,7 @@ export default class Level1 extends Phaser.Scene {
 
   showIntro() {
     const introLabel = this.add
-      .text(128 * S, 50 * S, t('level.intro'), {
+      .text(this.scale.width / 2, 50 * S, t('level.intro'), {
         fontFamily: 'monospace',
         fontSize: 12 * S,
         color: '#fff4e0',
@@ -790,7 +798,7 @@ export default class Level1 extends Phaser.Scene {
 
   showPhaseBanner(text, color) {
     const banner = this.add
-      .text(128 * S, 72 * S, text, {
+      .text(this.scale.width / 2, 72 * S, text, {
         fontFamily: 'monospace',
         fontSize: 22 * S,
         color,
@@ -1253,15 +1261,17 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showGameOverOverlay() {
+    const W = this.scale.width;
+
     const overlay = this.add
-      .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x120a1c, 0.82)
+      .rectangle(W / 2, 72 * S, W, 144 * S, 0x120a1c, 0.82)
       .setScrollFactor(0)
       .setDepth(200);
 
     this.enableReplay(overlay);
 
     this.add
-      .text(128 * S, 40 * S, t('gameover.title'), {
+      .text(W / 2, 40 * S, t('gameover.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
         color: '#f26b5e',
@@ -1274,7 +1284,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.add
       .text(
-        128 * S,
+        W / 2,
         64 * S,
         t('gameover.stats', {
           bones: this.bonesCount,
@@ -1293,13 +1303,13 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
-      .rectangle(128 * S, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
+      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
       .setStrokeStyle(1 * S, 0x6ec6a8, 1)
       .setScrollFactor(0)
       .setDepth(201);
 
     this.add
-      .text(128 * S, 112 * S, t('gameover.again'), {
+      .text(W / 2, 112 * S, t('gameover.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#6ec6a8',
@@ -1343,16 +1353,17 @@ export default class Level1 extends Phaser.Scene {
 
   showWinOverlay() {
     const elapsed = ((this.time.now - this.startedAt) / 1000).toFixed(1);
+    const W = this.scale.width;
 
     const overlay = this.add
-      .rectangle(128 * S, 72 * S, 256 * S, 144 * S, 0x120a1c, 0.82)
+      .rectangle(W / 2, 72 * S, W, 144 * S, 0x120a1c, 0.82)
       .setScrollFactor(0)
       .setDepth(200);
 
     this.enableReplay(overlay);
 
     this.add
-      .text(128 * S, 40 * S, t('win.title'), {
+      .text(W / 2, 40 * S, t('win.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
         color: '#ffd166',
@@ -1364,7 +1375,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
-      .text(128 * S, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
+      .text(W / 2, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
         fontFamily: 'monospace',
         fontSize: 9 * S,
         color: '#fff4e0',
@@ -1376,13 +1387,13 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
-      .rectangle(128 * S, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
+      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
       .setStrokeStyle(1 * S, 0x6ec6a8, 1)
       .setScrollFactor(0)
       .setDepth(201);
 
     this.add
-      .text(128 * S, 112 * S, t('win.again'), {
+      .text(W / 2, 112 * S, t('win.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#6ec6a8',

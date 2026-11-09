@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------------------
 // On-screen controls for phones/tablets. Buttons live in screen space at the
-// 512x288 render resolution, so they scale with the game.
+// game's render resolution (288px tall, width varies with the landscape aspect),
+// so they scale with the game.
 //
 // Left/right are held and support dragging from one to the other without
 // lifting your finger. Jump is a tap for flap and a hold for glide. Dive is
@@ -24,10 +25,11 @@ export default class TouchControls {
     // mouse + up to 3 more fingers
     scene.input.addPointer(3);
 
+    const W = scene.scale.width;
     this.addButton('left', 56, 240, 'btn-left', 0.9);
     this.addButton('right', 128, 240, 'btn-right', 0.9);
-    this.addButton('jump', 452, 228, 'btn-jump', 1.05);
-    this.addButton('dive', 384, 254, 'btn-dive', 0.8);
+    this.addButton('jump', W - 60, 228, 'btn-jump', 1.05);
+    this.addButton('dive', W - 128, 254, 'btn-dive', 0.8);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
     scene.input.on('pointerup', (pointer) => this.onUp(pointer));
@@ -88,7 +90,7 @@ export default class TouchControls {
     if (name && !this.state[name]) this.press(name);
   }
 
-  // pointer coordinates are already in 512x288 game space
+  // pointer coordinates are already in game space (see scale.js)
   directionAt(x, y) {
     for (const name of ['left', 'right']) {
       const img = this.buttons[name];

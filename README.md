@@ -184,8 +184,8 @@ bonjo/
 ├── vite.config.js
 ├── package.json
 ├── src/
-│   ├── main.js             Phaser config (512×288, pixel art, Arcade physics)
-│   ├── scale.js            SCALE=2 (512×288 render of a 256×144 design view)
+│   ├── main.js             Phaser config (288px tall, width follows aspect)
+│   ├── scale.js            SCALE=2 (288px render of a 256×144 design view)
 │   ├── tuning.js           EVERY feel number, commented  ← start here
 │   ├── art.js              all pixel textures, town, characters, props
 │   ├── sfx.js              tiny WebAudio sound effects
@@ -204,9 +204,11 @@ bonjo/
 └── dist/                   production build (after `npm run build`)
 ```
 
-The game renders at **512×288**, which is 2× the 256×144 design view (16px
-tiles, 16 tiles wide at design scale) and scales up. That's why it looks like a
-tiny TV. `pixelArt: true` keeps it crisp.
+The game renders at a fixed **288px height** (2× the 256×144 design view), with a
+width chosen at boot from the device's landscape aspect ratio: **512px at 16:9**,
+up to **960px on tall phones** (e.g. 623×288 on a 19.5:9 phone). Scenes center and
+anchor UI from `this.scale.width`, so the canvas fills the screen instead of
+letterboxing with side bars. `pixelArt: true` keeps it crisp.
 
 ---
 
@@ -284,7 +286,7 @@ more blocks.
 - **No sound** — browsers block audio until the first keypress or click. That's
   expected; the first flap enables it.
 - **Game looks blurry** — make sure the browser isn't zoomed; the canvas is
-  intentionally 512×288 and scaled.
+  deliberately low-resolution pixel art and scales up.
 - **Remote machine** — use the SSH port forward above; `localhost:5173` on the
   server itself won't show you anything.
 
