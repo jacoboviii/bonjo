@@ -114,8 +114,8 @@ function detectLang() {
     // localStorage can throw in private mode / file URLs
   }
 
-  const nav = (navigator.language || 'en').toLowerCase();
-  return nav.startsWith('es') ? 'es' : 'en';
+  // La casa habla español. English is available from the EN/ES toggle.
+  return 'es';
 }
 
 export function getLang() {

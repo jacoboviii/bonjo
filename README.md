@@ -14,6 +14,7 @@ tuning the feel and testing the interaction toys.
 ![Bonjo contact sheet](screenshots/contact-sheet.png)
 
 Individual 1280×720 screenshots are in [`screenshots/`](screenshots/).
+The contact sheet shows the English UI; the game itself now starts in Spanish.
 
 ---
 
@@ -83,6 +84,7 @@ On a touch device the on-screen controls appear automatically:
   "play anyway" escape.
 - Landscape orientation is strongly recommended.
 - **EN / ES** language buttons are in the top-right of the title screen.
+- The game starts in **Spanish** by default; choose **EN** for English.
 
 On a desktop you can press **V** to show the touch buttons for testing.
 
@@ -147,7 +149,7 @@ there to make them permanent.
 - Death → quick respawn; camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
-- **English / Spanish menus** — toggle EN / ES on the title, or press L; the choice is remembered
+- **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
 - Title and win screens with bones + time
 
 **Not in this build:** menus, pause, save files, gamepad, bosses, more than one
