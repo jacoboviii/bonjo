@@ -108,7 +108,7 @@ export default class Level1 extends Phaser.Scene {
     this.maxHealth = 3;
     this.health = 3;
     this.maxHunger = 100;
-    this.hunger = 100;
+    this.hunger = 80;
     this.hungerTick = 0;
     this.phase = 'day';
     this.dayNumber = 1;
@@ -118,6 +118,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveSpawned = 0;
     this.waveTotal = 0;
     this.nextWave = 0;
+    this.runStats = { damage: 0, falls: 0, food: 0, waves: 0, starved: 0 };
 
     this.buildBackground();
     this.buildLevel();
@@ -278,6 +279,7 @@ export default class Level1 extends Phaser.Scene {
     if (!food.active) return;
 
     food.disableBody(true, true);
+    this.runStats.food += 1;
     this.hunger = Math.min(this.maxHunger, this.hunger + 30);
     this.updateSurvivalHud();
 
@@ -296,6 +298,13 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.input.keyboard.on('keydown-R', () => this.scene.restart());
+
+    // Dev helper: skip to the next phase without waiting.
+    if (import.meta.env.DEV) {
+      this.input.keyboard.on('keydown-N', () => {
+        if (!this.won && !this.gameOverFlag) this.phaseTime = 0;
+      });
+    }
     this.input.keyboard.on('keydown-V', () => this.touch?.toggle());
   }
 
@@ -772,6 +781,7 @@ export default class Level1 extends Phaser.Scene {
 
     const rival = new RivalDog(this, sx * S, 587 * S, minX, maxX);
     this.rivalGroup.add(rival);
+    this.runStats.waves += 1;
 
     this.spawnPuff(sx * S, 580 * S, 1);
     this.floatText(sx * S, 558 * S, t('bark'), '#ffd166');
@@ -1132,6 +1142,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.dog.invuln > 0) return;
 
     this.health -= 1;
+    this.runStats.damage += 1;
     this.updateSurvivalHud();
 
     if (this.health <= 0) {
@@ -1159,6 +1170,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.won || this.gameOverFlag) return;
 
     this.health -= 1;
+    this.runStats.falls += 1;
     this.updateSurvivalHud();
 
     if (this.health <= 0) {
@@ -1182,6 +1194,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.won || this.gameOverFlag) return;
 
     this.health -= 1;
+    this.runStats.starved += 1;
     this.updateSurvivalHud();
     this.cameras.main.flash(100, 242, 107, 94);
 
@@ -1200,6 +1213,26 @@ export default class Level1 extends Phaser.Scene {
     this.touch?.show(false);
   }
 
+  logRun(outcome) {
+    const run = {
+      outcome,
+      nights: this.nightsSurvived,
+      bones: this.bonesCount,
+      health: this.health,
+      hunger: Math.round(this.hunger),
+      seconds: +((this.time.now - this.startedAt) / 1000).toFixed(1),
+      ...this.runStats,
+    };
+
+    this.lastRun = run;
+    try {
+      localStorage.setItem('bonjo.lastRun', JSON.stringify(run));
+    } catch {
+      // ignore storage failures
+    }
+    console.info('BONJO RUN', JSON.stringify(run));
+  }
+
   gameOver() {
     if (this.gameOverFlag || this.won) return;
 
@@ -1212,6 +1245,7 @@ export default class Level1 extends Phaser.Scene {
     this.dog.tongue.setVisible(false);
 
     this.hideEndHud();
+    this.logRun('gameover');
     sfx.gameover();
     this.cameras.main.shake(200, 0.008);
 
@@ -1281,6 +1315,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.hideEndHud();
     this.sun.setVisible(false);
+    this.logRun('win');
 
     sfx.win();
     this.cameras.main.flash(220, 255, 209, 102);

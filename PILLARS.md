@@ -122,3 +122,30 @@ If any answer is "none", it waits.
 - What did they try that the game didn't allow?
 
 Fix only the top three. Then play the first two nights again.
+
+---
+
+## Two-night playtest (record 3 runs)
+
+Play a full run each time. At the end, open the browser console and copy the
+`BONJO RUN {...}` line (also stored as `localStorage["bonjo.lastRun"]`):
+
+```
+outcome · seconds · nights · bones · health · hunger
+damage · falls · starved · food · waves
+```
+
+For each run, also note:
+
+| Question | Run 1 | Run 2 | Run 3 |
+| --- | --- | --- | --- |
+| Did hunger ever force a choice? | | | |
+| Night 1: fair / too easy / too hard | | | |
+| Night 2: fair / too easy / too hard | | | |
+| Did you use the porch? Why? | | | |
+| Did the night start read clearly? | | | |
+| Where did you lose hearts? | | | |
+| Would you play a third night? | | | |
+
+Dev helper on the local server: press **N** to skip to the next phase while
+testing; it is stripped from the production build.

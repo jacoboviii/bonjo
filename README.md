@@ -132,6 +132,14 @@ seconds, keep or revert.
 [`src/tuning.js`](src/tuning.js), heavily commented — copy your favourite values
 there to make them permanent.
 
+### Dev playtest helpers (local server only)
+
+- Press **N** to skip to the next day/night phase.
+- At the end of a run, copy the `BONJO RUN {...}` line from the browser console
+  (or read `localStorage["bonjo.lastRun"]`): time, hearts, hunger, conchas,
+  damage taken, falls, waves, nights and bones.
+- These helpers are stripped from the production build.
+
 ### Starter experiments
 
 - `gravity 1200` → moon dog, much more hang time
