@@ -191,6 +191,19 @@ export default class Title extends Phaser.Scene {
     startZone.once('pointerdown', start);
 
     this.input.keyboard.once('keydown-SPACE', start);
+
+    this.layoutWidth = W;
+    this.scale.on('resize', this.onResize, this);
+    this.events.once('shutdown', () => {
+      this.scale.off('resize', this.onResize, this);
+    });
+  }
+
+  onResize(gameSize) {
+    const width = gameSize?.width ?? this.scale.width;
+    if (Math.abs(width - this.layoutWidth) <= 1) return;
+    // Title has no run state; rebuild it against the new viewport width.
+    this.scene.restart();
   }
 
   update(time, delta) {

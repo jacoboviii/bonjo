@@ -145,8 +145,48 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off('resize', this.onResize, this);
       this.gui?.destroy();
     });
+
+    this.layoutWidth = this.scale.width;
+    this.scale.on('resize', this.onResize, this);
+  }
+
+  onResize(gameSize) {
+    const width = gameSize?.width ?? this.scale.width;
+    if (Math.abs(width - this.layoutWidth) <= 1) return;
+    this.layoutWidth = width;
+    this.applyLayout(width);
+  }
+
+  // Re-anchor width-dependent UI/backgrounds without restarting the run.
+  applyLayout(W) {
+    if (this.sky) this.sky.setPosition(W / 2, 72 * S).setDisplaySize(W, 144 * S);
+    if (this.sun) this.sun.x = W - 102;
+    this.cloudsFar?.setSize(W, 64 * S);
+    this.cloudsNear?.setSize(W, 64 * S);
+    this.town?.setSize(W, 100 * S);
+    this.banner?.setSize(W, 14 * S);
+    this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
+
+    if (this.boneText) this.boneText.x = W / 2;
+    if (this.hint) this.hint.x = W / 2;
+    if (this.introLabel?.active) this.introLabel.x = W / 2;
+    if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
+
+    this.touch?.relayout(W);
+    this.layoutEndScreen(W);
+  }
+
+  layoutEndScreen(W) {
+    const e = this.endLayout;
+    if (!e?.overlay?.active) return;
+    e.overlay.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
+    e.title.x = W / 2;
+    e.stats.x = W / 2;
+    e.box.x = W / 2;
+    e.prompt.x = W / 2;
   }
 
   update(time, delta) {
@@ -182,7 +222,7 @@ export default class Level1 extends Phaser.Scene {
   buildBackground() {
     const W = this.scale.width;
 
-    this.add
+    this.sky = this.add
       .image(W / 2, 72 * S, 'sky')
       .setDisplaySize(W, 144 * S)
       .setScrollFactor(0)
@@ -579,7 +619,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showIntro() {
-    const introLabel = this.add
+    this.introLabel = this.add
       .text(this.scale.width / 2, 50 * S, t('level.intro'), {
         fontFamily: 'monospace',
         fontSize: 12 * S,
@@ -593,12 +633,12 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0);
 
     this.tweens.add({
-      targets: introLabel,
+      targets: this.introLabel,
       alpha: 1,
       duration: 350,
       hold: 900,
       yoyo: true,
-      onComplete: () => introLabel.destroy(),
+      onComplete: () => this.introLabel?.destroy(),
     });
   }
 
@@ -797,7 +837,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showPhaseBanner(text, color) {
-    const banner = this.add
+    this.phaseBanner = this.add
       .text(this.scale.width / 2, 72 * S, text, {
         fontFamily: 'monospace',
         fontSize: 22 * S,
@@ -811,12 +851,12 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0);
 
     this.tweens.add({
-      targets: banner,
+      targets: this.phaseBanner,
       alpha: 1,
       duration: 250,
       hold: 700,
       yoyo: true,
-      onComplete: () => banner.destroy(),
+      onComplete: () => this.phaseBanner?.destroy(),
     });
   }
 
@@ -1270,7 +1310,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.enableReplay(overlay);
 
-    this.add
+    const title = this.add
       .text(W / 2, 40 * S, t('gameover.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
@@ -1282,7 +1322,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(201);
 
-    this.add
+    const stats = this.add
       .text(
         W / 2,
         64 * S,
@@ -1302,13 +1342,13 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(201);
 
-    this.add
+    const box = this.add
       .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
       .setStrokeStyle(1 * S, 0x6ec6a8, 1)
       .setScrollFactor(0)
       .setDepth(201);
 
-    this.add
+    const prompt = this.add
       .text(W / 2, 112 * S, t('gameover.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
@@ -1319,6 +1359,8 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
+
+    this.endLayout = { overlay, title, stats, box, prompt };
   }
 
   win() {
@@ -1362,7 +1404,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.enableReplay(overlay);
 
-    this.add
+    const title = this.add
       .text(W / 2, 40 * S, t('win.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
@@ -1374,7 +1416,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(201);
 
-    this.add
+    const stats = this.add
       .text(W / 2, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
         fontFamily: 'monospace',
         fontSize: 9 * S,
@@ -1386,13 +1428,13 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(201);
 
-    this.add
+    const box = this.add
       .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
       .setStrokeStyle(1 * S, 0x6ec6a8, 1)
       .setScrollFactor(0)
       .setDepth(201);
 
-    this.add
+    const prompt = this.add
       .text(W / 2, 112 * S, t('win.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
@@ -1403,6 +1445,8 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
+
+    this.endLayout = { overlay, title, stats, box, prompt };
   }
 
   enableReplay(overlay) {

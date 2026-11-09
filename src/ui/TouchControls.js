@@ -38,6 +38,11 @@ export default class TouchControls {
     this.show(scene.sys.game.device.input.touch || navigator.maxTouchPoints > 0);
   }
 
+  relayout(width = this.scene.scale.width) {
+    if (this.buttons.jump) this.buttons.jump.x = width - 60;
+    if (this.buttons.dive) this.buttons.dive.x = width - 128;
+  }
+
   addButton(name, x, y, texture, scale) {
     const img = this.scene.add
       .image(x, y, texture)

@@ -10,9 +10,16 @@ import { GAME_W, GAME_H } from './scale.js';
 export const GAME_WIDTH = calculateWidth();
 export const GAME_HEIGHT = GAME_H;
 
+function viewportSize() {
+  const host = document.getElementById('game');
+  return {
+    w: host?.clientWidth || window.innerWidth || GAME_W,
+    h: host?.clientHeight || window.innerHeight || GAME_H,
+  };
+}
+
 function calculateWidth() {
-  const vw = window.innerWidth || GAME_W;
-  const vh = window.innerHeight || GAME_H;
+  const { w: vw, h: vh } = viewportSize();
   const long = Math.max(vw, vh);
   const short = Math.max(1, Math.min(vw, vh));
   const aspect = long / short;
@@ -79,7 +86,24 @@ rotateDismiss?.addEventListener('click', () => {
   syncRotateHint();
 });
 
-const onViewportChange = () => setTimeout(syncRotateHint, 120);
+let viewportTimer = null;
+const onViewportChange = () => {
+  clearTimeout(viewportTimer);
+  viewportTimer = setTimeout(() => {
+    syncRotateHint();
+
+    // Browser chrome and rotation can change the usable aspect after boot.
+    // Resize the internal canvas so FIT fills the new viewport, then let the
+    // active scene re-anchor anything that depends on this.scale.width.
+    const width = calculateWidth();
+    if (Math.abs(width - game.scale.width) > 1) {
+      // ScaleManager caches the FIT aspect ratio from boot. Update it before
+      // resizing, otherwise the canvas keeps the old aspect and letterboxes.
+      game.scale.displaySize.setAspectRatio(width / GAME_HEIGHT);
+      game.scale.resize(width, GAME_HEIGHT);
+    }
+  }, 180);
+};
 window.addEventListener('resize', onViewportChange);
 window.addEventListener('orientationchange', onViewportChange);
 game.events.once('ready', syncRotateHint);

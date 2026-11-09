@@ -205,9 +205,10 @@ bonjo/
 ```
 
 The game renders at a fixed **288px height** (2× the 256×144 design view), with a
-width chosen at boot from the device's landscape aspect ratio: **512px at 16:9**,
-up to **960px on tall phones** (e.g. 623×288 on a 19.5:9 phone). Scenes center and
-anchor UI from `this.scale.width`, so the canvas fills the screen instead of
+width derived from the device's landscape aspect ratio: **512px at 16:9**, up to
+**960px on tall phones** (e.g. 623×288 on a 19.5:9 phone). It re-measures on
+rotation or viewport changes, and scenes center and anchor UI from
+`this.scale.width`, so the canvas keeps filling the screen instead of
 letterboxing with side bars. `pixelArt: true` keeps it crisp.
 
 ---
