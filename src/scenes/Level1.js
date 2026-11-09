@@ -1368,7 +1368,6 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setTexture('dogSit');
     this.dog.setRotation(0);
     this.dog.clearTint();
-    this.dog.outline?.setVisible(false);
     this.dog.tongue.setVisible(false);
 
     this.hideEndHud();
@@ -1450,7 +1449,6 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setVelocity(0, 0);
     this.dog.setTexture('dogSit');
     this.dog.setRotation(0);
-    this.dog.outline?.setVisible(false);
     this.dog.tongue.setVisible(false);
 
     this.hideEndHud();
