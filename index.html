@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Bonjo</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #140c1c;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      #game {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+      canvas {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      /* Make the live tuning panel feel like part of the prototype */
+      .lil-gui {
+        --width: 250px;
+        --font-size: 11px;
+        --widget-height: 18px;
+        font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+        z-index: 100;
+      }
+
+      /* Portrait hint for phones */
+      #rotate-hint {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: #140c1c;
+        color: #fff4e0;
+        font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+        text-align: center;
+      }
+      #rotate-hint.show {
+        display: flex;
+      }
+      .rotate-card {
+        max-width: 280px;
+      }
+      .phone {
+        width: 30px;
+        height: 48px;
+        margin: 0 auto 18px;
+        border: 3px solid #ffd166;
+        border-radius: 6px;
+        position: relative;
+        animation: tilt 2.6s ease-in-out infinite;
+      }
+      .phone::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 3px;
+        width: 4px;
+        height: 4px;
+        margin-left: -2px;
+        background: #ffd166;
+        border-radius: 50%;
+      }
+      @keyframes tilt {
+        0%, 30% { transform: rotate(0deg); }
+        65%, 100% { transform: rotate(90deg); }
+      }
+      #rotate-hint h2 {
+        margin: 0 0 8px;
+        font-size: 16px;
+        letter-spacing: 2px;
+        color: #ffd166;
+      }
+      #rotate-hint p {
+        margin: 0 0 20px;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #c9b8c9;
+      }
+      #rotate-hint button {
+        padding: 8px 16px;
+        border: 2px solid #6ec6a8;
+        border-radius: 2px;
+        background: transparent;
+        color: #6ec6a8;
+        font-family: inherit;
+        font-size: 11px;
+        letter-spacing: 1px;
+        cursor: pointer;
+      }
+      #rotate-hint button:active {
+        background: #6ec6a8;
+        color: #140c1c;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <div id="rotate-hint" role="dialog" aria-label="Rotate your phone">
+      <div class="rotate-card">
+        <div class="phone" aria-hidden="true"></div>
+        <h2>Rotate your phone</h2>
+        <p>Bonjo is best in landscape.</p>
+        <button id="rotate-dismiss" type="button">play anyway</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
