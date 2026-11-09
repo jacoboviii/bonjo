@@ -10,6 +10,7 @@ import { makePlatformTexture } from '../art.js';
 import { SCALE } from '../scale.js';
 import { sfx } from '../sfx.js';
 import TouchControls from '../ui/TouchControls.js';
+import { t } from '../i18n.js';
 
 const S = SCALE;
 
@@ -380,7 +381,7 @@ export default class Level1 extends Phaser.Scene {
     this.pips = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.boneText = this.add
-      .text(128 * S, 5 * S, 'BONES 0', {
+      .text(128 * S, 5 * S, `${t('hud.bones')} 0`, {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -392,7 +393,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(100);
 
     this.hint = this.add
-      .text(128 * S, 138 * S, 'A/D move  ·  SPACE flap/glide  ·  S dive  ·  T tuning', {
+      .text(128 * S, 138 * S, t('level.hint'), {
         fontFamily: 'monospace',
         fontSize: 7 * S,
         color: '#fff4e0',
@@ -410,38 +411,38 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createTuningPanel() {
-    const gui = new GUI({ title: 'BONJO · feel tuning' });
+    const gui = new GUI({ title: t('tuning.title') });
     this.gui = gui;
 
-    const move = gui.addFolder('Movement');
-    move.add(tuning, 'runSpeed', 80, 500, 5).name('run speed');
-    move.add(tuning, 'groundAccel', 400, 6000, 50).name('ground accel');
-    move.add(tuning, 'airAccel', 200, 4000, 50).name('air accel');
-    move.add(tuning, 'groundFriction', 400, 6000, 50).name('ground friction');
+    const move = gui.addFolder(t('tuning.movement'));
+    move.add(tuning, 'runSpeed', 80, 500, 5).name(t('tuning.runSpeed'));
+    move.add(tuning, 'groundAccel', 400, 6000, 50).name(t('tuning.groundAccel'));
+    move.add(tuning, 'airAccel', 200, 4000, 50).name(t('tuning.airAccel'));
+    move.add(tuning, 'groundFriction', 400, 6000, 50).name(t('tuning.groundFriction'));
     move.close();
 
-    const air = gui.addFolder('Air');
-    air.add(tuning, 'gravity', 400, 4000, 10).name('gravity');
-    air.add(tuning, 'glideGravity', 50, 1200, 10).name('glide gravity');
-    air.add(tuning, 'glideMaxFall', 30, 400, 5).name('glide fall speed');
-    air.add(tuning, 'diveGravity', 800, 6000, 50).name('dive gravity');
-    air.add(tuning, 'diveMaxFall', 300, 1600, 10).name('dive fall speed');
-    air.add(tuning, 'jumpImpulse', 200, 700, 5).name('jump power');
-    air.add(tuning, 'flapImpulse', 150, 700, 5).name('flap power');
-    air.add(tuning, 'maxFlaps', 0, 5, 1).name('flaps');
-    air.add(tuning, 'jumpCut', 0.1, 1, 0.05).name('jump cut');
-    air.add(tuning, 'minJumpMs', 0, 250, 5).name('min jump hold (ms)');
-    air.add(tuning, 'coyoteMs', 0, 300, 5).name('coyote (ms)');
-    air.add(tuning, 'jumpBufferMs', 0, 300, 5).name('jump buffer (ms)');
+    const air = gui.addFolder(t('tuning.air'));
+    air.add(tuning, 'gravity', 400, 4000, 10).name(t('tuning.gravity'));
+    air.add(tuning, 'glideGravity', 50, 1200, 10).name(t('tuning.glideGravity'));
+    air.add(tuning, 'glideMaxFall', 30, 400, 5).name(t('tuning.glideFall'));
+    air.add(tuning, 'diveGravity', 800, 6000, 50).name(t('tuning.diveGravity'));
+    air.add(tuning, 'diveMaxFall', 300, 1600, 10).name(t('tuning.diveFall'));
+    air.add(tuning, 'jumpImpulse', 200, 700, 5).name(t('tuning.jump'));
+    air.add(tuning, 'flapImpulse', 150, 700, 5).name(t('tuning.flap'));
+    air.add(tuning, 'maxFlaps', 0, 5, 1).name(t('tuning.flaps'));
+    air.add(tuning, 'jumpCut', 0.1, 1, 0.05).name(t('tuning.jumpCut'));
+    air.add(tuning, 'minJumpMs', 0, 250, 5).name(t('tuning.minJump'));
+    air.add(tuning, 'coyoteMs', 0, 300, 5).name(t('tuning.coyote'));
+    air.add(tuning, 'jumpBufferMs', 0, 300, 5).name(t('tuning.buffer'));
     air.close();
 
-    const cam = gui.addFolder('Camera');
-    cam.add(tuning, 'lookAhead', 0, 80, 1).name('look ahead');
-    cam.add(tuning, 'cameraLerp', 0.02, 0.5, 0.01).name('camera smoothing');
+    const cam = gui.addFolder(t('tuning.camera'));
+    cam.add(tuning, 'lookAhead', 0, 80, 1).name(t('tuning.lookAhead'));
+    cam.add(tuning, 'cameraLerp', 0.02, 0.5, 0.01).name(t('tuning.cameraLerp'));
     cam.close();
 
-    const actions = gui.addFolder('Actions');
-    actions.add({ restart: () => this.scene.restart() }, 'restart').name('restart level (R)');
+    const actions = gui.addFolder(t('tuning.actions'));
+    actions.add({ restart: () => this.scene.restart() }, 'restart').name(t('tuning.restart'));
     actions.add(
       {
         reset: () => {
@@ -450,7 +451,7 @@ export default class Level1 extends Phaser.Scene {
         },
       },
       'reset',
-    ).name('reset defaults');
+    ).name(t('tuning.reset'));
     actions.close();
 
     // Start collapsed so the panel is a single title bar over the sky.
@@ -464,8 +465,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showIntro() {
-    const t = this.add
-      .text(128 * S, 50 * S, 'LEVEL 1 · LA CUADRA', {
+    const introLabel = this.add
+      .text(128 * S, 50 * S, t('level.intro'), {
         fontFamily: 'monospace',
         fontSize: 12 * S,
         color: '#fff4e0',
@@ -478,12 +479,12 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0);
 
     this.tweens.add({
-      targets: t,
+      targets: introLabel,
       alpha: 1,
       duration: 350,
       hold: 900,
       yoyo: true,
-      onComplete: () => t.destroy(),
+      onComplete: () => introLabel.destroy(),
     });
   }
 
@@ -523,7 +524,7 @@ export default class Level1 extends Phaser.Scene {
       }
     }
 
-    this.boneText.setText(`BONES ${this.bonesCount}`);
+    this.boneText.setText(`${t('hud.bones')} ${this.bonesCount}`);
 
     if (this.hintTimer > 0) {
       this.hintTimer -= delta / 1000;
@@ -548,7 +549,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   floatText(x, y, message, color = '#ffd166') {
-    const t = this.add
+    const label = this.add
       .text(x, y, message, {
         fontFamily: 'monospace',
         fontSize: 7 * S,
@@ -560,12 +561,12 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(50);
 
     this.tweens.add({
-      targets: t,
+      targets: label,
       y: y - 12 * S,
       alpha: 0,
       duration: 700,
       ease: 'Quad.out',
-      onComplete: () => t.destroy(),
+      onComplete: () => label.destroy(),
     });
   }
 
@@ -614,7 +615,7 @@ export default class Level1 extends Phaser.Scene {
     this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -140 * S);
     sfx.ring();
     this.spawnPuff(ring.x, ring.y, 1.2);
-    this.floatText(ring.x, ring.y - 10 * S, 'FLAP+', '#6ec6a8');
+    this.floatText(ring.x, ring.y - 10 * S, t('float.flap'), '#6ec6a8');
   }
 
   touchCheckpoint() {
@@ -626,7 +627,7 @@ export default class Level1 extends Phaser.Scene {
 
     sfx.checkpoint();
     this.spawnPuff(this.checkpoint.x, this.checkpoint.y, 1.3);
-    this.floatText(this.checkpoint.x, this.checkpoint.y - 16 * S, 'CHECKPOINT');
+    this.floatText(this.checkpoint.x, this.checkpoint.y - 16 * S, t('float.checkpoint'));
   }
 
   hitCrow(dog, crow) {
@@ -707,7 +708,7 @@ export default class Level1 extends Phaser.Scene {
     squirrel.boneIcon.setVisible(true).setPosition(squirrel.x, squirrel.y - 12 * S);
 
     sfx.steal();
-    this.floatText(squirrel.x, squirrel.y - 22 * S, 'HEY!', '#ffd166');
+    this.floatText(squirrel.x, squirrel.y - 22 * S, t('float.hey'), '#ffd166');
   }
 
   dropSquirrelBone(squirrel) {
@@ -720,7 +721,7 @@ export default class Level1 extends Phaser.Scene {
 
     bone.enableBody(true, squirrel.x, squirrel.y - 6 * S, true, true);
     bone.body.setSize(8 * S, 6 * S);
-    this.floatText(squirrel.x, squirrel.y - 20 * S, 'BONE!', '#fff4e0');
+    this.floatText(squirrel.x, squirrel.y - 20 * S, t('float.bone'), '#fff4e0');
   }
 
   squirrelEscapes(squirrel) {
@@ -734,7 +735,7 @@ export default class Level1 extends Phaser.Scene {
       squirrel.carried.destroy();
       squirrel.carried = null;
       squirrel.carrying = false;
-      this.floatText(squirrel.x, squirrel.y - 20 * S, 'GONE!', '#f26b5e');
+      this.floatText(squirrel.x, squirrel.y - 20 * S, t('float.gone'), '#f26b5e');
     }
 
     this.spawnPuff(squirrel.x, squirrel.y, 0.8);
@@ -800,7 +801,7 @@ export default class Level1 extends Phaser.Scene {
     this.floatText(
       pinata.x,
       pinata.y - 22 * S,
-      pinata.hits >= 3 ? '¡ÓRALE!' : '¡ÉCHALE!',
+      pinata.hits >= 3 ? t('float.orale') : t('float.echale'),
       '#ffd166',
     );
 
@@ -927,7 +928,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(200);
 
     this.add
-      .text(128 * S, 40 * S, 'THE BLOCK IS YOURS', {
+      .text(128 * S, 40 * S, t('win.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
         color: '#ffd166',
@@ -939,7 +940,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
-      .text(128 * S, 64 * S, `BONES ${this.bonesCount}   ·   ${elapsed}s`, {
+      .text(128 * S, 64 * S, t('win.stats', { bones: this.bonesCount, time: elapsed }), {
         fontFamily: 'monospace',
         fontSize: 9 * S,
         color: '#fff4e0',
@@ -951,7 +952,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(201);
 
     this.add
-      .text(128 * S, 112 * S, 'press R to fly again', {
+      .text(128 * S, 112 * S, t('win.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#6ec6a8',

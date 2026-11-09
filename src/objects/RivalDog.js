@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
 import { sfx } from '../sfx.js';
+import { t } from '../i18n.js';
 
 const S = SCALE;
 
@@ -46,7 +47,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     if (near && !this.chasing && this.scene.time.now > this.nextBark) {
       this.nextBark = this.scene.time.now + 1600;
       sfx.bark();
-      this.scene.floatText(this.x, this.y - 20 * S, '¡GUAU!', '#ffd166');
+      this.scene.floatText(this.x, this.y - 20 * S, t('bark'), '#ffd166');
       if (this.body.blocked.down) this.body.setVelocityY(-180 * S);
     }
 

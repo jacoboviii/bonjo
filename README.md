@@ -70,6 +70,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **T** | Show/hide the tuning panel | |
 | **R** | Restart the level | |
 | **V** | Toggle the touch buttons | |
+| **L** | Switch English / Spanish (title screen) | |
 
 ### Phones and tablets
 
@@ -81,6 +82,7 @@ On a touch device the on-screen controls appear automatically:
 - In portrait, the game pauses behind a **rotate your phone** screen with a
   "play anyway" escape.
 - Landscape orientation is strongly recommended.
+- **EN / ES** language buttons are in the top-right of the title screen.
 
 On a desktop you can press **V** to show the touch buttons for testing.
 
@@ -145,6 +147,7 @@ there to make them permanent.
 - Death → quick respawn; camera look-ahead; synthesized SFX
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
+- **English / Spanish menus** — toggle EN / ES on the title, or press L; the choice is remembered
 - Title and win screens with bones + time
 
 **Not in this build:** menus, pause, save files, gamepad, bosses, more than one

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
+import { t, getLang, setLang, toggleLang } from '../i18n.js';
 
 const S = SCALE;
 
@@ -9,6 +10,8 @@ export default class Title extends Phaser.Scene {
   }
 
   create() {
+    this.input.topOnly = true;
+
     this.add.image(128 * S, 72 * S, 'sky');
     this.add.image(205 * S, 52 * S, 'sun').setScale(1.4).setAlpha(0.95);
 
@@ -24,7 +27,7 @@ export default class Title extends Phaser.Scene {
       .tileSprite(0, 30 * S, 320 * S, 100 * S, 'town')
       .setOrigin(0, 0);
 
-    // a very good dog, hovering (with a panting purple tongue)
+    // a very good dog, sitting and panting
     this.dogGroup = this.add.container(128 * S, 92 * S).setDepth(3);
     const dog = this.add.sprite(0, 0, 'dogSit').setScale(2);
     const tongue = this.add
@@ -69,7 +72,7 @@ export default class Title extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(128 * S, 48 * S, 'the only chow on the block', {
+      .text(128 * S, 48 * S, t('title.subtitle'), {
         fontFamily: 'monospace',
         fontSize: 16,
         color: '#fff4e0',
@@ -79,7 +82,7 @@ export default class Title extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(128 * S, 64 * S, 'LA CUADRA  ·  MÉXICO', {
+      .text(128 * S, 64 * S, t('title.place'), {
         fontFamily: 'monospace',
         fontSize: 10,
         color: '#6ec6a8',
@@ -88,14 +91,22 @@ export default class Title extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    const isTouch =
+      this.sys.game.device.input.touch || navigator.maxTouchPoints > 0;
+
     const prompt = this.add
-      .text(128 * S, 114 * S, 'PRESS SPACE TO FLY', {
-        fontFamily: 'monospace',
-        fontSize: 20,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
-        strokeThickness: 6,
-      })
+      .text(
+        128 * S,
+        114 * S,
+        t(isTouch ? 'title.startTouch' : 'title.startKeyboard'),
+        {
+          fontFamily: 'monospace',
+          fontSize: 20,
+          color: '#fff4e0',
+          stroke: '#2b1b3d',
+          strokeThickness: 6,
+        },
+      )
       .setOrigin(0.5);
     this.tweens.add({
       targets: prompt,
@@ -107,7 +118,7 @@ export default class Title extends Phaser.Scene {
     });
 
     this.add
-      .text(128 * S, 133 * S, 'A/D move  ·  SPACE flap/glide  ·  S dive  ·  T tuning', {
+      .text(128 * S, 133 * S, t('title.controls'), {
         fontFamily: 'monospace',
         fontSize: 14,
         color: '#fff4e0',
@@ -118,22 +129,65 @@ export default class Title extends Phaser.Scene {
       .setAlpha(0.9);
 
     this.add
-      .text(6 * S, 6 * S, 'PLAYTEST v0.3', {
+      .text(6 * S, 6 * S, t('title.version'), {
         fontFamily: 'monospace',
         fontSize: 12,
         color: '#fff4e0',
       })
       .setAlpha(0.45);
 
-    this.started = false;
+    // --- EN / ES selector ------------------------------------------------
+    const lang = getLang();
+
+    const makeLangButton = (x, code) => {
+      const active = lang === code;
+      const button = this.add
+        .text(x, 8 * S, code.toUpperCase(), {
+          fontFamily: 'monospace',
+          fontSize: 14,
+          color: active ? '#ffd166' : '#8f7f97',
+          stroke: '#2b1b3d',
+          strokeThickness: 3,
+        })
+        .setOrigin(0.5, 0)
+        .setDepth(20)
+        .setAlpha(active ? 1 : 0.75)
+        .setInteractive({ useHandCursor: true });
+
+      button.on('pointerdown', (pointer, localX, localY, event) => {
+        event?.stopPropagation?.();
+        if (getLang() === code) return;
+        setLang(code);
+        this.scene.restart();
+      });
+
+      return button;
+    };
+
+    makeLangButton(430, 'en');
+    makeLangButton(468, 'es');
+
+    this.input.keyboard.on('keydown-L', () => {
+      toggleLang();
+      this.scene.restart();
+    });
+
+    // A full-screen start zone behind the language buttons. topOnly means
+    // tapping EN/ES does not also start the game.
     const start = () => {
       if (this.started) return;
       this.started = true;
       this.scene.start('Level1');
     };
 
+    const startZone = this.add
+      .zone(0, 0, 512, 288)
+      .setOrigin(0)
+      .setDepth(-10)
+      .setInteractive();
+    startZone.once('pointerdown', start);
+
     this.input.keyboard.once('keydown-SPACE', start);
-    this.input.once('pointerdown', start);
   }
 
   update(time, delta) {
