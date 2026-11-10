@@ -1,3 +1,5 @@
+import { laCuadra } from './laCuadra.js';
+
 // Ordered level registry used by the map hub and, later, by progression.
 // scene: null means the landmark is visible on the map but not playable yet.
 export const LEVELS = [
@@ -55,4 +57,12 @@ export const LEVELS = [
 
 export function getLevel(id) {
   return LEVELS.find((level) => level.id === id) || null;
+}
+
+const LEVEL_DATA = {
+  laCuadra,
+};
+
+export function getLevelData(id) {
+  return LEVEL_DATA[id] || null;
 }

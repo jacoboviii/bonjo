@@ -13,216 +13,96 @@ import TouchControls from '../ui/TouchControls.js';
 import { drawFolkCard } from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
 import { markLevelComplete } from '../progress.js';
+import { getLevelData } from '../levels/index.js';
+import { laCuadra } from '../levels/laCuadra.js';
 
 const S = SCALE;
 // Small UI offsets were authored in the old 2x render space.
 const U = S / 2;
 
-const WORLD_W = 4200 * S;
-const WORLD_H = 900 * S;
+let WORLD_W;
+let WORLD_H;
+let PLATFORMS;
+let BONES;
+let RINGS;
+let SQUIRRELS;
+let RIVALS;
+let PINATAS;
+let AWNINGS;
+let CROWS;
+let CHECKPOINT_X;
+let CHECKPOINT2_X;
+let CHECKPOINT_Y;
+let FOODS;
+let PARKED_CARS;
+let BIKES;
+let STREET_PROPS;
+let LEDGES;
+let LEDGE_BONES;
+let LEDGE_FOODS;
+let TACO_CARTS;
+let TRASH_SPOTS;
+let GATE_X;
+let POLO_X;
+let CHIHUAHUA_X;
+let BELL_X;
+let CATS;
+let BIRDS;
+let ROOSTER_X;
+let NIGHT_FLIERS;
+let FOREGROUND_HOUSES;
+let AGAVE_FIELDS;
+let AGAVES;
 
-// x,y,w,h in design pixels (the 256x144 space). x,y is the top-left corner.
-// Everything is multiplied by S when it is placed in the 3x world.
-const PLATFORMS = [
-  { x: 0, y: 600, w: 520, h: 300 }, // starting ground
-  { x: 600, y: 600, w: 400, h: 300 },
-  { x: 1000, y: 600, w: 100, h: 300 }, // filled under the first foreground house
-  { x: 1100, y: 600, w: 400, h: 300 },
-  { x: 1620, y: 600, w: 380, h: 300 },
-  { x: 2000, y: 600, w: 100, h: 300 }, // filled under the second foreground house
-  { x: 2100, y: 600, w: 400, h: 300 }, // checkpoint block
-  { x: 2620, y: 600, w: 380, h: 300 },
-  { x: 3000, y: 600, w: 80, h: 300 }, // filled under the third foreground house
-  { x: 3080, y: 600, w: 120, h: 300 },
-  { x: 3260, y: 600, w: 340, h: 300 }, // east block
-  { x: 3660, y: 600, w: 300, h: 300 },
-  { x: 4020, y: 600, w: 180, h: 300 }, // far end
-];
+function applyLevelData(level) {
+  WORLD_W = level.world.width * S;
+  WORLD_H = level.world.height * S;
+  PLATFORMS = level.platforms;
+  BONES = level.bones;
+  RINGS = level.rings;
+  SQUIRRELS = level.squirrels;
+  RIVALS = level.rivals;
+  PINATAS = level.pinatas;
+  AWNINGS = level.awnings;
+  CROWS = level.crows;
+  CHECKPOINT_X = level.checkpoints.first;
+  CHECKPOINT2_X = level.checkpoints.second;
+  CHECKPOINT_Y = level.checkpoints.y;
+  FOODS = level.foods;
+  PARKED_CARS = level.parkedCars;
+  BIKES = level.bikes;
+  STREET_PROPS = level.streetProps;
+  LEDGES = level.ledges;
+  LEDGE_BONES = level.ledgeBones;
+  LEDGE_FOODS = level.ledgeFoods;
+  TACO_CARTS = level.tacoCarts;
+  TRASH_SPOTS = level.trashSpots;
+  GATE_X = level.gateX;
+  POLO_X = level.poloX;
+  CHIHUAHUA_X = level.chihuahuaX;
+  BELL_X = level.bellX;
+  CATS = level.cats;
+  BIRDS = level.birds;
+  ROOSTER_X = level.roosterX;
+  NIGHT_FLIERS = level.nightFliers;
+  FOREGROUND_HOUSES = level.foregroundHouses;
+  AGAVE_FIELDS = level.agaveFields;
+  AGAVES = level.agaves;
+}
 
-const BONES = [
-  [150, 590], [300, 590], [450, 590],
-  [700, 590], [850, 590], [950, 590],
-  [1150, 590], [1300, 590], [1450, 590],
-  [1700, 590], [1850, 590], [1950, 590],
-  [2150, 590], [2250, 590], [2400, 590],
-  [2700, 590], [2850, 590], [2950, 590],
-  [3100, 590], [3185, 590],
-  [3300, 590], [3450, 590], [3550, 590],
-  [3700, 590], [3850, 590], [4050, 590], [4150, 590],
-];
-
-// Wind rings refill your flaps and give a little lift.
-const RINGS = [
-  [560, 540],
-  [1560, 540],
-  [2560, 540],
-  [3240, 540],
-  [3640, 540],
-  [3980, 540],
-];
-
-const SQUIRRELS = [
-  { x: 700, y: 588, min: 640, max: 960 },
-  { x: 1300, y: 588, min: 1140, max: 1460 },
-  { x: 2700, y: 588, min: 2660, max: 2960 },
-  { x: 3400, y: 588, min: 3280, max: 3580 },
-  { x: 3900, y: 588, min: 3680, max: 3940 },
-];
-
-// Dogs from other houses, guarding their turf.
-const RIVALS = [
-  { x: 360, y: 587, min: 180, max: 480 },
-  { x: 1750, y: 587, min: 1660, max: 1960 },
-  { x: 3120, y: 587, min: 3090, max: 3190 },
-  { x: 3850, y: 587, min: 3680, max: 3950 },
-  { x: 4100, y: 587, min: 4030, max: 4180 },
-];
-
-// Hanging piñatas: jump/flap/dive into them.
-const PINATAS = [
-  [240, 525],
-  [2150, 515],
-  [3350, 525],
-  [3880, 515],
-];
-
-// Market awnings: land on them to bounce.
-const AWNINGS = [
-  [560, 578],
-  [1560, 578],
-  [2560, 578],
-  [3240, 578],
-  [3640, 578],
-  [3980, 578],
-];
-
-// One crow stays as a rarer aerial hazard.
-const CROWS = [
-  { x: 2900, y: 520, min: 2660, max: 2960 },
-  { x: 4100, y: 520, min: 4030, max: 4180 },
-];
-
-const CHECKPOINT_X = 2300;
-const CHECKPOINT2_X = 3900;
-const CHECKPOINT_Y = 582;
-
-// Concha pickups: restore hunger.
-const FOODS = [
-  [350, 590],
-  [900, 590],
-  [1450, 590],
-  [2250, 590],
-  [2900, 590],
-  [3350, 590],
-  [3750, 590],
-  [4100, 590],
-];
-
-// Street dressing. These are background-only props at the far curb: they sit
-// behind Bonjo and the sidewalk (depth 0) so they never block movement.
-const PARKED_CARS = [
-  { x: 215, key: 'carB', flip: false },
-  { x: 760, key: 'carA', flip: true, alarm: true },
-  { x: 1790, key: 'carB', flip: true },
-  { x: 2390, key: 'carC', flip: true },
-  { x: 3320, key: 'carB', flip: false },
-  { x: 4110, key: 'carA', flip: false },
-];
-
-const BIKES = [
-  { x: 1430, key: 'bikeMint', flip: true },
-  { x: 2460, key: 'bikeMint', flip: false },
-  { x: 3700, key: 'bikeCoral', flip: false },
-];
-
-const STREET_PROPS = [
-  { x: 470, key: 'hydrant' },
-  { x: 660, key: 'streetlamp' },
-  { x: 1730, key: 'hydrant' },
-  { x: 2660, key: 'streetlamp' },
-  { x: 4060, key: 'planter' },
-];
-
-// One-way traversal routes above the street. The dog can jump/flap up
-// through them and land on top for bones and conchas.
-const LEDGES = [
-  { x: 260, y: 520, w: 90, kind: 'fire' },
-  { x: 540, y: 500, w: 110, kind: 'laundry' },
-  { x: 1180, y: 470, w: 100, kind: 'fire' },
-  { x: 1960, y: 480, w: 110, kind: 'laundry' },
-  { x: 2700, y: 500, w: 100, kind: 'fire' },
-  { x: 3300, y: 500, w: 100, kind: 'fire' },
-  { x: 3760, y: 470, w: 110, kind: 'laundry' },
-  { x: 4040, y: 490, w: 90, kind: 'fire' },
-];
-
-const LEDGE_BONES = [
-  [288, 510], [576, 490], [1218, 460], [2004, 470], [2738, 490],
-  [3330, 490], [3800, 460], [4070, 480],
-];
-
-const LEDGE_FOODS = [
-  [600, 485],
-  [2040, 465],
-  [3360, 485],
-  [3820, 455],
-];
-
-// Interactive street furniture.
-const TACO_CARTS = [640, 3500];
-const TRASH_SPOTS = [960, 3820];
-const GATE_X = 160;
-const POLO_X = 135;
-const CHIHUAHUA_X = 88;
-const BELL_X = 2450;
-
-// Ambient wildlife. Cats hiss, birds scatter/chirp, and the rooster crows at
-// dawn. None of them are hazards.
-const CATS = [
-  { x: 850, key: 'catGray', s: 1, flip: false },
-  { x: 1850, key: 'cat', s: 0.85, flip: false },
-];
-const BIRDS = [
-  { x: 1120, s: 1 },
-  { x: 2350, s: 0.85 },
-];
-const ROOSTER_X = 500;
-
-// Decorative nocturnal flyers. They brush through the sky after dark and are
-// deliberately non-hazardous: enemies still come only from the wave system.
-const NIGHT_FLIERS = [
-  { x: 80, y: 508, amp: 7, speed: 22, dir: 1 },
-  { x: 210, y: 518, amp: 9, speed: 28, dir: -1 },
-  { x: 430, y: 506, amp: 8, speed: 25, dir: 1 },
-  { x: 760, y: 514, amp: 10, speed: 30, dir: -1 },
-  { x: 1400, y: 504, amp: 7, speed: 20, dir: 1 },
-  { x: 2300, y: 512, amp: 9, speed: 28, dir: -1 },
-  { x: 3200, y: 506, amp: 8, speed: 23, dir: 1 },
-  { x: 3950, y: 514, amp: 11, speed: 32, dir: -1 },
-];
-
-// A few solid foreground houses whose roofs are platform surfaces.
-const FOREGROUND_HOUSES = [
-  { x: 1040, key: 'foregroundHouseA' },
-  { x: 2040, key: 'foregroundHouseB' },
-  { x: 3040, key: 'foregroundHouseC' },
-];
-
-const AGAVE_FIELDS = [1300, 2780, 3380];
-
-// Agave clumps on the edges of the block. These sit behind cars and Bonjo so
-// the street still reads while the old agricultural surroundings peek through.
-const AGAVES = [
-  { x: 250, key: 'agave', s: 0.85, flip: true },
-  { x: 1220, key: 'agave', s: 1.05, flip: false },
-  { x: 2150, key: 'agaveBloom', s: 0.85, flip: true },
-  { x: 2700, key: 'agave', s: 1.05, flip: true },
-  { x: 4140, key: 'agave', s: 1.05, flip: false },
-];
+applyLevelData(laCuadra);
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super('Level1');
+  }
+
+  init(data = {}) {
+    const levelId = data.levelId || this.levelId || 'laCuadra';
+    const level = getLevelData(levelId) || laCuadra;
+    this.levelId = level.id;
+    this.levelData = level;
+    applyLevelData(level);
   }
 
   create() {
@@ -233,7 +113,10 @@ export default class Level1 extends Phaser.Scene {
     this.hintTimer = 16;
     this.checkpointActive = false;
     this.checkpoint2Active = false;
-    this.spawnPoint = { x: 64 * S, y: 548 * S };
+    this.spawnPoint = {
+      x: this.levelData.spawn.x * S,
+      y: this.levelData.spawn.y * S,
+    };
     this.startedAt = this.time.now;
 
     // survival state
@@ -244,7 +127,7 @@ export default class Level1 extends Phaser.Scene {
     this.hungerTick = 0;
     this.phase = 'day';
     this.dayNumber = 1;
-    this.phaseTime = 35;
+    this.phaseTime = this.levelData.timings.day;
     this.nightsSurvived = 0;
     this.nightsToSurvive = 2;
     this.waveSpawned = 0;
@@ -448,9 +331,10 @@ export default class Level1 extends Phaser.Scene {
 
   buildBackground() {
     const W = this.scale.width;
+    const theme = this.levelData.theme || {};
 
     this.sky = this.add
-      .image(W / 2, 72 * S, 'sky')
+      .image(W / 2, 72 * S, theme.sky || 'sky')
       .setDisplaySize(W, 144 * S)
       .setScrollFactor(0)
       .setDepth(-30);
@@ -469,14 +353,14 @@ export default class Level1 extends Phaser.Scene {
       .setVisible(false);
 
     this.cloudsFar = this.add
-      .tileSprite(0, 8 * S, W, 64 * S, 'cloudsFar')
+      .tileSprite(0, 8 * S, W, 64 * S, theme.cloudsFar || 'cloudsFar')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-25)
       .setAlpha(0.5);
 
     this.cloudsNear = this.add
-      .tileSprite(0, 38 * S, W, 64 * S, 'cloudsNear')
+      .tileSprite(0, 38 * S, W, 64 * S, theme.cloudsNear || 'cloudsNear')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-24)
@@ -491,19 +375,19 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0);
 
     this.town = this.add
-      .tileSprite(0, 500 * S, W, 100 * S, 'town')
+      .tileSprite(0, 500 * S, W, 100 * S, theme.town || 'town')
       .setOrigin(0, 0)
       .setScrollFactor(0, 1)
       .setDepth(-20);
 
     this.nearTown = this.add
-      .tileSprite(0, 500 * S, W, 100 * S, 'nearTown')
+      .tileSprite(0, 500 * S, W, 100 * S, theme.nearTown || 'nearTown')
       .setOrigin(0, 0)
       .setScrollFactor(0, 1)
       .setDepth(-19);
 
     this.banner = this.add
-      .tileSprite(0, 32 * S, W, 14 * S, 'banner')
+      .tileSprite(0, 32 * S, W, 14 * S, theme.banner || 'banner')
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(-18)
@@ -1060,13 +944,23 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createPorch() {
+    const porch = this.levelData.porch || {
+      x: 105,
+      key: 'bonjoHouse',
+      roofWidth: 130,
+    };
     this.add
-      .image(105 * S, 600 * S, 'bonjoHouse')
+      .image(porch.x * S, 600 * S, porch.key)
       .setOrigin(0.5, 1)
       .setDepth(2);
 
     // Bonjo's existing roofline is a one-way standable platform.
-    const roof = this.add.zone(105 * S, (520 + 3) * S, 130 * S, 6 * S);
+    const roof = this.add.zone(
+      porch.x * S,
+      (520 + 3) * S,
+      porch.roofWidth * S,
+      6 * S,
+    );
     this.physics.add.existing(roof, true);
     roof.body.checkCollision.down = false;
     roof.body.checkCollision.left = false;
@@ -2281,7 +2175,9 @@ export default class Level1 extends Phaser.Scene {
 
   startNight() {
     this.phase = 'night';
-    this.phaseTime = 28 + this.nightsSurvived * 5;
+    this.phaseTime =
+      this.levelData.timings.night +
+      this.nightsSurvived * this.levelData.timings.nightStep;
     this.waveTotal = 3 + this.nightsSurvived;
     this.waveSpawned = 0;
     this.nextWave = 2;
@@ -2349,7 +2245,7 @@ export default class Level1 extends Phaser.Scene {
   startDay() {
     this.phase = 'day';
     this.dayNumber += 1;
-    this.phaseTime = 30;
+    this.phaseTime = this.levelData.timings.day2;
     this.waveSpawned = 0;
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
@@ -2411,7 +2307,8 @@ export default class Level1 extends Phaser.Scene {
       if (!this.won && !this.gameOverFlag) sfx.rooster();
     });
 
-    this.spawnFoodAt(70 * S, 590 * S);
+    const dawnFood = this.levelData.dawnFood || [70, 590];
+    this.spawnFoodAt(dawnFood[0] * S, dawnFood[1] * S);
     this.updateSurvivalHud();
   }
 
@@ -2478,14 +2375,15 @@ export default class Level1 extends Phaser.Scene {
 
     // The porch (x < 160 on the first block) is a safe zone until the gate
     // is broken.
-    const minX = (platform.x === 0 ? (this.gateBroken ? 12 : 160) : platform.x + 12) * S;
+    const minX = (platform.x === 0 ? (this.gateBroken ? 12 : GATE_X) : platform.x + 12) * S;
     const maxX = (platform.x + platform.w - 12) * S;
+    const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
 
     const role = this.pickWaveRole();
     const rival = new RivalDog(
       this,
       sx * S,
-      587 * S,
+      enemyY,
       minX,
       maxX,
       this.roleOptions(role),
@@ -2505,10 +2403,11 @@ export default class Level1 extends Phaser.Scene {
     }
     this.gateRusherSpawned = true;
 
+    const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
     const rival = new RivalDog(
       this,
       500 * S,
-      587 * S,
+      enemyY,
       140 * S,
       520 * S,
       {
@@ -2544,10 +2443,11 @@ export default class Level1 extends Phaser.Scene {
         ? platform.x + platform.w - 22
         : platform.x + 22;
     }
-    const minX = (platform.x === 0 ? (this.gateBroken ? 12 : 160) : platform.x + 12) * S;
+    const minX = (platform.x === 0 ? (this.gateBroken ? 12 : GATE_X) : platform.x + 12) * S;
     const maxX = (platform.x + platform.w - 12) * S;
+    const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
 
-    this.alpha = new RivalDog(this, sx * S, 587 * S, minX, maxX, {
+    this.alpha = new RivalDog(this, sx * S, enemyY, minX, maxX, {
       role: 'alpha',
       scale: 1.35,
       tint: 0xffd166,
@@ -3331,7 +3231,7 @@ export default class Level1 extends Phaser.Scene {
     this.hideEndHud();
     this.sun.setVisible(false);
     this.finalizeScore();
-    markLevelComplete('laCuadra', this.score);
+    markLevelComplete(this.levelId, this.score);
     this.logRun('win');
 
     sfx.win();
@@ -3421,7 +3321,7 @@ export default class Level1 extends Phaser.Scene {
 
   addEndMapButton(W) {
     const mapButton = this.add
-      .text(W - 8 * S, 132 * S, t('map.shortcut'), {
+      .text(W - 8 * S, 120 * S, t('map.shortcut'), {
         fontFamily: 'monospace',
         fontSize: 4 * S,
         color: '#fff4e0',

@@ -56,6 +56,11 @@ current playable level; Iglesia, Mercado, Parque and Las Orillas are visible
 future landmarks. Selecting a landmark shows its description; completed levels
 receive an ink stamp and saved best score.
 
+**Level data:** `src/levels/laCuadra.js` owns the world size, spawn point,
+theme texture keys, geometry, enemy/prop locations and phase timings. The shared
+level scene selects a config through `{ levelId }`, so future landmarks can
+become data configurations instead of copied scenes.
+
 ---
 
 ## 3. Core loop

@@ -235,7 +235,8 @@ bonjo/
 │   ├── sfx.js              layered WebAudio sound effects
 │   ├── progress.js         saved level completion and best scores
 │   ├── levels/
-│   │   └── index.js        ordered landmark/level registry for the map
+│   │   ├── index.js        ordered landmark/level registry for the map
+│   │   └── laCuadra.js     geometry, spawn, enemies, props and timings
 │   ├── objects/
 │   │   ├── Dog.js          Bonjo's movement + sit/pant + walk cycle
 │   │   ├── RivalDog.js     patrol / bark / chase / subdue
@@ -248,7 +249,7 @@ bonjo/
 │       ├── Boot.js         builds textures, starts title
 │       ├── Title.js        BONJO title screen
 │       ├── Map.js          illustrated La Cuadra landmark/level-select hub
-│       └── Level1.js       La Cuadra, survival loop, waves, HUD, tuning
+│       └── Level1.js       shared level runtime; reads La Cuadra's config
 └── dist/                   production build (after `npm run build`)
 ```
 

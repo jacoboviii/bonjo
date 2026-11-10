@@ -486,7 +486,9 @@ export default class Map extends Phaser.Scene {
     if (!level?.scene || !level.unlocked) return;
 
     this.cameras.main.fadeOut(220, 27, 16, 41);
-    this.time.delayedCall(230, () => this.scene.start(level.scene));
+    this.time.delayedCall(230, () =>
+      this.scene.start(level.scene, { levelId: level.id }),
+    );
   }
 
   goBack() {
