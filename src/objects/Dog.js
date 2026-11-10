@@ -27,7 +27,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setDepth(10);
-    this.body.setSize(12.5 * S, 16.5 * S).setOffset(7.5, 7);
+    // Keep the collider on whole world pixels. A fractional offset makes an
+    // idle body land on a half-pixel seam, which can shimmer as the camera
+    // follows it across a platform.
+    this.body.setSize(13 * S, 16.5 * S).setOffset(7, 7);
     this.body.setMaxVelocity(430 * S, 1200 * S);
 
     this.controls = { cursors: null, wasd: null };

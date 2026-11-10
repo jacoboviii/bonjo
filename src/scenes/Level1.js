@@ -1286,7 +1286,11 @@ export default class Level1 extends Phaser.Scene {
   createCamera() {
     const cam = this.cameras.main;
     cam.setBounds(0, 0, WORLD_W, WORLD_H);
-    cam.startFollow(this.dog, true, tuning.cameraLerp, tuning.cameraLerp);
+    // Let the camera scroll at sub-pixel precision. Phaser rounds a
+    // roundPixels camera with floor(), so a lerped follow can stall up to
+    // 10px short of its target and then creep there in visible 1px steps.
+    // The renderer still snaps the world art to whole pixels.
+    cam.startFollow(this.dog, false, tuning.cameraLerp, tuning.cameraLerp);
     cam.setFollowOffset(0, 18 * S);
     cam.fadeIn(350, 27, 16, 41);
   }
