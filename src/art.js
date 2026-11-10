@@ -1322,6 +1322,17 @@ function makeDog(scene, key, pose) {
 
   // legs
   g.fillStyle(CHOW_DARK, 1);
+  if (pose !== 'dive' && pose !== 'glide' && pose !== 'sit') {
+    // Far hind leg, planted at the hip. The near legs animate over it, so the
+    // rear of the dog never reads as a single floating stump.
+    g.fillStyle(CHOW_DARK, 1);
+    g.fillRect(3, 23, 3, 8);
+    g.fillStyle(CHOW_RIM, 1);
+    g.fillRect(2, 24, 1, 6);
+    g.fillStyle(CHOW_LIGHT, 1);
+    g.fillRect(3, 29, 3, 2);
+    g.fillStyle(CHOW_DARK, 1);
+  }
   if (pose === 'dive') {
     g.fillRect(2, 19, 10, 4);
     g.fillRect(14, 21, 4, 3);
