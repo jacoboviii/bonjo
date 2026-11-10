@@ -102,6 +102,7 @@ export default class Level1 extends Phaser.Scene {
     const level = getLevelData(levelId) || laCuadra;
     this.levelId = level.id;
     this.levelData = level;
+    this.features = level.features || {};
     applyLevelData(level);
   }
 
@@ -177,9 +178,9 @@ export default class Level1 extends Phaser.Scene {
     this.createForegroundHouses();
     this.createLedges();
     this.createInteractiveProps();
-    this.createPorch();
-    this.createPorchGate();
-    this.createAllyNpcs();
+    if (this.features.porch !== false) this.createPorch();
+    if (this.features.gateDefense !== false) this.createPorchGate();
+    if (this.features.errands !== false) this.createAllyNpcs();
     this.setupInteractables();
     this.createInput();
     this.createDog();
@@ -404,7 +405,14 @@ export default class Level1 extends Phaser.Scene {
     // parked street dressing but below the platform/props and every gameplay
     // sprite, so the playable street stays bright and readable.
     this.envHaze = this.add
-      .rectangle(W / 2, 72 * S, W, 144 * S, 0x2b5a86, 0.14)
+      .rectangle(
+        W / 2,
+        72 * S,
+        W,
+        144 * S,
+        this.levelData.theme?.haze ?? 0x2b5a86,
+        this.levelData.theme?.hazeAlpha ?? 0.14,
+      )
       .setScrollFactor(0)
       .setDepth(0.5);
   }
@@ -462,6 +470,7 @@ export default class Level1 extends Phaser.Scene {
         (p.y + p.h / 2) * S,
         key,
       );
+      if (this.levelData.platformTint) img.setTint(this.levelData.platformTint);
       img.setDepth(1);
     }
 
@@ -860,45 +869,57 @@ export default class Level1 extends Phaser.Scene {
   setupInteractables() {
     // Friendly faces and quest objects answer E / the touch interact button.
     // Enemies and pickups keep their existing jump/dive/overlap verbs.
-    this.interactables = [
-      {
+    const items = [];
+
+    if (this.polo) {
+      items.push({
         id: 'polo',
         target: this.polo,
         range: 58 * S,
         prompt: 'prompt.talk',
         action: () => this.talkToPolo(),
-      },
-      {
+      });
+    }
+    if (this.chihuahua) {
+      items.push({
         id: 'chihuahua',
         target: this.chihuahua,
         range: 52 * S,
         prompt: 'prompt.talk',
         action: () => this.talkToChihuahua(),
-      },
-      ...this.cats.map((cat) => ({
+      });
+    }
+    for (const cat of this.cats || []) {
+      items.push({
         id: 'cat',
         target: cat,
         range: 48 * S,
         prompt: 'prompt.talk',
         action: () => this.talkToCat(cat),
-      })),
-      {
+      });
+    }
+    if (this.rooster) {
+      items.push({
         id: 'rooster',
         target: this.rooster,
         range: 54 * S,
         prompt: 'prompt.talk',
         available: () => this.phase === 'day',
         action: () => this.talkToRooster(),
-      },
-      {
+      });
+    }
+    if (this.bellPost) {
+      items.push({
         id: 'bell',
         target: this.bellPost,
         range: 58 * S,
         prompt: 'prompt.ring',
         available: () => this.phase === 'day' && !this.bellRung,
         action: () => this.talkToBell(),
-      },
-    ];
+      });
+    }
+
+    this.interactables = items;
   }
 
   talkToPolo() {
@@ -1543,16 +1564,20 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100);
 
-    this.gateText = this.add
-      .text(8 * S, 65 * S, '', {
-        fontFamily: 'monospace',
-        fontSize: 6 * S,
-        color: '#6ec6a8',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
-      })
-      .setScrollFactor(0)
-      .setDepth(100);
+    if (this.features.gateDefense !== false) {
+      this.gateText = this.add
+        .text(8 * S, 65 * S, '', {
+          fontFamily: 'monospace',
+          fontSize: 6 * S,
+          color: '#6ec6a8',
+          stroke: '#2b1b3d',
+          strokeThickness: 2 * S,
+        })
+        .setScrollFactor(0)
+        .setDepth(100);
+    } else {
+      this.gateText = null;
+    }
 
     this.createObjectivesUi();
     this.updateSurvivalHud();
@@ -1932,7 +1957,14 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.objectivesNowGoal.setText(text).setColor(color);
-    this.objectivesErrandsLine.setText(t('objectives.errandsLine'));
+
+    const hasErrands = this.features?.errands !== false;
+    this.objectivesErrandsHead?.setVisible(hasErrands);
+    this.objectivesErrandsLine?.setVisible(hasErrands);
+    this.objectivesErrandsDesc?.setVisible(hasErrands);
+    if (hasErrands) {
+      this.objectivesErrandsLine.setText(t('objectives.errandsLine'));
+    }
   }
 
   createTuningPanel() {
@@ -1991,13 +2023,18 @@ export default class Level1 extends Phaser.Scene {
 
   showIntro() {
     this.introLabel = this.add
-      .text(this.scale.width / 2, 50 * S, t('level.intro'), {
-        fontFamily: 'monospace',
-        fontSize: 12 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
-        strokeThickness: 3 * S,
-      })
+      .text(
+        this.scale.width / 2,
+        50 * S,
+        t(this.levelData.introKey || 'level.intro'),
+        {
+          fontFamily: 'monospace',
+          fontSize: 12 * S,
+          color: '#fff4e0',
+          stroke: '#2b1b3d',
+          strokeThickness: 3 * S,
+        },
+      )
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(100)
@@ -2154,6 +2191,7 @@ export default class Level1 extends Phaser.Scene {
       }
 
       if (
+        this.features.gateDefense !== false &&
         !this.gateRusherSpawned &&
         !this.gateBroken &&
         this.phaseTime <= 18
@@ -2319,6 +2357,14 @@ export default class Level1 extends Phaser.Scene {
     return ['fast', 'thief', 'brute', 'normal'][this.waveSpawned % 4];
   }
 
+  safeMinX(platform) {
+    if (platform.x !== 0) return (platform.x + 12) * S;
+    const safeZone =
+      this.levelData.safeZone ??
+      (this.features.porch !== false ? GATE_X : 0);
+    return (this.gateBroken ? 12 : safeZone) * S;
+  }
+
   roleOptions(role) {
     switch (role) {
       case 'fast':
@@ -2373,9 +2419,7 @@ export default class Level1 extends Phaser.Scene {
       sx = designX < mid ? platform.x + 24 : platform.x + platform.w - 24;
     }
 
-    // The porch (x < 160 on the first block) is a safe zone until the gate
-    // is broken.
-    const minX = (platform.x === 0 ? (this.gateBroken ? 12 : GATE_X) : platform.x + 12) * S;
+    const minX = this.safeMinX(platform);
     const maxX = (platform.x + platform.w - 12) * S;
     const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
 
@@ -2398,7 +2442,13 @@ export default class Level1 extends Phaser.Scene {
   }
 
   spawnGateRusher() {
-    if (this.gateRusherSpawned || this.gateBroken || this.won || this.gameOverFlag) {
+    if (
+      this.features.gateDefense === false ||
+      this.gateRusherSpawned ||
+      this.gateBroken ||
+      this.won ||
+      this.gameOverFlag
+    ) {
       return;
     }
     this.gateRusherSpawned = true;
@@ -2443,7 +2493,7 @@ export default class Level1 extends Phaser.Scene {
         ? platform.x + platform.w - 22
         : platform.x + 22;
     }
-    const minX = (platform.x === 0 ? (this.gateBroken ? 12 : GATE_X) : platform.x + 12) * S;
+    const minX = this.safeMinX(platform);
     const maxX = (platform.x + platform.w - 12) * S;
     const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
 
@@ -3268,7 +3318,7 @@ export default class Level1 extends Phaser.Scene {
     drawFolkCard(card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
 
     const title = this.add
-      .text(W / 2, 40 * S, t('win.title'), {
+      .text(W / 2, 40 * S, t(this.levelData.winTitleKey || 'win.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
         color: '#2f7f78',

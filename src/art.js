@@ -58,6 +58,9 @@ export function buildTextures(scene) {
   makeCloudBand(scene, 'cloudsNear', 3, 2, 4242);
   makeTown(scene);
   makeNearTown(scene);
+  makeOrillasSky(scene);
+  makeOrillasTown(scene);
+  makeOrillasNearTown(scene);
   makeAgave(scene, 'agave', false);
   makeAgave(scene, 'agaveBloom', true);
   makeAgaveField(scene);
@@ -154,6 +157,116 @@ function makeSky(scene) {
   }
 
   g.generateTexture('sky', 256, 144);
+  g.destroy();
+}
+
+function makeOrillasSky(scene) {
+  const g = gfx(scene);
+  const bands = 90;
+  const top = 0x2b5d88;
+  const mid = 0x9fc6c8;
+  const bottom = 0xf2c48c;
+  for (let i = 0; i < bands; i++) {
+    const t = i / (bands - 1);
+    const color =
+      t < 0.55
+        ? mixColor(top, mid, t / 0.55)
+        : mixColor(mid, bottom, (t - 0.55) / 0.45);
+    g.fillStyle(color, 1);
+    g.fillRect(0, Math.floor((i * 144) / bands), 256, Math.ceil(144 / bands) + 1);
+  }
+  g.generateTexture('orillasSky', 256, 144);
+  g.destroy();
+}
+
+function makeOrillasTown(scene) {
+  const g = gfx(scene);
+  const W = 320;
+  const H = 100;
+
+  // dusty mesa and fields
+  g.fillStyle(0x7e8d63, 0.65);
+  g.fillTriangle(0, 30, 70, 8, 160, 30);
+  g.fillTriangle(110, 30, 220, 12, 320, 30);
+  g.fillStyle(0xb19a68, 0.8);
+  g.fillRect(0, 26, W, 74);
+  g.fillStyle(0xd1b77e, 0.55);
+  for (let x = 0; x < W; x += 28) {
+    g.fillRect(x, 38 + (x % 3) * 3, 22, 2);
+    g.fillRect(x + 4, 46 + (x % 2) * 2, 18, 1);
+  }
+
+  // low farmhouses and a silo
+  const houses = [
+    [12, 56, 34, 24, 0xb56045, 0x6f3f31],
+    [58, 60, 42, 20, 0x5b8b7c, 0x37685d],
+    [118, 55, 30, 25, 0xd29a62, 0x8b5c3f],
+    [164, 62, 38, 18, 0x7a6961, 0x4d3d3a],
+    [224, 57, 46, 23, 0xb9875a, 0x765039],
+    [286, 63, 24, 17, 0x5b8b7c, 0x37685d],
+  ];
+  for (const [x, y, w, h, wall, roof] of houses) {
+    g.fillStyle(wall, 1);
+    g.fillRect(x, y, w, h);
+    g.fillStyle(roof, 1);
+    g.fillTriangle(x - 3, y, x + w + 3, y, x + w / 2, y - 8);
+    g.fillStyle(0xffcf6a, 0.8);
+    g.fillRect(x + 5, y + 6, 4, 4);
+    g.fillRect(x + w - 9, y + 6, 4, 4);
+  }
+  g.fillStyle(0x8d7b63, 1);
+  g.fillRect(94, 38, 14, 42);
+  g.fillStyle(0x6b5a48, 1);
+  g.fillRect(94, 38, 14, 4);
+  g.fillRect(96, 32, 10, 6);
+
+  // windmill
+  g.fillStyle(0x5c4d3f, 1);
+  g.fillRect(274, 34, 2, 38);
+  g.lineStyle(1, 0xd9b26a, 0.9);
+  g.lineBetween(275, 38, 264, 28);
+  g.lineBetween(275, 38, 286, 28);
+  g.lineBetween(275, 38, 275, 24);
+
+  g.generateTexture('orillasTown', W, H);
+  g.destroy();
+}
+
+function makeOrillasNearTown(scene) {
+  const g = gfx(scene);
+  const W = 320;
+  const H = 100;
+
+  // ditch and crop rows in the near foreground
+  g.fillStyle(0x466b62, 0.85);
+  g.fillRect(0, 62, W, 10);
+  g.fillStyle(0x7da39a, 0.55);
+  g.fillRect(8, 65, W - 16, 2);
+  g.fillStyle(0x6a8f5d, 0.8);
+  g.fillRect(0, 74, W, 26);
+  for (let x = 8; x < W; x += 22) {
+    g.fillStyle(0x9fb66c, 0.7);
+    g.fillRect(x, 77, 12, 2);
+    g.fillRect(x + 3, 82, 7, 2);
+  }
+
+  // fence posts
+  g.fillStyle(0x5c4230, 1);
+  for (let x = 4; x < W; x += 26) {
+    g.fillRect(x, 56, 2, 18);
+  }
+  g.fillStyle(0x8b6a48, 1);
+  g.fillRect(0, 60, W, 1);
+  g.fillRect(0, 66, W, 1);
+
+  // a couple of agave silhouettes
+  g.fillStyle(0x315f54, 0.9);
+  for (const [x, y] of [[44, 48], [208, 52], [306, 50]]) {
+    g.fillTriangle(x - 12, y + 12, x, y - 10, x + 1, y + 12);
+    g.fillTriangle(x - 2, y + 12, x + 10, y - 5, x + 12, y + 12);
+  }
+
+  g.generateTexture('orillasNearTown', W, H);
   g.destroy();
 }
 

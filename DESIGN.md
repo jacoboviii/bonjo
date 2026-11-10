@@ -51,13 +51,14 @@ retreat. Squirrels are opportunists who steal bones. Crows are a rare annoyance.
 **Tone:** warm, funny, non-lethal. Spanish is used naturally for place and
 flavor (`la cuadra`, `¡guau!`, `¡échale!`, `papel picado`), not as a punchline.
 
-**Map hub:** the title opens a papel-lotería map of La Cuadra. CASA is the
-current playable level; Iglesia, Mercado, Parque and Las Orillas are visible
-future landmarks. Selecting a landmark shows its description; completed levels
-receive an ink stamp and saved best score.
+**Map hub:** the title opens a papel-lotería map of La Cuadra. CASA and Las
+Orillas are playable; Iglesia, Mercado and Parque are visible future landmarks.
+Selecting a landmark shows its description; completed levels receive an ink
+stamp and saved best score.
 
-**Level data:** `src/levels/laCuadra.js` owns the world size, spawn point,
-theme texture keys, geometry, enemy/prop locations and phase timings. The shared
+**Level data:** `src/levels/laCuadra.js` and `lasOrillas.js` own world size,
+spawn point, theme texture keys, geometry, enemy/prop locations and phase
+timings. The shared
 level scene selects a config through `{ levelId }`, so future landmarks can
 become data configurations instead of copied scenes.
 
@@ -370,6 +371,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - La Cuadra: town background, flat adobe street, papel picado, porch
 - Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
+- **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
 - **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, top-dog finale, two-night win
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
@@ -400,7 +402,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | --- | --- | --- |
 | 1 | Feel | Jumps/flaps/glide feel right; sit/pant reads |
 | 2 | Survive La Cuadra | Two-day/two-night loop with health, hunger, waves, porch |
-| 3 | Las Orillas | Second biome with farm hazards, scarcity and a distinct palette |
+| 3 | Las Orillas | Playable field slice; next: farm hazards and scarcity tuning |
 | 4 | Survival depth | Upgrades, wave variants, day scavenging events |
 | 5 | Ship a demo | itch.io build, 5 playtesters, top 3 complaints |
 

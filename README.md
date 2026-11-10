@@ -27,7 +27,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   core: flat-roofed houses, a parish church, papel picado, adobe walls and
   terracotta roofs under a clear blue day sky. The fields and blue-green agave
   at the horizon and along the lots are the agricultural edges — **Las
-  Orillas** — where the next level will go.
+  Orillas** — now playable from the map as a second, field-focused level.
 - **Bonjo:** the only chow on the block. Not a killer — he **subdues** his
   rivals by out-jumping them. When beaten, a rival yelps and runs home.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
@@ -185,7 +185,8 @@ there to make them permanent.
 - Two flaps, glide, dive — each with its own animation pose
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
-- **Map hub**: a papel-lotería map of La Cuadra with CASA playable and Iglesia, Mercado, Parque and Las Orillas marked as future routes
+- **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
+- **Las Orillas**: a second playable field level with irrigation gaps, farmhouse roofs, agave rows and a distinct dusty palette
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
@@ -215,7 +216,7 @@ there to make them permanent.
 - Title, top-dog finale, win and game-over screens
 
 **Not in this build:** full menu systems, save slots, gamepad, base upgrades,
-crafting, more than one playable level, real music. (The map hub already lists
+crafting, more than two playable levels, real music. (The map hub already lists
 future landmarks; the objectives panel pauses play.)
 
 ---
@@ -236,7 +237,8 @@ bonjo/
 │   ├── progress.js         saved level completion and best scores
 │   ├── levels/
 │   │   ├── index.js        ordered landmark/level registry for the map
-│   │   └── laCuadra.js     geometry, spawn, enemies, props and timings
+│   │   ├── laCuadra.js     geometry, spawn, enemies, props and timings
+│   │   └── lasOrillas.js   field level config and agricultural theme
 │   ├── objects/
 │   │   ├── Dog.js          Bonjo's movement + sit/pant + walk cycle
 │   │   ├── RivalDog.js     patrol / bark / chase / subdue
@@ -339,8 +341,8 @@ files):
    bravo bark before the first dog.
 3. More **east-block landmarks**: a mercado interior, a basketball court,
    rooftop murals, and a second Polo window.
-4. Build **Las Orillas** — the agricultural edge: irrigation canals, agave
-   fields, crop rows, farm dogs.
+4. Expand **Las Orillas** — irrigation hazards, crop-row traversal, farm
+   animals and a unique farm-dog encounter.
 5. Camera look-down while diving; landing squash; a proper bark on flap.
 
 Only after the two-night loop feels right: dog variants, upgrades, saves,

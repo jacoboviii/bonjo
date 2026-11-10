@@ -14,6 +14,8 @@ export const laCuadra = {
     banner: 'banner',
   },
   porch: { x: 105, key: 'bonjoHouse', roofWidth: 130 },
+  safeZone: 160,
+  features: { porch: true, errands: true, gateDefense: true },
 
   platforms: [
     { x: 0, y: 600, w: 520, h: 300 }, // starting ground

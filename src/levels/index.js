@@ -1,4 +1,5 @@
 import { laCuadra } from './laCuadra.js';
+import { lasOrillas } from './lasOrillas.js';
 
 // Ordered level registry used by the map hub and, later, by progression.
 // scene: null means the landmark is visible on the map but not playable yet.
@@ -45,13 +46,13 @@ export const LEVELS = [
   },
   {
     id: 'orillas',
-    scene: null,
+    scene: 'Level1',
     icon: 'fields',
     nameKey: 'map.orillas',
     descKey: 'map.orillasDesc',
     x: 0.72,
     y: 0.78,
-    unlocked: false,
+    unlocked: true,
   },
 ];
 
@@ -61,6 +62,7 @@ export function getLevel(id) {
 
 const LEVEL_DATA = {
   laCuadra,
+  orillas: lasOrillas,
 };
 
 export function getLevelData(id) {
