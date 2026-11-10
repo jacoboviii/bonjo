@@ -158,6 +158,16 @@ function makeSky(scene) {
 
 function makeSun(scene) {
   const g = gfx(scene);
+  g.lineStyle(1, GOLD, 0.42);
+  g.lineBetween(24, 2, 24, 7);
+  g.lineBetween(24, 41, 24, 46);
+  g.lineBetween(2, 24, 7, 24);
+  g.lineBetween(41, 24, 46, 24);
+  g.lineBetween(8, 8, 12, 12);
+  g.lineBetween(36, 36, 40, 40);
+  g.lineBetween(40, 8, 36, 12);
+  g.lineBetween(12, 36, 8, 40);
+
   g.fillStyle(GOLD, 0.14);
   g.fillCircle(24, 24, 17);
   g.fillStyle(GOLD, 0.32);
@@ -173,19 +183,38 @@ function makeSun(scene) {
 function makeMoon(scene) {
   const g = gfx(scene);
 
-  // soft halo, then a pale full moon with a cool rim and a few craters
-  g.fillStyle(0x8f7ca8, 0.16);
-  g.fillCircle(24, 24, 21);
-  g.fillStyle(0xfff4e0, 1);
+  // soft halo and a shaded, cratered full moon
+  g.fillStyle(0x8f7ca8, 0.08);
+  g.fillCircle(24, 24, 22);
+  g.fillStyle(0x8f7ca8, 0.14);
+  g.fillCircle(24, 24, 18);
+  g.fillStyle(0xcbb99f, 1);
   g.fillCircle(24, 24, 16);
   g.fillStyle(0xf3dfb7, 1);
-  g.fillCircle(20, 20, 7);
-  g.fillCircle(30, 28, 5);
-  g.fillStyle(0xd9c8b0, 1);
-  g.fillCircle(18, 27, 3);
-  g.fillCircle(28, 16, 2.5);
-  g.lineStyle(1, 0xb9a9c8, 0.65);
+  g.fillCircle(23, 23, 15);
+  g.fillStyle(0xfff4e0, 1);
+  g.fillCircle(21, 21, 12);
+  g.fillStyle(0xfffbf0, 0.75);
+  g.fillCircle(18, 18, 6);
+
+  const crater = (x, y, r) => {
+    g.fillStyle(0xc7b49c, 1);
+    g.fillCircle(x, y, r);
+    g.fillStyle(0xe4d1b2, 1);
+    g.fillCircle(x - r * 0.18, y - r * 0.18, r * 0.58);
+  };
+  crater(29, 27, 4);
+  crater(18, 29, 3);
+  crater(30, 17, 2.5);
+  crater(16, 18, 2);
+
+  g.lineStyle(1, 0xb9a9c8, 0.7);
   g.strokeCircle(24, 24, 16);
+  g.fillStyle(CREAM, 0.9);
+  g.fillRect(3, 6, 1, 1);
+  g.fillRect(43, 9, 1, 1);
+  g.fillRect(6, 41, 1, 1);
+  g.fillRect(40, 39, 1, 1);
 
   g.generateTexture('moon', 48, 48);
   g.destroy();
