@@ -77,7 +77,7 @@ export function buildTextures(scene) {
   makeBike(scene, 'bikeCoral', 0xf26b5e);
   makeGate(scene);
   makeTacoCart(scene);
-  makeAbuela(scene);
+  makePolo(scene);
   makeChihuahua(scene);
   makeBell(scene);
   makeBellPost(scene);
@@ -809,36 +809,53 @@ function makeTacoCart(scene) {
   g.destroy();
 }
 
-function makeAbuela(scene) {
+function makePolo(scene) {
   const g = gfx(scene);
   const W = 16;
   const H = 28;
 
-  // skirt / shawl
-  g.fillStyle(0x6f5c86, 1);
-  g.fillRect(4, 14, 8, 12);
-  g.fillStyle(0x4a3550, 1);
-  g.fillRect(3, 25, 10, 3);
-  g.fillStyle(0xb45cd6, 1);
-  g.fillRect(3, 13, 10, 3);
-  g.fillStyle(0xffcf6a, 1);
-  g.fillRect(7, 15, 2, 2);
+  // shoes and jeans
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(3, 25, 4, 3);
+  g.fillRect(9, 25, 4, 3);
+  g.fillStyle(0x2f5f6a, 1);
+  g.fillRect(4, 16, 8, 10);
+  g.fillStyle(0x24484f, 1);
+  g.fillRect(8, 18, 1, 7);
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(4, 16, 8, 1);
 
-  // face, hair, glasses
+  // shirt / broad shoulders
+  g.fillStyle(0xe85a4f, 1);
+  g.fillRect(3, 9, 10, 8);
   g.fillStyle(0xd9a47a, 1);
-  g.fillRect(5, 5, 6, 8);
-  g.fillStyle(0xd9d0dc, 1);
-  g.fillRect(4, 3, 8, 3);
-  g.fillRect(3, 5, 2, 5);
-  g.fillRect(11, 5, 2, 5);
-  g.fillStyle(0x2b1b3d, 1);
-  g.fillRect(6, 8, 1, 1);
-  g.fillRect(9, 8, 1, 1);
-  g.fillRect(7, 9, 2, 1);
-  g.fillStyle(0xf26b5e, 1);
-  g.fillRect(7, 11, 3, 1);
+  g.fillRect(2, 10, 2, 7);
+  g.fillRect(12, 10, 2, 7);
+  g.fillStyle(0xfff4e0, 0.5);
+  g.fillRect(7, 11, 2, 4);
 
-  g.generateTexture('abuela', W, H);
+  // neck and head
+  g.fillStyle(0xd9a47a, 1);
+  g.fillRect(5, 4, 6, 6);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(4, 2, 8, 3);
+  g.fillRect(4, 4, 1, 3);
+  g.fillRect(11, 4, 1, 3);
+  // short beard + moustache
+  g.fillRect(5, 8, 6, 2);
+  g.fillRect(6, 10, 4, 1);
+  // eyes and smile
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(6, 6, 1, 1);
+  g.fillRect(9, 6, 1, 1);
+  g.fillStyle(0xb5533a, 1);
+  g.fillRect(7, 10, 2, 1);
+
+  // coral chest pocket / little apron line
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(10, 11, 2, 1);
+
+  g.generateTexture('polo', W, H);
   g.destroy();
 }
 

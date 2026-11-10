@@ -169,7 +169,7 @@ const LEDGE_FOODS = [
 const TACO_CARTS = [640, 3500];
 const TRASH_SPOTS = [960, 3820];
 const GATE_X = 160;
-const ABUELA_X = 135;
+const POLO_X = 135;
 const CHIHUAHUA_X = 88;
 const BELL_X = 2450;
 
@@ -252,7 +252,7 @@ export default class Level1 extends Phaser.Scene {
     this.rivalsSubdued = 0;
     this.score = 0;
     this.rank = 'D';
-    this.abuelaGift = true;
+    this.poloGift = true;
     this.bellRung = false;
     this.nextAlarm = 0;
     this.nextAllyBark = 0;
@@ -809,8 +809,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createAllyNpcs() {
-    this.abuela = this.add
-      .image(ABUELA_X * S, 600 * S, 'abuela')
+    this.polo = this.add
+      .image(POLO_X * S, 600 * S, 'polo')
       .setOrigin(0.5, 1)
       .setDepth(3);
 
@@ -824,8 +824,19 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0.5, 1)
       .setDepth(3);
 
-    this.abuelaIcon = this.add
-      .image(ABUELA_X * S, 600 * S - 38 * S, 'concha')
+    this.poloLabel = this.add
+      .text(POLO_X * S, 600 * S - 31 * S, 'POLO', {
+        fontFamily: 'monospace',
+        fontSize: 5 * S,
+        color: '#fff4e0',
+        stroke: '#1b1029',
+        strokeThickness: 2 * S,
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(4);
+
+    this.poloIcon = this.add
+      .image(POLO_X * S, 600 * S - 48 * S, 'concha')
       .setScale(0.6)
       .setDepth(4)
       .setAlpha(0.9);
@@ -836,7 +847,7 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0.9);
 
     this.tweens.add({
-      targets: [this.abuelaIcon, this.bellIcon],
+      targets: [this.poloIcon, this.bellIcon],
       y: '-=4',
       duration: 700,
       yoyo: true,
@@ -1017,15 +1028,15 @@ export default class Level1 extends Phaser.Scene {
     if (this.phase !== 'day') return;
 
     if (
-      this.abuelaGift &&
+      this.poloGift &&
       Phaser.Math.Distance.Between(
         this.dog.x,
         this.dog.y,
-        this.abuela.x,
-        this.abuela.y - 10 * S,
+        this.polo.x,
+        this.polo.y - 10 * S,
       ) < 56 * S
     ) {
-      this.giveAbuelaGift();
+      this.givePoloGift();
     }
 
     if (
@@ -1041,14 +1052,14 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
-  giveAbuelaGift() {
-    this.abuelaGift = false;
-    this.abuelaIcon.setVisible(false);
-    this.spawnFoodAt(this.abuela.x + 8 * S, 585 * S);
+  givePoloGift() {
+    this.poloGift = false;
+    this.poloIcon.setVisible(false);
+    this.spawnFoodAt(this.polo.x + 8 * S, 585 * S);
     sfx.eat();
     this.floatText(
-      this.abuela.x,
-      this.abuela.y - 38 * S,
+      this.polo.x,
+      this.polo.y - 38 * S,
       t('float.gift'),
       '#ffd166',
     );
@@ -1602,7 +1613,7 @@ export default class Level1 extends Phaser.Scene {
     this.goalText.setText(text).setColor(color).setAlpha(alpha);
 
     this.questText?.setVisible(
-      this.phase === 'day' && (this.abuelaGift || !this.bellRung),
+      this.phase === 'day' && (this.poloGift || !this.bellRung),
     );
   }
 
@@ -1670,7 +1681,7 @@ export default class Level1 extends Phaser.Scene {
     this.nextWave = 2;
     this.gateRusherSpawned = false;
 
-    this.abuelaIcon?.setVisible(false);
+    this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
 
     this.tweens.add({
@@ -1719,9 +1730,9 @@ export default class Level1 extends Phaser.Scene {
     this.porchGate?.clearTint().setAlpha(1);
     this.gateSign?.setVisible(true);
 
-    this.abuelaGift = true;
+    this.poloGift = true;
     this.bellRung = false;
-    this.abuelaIcon?.setVisible(true);
+    this.poloIcon?.setVisible(true);
     this.bellIcon?.setVisible(true);
 
     this.tweens.add({
@@ -2469,7 +2480,8 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar.setVisible(false);
     this.phaseText.setVisible(false);
     this.gateText?.setVisible(false);
-    this.abuelaIcon?.setVisible(false);
+    this.poloIcon?.setVisible(false);
+    this.poloLabel?.setVisible(false);
     this.bellIcon?.setVisible(false);
     this.alphaCrown?.setVisible(false);
     this.gui?.hide();

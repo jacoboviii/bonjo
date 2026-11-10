@@ -50,7 +50,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **The porch:** Bonjo's house at the start of the street is a safe zone.
   An open **CASA gateway** and painted threshold mark the line. Normal rivals
   stop there; gate rushers try to chew the gate down. If it breaks, the porch is
-  open until dawn. Abuela tosses a concha each day, the bell grants another,
+  open until dawn. Polo tosses a concha each day, the bell grants another,
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
   hunger; an empty bar starts costing health. Survive two nights; the final
@@ -115,7 +115,7 @@ On a desktop you can press **V** to show the touch buttons for testing.
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
 burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 **conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
-over bikes and trip the marked car alarm. Visit Abuela and ring the bell during
+over bikes and trip the marked car alarm. Visit Polo and ring the bell during
 the day. Survive two nights and repel the **top dog**; bones, combo and a clean
 run feed your score and rank.
 
@@ -182,7 +182,7 @@ there to make them permanent.
 - **One-way fire escapes and laundry lines** with high bones/conchas
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
-- **Abuela's daily concha**, bell blessing, and chihuahua warnings
+- **Polo's daily concha**, bell blessing, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels** that steal bones; two crows
 - **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**
@@ -294,7 +294,7 @@ files):
 | `hydrant` / `trashcan` / `planter` / `streetlamp` | 9×13 – 12×58 | street dressing |
 | `gate` | 36×30 | porch gate |
 | `tacocart` | 44×30 | hunger refill |
-| `abuela` / `chihuahua` | 16×28 / 14×14 | day NPC / warning ally |
+| `polo` / `chihuahua` | 16×28 / 14×14 | day NPC / warning ally |
 | `bell`, `bellpost` | 14×14, 18×42 | day blessing |
 | `crown` | 14×9 | top-dog marker |
 | `agave`, `agaveBloom` | 26×26, 26×38 | blue-green street/field plants |
@@ -314,7 +314,7 @@ files):
 2. Add **wave telegraphs** at the porch: door slams, gate lanterns, a longer
    bravo bark before the first dog.
 3. More **east-block landmarks**: a mercado interior, a basketball court,
-   rooftop murals, and a second Abuela window.
+   rooftop murals, and a second Polo window.
 4. Build **Las Orillas** — the agricultural edge: irrigation canals, agave
    fields, crop rows, farm dogs.
 5. Camera look-down while diving; landing squash; a proper bark on flap.

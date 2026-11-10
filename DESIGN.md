@@ -174,7 +174,7 @@ S–D rank.
 
 ### Street props and errands
 Taco carts restore hunger; trash cans burst into bones; bicycles can be knocked
-over; the marked parked car's alarm stuns nearby rivals. During the day Abuela
+over; the marked parked car's alarm stuns nearby rivals. During the day Polo
 tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
@@ -204,7 +204,7 @@ behind an open CASA gateway with a standable roof platform. Rivals won't enter
 the first 160 design px of the block, so the porch is a safe corner. The gateway
 and painted threshold mark that line: Bonjo walks through the open leaves,
 normal rivals stop at the threshold, and gate rushers chew the gate down. If it
-breaks the safe zone is open until dawn repairs it. Abuela and the chihuahua
+breaks the safe zone is open until dawn repairs it. Polo and the chihuahua
 live here. Dawn drops a concha by the door. The street is the arena; the porch
 is where you catch your breath.
 
@@ -344,7 +344,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
-- **NPCs/quests:** Abuela's concha, bell blessing, chihuahua warnings
+- **NPCs/quests:** Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
 - Rival dogs (bark/chase/subdue), squirrels (bone thieves), two crows
 - Ambient cats, birds and a rooster; fenced level ends
