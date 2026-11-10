@@ -180,7 +180,7 @@ there to make them permanent.
 - Two flaps, glide, dive — each with its own animation pose
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
-- **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
+- **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, and a night shift of skunks, hooting owls and bats
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
@@ -291,6 +291,7 @@ files):
 | `awning` | 120×36 | striped bounce canopy |
 | `bone` | 30×24 | |
 | `concha` | 18×12 | hunger pickup |
+| `sun` / `moon` | 144×144 | day sun and night moon |
 | `heart` | 15×15 | health HUD |
 | `bonjoHouse` | 390×240 | two-storey home behind the CASA gateway |
 | `ring` | 48×48 | |

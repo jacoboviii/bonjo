@@ -53,6 +53,7 @@ export function buildTextures(scene) {
 
   makeSky(scene);
   makeSun(scene);
+  makeMoon(scene);
   makeCloudBand(scene, 'cloudsFar', 5, 1, 1337);
   makeCloudBand(scene, 'cloudsNear', 3, 2, 4242);
   makeTown(scene);
@@ -157,11 +158,36 @@ function makeSky(scene) {
 
 function makeSun(scene) {
   const g = gfx(scene);
+  g.fillStyle(GOLD, 0.14);
+  g.fillCircle(24, 24, 17);
+  g.fillStyle(GOLD, 0.32);
+  g.fillCircle(24, 24, 14);
   g.fillStyle(GOLD, 1);
   g.fillCircle(24, 24, 11);
   g.fillStyle(CREAM, 1);
   g.fillCircle(20, 20, 4);
   g.generateTexture('sun', 48, 48);
+  g.destroy();
+}
+
+function makeMoon(scene) {
+  const g = gfx(scene);
+
+  // soft halo, then a pale full moon with a cool rim and a few craters
+  g.fillStyle(0x8f7ca8, 0.16);
+  g.fillCircle(24, 24, 21);
+  g.fillStyle(0xfff4e0, 1);
+  g.fillCircle(24, 24, 16);
+  g.fillStyle(0xf3dfb7, 1);
+  g.fillCircle(20, 20, 7);
+  g.fillCircle(30, 28, 5);
+  g.fillStyle(0xd9c8b0, 1);
+  g.fillCircle(18, 27, 3);
+  g.fillCircle(28, 16, 2.5);
+  g.lineStyle(1, 0xb9a9c8, 0.65);
+  g.strokeCircle(24, 24, 16);
+
+  g.generateTexture('moon', 48, 48);
   g.destroy();
 }
 

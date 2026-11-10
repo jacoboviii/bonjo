@@ -128,6 +128,9 @@ export default class TouchControls {
     if (name === 'jump') {
       if (!this.state.jumpHeld) this.jumpQueued = true;
       this.state.jumpHeld = true;
+    } else if (name === 'dive') {
+      // Dog reads this as its held down input.
+      this.state.down = true;
     } else {
       this.state[name] = true;
     }
@@ -138,6 +141,7 @@ export default class TouchControls {
 
   release(name) {
     if (name === 'jump') this.state.jumpHeld = false;
+    else if (name === 'dive') this.state.down = false;
     else this.state[name] = false;
 
     const img = this.buttons[name];
@@ -193,6 +197,7 @@ export default class TouchControls {
     this.state.left = false;
     this.state.right = false;
     this.state.down = false;
+    this.state.dive = false;
     this.state.jumpHeld = false;
     this.jumpQueued = false;
     this.interactQueued = false;

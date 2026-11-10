@@ -308,8 +308,8 @@ Rules:
 - Every interactive object gets a warm accent: piñata pink/gold, awning
   coral/cream, ring gold, concha pink.
 - Black chow always carries a lavender rim light so he reads against dark walls.
-- At night the sky goes near-black while the windows stay lit; the HUD stays
-  bright above the overlay.
+- At night the sky goes near-black while the windows stay lit; the sun sets,
+  a pale cratered moon rises above the darkness, and the HUD stays bright.
 - Title/end screens use paper lotería cards with ink borders, corner stamps and
   papel-picado strings.
 - Friendly NPC dialog uses the same paper card, with the speaker's name in an

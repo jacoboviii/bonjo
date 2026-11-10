@@ -340,6 +340,7 @@ export default class Level1 extends Phaser.Scene {
   applyLayout(W) {
     if (this.sky) this.sky.setPosition(W / 2, 72 * S).setDisplaySize(W, 144 * S);
     if (this.sun) this.sun.x = W - 51 * S;
+    if (this.moon) this.moon.x = W * 0.74;
     this.cloudsFar?.setSize(W, 64 * S);
     this.cloudsNear?.setSize(W, 64 * S);
     this.town?.setSize(W, 100 * S);
@@ -456,6 +457,13 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0.04)
       .setDepth(-29)
       .setAlpha(0.95);
+
+    this.moon = this.add
+      .image(W * 0.74, 48 * S, 'moon')
+      .setScrollFactor(0.04)
+      .setDepth(61)
+      .setAlpha(0)
+      .setVisible(false);
 
     this.cloudsFar = this.add
       .tileSprite(0, 8 * S, W, 64 * S, 'cloudsFar')
@@ -2255,6 +2263,20 @@ export default class Level1 extends Phaser.Scene {
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
 
+    this.tweens.killTweensOf([this.sun, this.moon]);
+    this.tweens.add({
+      targets: this.sun,
+      alpha: 0,
+      duration: 500,
+      onComplete: () => this.sun?.setVisible(false),
+    });
+    this.moon.setVisible(true).setAlpha(0);
+    this.tweens.add({
+      targets: this.moon,
+      alpha: 0.96,
+      duration: 900,
+    });
+
     this.tweens.add({
       targets: this.nightOverlay,
       alpha: 0.45,
@@ -2307,6 +2329,20 @@ export default class Level1 extends Phaser.Scene {
     this.bellRung = false;
     this.poloIcon?.setVisible(true);
     this.bellIcon?.setVisible(true);
+
+    this.tweens.killTweensOf([this.sun, this.moon]);
+    this.tweens.add({
+      targets: this.moon,
+      alpha: 0,
+      duration: 500,
+      onComplete: () => this.moon?.setVisible(false),
+    });
+    this.sun.setVisible(true).setAlpha(0);
+    this.tweens.add({
+      targets: this.sun,
+      alpha: 0.95,
+      duration: 900,
+    });
 
     this.tweens.add({
       targets: this.nightOverlay,
