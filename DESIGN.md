@@ -321,28 +321,31 @@ Rules:
 
 ## 10. Audio
 
-Synthesized WebAudio, no files:
+Layered WebAudio synthesis, no files. Filtered noise, pitch envelopes and a
+little additive shimmer give each event a physical texture; one master
+compressor keeps mobile speakers from clipping.
 
 | Event | Sound |
 | --- | --- |
-| Jump / flap | short square / triangle sweep |
-| Bone | two sine pings |
-| Ring | sine sweep up |
+| Jump / flap | cloth-noise whoosh + body accent / two feathery air bursts |
+| Footstep / landing | quiet surface tap / low body thump and grit |
+| Bone | wooden clack + bright chime |
+| Ring | filtered strike + metallic partials |
 | Squirrel steal | two-note chatter |
-| Rival bark | low double woof |
-| Rival subdued | descending yelp |
-| Cat hiss | short saw/square snarl |
-| Bird scatter / chirp | two quick high sine chirps |
-| Crow caw | low saw/square squawk |
-| Owl hoot | two low sine hoots |
-| Rooster | three-note dawn crow |
-| Piñata hit / burst | wooden thock / short arpeggio |
-| Awning | springy sine sweep |
-| Concha | short crunch |
-| Night falls | low bell |
-| Dawn | rising three-note chime |
-| Hurt | sawtooth fall |
-| Game over | descending sawtooth |
+| Rival bark | chest-noise transient + filtered canine woof |
+| Rival subdued | descending, vibrating yelp |
+| Cat hiss | breathy band-passed noise |
+| Bird scatter / chirp | quick shimmering sine chirps |
+| Crow caw | filtered squawk with a second throaty pulse |
+| Owl hoot | two soft, close sine hoots with breath |
+| Rooster | three filtered, vibrating dawn calls |
+| Piñata hit / burst | wooden thock / crack + short arpeggio |
+| Awning | springy pitch-bend with vibrato |
+| Concha | layered crunch |
+| Night falls | low drone, wind and dark chime |
+| Dawn | rising filtered chime and breeze |
+| Hurt | impact thud + short pained cry |
+| Game over | low fall, grit and descending tone |
 | Checkpoint / win | chime / four-note fanfare |
 
 Music later: one loop per barrio, low-passed, with marimba/requinto colors.

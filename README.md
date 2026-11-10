@@ -200,7 +200,7 @@ there to make them permanent.
 - A longer east block, extra hazards and a second checkpoint
 - Fenced level boundaries so Bonjo cannot run off the last platform
 - Pits cost a heart and respawn; 0 hearts ends the run
-- Camera look-ahead; synthesized SFX
+- Camera look-ahead; layered, filtered synthesized SFX with footsteps, landings and animal calls
 - **3× internal render resolution** for crisper pixel art without changing the screen layout
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
@@ -224,7 +224,7 @@ bonjo/
 │   ├── scale.js            SCALE=3 (432px render of a 256×144 design view)
 │   ├── tuning.js           EVERY feel number, commented  ← start here
 │   ├── art.js              all pixel textures, town, characters, props
-│   ├── sfx.js              tiny WebAudio sound effects
+│   ├── sfx.js              layered WebAudio sound effects
 │   ├── objects/
 │   │   ├── Dog.js          Bonjo's movement + sit/pant + walk cycle
 │   │   ├── RivalDog.js     patrol / bark / chase / subdue

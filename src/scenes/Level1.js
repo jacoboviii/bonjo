@@ -2693,6 +2693,14 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(this.dog.x, this.dog.y + 7 * S, 0.8);
   }
 
+  onLand() {
+    sfx.land();
+  }
+
+  onFootstep() {
+    sfx.footstep();
+  }
+
   onFlap() {
     sfx.flap();
     this.spawnPuff(this.dog.x - this.dog.facing * 3 * S, this.dog.y + 5 * S, 0.65);
