@@ -859,7 +859,7 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0.5, 1)
       .setDepth(2);
 
-    // Bonjo's own roof is a one-way platform.
+    // Bonjo's existing roofline is a one-way standable platform.
     const roof = this.add.zone(105 * S, (520 + 3) * S, 130 * S, 6 * S);
     this.physics.add.existing(roof, true);
     roof.body.checkCollision.down = false;

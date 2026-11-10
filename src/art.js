@@ -1245,8 +1245,7 @@ function makeForegroundHouse(scene, key, body, roof, trim) {
 }
 
 // Strings of papel picado across the street.
-function makeBanner(scene) {
-  const g = gfx(scene);
+function makeBanner(scene) {  const g = gfx(scene);
   const W = 320;
   const H = 14;
   const colors = [0xf26b5e, 0x6ec6a8, 0xffd166, 0xb45cd6];
