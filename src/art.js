@@ -220,11 +220,8 @@ function makeTown(scene) {
   const buildings = [
     { x: -12, w: 36, h: 30, c: 0x8a5a44, r: 0x5a3328, win: 2 },
     { x: 26, w: 30, h: 38, c: 0x9a6a4a, r: 0x5a3328, win: 2 },
-    { x: 58, w: 34, h: 24, c: 0x6f8a80, r: 0x4a2f2a, win: 2 },
     { x: 94, w: 26, h: 34, c: 0x9a7a4f, r: 0x5a3328, win: 2 },
-    { x: 122, w: 40, h: 28, c: 0x8a4f3a, r: 0x4a2f2a, win: 3 },
     { x: 164, w: 30, h: 40, c: 0x7a6a52, r: 0x5a3328, win: 2 },
-    { x: 196, w: 26, h: 26, c: 0x8f6a55, r: 0x4a2f2a, win: 2 },
     { x: 254, w: 34, h: 32, c: 0x9a5f4a, r: 0x5a3328, win: 2 },
     { x: 290, w: 30, h: 36, c: 0x6f8a80, r: 0x4a2f2a, win: 2 },
   ];
@@ -280,7 +277,7 @@ function makeTown(scene) {
   for (const off of [-W, 0, W]) {
     g.fillStyle(0x2b1b3d, 1);
     g.fillRect(46 + off, 34, 1, 8);
-    g.fillRect(150 + off, 30, 1, 10);
+    g.fillRect(170 + off, 30, 1, 10);
     g.fillStyle(0x6f8a80, 1);
     g.fillRect(100 + off, 36, 8, 6);
     g.fillRect(102 + off, 33, 4, 3);
@@ -303,13 +300,12 @@ function makeNearTown(scene) {
 
   const blocks = [
     { x: 0, w: 44, top: 50, body: 0x7d4b58, roof: 0x382431, trim: 0xa86570, a: 0xf26b5e, b: 0xfff4e0, sign: 0xffd166 },
-    { x: 48, w: 38, top: 60, body: 0x5d7a74, roof: 0x2c3b39, trim: 0x82a39a, a: 0x6ec6a8, b: 0x1b1029, sign: 0xf26b5e },
-    { x: 90, w: 34, top: 46, body: 0x8a5a44, roof: 0x3f2927, trim: 0xb07a5a, a: 0xffd166, b: 0x8a4f3a, sign: 0x6ec6a8 },
-    { x: 128, w: 40, top: 63, body: 0x655a78, roof: 0x30263c, trim: 0x8b7ea0, a: 0xb45cd6, b: 0xfff4e0, sign: 0xffd166 },
-    { x: 172, w: 32, top: 53, body: 0x7a4f3a, roof: 0x38241f, trim: 0xa26b4d, a: 0xf0a03c, b: 0xfff4e0, sign: 0x6ec6a8 },
-    // 208..252 is an alley: leave the parish church tower visible behind it.
-    { x: 252, w: 38, top: 57, body: 0x4f6f6a, roof: 0x293c3a, trim: 0x78a39a, a: 0x6ec6a8, b: 0xfff4e0, sign: 0xf26b5e },
-    { x: 294, w: 26, top: 66, body: 0x8a4f5f, roof: 0x3a2430, trim: 0xb06a78, a: 0xf26b5e, b: 0xfff4e0, sign: 0xffd166 },
+    { x: 58, w: 34, top: 58, body: 0x5d7a74, roof: 0x2c3b39, trim: 0x82a39a, a: 0x6ec6a8, b: 0x1b1029, sign: 0xf26b5e },
+    { x: 104, w: 38, top: 46, body: 0x8a5a44, roof: 0x3f2927, trim: 0xb07a5a, a: 0xffd166, b: 0x8a4f3a, sign: 0x6ec6a8 },
+    { x: 154, w: 30, top: 61, body: 0x655a78, roof: 0x30263c, trim: 0x8b7ea0, a: 0xb45cd6, b: 0xfff4e0, sign: 0xffd166 },
+    // 184..252 is open field + church alley; keep the tower visible.
+    { x: 252, w: 40, top: 56, body: 0x4f6f6a, roof: 0x293c3a, trim: 0x78a39a, a: 0x6ec6a8, b: 0xfff4e0, sign: 0xf26b5e },
+    // 292..320 stays an open planted edge.
   ];
 
   // low fence / retaining wall in the church alley
@@ -333,6 +329,17 @@ function makeNearTown(scene) {
   alleyAgave(215);
   alleyAgave(231);
   alleyAgave(245);
+
+  // planted lots between the thinner row of houses
+  g.fillStyle(0x6b4a35, 1);
+  g.fillRect(184, 86, 24, 10);
+  g.fillRect(292, 86, 28, 10);
+  g.fillStyle(0x54382b, 1);
+  for (let x = 184; x < 320; x += 6) g.fillRect(x, 90, 3, 1);
+  alleyAgave(190);
+  alleyAgave(202);
+  alleyAgave(298);
+  alleyAgave(309);
 
   const drawBlock = (b) => {
     const x = b.x;
