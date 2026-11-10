@@ -23,10 +23,13 @@ const WORLD_H = 900 * S;
 const PLATFORMS = [
   { x: 0, y: 600, w: 520, h: 300 }, // starting ground
   { x: 600, y: 600, w: 400, h: 300 },
+  { x: 1000, y: 600, w: 100, h: 300 }, // filled under the first foreground house
   { x: 1100, y: 600, w: 400, h: 300 },
   { x: 1620, y: 600, w: 380, h: 300 },
+  { x: 2000, y: 600, w: 100, h: 300 }, // filled under the second foreground house
   { x: 2100, y: 600, w: 400, h: 300 }, // checkpoint block
   { x: 2620, y: 600, w: 380, h: 300 },
+  { x: 3000, y: 600, w: 80, h: 300 }, // filled under the third foreground house
   { x: 3080, y: 600, w: 120, h: 300 },
   { x: 3260, y: 600, w: 340, h: 300 }, // east block
   { x: 3660, y: 600, w: 300, h: 300 },
@@ -544,14 +547,24 @@ export default class Level1 extends Phaser.Scene {
     this.foregroundHouseGroup = this.physics.add.staticGroup();
 
     for (const h of FOREGROUND_HOUSES) {
-      const house = this.add
+      // Decorative facade: no wall body, so Bonjo walks in front of it.
+      this.add
         .image(h.x * S, 520 * S, h.key)
         .setOrigin(0.5, 0)
         .setDepth(4);
-      this.physics.add.existing(house, true);
-      house.body.setSize(70 * S, 80 * S).setOffset(0, 0);
-      house.body.updateFromGameObject?.();
-      this.foregroundHouseGroup.add(house);
+
+      // Invisible one-way rooftop platform.
+      const roof = this.add.zone(
+        h.x * S,
+        (520 + 3) * S,
+        70 * S,
+        6 * S,
+      );
+      this.physics.add.existing(roof, true);
+      roof.body.checkCollision.down = false;
+      roof.body.checkCollision.left = false;
+      roof.body.checkCollision.right = false;
+      this.foregroundHouseGroup.add(roof);
     }
   }
 
@@ -1104,7 +1117,13 @@ export default class Level1 extends Phaser.Scene {
     this.controls.consumeTouchJump = () => this.touch.consumeJump();
 
     this.physics.add.collider(this.dog, this.platforms);
-    this.physics.add.collider(this.dog, this.foregroundHouseGroup);
+    this.physics.add.collider(
+      this.dog,
+      this.foregroundHouseGroup,
+      null,
+      this.canLandOnLedge,
+      this,
+    );
     this.physics.add.collider(
       this.dog,
       this.oneWayGroup,

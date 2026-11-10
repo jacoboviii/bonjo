@@ -41,8 +41,8 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   flaps. Chain them with the gold rings.
 - **High routes:** one-way fire escapes and laundry lines hide bones and
   conchas above the street. Jump up through them and land on top.
-- **Foreground houses:** three solid houses rise from the wide gaps; their
-  rooftops are standable platforms.
+- **Foreground houses:** three foreground homes sit on the sidewalk; their
+  facades do not block movement, and their rooftops are one-way platforms.
 - **Street life:** taco carts restore hunger, trash cans burst into bones,
   bicycles can be knocked over, and one parked car has an alarm that stuns
   nearby rivals.

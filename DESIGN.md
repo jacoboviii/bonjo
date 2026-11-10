@@ -224,9 +224,10 @@ blue mountains, fields/agave, low houses with lit windows, a church tower and
 cross, papel picado. A closer, faster parallax storefront row adds awnings,
 balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
-edges surround the street. A few solid foreground houses rise from the wide gaps
-with standable rooftops. The town layers are anchored to the street's world Y
-so they sit on the sidewalk, and a light blue haze keeps the play lane readable.
+edges surround the street. A few foreground houses sit on the sidewalk with
+non-blocking facades and one-way rooftop platforms; the floor gaps beneath them
+are filled. The town layers are anchored to the street's world Y so they sit on
+the sidewalk, and a light blue haze keeps the play lane readable.
 
 Beat sheet:
 
