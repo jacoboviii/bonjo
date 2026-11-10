@@ -14,12 +14,14 @@ import { drawFolkCard } from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
 
 const S = SCALE;
+// Small UI offsets were authored in the old 2x render space.
+const U = S / 2;
 
 const WORLD_W = 4200 * S;
 const WORLD_H = 900 * S;
 
 // x,y,w,h in design pixels (the 256x144 space). x,y is the top-left corner.
-// Everything is multiplied by S when it is placed in the 2x world.
+// Everything is multiplied by S when it is placed in the 3x world.
 const PLATFORMS = [
   { x: 0, y: 600, w: 520, h: 300 }, // starting ground
   { x: 600, y: 600, w: 400, h: 300 },
@@ -321,7 +323,7 @@ export default class Level1 extends Phaser.Scene {
   // Re-anchor width-dependent UI/backgrounds without restarting the run.
   applyLayout(W) {
     if (this.sky) this.sky.setPosition(W / 2, 72 * S).setDisplaySize(W, 144 * S);
-    if (this.sun) this.sun.x = W - 102;
+    if (this.sun) this.sun.x = W - 51 * S;
     this.cloudsFar?.setSize(W, 64 * S);
     this.cloudsNear?.setSize(W, 64 * S);
     this.town?.setSize(W, 100 * S);
@@ -349,7 +351,7 @@ export default class Level1 extends Phaser.Scene {
     if (!e?.overlay?.active) return;
     e.overlay.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     if (e.card) {
-      drawFolkCard(e.card, W / 2, 144, Math.min(W - 64, 440), 220);
+      drawFolkCard(e.card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
     }
     e.title.x = W / 2;
     e.stats.x = W / 2;
@@ -432,7 +434,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(-30);
     this.sun = this.add
-      .image(W - 102, 56 * S, 'sun')
+      .image(W - 51 * S, 56 * S, 'sun')
       .setScrollFactor(0.04)
       .setDepth(-29)
       .setAlpha(0.95);
@@ -540,7 +542,7 @@ export default class Level1 extends Phaser.Scene {
     for (const p of PLATFORMS) {
       const key = `plat_${p.x}_${p.y}_${p.w}_${p.h}`;
       const seed = (p.x * 73856093) ^ (p.y * 19349663) ^ (p.w * 83492791);
-      // art is generated at 2x from these design dimensions
+      // art is generated at 3x from these design dimensions
       makePlatformTexture(this, key, p.w, p.h, seed);
       const img = this.platforms.create(
         (p.x + p.w / 2) * S,
@@ -1594,15 +1596,15 @@ export default class Level1 extends Phaser.Scene {
   layoutDialog(W = this.scale.width) {
     if (!this.dialogRoot) return;
 
-    const w = Math.min(W - 32, 430);
-    const h = 72;
-    this.dialogRoot.setPosition(W / 2, this.scale.height - 54);
+    const w = Math.min(W - 32 * U, 430 * U);
+    const h = 72 * U;
+    this.dialogRoot.setPosition(W / 2, this.scale.height - 54 * U);
     drawFolkCard(this.dialogCard, 0, 0, w, h);
 
-    this.dialogName.setPosition(-w / 2 + 22, -h / 2 + 9);
-    this.dialogBody.setPosition(-w / 2 + 22, -h / 2 + 30);
-    this.dialogBody.setWordWrapWidth(w - 44);
-    this.dialogHint.setPosition(w / 2 - 18, h / 2 - 8);
+    this.dialogName.setPosition(-w / 2 + 22 * U, -h / 2 + 9 * U);
+    this.dialogBody.setPosition(-w / 2 + 22 * U, -h / 2 + 30 * U);
+    this.dialogBody.setWordWrapWidth(w - 44 * U);
+    this.dialogHint.setPosition(w / 2 - 18 * U, h / 2 - 8 * U);
     this.dialogHint.setText(
       this.touch?.visible ? t('dialog.closeTouch') : t('dialog.close'),
     );
@@ -2842,7 +2844,7 @@ export default class Level1 extends Phaser.Scene {
       .graphics()
       .setScrollFactor(0)
       .setDepth(201);
-    drawFolkCard(card, W / 2, 144, Math.min(W - 64, 440), 220);
+    drawFolkCard(card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
 
     const title = this.add
       .text(W / 2, 40 * S, t('gameover.title'), {
@@ -2949,7 +2951,7 @@ export default class Level1 extends Phaser.Scene {
       .graphics()
       .setScrollFactor(0)
       .setDepth(201);
-    drawFolkCard(card, W / 2, 144, Math.min(W - 64, 440), 220);
+    drawFolkCard(card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
 
     const title = this.add
       .text(W / 2, 40 * S, t('win.title'), {

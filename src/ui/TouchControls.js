@@ -1,11 +1,15 @@
 // ---------------------------------------------------------------------------
 // On-screen controls for phones/tablets. Buttons live in screen space at the
-// game's render resolution (288px tall, width varies with the landscape aspect),
+// game's render resolution (432px tall, width varies with the landscape aspect),
 // so they scale with the game.
 //
 // Left/right are held and support dragging from one to the other without
 // lifting your finger. Jump is a tap for flap and a hold for glide. Dive is
 // held. Multi-touch is enabled, so you can run and flap at the same time.
+import { SCALE } from '../scale.js';
+
+const U = SCALE / 2;
+
 // ---------------------------------------------------------------------------
 export default class TouchControls {
   constructor(scene) {
@@ -29,11 +33,11 @@ export default class TouchControls {
     scene.input.addPointer(3);
 
     const W = scene.scale.width;
-    this.addButton('left', 56, 240, 'btn-left', 0.9);
-    this.addButton('right', 128, 240, 'btn-right', 0.9);
-    this.addButton('jump', W - 60, 228, 'btn-jump', 1.05);
-    this.addButton('dive', W - 128, 254, 'btn-dive', 0.8);
-    this.addButton('interact', W / 2, 250, 'btn-interact', 0.85);
+    this.addButton('left', 56 * U, 240 * U, 'btn-left', 0.9);
+    this.addButton('right', 128 * U, 240 * U, 'btn-right', 0.9);
+    this.addButton('jump', W - 60 * U, 228 * U, 'btn-jump', 1.05);
+    this.addButton('dive', W - 128 * U, 254 * U, 'btn-dive', 0.8);
+    this.addButton('interact', W / 2, 250 * U, 'btn-interact', 0.85);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
     scene.input.on('pointerup', (pointer) => this.onUp(pointer));
@@ -43,8 +47,8 @@ export default class TouchControls {
   }
 
   relayout(width = this.scene.scale.width) {
-    if (this.buttons.jump) this.buttons.jump.x = width - 60;
-    if (this.buttons.dive) this.buttons.dive.x = width - 128;
+    if (this.buttons.jump) this.buttons.jump.x = width - 60 * U;
+    if (this.buttons.dive) this.buttons.dive.x = width - 128 * U;
     if (this.buttons.interact) this.buttons.interact.x = width / 2;
   }
 
@@ -112,7 +116,7 @@ export default class TouchControls {
   directionAt(x, y) {
     for (const name of ['left', 'right']) {
       const img = this.buttons[name];
-      const half = 32 * this.baseScale[name];
+      const half = 32 * U * this.baseScale[name];
       if (Math.abs(x - img.x) <= half && Math.abs(y - img.y) <= half) {
         return name;
       }

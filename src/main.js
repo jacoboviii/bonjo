@@ -4,8 +4,8 @@ import Title from './scenes/Title.js';
 import Level1 from './scenes/Level1.js';
 import { GAME_W, GAME_H } from './scale.js';
 
-// The height is fixed at 288 (2x the 144 design height). The width follows the
-// device's landscape aspect ratio, clamped to 512..960, so a 19.5:9 phone gets
+// The height is fixed at 432 (3x the 144 design height). The width follows the
+// device's landscape aspect ratio, clamped to 768..1280, so a 19.5:9 phone gets
 // a wider internal canvas that still fills the screen with no side bars.
 export const GAME_WIDTH = calculateWidth();
 export const GAME_HEIGHT = GAME_H;
@@ -23,7 +23,7 @@ function calculateWidth() {
   const long = Math.max(vw, vh);
   const short = Math.max(1, Math.min(vw, vh));
   const aspect = long / short;
-  return Math.max(GAME_W, Math.min(960, Math.round(GAME_H * aspect)));
+  return Math.max(GAME_W, Math.min(1280, Math.round(GAME_H * aspect)));
 }
 
 const game = new Phaser.Game({

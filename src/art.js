@@ -17,7 +17,7 @@ const ORANGE = 0xf0a03c;
 const ORANGE_DARK = 0xc97a25;
 
 // Every drawing call is written in design units (as if the game were 256x144)
-// and scaled here by SCALE, so textures are generated at 2x resolution.
+// and scaled here by SCALE, so textures are generated at 3x resolution.
 function gfx(scene) {
   const k = SCALE;
   const g = scene.make.graphics({ x: 0, y: 0, add: false });
@@ -1298,15 +1298,55 @@ const CHOW_TONGUE_DARK = 0x8a3fb0;
 const CHOW_AMBER = 0xffcf5c;
 const CHOW_INK = 0x0d0813;
 
-function rawGfx(scene) {
-  return scene.make.graphics({ x: 0, y: 0, add: false });
+// Raw art is authored in the old 2x world space. Scale it with the render
+// resolution so hand-drawn props and enemies keep their size and gain detail.
+function rawGfx(scene, k = SCALE / 2) {
+  const g = scene.make.graphics({ x: 0, y: 0, add: false });
+  return {
+    raw: g,
+    fillStyle: (color, alpha) => g.fillStyle(color, alpha),
+    fillRect: (x, y, w, h) =>
+      g.fillRect(
+        Math.round(x * k),
+        Math.round(y * k),
+        Math.max(1, Math.round(w * k)),
+        Math.max(1, Math.round(h * k)),
+      ),
+    fillCircle: (x, y, r) =>
+      g.fillCircle(Math.round(x * k), Math.round(y * k), Math.max(1, Math.round(r * k))),
+    fillTriangle: (x1, y1, x2, y2, x3, y3) =>
+      g.fillTriangle(
+        Math.round(x1 * k),
+        Math.round(y1 * k),
+        Math.round(x2 * k),
+        Math.round(y2 * k),
+        Math.round(x3 * k),
+        Math.round(y3 * k),
+      ),
+    lineStyle: (width, color, alpha) =>
+      g.lineStyle(Math.max(1, width * k), color, alpha),
+    lineBetween: (x1, y1, x2, y2) =>
+      g.lineBetween(
+        Math.round(x1 * k),
+        Math.round(y1 * k),
+        Math.round(x2 * k),
+        Math.round(y2 * k),
+      ),
+    strokeCircle: (x, y, r) =>
+      g.strokeCircle(Math.round(x * k), Math.round(y * k), Math.round(r * k)),
+    generateTexture: (key, w, h) =>
+      g.generateTexture(key, Math.round(w * k), Math.round(h * k)),
+    destroy: () => g.destroy(),
+  };
 }
 
 // Draw the raw character art on a denser grid while keeping its compact
 // in-game footprint. Coordinates are rounded so the result still reads as
 // crisp pixel art rather than a blurry upscale.
 function denseRawGfx(scene, k) {
-  const g = rawGfx(scene);
+  // The wrapper's coordinates are already in source pixels; do not apply the
+  // raw-art world scale on top of the requested density.
+  const g = rawGfx(scene, 1);
   const px = (v) => Math.round(v * k);
   return {
     raw: g,
@@ -1321,10 +1361,12 @@ function denseRawGfx(scene, k) {
   };
 }
 
-// The chow is drawn directly at 32x32 (2x the design grid) so it can hold
-// finer detail than the rest of the placeholder art.
+// The chow is drawn on a 32x32 design grid at a denser source resolution so
+// it holds finer detail than the rest of the placeholder art.
 function makeDog(scene, key, pose) {
-  const g = denseRawGfx(scene, 1.25);
+  // The hero is drawn denser than the surrounding cast: its 32-unit art grid
+  // gets extra source pixels while the collision footprint stays unchanged.
+  const g = denseRawGfx(scene, 1.25 * (SCALE / 2));
 
   // curled fluffy tail over the back
   g.fillStyle(CHOW_DARK, 1);
@@ -1529,35 +1571,46 @@ function makeDog(scene, key, pose) {
   g.fillRect(28, 7, 2, 1);
 
   // Denser pixel pass: tiny rim lights, toe claws, eye/collar glints.
+  // These coordinates were authored in the old 2x source grid, so scale them
+  // by the same amount as the rest of the render.
   const r = g.raw;
+  const d = SCALE / 2;
+  const dot = (x, y, w = 1, h = 1) =>
+    r.fillRect(
+      Math.round(x * d),
+      Math.round(y * d),
+      Math.max(1, Math.round(w * d)),
+      Math.max(1, Math.round(h * d)),
+    );
+
   r.fillStyle(CHOW_RIM, 1);
-  r.fillRect(9, 12, 1, 1);
-  r.fillRect(2, 16, 1, 1);
-  r.fillRect(27, 13, 1, 1);
-  r.fillRect(14, 18, 1, 1);
+  dot(9, 12);
+  dot(2, 16);
+  dot(27, 13);
+  dot(14, 18);
   r.fillStyle(CREAM, 1);
-  r.fillRect(30, 14, 1, 1);
+  dot(30, 14);
   r.fillStyle(CHOW_LIGHT, 1);
-  r.fillRect(15, 29, 2, 1);
+  dot(15, 29, 2, 1);
   r.fillStyle(GOLD, 1);
-  r.fillRect(23, 29, 1, 1);
+  dot(23, 29);
 
   if (pose === 'walkA') {
     r.fillStyle(CHOW_LIGHT, 1);
-    r.fillRect(7, 38, 2, 1);
-    r.fillRect(26, 38, 2, 1);
+    dot(7, 38, 2, 1);
+    dot(26, 38, 2, 1);
   } else if (pose === 'walkB') {
     r.fillStyle(CHOW_LIGHT, 1);
-    r.fillRect(12, 38, 2, 1);
-    r.fillRect(20, 38, 2, 1);
+    dot(12, 38, 2, 1);
+    dot(20, 38, 2, 1);
   } else if (pose === 'walkC') {
     r.fillStyle(CHOW_LIGHT, 1);
-    r.fillRect(9, 38, 2, 1);
-    r.fillRect(27, 38, 2, 1);
+    dot(9, 38, 2, 1);
+    dot(27, 38, 2, 1);
   } else if (pose === 'walkD') {
     r.fillStyle(CHOW_LIGHT, 1);
-    r.fillRect(14, 38, 2, 1);
-    r.fillRect(22, 38, 2, 1);
+    dot(14, 38, 2, 1);
+    dot(22, 38, 2, 1);
   }
 
   g.generateTexture(key, 32, 32);

@@ -30,7 +30,11 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     // Keep the collider on whole world pixels. A fractional offset makes an
     // idle body land on a half-pixel seam, which can shimmer as the camera
     // follows it across a platform.
-    this.body.setSize(13 * S, 16.5 * S).setOffset(7, 7);
+    const bodyW = Math.round((13 * S) / 2) * 2;
+    const bodyH = Math.round(16.5 * S);
+    this.body
+      .setSize(bodyW, bodyH)
+      .setOffset((this.width - bodyW) / 2, this.height - bodyH);
     this.body.setMaxVelocity(430 * S, 1200 * S);
 
     this.controls = { cursors: null, wasd: null };
@@ -284,9 +288,9 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     const stretch = 0.8 + Math.sin(this.tonguePhase * 1.4) * 0.2;
     const wobble = Math.sin(this.tonguePhase) * 0.2;
 
-    // mouth position in sprite space (40x40 texture, facing right)
-    const ox = 17.5 * this.facing;
-    const oy = 2.5;
+    // Mouth position in world space (the texture density scales with SCALE).
+    const ox = 8.75 * S * this.facing;
+    const oy = 1.25 * S;
     const rot = this.rotation;
     const rx = ox * Math.cos(rot) - oy * Math.sin(rot);
     const ry = ox * Math.sin(rot) + oy * Math.cos(rot);

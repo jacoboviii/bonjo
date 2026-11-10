@@ -4,7 +4,7 @@
 **Genre:** Turf-defense survival platformer
 **Platform:** Browser (desktop first), mobile touch supported
 **Engine:** Phaser 3.90 + Vite + JavaScript, Arcade Physics
-**Render:** 288px tall (2× the 144-unit design height); internal width follows the device landscape aspect (512px at 16:9, up to 960px on wide phones) so the canvas fills the screen
+**Render:** 432px tall (3× the 144-unit design height); internal width follows the device landscape aspect (768px at 16:9, up to 1280px on wide screens) so the canvas fills the screen
 **Pitch:** Bonjo is the only chow on the block. By day he scavenges the barrio;
 by night he holds the street against waves of rival dogs. Survive two nights,
 keep the block, and don't run out of conchas.
@@ -101,7 +101,7 @@ direction arrows, and a portrait "rotate your phone" screen.
 ## 5. Movement specification (current defaults)
 
 All values live in `src/tuning.js`; the tuning panel edits them live. Distances
-are design pixels (1 design px = 2 render px).
+are design pixels (1 design px = 3 render px).
 
 | Parameter | Value | Why |
 | --- | --- | --- |
@@ -223,7 +223,7 @@ Night 2 and repelling the top dog.
 
 ## 7. Level 1 — La Cuadra (urban core)
 
-World 4200×900 design px. The camera shows 144 design units vertically (288px
+World 4200×900 design px. The camera shows 144 design units vertically (432px
 render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town under a clear blue day sky:

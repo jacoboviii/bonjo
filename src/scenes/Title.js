@@ -4,6 +4,8 @@ import { t, getLang, setLang, toggleLang } from '../i18n.js';
 import { drawFolkCard } from '../ui/FolkCard.js';
 
 const S = SCALE;
+// Small UI offsets were authored in the old 2x render space.
+const U = S / 2;
 
 export default class Title extends Phaser.Scene {
   constructor() {
@@ -17,7 +19,7 @@ export default class Title extends Phaser.Scene {
     const H = this.scale.height;
 
     this.add.image(W / 2, H / 2, 'sky').setDisplaySize(W, H);
-    this.add.image(W - 102, 52 * S, 'sun').setScale(1.4).setAlpha(0.95);
+    this.add.image(W - 51 * S, 52 * S, 'sun').setScale(1.4).setAlpha(0.95);
 
     this.far = this.add
       .tileSprite(0, 8 * S, W, 64 * S, 'cloudsFar')
@@ -62,16 +64,16 @@ export default class Title extends Phaser.Scene {
     drawFolkCard(
       this.titleCard,
       W / 2,
-      135,
-      Math.min(W - 64, 340),
-      230,
+      135 * U,
+      Math.min(W - 64 * U, 340 * U),
+      230 * U,
     );
 
     // a very good dog, sitting and panting
     this.dogGroup = this.add.container(W / 2, 92 * S).setDepth(3);
     const dog = this.add.sprite(0, 0, 'dogSit').setScale(1.5);
     const tongue = this.add
-      .image(14 * 1.5, 2 * 1.5, 'tongue')
+      .image(14 * 1.5 * U, 2 * 1.5 * U, 'tongue')
       .setOrigin(0.5, 0)
       .setScale(1.5);
     this.dogGroup.add([dog, tongue]);
@@ -104,30 +106,30 @@ export default class Title extends Phaser.Scene {
     this.add
       .text(W / 2, 28 * S, 'BONJO', {
         fontFamily: 'monospace',
-        fontSize: 64,
+        fontSize: 64 * U,
         color: '#c94f3d',
         stroke: '#1d1326',
-        strokeThickness: 12,
+        strokeThickness: 12 * U,
       })
       .setOrigin(0.5);
 
     this.add
       .text(W / 2, 48 * S, t('title.subtitle'), {
         fontFamily: 'monospace',
-        fontSize: 16,
+        fontSize: 16 * U,
         color: '#1d1326',
         stroke: '#f4dfb0',
-        strokeThickness: 2,
+        strokeThickness: 2 * U,
       })
       .setOrigin(0.5);
 
     this.add
       .text(W / 2, 64 * S, t('title.place'), {
         fontFamily: 'monospace',
-        fontSize: 10,
+        fontSize: 10 * U,
         color: '#2f7f78',
         stroke: '#f4dfb0',
-        strokeThickness: 2,
+        strokeThickness: 2 * U,
       })
       .setOrigin(0.5);
 
@@ -141,10 +143,10 @@ export default class Title extends Phaser.Scene {
         t(isTouch ? 'title.startTouch' : 'title.startKeyboard'),
         {
           fontFamily: 'monospace',
-          fontSize: 20,
+          fontSize: 20 * U,
           color: '#c94f3d',
           stroke: '#1d1326',
-          strokeThickness: 5,
+          strokeThickness: 5 * U,
         },
       )
       .setOrigin(0.5);
@@ -160,10 +162,10 @@ export default class Title extends Phaser.Scene {
     this.add
       .text(W / 2, 133 * S, t('title.controls'), {
         fontFamily: 'monospace',
-        fontSize: 12,
+        fontSize: 12 * U,
         color: '#fff4e0',
         stroke: '#2b1b3d',
-        strokeThickness: 4,
+        strokeThickness: 4 * U,
       })
       .setOrigin(0.5)
       .setAlpha(0.9);
@@ -171,7 +173,7 @@ export default class Title extends Phaser.Scene {
     this.add
       .text(6 * S, 6 * S, t('title.version'), {
         fontFamily: 'monospace',
-        fontSize: 12,
+        fontSize: 12 * U,
         color: '#fff4e0',
       })
       .setAlpha(0.45);
@@ -184,10 +186,10 @@ export default class Title extends Phaser.Scene {
       const button = this.add
         .text(x, 13 * S, code.toUpperCase(), {
           fontFamily: 'monospace',
-          fontSize: 14,
+          fontSize: 14 * U,
           color: active ? '#c94f3d' : '#2f7f78',
           stroke: '#f4dfb0',
-          strokeThickness: 1,
+          strokeThickness: 1 * U,
         })
         .setOrigin(0.5, 0)
         .setDepth(20)
@@ -204,8 +206,8 @@ export default class Title extends Phaser.Scene {
       return button;
     };
 
-    makeLangButton(W / 2 + Math.min(W - 64, 340) / 2 - 54, 'en');
-    makeLangButton(W / 2 + Math.min(W - 64, 340) / 2 - 24, 'es');
+    makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 54 * U, 'en');
+    makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 24 * U, 'es');
 
     this.input.keyboard.on('keydown-L', () => {
       toggleLang();

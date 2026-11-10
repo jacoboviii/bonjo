@@ -3,6 +3,10 @@
 // a limited palette, ink borders, lotería-card frames and papel picado trim.
 // ---------------------------------------------------------------------------
 
+import { SCALE } from '../scale.js';
+
+const U = SCALE / 2;
+
 export const FOLK = {
   ink: 0x1d1326,
   paper: 0xf4dfb0,
@@ -36,58 +40,72 @@ export function drawFolkCard(graphics, cx, cy, w, h) {
 
   // offset ink shadow
   g.fillStyle(FOLK.ink, 0.32);
-  g.fillRect(left + 6, top + 6, w, h);
+  g.fillRect(left + 6 * U, top + 6 * U, w, h);
 
   // paper + lighter inset
   g.fillStyle(FOLK.paper, 1);
   g.fillRect(left, top, w, h);
   g.fillStyle(FOLK.paperLight, 1);
-  g.fillRect(left + 4, top + 4, w - 8, h - 8);
+  g.fillRect(left + 4 * U, top + 4 * U, w - 8 * U, h - 8 * U);
 
   // double ink/coral frame
-  g.lineStyle(6, FOLK.ink, 1);
+  g.lineStyle(6 * U, FOLK.ink, 1);
   g.strokeRect(left, top, w, h);
-  g.lineStyle(2, FOLK.coral, 1);
-  g.strokeRect(left + 8, top + 8, w - 16, h - 16);
-  g.lineStyle(1, FOLK.ink, 0.35);
-  g.strokeRect(left + 13, top + 13, w - 26, h - 26);
+  g.lineStyle(2 * U, FOLK.coral, 1);
+  g.strokeRect(left + 8 * U, top + 8 * U, w - 16 * U, h - 16 * U);
+  g.lineStyle(1 * U, FOLK.ink, 0.35);
+  g.strokeRect(left + 13 * U, top + 13 * U, w - 26 * U, h - 26 * U);
 
   // corner stamps
   for (const [x, y] of [
-    [left + 8, top + 8],
-    [right - 8, top + 8],
-    [left + 8, bottom - 8],
-    [right - 8, bottom - 8],
+    [left + 8 * U, top + 8 * U],
+    [right - 8 * U, top + 8 * U],
+    [left + 8 * U, bottom - 8 * U],
+    [right - 8 * U, bottom - 8 * U],
   ]) {
     g.fillStyle(FOLK.ink, 1);
-    g.fillRect(x - 4, y - 4, 8, 8);
+    g.fillRect(x - 4 * U, y - 4 * U, 8 * U, 8 * U);
     g.fillStyle(FOLK.marigold, 1);
-    g.fillRect(x - 2, y - 2, 4, 4);
+    g.fillRect(x - 2 * U, y - 2 * U, 4 * U, 4 * U);
   }
 
   // papel picado strings, outside the paper edge
-  const stringTop = top - 11;
-  const stringBottom = bottom + 11;
+  const stringTop = top - 11 * U;
+  const stringBottom = bottom + 11 * U;
 
-  g.lineStyle(1, FOLK.ink, 1);
-  g.lineBetween(left + 10, stringTop, right - 10, stringTop);
-  g.lineBetween(left + 10, stringBottom, right - 10, stringBottom);
+  g.lineStyle(1 * U, FOLK.ink, 1);
+  g.lineBetween(left + 10 * U, stringTop, right - 10 * U, stringTop);
+  g.lineBetween(left + 10 * U, stringBottom, right - 10 * U, stringBottom);
 
   let i = 0;
-  for (let x = left + 14; x < right - 12; x += 19, i++) {
+  for (let x = left + 14 * U; x < right - 12 * U; x += 19 * U, i++) {
     const color = FLAG_COLORS[i % FLAG_COLORS.length];
 
     // top flags hang down
     g.fillStyle(color, 1);
-    g.fillTriangle(x, stringTop + 1, x + 10, stringTop + 1, x + 5, stringTop + 10);
+    g.fillTriangle(
+      x,
+      stringTop + 1 * U,
+      x + 10 * U,
+      stringTop + 1 * U,
+      x + 5 * U,
+      stringTop + 10 * U,
+    );
     g.fillStyle(FOLK.ink, 0.35);
-    g.fillRect(x + 4, stringTop + 3, 1, 3);
+    g.fillRect(x + 4 * U, stringTop + 3 * U, 1 * U, 3 * U);
 
     // bottom flags point up
     g.fillStyle(color, 1);
-    g.fillTriangle(x, stringBottom - 1, x + 10, stringBottom - 1, x + 5, stringBottom - 10);
+    g.fillTriangle(
+      x,
+      stringBottom - 1 * U,
+      x + 10 * U,
+      stringBottom - 1 * U,
+      x + 5 * U,
+      stringBottom - 10 * U,
+    );
     g.fillStyle(FOLK.ink, 0.35);
-    g.fillRect(x + 4, stringBottom - 6, 1, 3);
+    g.fillRect(x + 4 * U, stringBottom - 6 * U, 1 * U, 3 * U);
   }
 
   return g;

@@ -198,6 +198,7 @@ there to make them permanent.
 - Fenced level boundaries so Bonjo cannot run off the last platform
 - Pits cost a heart and respawn; 0 hearts ends the run
 - Camera look-ahead; synthesized SFX
+- **3× internal render resolution** for crisper pixel art without changing the screen layout
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
 - **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
@@ -216,8 +217,8 @@ bonjo/
 ├── vite.config.js
 ├── package.json
 ├── src/
-│   ├── main.js             Phaser config (288px tall, width follows aspect)
-│   ├── scale.js            SCALE=2 (288px render of a 256×144 design view)
+│   ├── main.js             Phaser config (432px tall, width follows aspect)
+│   ├── scale.js            SCALE=3 (432px render of a 256×144 design view)
 │   ├── tuning.js           EVERY feel number, commented  ← start here
 │   ├── art.js              all pixel textures, town, characters, props
 │   ├── sfx.js              tiny WebAudio sound effects
@@ -236,9 +237,9 @@ bonjo/
 └── dist/                   production build (after `npm run build`)
 ```
 
-The game renders at a fixed **288px height** (2× the 256×144 design view), with a
-width derived from the device's landscape aspect ratio: **512px at 16:9**, up to
-**960px on tall phones** (e.g. 623×288 on a 19.5:9 phone). It re-measures on
+The game renders at a fixed **432px height** (3× the 256×144 design view), with a
+width derived from the device's landscape aspect ratio: **768px at 16:9**, up to
+**1280px on wide screens** (e.g. 933×432 on a 19.5:9 phone). It re-measures on
 rotation or viewport changes, and scenes center and anchor UI from
 `this.scale.width`, so the canvas keeps filling the screen instead of
 letterboxing with side bars. `pixelArt: true` keeps it crisp.
@@ -277,36 +278,36 @@ files):
 
 | Key | Size | Notes |
 | --- | --- | --- |
-| `dog`, `dogSit`, `dogWalkA–D`, `dogGlide`, `dogDive` | 40×40 | denser black chow with 4-frame walk; flipped in code |
-| `tongue` | 6×8 | panting overlay |
-| `rival`, `rivalRun` | 32×30 | tan neighborhood dog, red bandana |
-| `crow` | 28×18 | facing right |
-| `squirrel`, `squirrelRun` | 32×28 | 2-frame run cycle |
-| `pinata` | 24×30 | star piñata + streamers |
-| `rope` | 2×8 | tiling piñata rope |
-| `awning` | 40×12 | striped bounce canopy |
-| `bone` | 20×16 | |
-| `concha` | 24×16 | hunger pickup |
-| `heart` | 20×20 | health HUD |
-| `bonjoHouse` | 130×80 | two-storey home behind the CASA gateway |
-| `ring` | 32×32 | |
-| `balloon` | 24×40 | checkpoint |
-| `puff` | 16×16 | dust particle |
-| `nearTown` | 320×100 | tiling foreground storefronts |
-| `carA`, `carB`, `carC` | 44×22 | parked sedan / hatchback / pickup |
-| `bikeMint`, `bikeCoral` | 20×18 | leaning bicycles |
-| `hydrant` / `trashcan` / `planter` / `streetlamp` | 9×13 – 12×58 | street dressing |
-| `gate` | 36×30 | porch gate |
-| `tacocart` | 44×30 | hunger refill |
-| `polo` / `chihuahua` | 16×28 / 14×14 | day NPC / warning ally |
-| `bell`, `bellpost` | 14×14, 18×42 | day blessing |
-| `crown` | 14×9 | top-dog marker |
-| `agave`, `agaveBloom` | 26×26, 26×38 | blue-green street/field plants |
-| `agaveField` | 90×26 | tilled field patch |
-| `cat`, `catGray` / `bird` / `rooster` | 18×16 / 12×10 / 20×24 | ambient wildlife |
-| `fence` | 28×32 | level-edge boundary |
-| `foregroundHouseA/B/C` | 70×80 | standable foreground houses |
-| `ledge_*` | 90–110×12 | one-way fire escape / laundry line |
+| `dog`, `dogSit`, `dogWalkA–D`, `dogGlide`, `dogDive` | 60×60 | denser black chow with 4-frame walk; flipped in code |
+| `tongue` | 9×12 | panting overlay |
+| `rival`, `rivalRun` | 48×45 | tan neighborhood dog, red bandana |
+| `crow` | 42×27 | facing right |
+| `squirrel`, `squirrelRun` | 48×42 | 2-frame run cycle |
+| `pinata` | 36×45 | star piñata + streamers |
+| `rope` | 3×12 | tiling piñata rope |
+| `awning` | 120×36 | striped bounce canopy |
+| `bone` | 30×24 | |
+| `concha` | 18×12 | hunger pickup |
+| `heart` | 15×15 | health HUD |
+| `bonjoHouse` | 390×240 | two-storey home behind the CASA gateway |
+| `ring` | 48×48 | |
+| `balloon` | 36×60 | checkpoint |
+| `puff` | 24×24 | dust particle |
+| `nearTown` | 960×300 | tiling foreground storefronts |
+| `carA`, `carB`, `carC` | 132×66 | parked sedan / hatchback / pickup |
+| `bikeMint`, `bikeCoral` | 60×54 | leaning bicycles |
+| `hydrant` / `trashcan` / `planter` / `streetlamp` | 27×39 – 36×174 | street dressing |
+| `gate` | 108×90 | porch gate |
+| `tacocart` | 132×90 | hunger refill |
+| `polo` / `chihuahua` | 48×84 / 42×42 | day NPC / warning ally |
+| `bell`, `bellpost` | 42×42, 54×126 | day blessing |
+| `crown` | 42×27 | top-dog marker |
+| `agave`, `agaveBloom` | 78×78, 78×114 | blue-green street/field plants |
+| `agaveField` | 270×78 | tilled field patch |
+| `cat`, `catGray` / `bird` / `rooster` | 54×48 / 36×30 / 60×72 | ambient wildlife |
+| `fence` | 84×96 | level-edge boundary |
+| `foregroundHouseA/B/C` | 210×240 | standable foreground houses |
+| `ledge_*` | 270–330×36 | one-way fire escape / laundry line |
 
 ---
 

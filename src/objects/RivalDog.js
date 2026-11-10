@@ -26,9 +26,9 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     if (this.baseTint !== null) this.setTint(this.baseTint);
 
     this.setDepth(this.role === 'alpha' ? 10 : 9);
-    this.body.setSize(20, 22).setOffset(6, 6);
+    this.body.setSize(10 * S, 11 * S).setOffset(3 * S, 3 * S);
     this.body.setGravityY(1600 * S);
-    this.body.setMaxVelocity(260, 900);
+    this.body.setMaxVelocity(130 * S, 450 * S);
 
     this.minX = minX;
     this.maxX = maxX;
