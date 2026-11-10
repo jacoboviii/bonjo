@@ -11,11 +11,13 @@ const S = SCALE;
 // ---------------------------------------------------------------------------
 export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, minX, maxX, opts = {}) {
-    super(scene, x, y, 'rival');
+    super(scene, x, y, opts.texture || 'rival');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
+    this.idleTexture = opts.texture || 'rival';
+    this.runTexture = opts.runTexture || 'rivalRun';
     this.role = opts.role || 'normal';
     this.health = opts.health || (this.role === 'brute' ? 2 : 1);
     this.maxHealth = this.health;
@@ -95,7 +97,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       } else {
         this.body.setVelocityX(0);
         this.setFlipX(false);
-        this.setTexture('rival');
+        this.setTexture(this.idleTexture);
         if (this.scene.time.now > this.nextAttack) {
           this.nextAttack = this.scene.time.now + 1500;
           this.bark();
@@ -142,7 +144,10 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
   }
 
   playPose(rate) {
-    const pose = Math.floor(this.animT * rate) % 2 === 0 ? 'rival' : 'rivalRun';
+    const pose =
+      Math.floor(this.animT * rate) % 2 === 0
+        ? this.idleTexture
+        : this.runTexture;
     if (this.texture.key !== pose) this.setTexture(pose);
   }
 }

@@ -83,6 +83,8 @@ export function buildTextures(scene) {
   makeTacoCart(scene);
   makePolo(scene);
   makeChihuahua(scene);
+  makeChihuahuaBoss(scene, 'chihuahuaBoss', 'idle');
+  makeChihuahuaBoss(scene, 'chihuahuaBossRun', 'run');
   makeBell(scene);
   makeBellPost(scene);
   makeCrown(scene);
@@ -101,6 +103,8 @@ export function buildTextures(scene) {
   makeSquirrel(scene, 'squirrelRun', 'run');
   makeSkunk(scene, 'skunk', 'idle');
   makeSkunk(scene, 'skunkRun', 'run');
+  makeSnake(scene, 'snake', 'idle');
+  makeSnake(scene, 'snakeRun', 'run');
   makeRivalDog(scene, 'rival', 'idle');
   makeRivalDog(scene, 'rivalRun', 'run');
   makeHeart(scene);
@@ -1058,6 +1062,73 @@ function makeChihuahua(scene) {
   g.destroy();
 }
 
+function makeChihuahuaBoss(scene, key, pose) {
+  const g = gfx(scene);
+  const W = 20;
+  const H = 20;
+  const FUR = 0xe0a86a;
+  const DARK = 0x9b6038;
+  const LIGHT = 0xffd29b;
+  const INK = 0x1b1029;
+  const RED = 0xd94f4f;
+
+  // paws and body
+  g.fillStyle(INK, 1);
+  if (pose === 'run') {
+    g.fillRect(4, 17, 4, 3);
+    g.fillRect(13, 16, 4, 4);
+  } else {
+    g.fillRect(4, 17, 3, 3);
+    g.fillRect(14, 17, 3, 3);
+  }
+  g.fillStyle(FUR, 1);
+  g.fillRect(5, 9, 11, 9);
+  g.fillStyle(LIGHT, 1);
+  g.fillRect(7, 13, 6, 3);
+
+  // oversized ears
+  g.fillStyle(DARK, 1);
+  g.fillTriangle(5, 6, 10, 8, 4, 1);
+  g.fillTriangle(15, 6, 10, 8, 16, 1);
+  g.fillStyle(FUR, 1);
+  g.fillTriangle(6, 6, 9, 7, 5, 2);
+  g.fillTriangle(14, 6, 11, 7, 15, 2);
+
+  // head, angry brow, snout and teeth
+  g.fillStyle(FUR, 1);
+  g.fillRect(6, 4, 10, 8);
+  g.fillRect(13, 7, 5, 4);
+  g.fillStyle(DARK, 1);
+  g.fillRect(7, 5, 3, 1);
+  g.fillRect(12, 5, 3, 1);
+  g.fillStyle(INK, 1);
+  g.fillRect(8, 6, 2, 2);
+  g.fillRect(12, 6, 2, 2);
+  g.fillRect(17, 7, 1, 1);
+  g.fillStyle(CREAM, 1);
+  g.fillRect(9, 9, 1, 1);
+  g.fillRect(13, 9, 1, 1);
+  g.fillStyle(INK, 1);
+  g.fillRect(10, 10, 3, 1);
+
+  // spiked collar and trailing bandana
+  g.fillStyle(RED, 1);
+  g.fillRect(6, 12, 11, 2);
+  g.fillTriangle(16, 13, 20, 14, 17, 17);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(10, 12, 2, 2);
+  g.fillStyle(INK, 1);
+  g.fillRect(5, 12, 1, 2);
+
+  // curled tail
+  g.fillStyle(DARK, 1);
+  g.fillRect(2, 10, 4, 7);
+  g.fillRect(1, 8, 3, 4);
+
+  g.generateTexture(key, W, H);
+  g.destroy();
+}
+
 function makeBell(scene) {
   const g = gfx(scene);
   const W = 14;
@@ -1985,6 +2056,62 @@ function makeSkunk(scene, key, pose) {
   g.fillRect(25, 14, 1, 1);
   g.fillRect(11, 27, 1, 1);
   g.fillRect(20, 27, 1, 1);
+
+  g.generateTexture(key, 32, 28);
+  g.destroy();
+}
+
+// --- snake (Las Orillas critter) ------------------------------------------
+
+function makeSnake(scene, key, pose) {
+  const g = rawGfx(scene);
+  const DARK = 0x314a2c;
+  const BODY = 0x5c7a3f;
+  const LIGHT = 0x9fbf68;
+  const INK = 0x121c14;
+  const GOLD = 0xffd166;
+  const TONGUE = 0xf26b5e;
+
+  // curled tail and low body
+  g.fillStyle(DARK, 1);
+  g.fillRect(3, 17, 13, 7);
+  g.fillRect(2, 12, 5, 7);
+  g.fillTriangle(2, 12, 7, 12, 3, 7);
+  g.fillStyle(BODY, 1);
+  g.fillRect(6, 16, 16, 5);
+  if (pose === 'run') {
+    g.fillRect(12, 14, 12, 3);
+    g.fillTriangle(24, 14, 29, 16, 24, 19);
+  } else {
+    g.fillRect(10, 17, 14, 4);
+    g.fillTriangle(21, 17, 28, 20, 21, 22);
+  }
+
+  // body highlights and diamond markings
+  g.fillStyle(LIGHT, 1);
+  g.fillRect(8, 16, 11, 1);
+  g.fillRect(13, 20, 8, 1);
+  g.fillStyle(DARK, 1);
+  for (let x = 8; x < 24; x += 6) {
+    g.fillRect(x, 18, 3, 2);
+    g.fillRect(x + 1, 16, 1, 1);
+  }
+
+  // raised head, jaw and tongue
+  const hx = pose === 'run' ? 21 : 19;
+  const hy = pose === 'run' ? 10 : 13;
+  g.fillStyle(BODY, 1);
+  g.fillRect(hx, hy, 7, 6);
+  g.fillRect(hx + 1, hy - 3, 5, 4);
+  g.fillStyle(LIGHT, 1);
+  g.fillRect(hx + 1, hy - 1, 3, 1);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(hx + 2, hy, 2, 2);
+  g.fillStyle(INK, 1);
+  g.fillRect(hx + 3, hy, 1, 1);
+  g.fillStyle(TONGUE, 1);
+  g.fillRect(hx + 7, hy + 4, 3, 1);
+  g.fillRect(hx + 8, hy + 5, 2, 1);
 
   g.generateTexture(key, 32, 28);
   g.destroy();

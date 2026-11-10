@@ -1,13 +1,13 @@
 # Bonjo — Design Document
 
-**Version:** 0.4 (La Cuadra survival slice)
+**Version:** 0.4 (La Cuadra + Las Orillas survival slice)
 **Genre:** Turf-defense survival platformer
 **Platform:** Browser (desktop first), mobile touch supported
 **Engine:** Phaser 3.90 + Vite + JavaScript, Arcade Physics
 **Render:** 432px tall (3× the 144-unit design height); internal width follows the device landscape aspect (768px at 16:9, up to 1280px on wide screens) so the canvas fills the screen
 **Pitch:** Bonjo is the only chow on the block. By day he scavenges the barrio;
-by night he holds the street against waves of rival dogs. Survive two nights,
-keep the block, and don't run out of conchas.
+by night he holds the street against waves of rival dogs. Survive two nights in
+La Cuadra or three in Las Orillas, keep the turf, and don't run out of conchas.
 
 ---
 
@@ -35,8 +35,9 @@ awning, strings of papel picado, dogs behind every gate. The street is the
 arena: one flat run of pavement broken by a few gaps, with awnings and rings
 over the holes.
 
-At the edge of town are **Las Orillas**: irrigation ditches, crop rows, agave,
-dust, and farm dogs who have never seen a chow before. That's level 2.
+At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
+agave, dust, snakes, and farm dogs who have never seen a chow before. That's
+level 2: three nights and an aggressive Chihuahua boss.
 
 **The survival loop:** Day 1 is for scavenging — bones, conchas, piñatas, and
 the layout of the street. Night 1 sends the neighbor dogs. Day 2 is shorter and
@@ -276,15 +277,16 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 
 ---
 
-## 8. Level 2 sketch — Las Orillas (agricultural edge)
+## 8. Las Orillas — agricultural edge
 
-- Irrigation canal gaps with narrow stone bridges.
-- Agave rows as hazards: spiky, not bouncy.
-- Crop rows that hide bones and conchas; scare a goat and it runs, revealing a path.
-- Farm dogs: bigger, slower, higher HP? Keep the same subdue rule.
-- A windmill / water pump as a moving platform or updraft.
-- Nights are darker and longer; fewer conchas; the farmhouse porch is the safe zone.
+- Continuous field floor with no pit gaps; houses and props sit on solid ground.
+- Agave rows and crop-line dressing.
+- Snakes replace the squirrel bone-thief slot, including at night.
+- **Three nights**, ending with an aggressive **Chihuahua boss** instead of the top dog.
+- Farmhouse rooftops remain standable one-way platforms.
+- No porch, Polo, bell or gate defense; those systems are feature-driven off.
 - Palette shifts from terracotta/teal to ochre/olive/dust; more sky.
+- Future: windmill/water-pump traversal, crop hazards and snake-specific attacks.
 
 ---
 
@@ -372,14 +374,14 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
-- **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, top-dog finale, two-night win
-- **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog
+- **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
+- **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog, Chihuahua boss
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
 - **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
-- Rival dogs (bark/chase/subdue), squirrels (bone thieves), two crows
-- Ambient day birds/rooster and night skunks, owls, bats and cats; fenced level ends
+- Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; snakes in Las Orillas; two crows/owls; Chihuahua boss
+- Ambient day birds/rooster; night skunks/snakes, owls, bats and cats; fenced level ends
 - Piñatas, bouncing awnings
 - Bones, rings, checkpoints
 - Walk cycle, sit/pant idle

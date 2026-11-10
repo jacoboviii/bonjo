@@ -7,11 +7,12 @@ const S = SCALE;
 // A squirrel patrols a platform, hops, and runs off with any bone it can grab
 // while the dog is nearby. Dive/stomp it to make it drop the bone. If it
 // reaches the end of its patrol while carrying, it escapes with the loot.
-// At night the same bone-thief slot becomes a nocturnal skunk.
+// At night the same bone-thief slot becomes a nocturnal skunk by default;
+// levels can supply another critter, such as Las Orillas snakes.
 // ---------------------------------------------------------------------------
 export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, minX, maxX) {
-    super(scene, x, y, 'squirrel');
+  constructor(scene, x, y, minX, maxX, opts = {}) {
+    super(scene, x, y, opts.idleTexture || 'squirrel');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -26,8 +27,12 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     this.dir = -1;
     this.baseSpeed = 55 * S;
     this.fleeSpeed = 80 * S;
-    this.idleTexture = 'squirrel';
-    this.runTexture = 'squirrelRun';
+    this.dayIdleTexture = opts.idleTexture || 'squirrel';
+    this.dayRunTexture = opts.runTexture || 'squirrelRun';
+    this.idleTexture = this.dayIdleTexture;
+    this.runTexture = this.dayRunTexture;
+    this.nightIdleTexture = opts.nightIdleTexture || 'skunk';
+    this.nightRunTexture = opts.nightRunTexture || 'skunkRun';
 
     this.carrying = false;
     this.carried = null;
@@ -49,8 +54,8 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
   }
 
   setNightMode(night) {
-    this.idleTexture = night ? 'skunk' : 'squirrel';
-    this.runTexture = night ? 'skunkRun' : 'squirrelRun';
+    this.idleTexture = night ? this.nightIdleTexture : this.dayIdleTexture;
+    this.runTexture = night ? this.nightRunTexture : this.dayRunTexture;
     if (this.active) this.setTexture(this.idleTexture);
   }
 

@@ -130,7 +130,7 @@ export default class Level1 extends Phaser.Scene {
     this.dayNumber = 1;
     this.phaseTime = this.levelData.timings.day;
     this.nightsSurvived = 0;
-    this.nightsToSurvive = 2;
+    this.nightsToSurvive = this.levelData.nightsToSurvive ?? 2;
     this.waveSpawned = 0;
     this.waveTotal = 0;
     this.nextWave = 0;
@@ -1377,7 +1377,14 @@ export default class Level1 extends Phaser.Scene {
 
     for (const s of SQUIRRELS) {
       this.squirrelGroup.add(
-        new Squirrel(this, s.x * S, s.y * S, s.min * S, s.max * S),
+        new Squirrel(
+          this,
+          s.x * S,
+          s.y * S,
+          s.min * S,
+          s.max * S,
+          this.levelData.critters,
+        ),
       );
     }
 
@@ -1941,10 +1948,12 @@ export default class Level1 extends Phaser.Scene {
   updateObjectivesPanel() {
     if (!this.objectivesNowGoal) return;
 
-    let text = t('goal.survive');
+    let text = t(this.levelData.goalKey || 'goal.survive');
     let color = '#6ec6a8';
     if (this.alphaActive && !this.alphaDefeated) {
-      text = t('goal.alpha', { hits: this.alpha?.health ?? 3 });
+      text = t(this.levelData.boss?.goalKey || 'goal.alpha', {
+        hits: this.alpha?.health ?? 3,
+      });
       color = '#ffd166';
     } else if (this.alphaDefeated && this.alphaEnding) {
       text = t('goal.dawnNow');
@@ -1957,6 +1966,9 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.objectivesNowGoal.setText(text).setColor(color);
+    this.objectivesNowDesc?.setText(
+      t(this.levelData.objectiveDescKey || 'objectives.nowDesc'),
+    );
 
     const hasErrands = this.features?.errands !== false;
     this.objectivesErrandsHead?.setVisible(hasErrands);
@@ -2186,7 +2198,11 @@ export default class Level1 extends Phaser.Scene {
         }
       }
 
-      if (this.nightsSurvived === 1 && !this.alphaSpawned && this.phaseTime <= 12) {
+      if (
+        this.nightsSurvived === this.nightsToSurvive - 1 &&
+        !this.alphaSpawned &&
+        this.phaseTime <= 12
+      ) {
         this.spawnAlpha();
       }
 
@@ -2200,7 +2216,10 @@ export default class Level1 extends Phaser.Scene {
       }
 
       if (this.phaseTime <= 0) {
-        if (this.nightsSurvived === 1 && !this.alphaDefeated) {
+        if (
+          this.nightsSurvived === this.nightsToSurvive - 1 &&
+          !this.alphaDefeated
+        ) {
           if (!this.alphaSpawned) this.spawnAlpha();
           this.phaseTime = 0;
           this.alphaActive = true;
@@ -2268,7 +2287,12 @@ export default class Level1 extends Phaser.Scene {
 
   endNight() {
     if (this.won || this.gameOverFlag) return;
-    if (this.nightsSurvived === 1 && !this.alphaDefeated) return;
+    if (
+      this.nightsSurvived === this.nightsToSurvive - 1 &&
+      !this.alphaDefeated
+    ) {
+      return;
+    }
 
     this.nightsSurvived += 1;
 
@@ -2496,22 +2520,29 @@ export default class Level1 extends Phaser.Scene {
     const minX = this.safeMinX(platform);
     const maxX = (platform.x + platform.w - 12) * S;
     const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
+    const boss = this.levelData.boss || {};
 
     this.alpha = new RivalDog(this, sx * S, enemyY, minX, maxX, {
       role: 'alpha',
-      scale: 1.35,
-      tint: 0xffd166,
-      health: 3,
-      baseSpeed: 62,
-      chaseSpeed: 142,
+      texture: boss.texture,
+      runTexture: boss.runTexture,
+      scale: boss.scale ?? 1.35,
+      tint: boss.tint === undefined ? 0xffd166 : boss.tint,
+      health: boss.health ?? 3,
+      baseSpeed: boss.baseSpeed ?? 62,
+      chaseSpeed: boss.chaseSpeed ?? 142,
     });
     this.rivalGroup.add(this.alpha);
 
-    this.alphaCrown = this.add
-      .image(this.alpha.x, this.alpha.y - 24 * S, 'crown')
-      .setDepth(10.5);
+    if (boss.crown !== false) {
+      this.alphaCrown = this.add
+        .image(this.alpha.x, this.alpha.y - 24 * S, 'crown')
+        .setDepth(10.5);
+    } else {
+      this.alphaCrown = null;
+    }
 
-    this.showPhaseBanner(t('alpha.title'), '#ffd166');
+    this.showPhaseBanner(t(boss.titleKey || 'alpha.title'), '#ffd166');
     this.spawnPuff(this.alpha.x, 580 * S, 1.5);
     this.floatText(this.alpha.x, 558 * S, t('bark'), '#ffd166');
     sfx.bark();
@@ -2567,7 +2598,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.alphaCrown?.destroy();
     this.alphaCrown = null;
-    this.showPhaseBanner(t('alpha.cleared'), '#ffd166');
+    this.showPhaseBanner(
+      t(this.levelData.boss?.defeatKey || 'alpha.cleared'),
+      '#ffd166',
+    );
     sfx.burst();
     this.alertChihuahua();
 

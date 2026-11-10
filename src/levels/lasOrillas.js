@@ -1,5 +1,5 @@
-// Las Orillas — the agricultural edge of town. Wider field lots, irrigation
-// gaps, farm dogs and no porch/errand shell. Geometry is in design units.
+// Las Orillas — the agricultural edge of town. A continuous field floor,
+// snakes and a three-night Chihuahua boss. Geometry is in design units.
 export const lasOrillas = {
   id: 'orillas',
   nameKey: 'map.orillas',
@@ -20,15 +20,39 @@ export const lasOrillas = {
   platformTint: 0xd7b47a,
   features: { porch: false, errands: false, gateDefense: false },
   safeZone: 24,
+  nightsToSurvive: 3,
+  goalKey: 'goal.orillas',
+  objectiveDescKey: 'objectives.nowDesc.orillas',
+  critters: {
+    idleTexture: 'snake',
+    runTexture: 'snakeRun',
+    nightIdleTexture: 'snake',
+    nightRunTexture: 'snakeRun',
+  },
+  boss: {
+    texture: 'chihuahuaBoss',
+    runTexture: 'chihuahuaBossRun',
+    titleKey: 'boss.chihuahua',
+    goalKey: 'goal.orillasBoss',
+    defeatKey: 'boss.chihuahuaDown',
+    scale: 1.4,
+    tint: null,
+    health: 3,
+    baseSpeed: 80,
+    chaseSpeed: 170,
+    crown: false,
+  },
 
+  // One continuous field floor: no pit gaps, so farmhouses and props sit on
+  // solid ground. The segments abut exactly and share the same top surface.
   platforms: [
     { x: 0, y: 600, w: 520, h: 300 },
-    { x: 620, y: 600, w: 400, h: 300 },
-    { x: 1100, y: 600, w: 520, h: 300 },
-    { x: 1700, y: 600, w: 380, h: 300 },
-    { x: 2160, y: 600, w: 480, h: 300 },
-    { x: 2740, y: 600, w: 420, h: 300 },
-    { x: 3260, y: 600, w: 540, h: 300 },
+    { x: 520, y: 600, w: 400, h: 300 },
+    { x: 920, y: 600, w: 520, h: 300 },
+    { x: 1440, y: 600, w: 380, h: 300 },
+    { x: 1820, y: 600, w: 480, h: 300 },
+    { x: 2300, y: 600, w: 420, h: 300 },
+    { x: 2720, y: 600, w: 1080, h: 300 },
   ],
 
   bones: [

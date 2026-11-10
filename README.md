@@ -7,10 +7,11 @@ dogs from other houses trying to take his turf.
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
 and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
 glide and dive; subdue rivals; bounce off market awnings; knock a piñata for
-supplies; survive two nights and repel the **top dog** before dawn.
+supplies. Survive two nights and repel the **top dog** in La Cuadra, or three
+nights and an aggressive **Chihuahua boss** in Las Orillas.
 
-This is a **playable prototype**, not a finished game. The current build has a
-map hub for La Cuadra, with future landmarks already plotted for expansion.
+This is a **playable prototype**, not a finished game. The map hub already has
+La Cuadra and Las Orillas playable, with future landmarks plotted for expansion.
 
 ![Bonjo contact sheet](screenshots/contact-sheet.png)
 
@@ -18,6 +19,10 @@ Individual 1280×720 screenshots are in [`screenshots/`](screenshots/).
 The contact sheet shows the English UI; the game itself now starts in Spanish.
 
 ![La Cuadra landmark map](screenshots/00-map.png)
+
+![Las Orillas fields](screenshots/24-orillas.png)
+
+![The Chihuahua boss on Night 3](screenshots/25-orillas-boss.png)
 
 ---
 
@@ -32,11 +37,12 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   rivals by out-jumping them. When beaten, a rival yelps and runs home.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
   chase. Dive on one to send it packing. Night waves include **fast** dogs,
-  **bone thieves**, **brutes**, and on Night 2 the **top dog**.
-- **Squirrels:** smaller nuisances with a big tail. They steal bones and bolt
-  for the edge of the platform.
+  **bone thieves**, **brutes**, and on the final night the **top dog** in La
+  Cuadra or the **Chihuahua boss** in Las Orillas.
+- **Squirrels & snakes:** small bone thieves. La Cuadra's bushy-tailed
+  squirrels become skunks at night; Las Orillas uses snakes day and night.
 - **Crows:** one rare aerial pest, plus a far-block crow; they caw when Bonjo gets close.
-- **Alley life:** by day, small birds scatter and a rooster crows; at night the squirrels and crows give way to skunks and owls, bats cross the dark, and the cats keep their watch.
+- **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its snakes. Bats cross the dark and the cats keep their watch.
 - **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
@@ -55,9 +61,10 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   open until dawn. Polo tosses a concha each day, the bell grants another,
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
-  hunger; an empty bar starts costing health. Survive two nights; the final
-  night ends with the top dog, and you must repel it before the block is yours.
-  Bones, combo, subdued rivals and no-hit play feed your final score and rank.
+  hunger; an empty bar starts costing health. In La Cuadra, survive two nights
+  and repel the top dog; in Las Orillas, survive three and defeat the Chihuahua
+  boss. Bones, combo, subdued rivals and no-hit play feed your final score and
+  rank.
 
 Tone: cozy, mischievous, non-lethal. The dog wins the block; nobody gets hurt.
 
@@ -126,8 +133,8 @@ burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 **conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
 over bikes and trip the marked car alarm. Press **E** (or tap the bubble
 button) near Polo, the chihuahua, a cat or the daytime rooster to talk; use it
-at the bell to ring it. Polo's dialog hands over the daily concha. Survive two nights
-and repel the **top dog**; bones, combo and a clean run feed your score and
+at the bell to ring it. Polo's dialog hands over the daily concha. Survive the
+level's nights and final boss; bones, combo and a clean run feed your score and
 rank.
 
 ---
@@ -186,20 +193,20 @@ there to make them permanent.
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
-- **Las Orillas**: a second playable field level with irrigation gaps, farmhouse roofs, agave rows and a distinct dusty palette
+- **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, snakes and an aggressive Chihuahua boss
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
-- **Ambient wildlife**: day birds, a dawn rooster, alley cats, and a night shift of skunks, hooting owls and bats
+- **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or snakes in Las Orillas
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
-- **Rival roles** — fast dogs, bone thieves, brutes, gate rushers and the Night 2 **top dog** showdown
+- **Rival roles** — fast dogs, bone thieves, brutes, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
 - **One-way fire escapes and laundry lines** with high bones/conchas
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
 - **Named NPC dialog cards**, Polo's daily concha, bell blessing, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
-- **Squirrels** that steal bones; two crows
+- **Squirrels/skunks** in La Cuadra and **snakes** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**
 - Wind rings that refill flaps mid-air
 - Bones, concha food, two checkpoint balloons, a safe **porch**
@@ -301,6 +308,8 @@ files):
 | `rival`, `rivalRun` | 48×45 | tan neighborhood dog, red bandana |
 | `crow` | 42×27 | facing right |
 | `squirrel`, `squirrelRun` | 48×42 | 2-frame run cycle |
+| `snake`, `snakeRun` | 48×42 | Las Orillas critter replacement |
+| `chihuahuaBoss`, `chihuahuaBossRun` | 60×60 | aggressive Las Orillas boss |
 | `pinata` | 36×45 | star piñata + streamers |
 | `rope` | 3×12 | tiling piñata rope |
 | `awning` | 120×36 | striped bounce canopy |
@@ -341,8 +350,8 @@ files):
    bravo bark before the first dog.
 3. More **east-block landmarks**: a mercado interior, a basketball court,
    rooftop murals, and a second Polo window.
-4. Expand **Las Orillas** — irrigation hazards, crop-row traversal, farm
-   animals and a unique farm-dog encounter.
+4. Expand **Las Orillas** — crop-row traversal, farm hazards, snake patterns
+   and more Chihuahua boss phases.
 5. Camera look-down while diving; landing squash; a proper bark on flap.
 
 Only after the two-night loop feels right: dog variants, upgrades, saves,
