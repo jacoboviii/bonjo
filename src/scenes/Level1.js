@@ -341,6 +341,7 @@ export default class Level1 extends Phaser.Scene {
     this.town?.setSize(W, 100 * S);
     this.nearTown?.setSize(W, 100 * S);
     this.banner?.setSize(W, 14 * S);
+    this.skyNight?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     this.envHaze?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
 
@@ -459,6 +460,14 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(-24)
       .setAlpha(0.75);
+
+    // Night darkens the sky/clouds/sun without crushing the street and
+    // gameplay sprites; the full-scene overlay stays lighter than this.
+    this.skyNight = this.add
+      .rectangle(W / 2, 72 * S, W, 144 * S, 0x05030d, 1)
+      .setScrollFactor(0)
+      .setDepth(-23)
+      .setAlpha(0);
 
     this.town = this.add
       .tileSprite(0, 500 * S, W, 100 * S, 'town')
@@ -1635,7 +1644,12 @@ export default class Level1 extends Phaser.Scene {
 
     this.tweens.add({
       targets: this.nightOverlay,
-      alpha: 0.38,
+      alpha: 0.45,
+      duration: 900,
+    });
+    this.tweens.add({
+      targets: this.skyNight,
+      alpha: 0.68,
       duration: 900,
     });
 
@@ -1680,6 +1694,11 @@ export default class Level1 extends Phaser.Scene {
 
     this.tweens.add({
       targets: this.nightOverlay,
+      alpha: 0,
+      duration: 900,
+    });
+    this.tweens.add({
+      targets: this.skyNight,
       alpha: 0,
       duration: 900,
     });
