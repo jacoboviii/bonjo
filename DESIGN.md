@@ -88,8 +88,9 @@ the conchas and piñatas you missed.
 | Touch 💬 | Talk / ring / interact | Talk / ring / interact |
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
-bubble starts the interaction. Polo, the chihuahua, cats and the rooster use a
-named lotería-paper dialog card; the bell rings directly. Environmental
+bubble starts the interaction. Polo, the chihuahua, cats and the daytime
+rooster use a named lotería-paper dialog card; the bell rings directly.
+Environmental
 interactions still use the verbs Bonjo already has: jump into it, land on it,
 or dive through it.
 
@@ -197,8 +198,9 @@ hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
 
 ### Day, night & waves
 Day 1 lasts 35 s, Night 1 is 28 s with 3 rival waves, Day 2 is 30 s, Night 2 is
-33 s with 4 waves. Night darkens the street (lit windows pop) and spawns rivals
-near Bonjo's block every ~6 s. A visible goal HUD shows “survive 2 nights,” dawn
+33 s with 4 waves. Night darkens the street (lit windows pop), sends Polo, the
+chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
+skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s. A visible goal HUD shows “survive 2 nights,” dawn
 warnings and the top-dog hit count. The final night adds gate rushers and, at
 roughly 12 s left, the top dog. Repel it to win; the timer will wait at zero
 until it is down. The HUD always shows phase, timer, hearts, hunger and gate
@@ -329,6 +331,7 @@ Synthesized WebAudio, no files:
 | Cat hiss | short saw/square snarl |
 | Bird scatter / chirp | two quick high sine chirps |
 | Crow caw | low saw/square squawk |
+| Owl hoot | two low sine hoots |
 | Rooster | three-note dawn crow |
 | Piñata hit / burst | wooden thock / short arpeggio |
 | Awning | springy sine sweep |
@@ -355,7 +358,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
 - Rival dogs (bark/chase/subdue), squirrels (bone thieves), two crows
-- Ambient cats, birds and a rooster; fenced level ends
+- Ambient day birds/rooster and night skunks, owls, bats and cats; fenced level ends
 - Piñatas, bouncing awnings
 - Bones, rings, checkpoints
 - Walk cycle, sit/pant idle

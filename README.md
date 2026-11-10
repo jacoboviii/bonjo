@@ -34,7 +34,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Squirrels:** smaller nuisances with a big tail. They steal bones and bolt
   for the edge of the platform.
 - **Crows:** one rare aerial pest, plus a far-block crow; they caw when Bonjo gets close.
-- **Alley life:** cats hiss, small birds scatter with a chirp, and a rooster crows at dawn.
+- **Alley life:** by day, small birds scatter and a rooster crows; at night the squirrels and crows give way to skunks and owls, bats cross the dark, and the cats keep their watch.
 - **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
@@ -118,8 +118,8 @@ Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
 burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 **conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
 over bikes and trip the marked car alarm. Press **E** (or tap the bubble
-button) near Polo, the chihuahua, a cat or the rooster to talk; use it at the
-bell to ring it. Polo's dialog hands over the daily concha. Survive two nights
+button) near Polo, the chihuahua, a cat or the daytime rooster to talk; use it
+at the bell to ring it. Polo's dialog hands over the daily concha. Survive two nights
 and repel the **top dog**; bones, combo and a clean run feed your score and
 rank.
 
@@ -180,7 +180,7 @@ there to make them permanent.
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
 - **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
-- **Ambient wildlife**: enemy dog barks, alley-cat hisses, bird chirps, crow caws and a dawn rooster
+- **Ambient wildlife**: day birds, a dawn rooster, alley cats, and a night shift of skunks, hooting owls and bats
 - **Visible goal HUD**, two-night countdown and dawn warnings
 - **Rival roles** — fast dogs, bone thieves, brutes, gate rushers and the Night 2 **top dog** showdown
 - **One-way fire escapes and laundry lines** with high bones/conchas
@@ -305,6 +305,7 @@ files):
 | `agave`, `agaveBloom` | 78×78, 78×114 | blue-green street/field plants |
 | `agaveField` | 270×78 | tilled field patch |
 | `cat`, `catGray` / `bird` / `rooster` | 54×48 / 36×30 / 60×72 | ambient wildlife |
+| `skunk`, `skunkRun` / `owl` / `bat` | 48×42 / 48×30 / 36×21 | night-shift wildlife |
 | `fence` | 84×96 | level-edge boundary |
 | `foregroundHouseA/B/C` | 210×240 | standable foreground houses |
 | `ledge_*` | 270–330×36 | one-way fire escape / laundry line |

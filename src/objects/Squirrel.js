@@ -7,6 +7,7 @@ const S = SCALE;
 // A squirrel patrols a platform, hops, and runs off with any bone it can grab
 // while the dog is nearby. Dive/stomp it to make it drop the bone. If it
 // reaches the end of its patrol while carrying, it escapes with the loot.
+// At night the same bone-thief slot becomes a nocturnal skunk.
 // ---------------------------------------------------------------------------
 export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, minX, maxX) {
@@ -25,6 +26,8 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     this.dir = -1;
     this.baseSpeed = 55 * S;
     this.fleeSpeed = 80 * S;
+    this.idleTexture = 'squirrel';
+    this.runTexture = 'squirrelRun';
 
     this.carrying = false;
     this.carried = null;
@@ -45,6 +48,12 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     this.body.setVelocityX(-this.baseSpeed);
   }
 
+  setNightMode(night) {
+    this.idleTexture = night ? 'skunk' : 'squirrel';
+    this.runTexture = night ? 'skunkRun' : 'squirrelRun';
+    if (this.active) this.setTexture(this.idleTexture);
+  }
+
   update(dt) {
     if (this.defeated || !this.active) return;
 
@@ -56,7 +65,9 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
       this.body.setVelocityX(0);
       this.setFlipX(this.dir < 0);
       const startledPose =
-        Math.floor(this.animT * 10) % 2 === 0 ? 'squirrel' : 'squirrelRun';
+        Math.floor(this.animT * 10) % 2 === 0
+          ? this.idleTexture
+          : this.runTexture;
       if (this.texture.key !== startledPose) this.setTexture(startledPose);
       if (this.boneIcon.visible) {
         this.boneIcon.setPosition(this.x, this.y - 12 * S);
@@ -93,7 +104,10 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
 
     this.setFlipX(this.dir < 0);
 
-    const pose = Math.floor(this.animT * 10) % 2 === 0 ? 'squirrel' : 'squirrelRun';
+    const pose =
+      Math.floor(this.animT * 10) % 2 === 0
+        ? this.idleTexture
+        : this.runTexture;
     if (this.texture.key !== pose) this.setTexture(pose);
 
     if (this.boneIcon.visible) {

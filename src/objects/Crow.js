@@ -8,7 +8,8 @@ const S = SCALE;
 // ---------------------------------------------------------------------------
 // A crow patrols a horizontal stretch, bobbing on a sine wave.
 // Dive into it (or land on it) to pop it. Touch it any other way and you're
-// knocked back to the last checkpoint.
+// knocked back to the last checkpoint. At night the same aerial slot becomes
+// a hunting owl.
 // ---------------------------------------------------------------------------
 export default class Crow extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, minX, maxX) {
@@ -28,9 +29,15 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
     this.baseY = y;
     this.t = Math.random() * Math.PI * 2;
     this.defeated = false;
+    this.nightMode = false;
     this.nextCaw = 600 + Math.random() * 1800;
 
     this.body.setVelocity(42 * S, 0);
+  }
+
+  setNightMode(night) {
+    this.nightMode = night;
+    if (this.active) this.setTexture(night ? 'owl' : 'crow');
   }
 
   update(dt) {
@@ -49,8 +56,13 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
       this.scene.time.now > this.nextCaw
     ) {
       this.nextCaw = this.scene.time.now + 2600 + Math.random() * 1800;
-      sfx.caw();
-      this.scene.floatText(this.x, this.y - 12 * S, t('float.caw'), '#ffd166');
+      if (this.nightMode) {
+        sfx.owl();
+        this.scene.floatText(this.x, this.y - 12 * S, t('float.hoot'), '#ffd166');
+      } else {
+        sfx.caw();
+        this.scene.floatText(this.x, this.y - 12 * S, t('float.caw'), '#ffd166');
+      }
     }
 
     this.body.setVelocity(this.dir * 42 * S, Math.cos(this.t) * 8 * S);

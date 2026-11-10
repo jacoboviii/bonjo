@@ -94,6 +94,8 @@ export function buildTextures(scene) {
   makeTongue(scene);
   makeSquirrel(scene, 'squirrel', 'idle');
   makeSquirrel(scene, 'squirrelRun', 'run');
+  makeSkunk(scene, 'skunk', 'idle');
+  makeSkunk(scene, 'skunkRun', 'run');
   makeRivalDog(scene, 'rival', 'idle');
   makeRivalDog(scene, 'rivalRun', 'run');
   makeHeart(scene);
@@ -105,6 +107,8 @@ export function buildTextures(scene) {
   makeControlButtons(scene);
 
   makeCrow(scene);
+  makeOwl(scene);
+  makeBat(scene);
   makeBone(scene);
   makeBalloon(scene, 'balloon', CORAL, false);
   makeBalloon(scene, 'goalBalloon', GOLD, true);
@@ -1725,6 +1729,76 @@ function makeSquirrel(scene, key, pose) {
   g.destroy();
 }
 
+// --- skunk (nocturnal squirrel replacement) --------------------------------
+
+function makeSkunk(scene, key, pose) {
+  const g = rawGfx(scene);
+  const FUR = 0x241b32;
+  const DARK = 0x120c1d;
+  const WHITE = 0xf4dcc0;
+  const SHADE = 0x4a3a5a;
+  const INK = 0x0d0813;
+
+  // raised, fluffy plume
+  g.fillStyle(SHADE, 1);
+  g.fillRect(3, 4, 7, 18);
+  g.fillTriangle(3, 4, 10, 4, 7, 0);
+  g.fillTriangle(2, 10, 5, 6, 4, 16);
+  g.fillStyle(FUR, 1);
+  g.fillRect(4, 6, 5, 14);
+  g.fillStyle(WHITE, 1);
+  g.fillRect(5, 7, 2, 11);
+  g.fillRect(6, 4, 1, 5);
+
+  // body
+  g.fillStyle(FUR, 1);
+  g.fillRect(8, 15, 16, 9);
+  g.fillRect(11, 12, 10, 4);
+  g.fillStyle(WHITE, 1);
+  g.fillRect(15, 13, 3, 11);
+  g.fillRect(13, 16, 2, 7);
+
+  // legs
+  g.fillStyle(DARK, 1);
+  if (pose === 'run') {
+    g.fillRect(10, 23, 4, 5);
+    g.fillRect(18, 23, 4, 5);
+  } else {
+    g.fillRect(10, 23, 3, 5);
+    g.fillRect(19, 23, 3, 5);
+  }
+  g.fillStyle(SHADE, 1);
+  if (pose === 'run') {
+    g.fillRect(10, 27, 4, 1);
+    g.fillRect(18, 27, 4, 1);
+  } else {
+    g.fillRect(10, 27, 3, 1);
+    g.fillRect(19, 27, 3, 1);
+  }
+
+  // head, snout and ears
+  g.fillStyle(FUR, 1);
+  g.fillRect(20, 12, 9, 8);
+  g.fillRect(25, 15, 5, 3);
+  g.fillStyle(DARK, 1);
+  g.fillRect(21, 9, 3, 4);
+  g.fillRect(25, 10, 3, 3);
+  g.fillStyle(WHITE, 1);
+  g.fillRect(22, 13, 1, 6);
+
+  // eye, nose, claws
+  g.fillStyle(INK, 1);
+  g.fillRect(25, 14, 2, 2);
+  g.fillRect(30, 16, 1, 1);
+  g.fillStyle(WHITE, 1);
+  g.fillRect(25, 14, 1, 1);
+  g.fillRect(11, 27, 1, 1);
+  g.fillRect(20, 27, 1, 1);
+
+  g.generateTexture(key, 32, 28);
+  g.destroy();
+}
+
 // --- rival neighborhood dog ------------------------------------------------
 
 function makeRivalDog(scene, key, pose) {
@@ -2104,6 +2178,86 @@ function makeCrow(scene) {
   r.fillRect(18, 6, 1, 1); // eye glint
 
   g.generateTexture('crow', 14, 9);
+  g.destroy();
+}
+
+// --- owl (nocturnal crow replacement) --------------------------------------
+
+function makeOwl(scene) {
+  const g = gfx(scene);
+  const W = 16;
+  const H = 10;
+  const FUR = 0x7a6492;
+  const DARK = 0x3a304d;
+  const LIGHT = 0xd8c8e8;
+  const GOLD = 0xffcf5c;
+  const INK = 0x0d0813;
+
+  // soft moon glow so the night hunter reads against the dark sky
+  g.fillStyle(0x8f7ca8, 0.22);
+  g.fillCircle(8, 5, 8);
+
+  // broad swept wings
+  g.fillStyle(DARK, 1);
+  g.fillTriangle(1, 1, 7, 4, 6, 8);
+  g.fillTriangle(15, 1, 9, 4, 10, 8);
+  g.fillStyle(FUR, 1);
+  g.fillRect(6, 3, 4, 6);
+  g.fillTriangle(5, 3, 8, 5, 7, 9);
+  g.fillTriangle(11, 3, 8, 5, 9, 9);
+
+  // tufted head and moonlit rim
+  g.fillStyle(FUR, 1);
+  g.fillRect(5, 0, 6, 5);
+  g.fillRect(4, 2, 1, 2);
+  g.fillRect(11, 2, 1, 2);
+  g.fillStyle(LIGHT, 1);
+  g.fillRect(6, 0, 3, 1);
+  g.fillRect(1, 1, 3, 1);
+  g.fillRect(12, 1, 3, 1);
+  g.fillRect(4, 7, 2, 1);
+  g.fillRect(11, 7, 2, 1);
+  g.fillRect(4, 8, 3, 1);
+  g.fillRect(10, 8, 3, 1);
+
+  // big amber eyes and beak
+  g.fillStyle(GOLD, 1);
+  g.fillRect(5, 2, 2, 2);
+  g.fillRect(9, 2, 2, 2);
+  g.fillStyle(INK, 1);
+  g.fillRect(6, 2, 1, 1);
+  g.fillRect(9, 2, 1, 1);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillTriangle(7, 4, 9, 4, 8, 6);
+
+  g.fillStyle(CREAM, 1);
+  g.fillRect(6, 2, 1, 1);
+  g.fillRect(10, 2, 1, 1);
+
+  g.generateTexture('owl', W, H);
+  g.destroy();
+}
+
+// --- ambient bat ------------------------------------------------------------
+
+function makeBat(scene) {
+  const g = gfx(scene);
+  const W = 12;
+  const H = 7;
+  g.fillStyle(0x17111f, 1);
+  g.fillTriangle(0, 2, 5, 4, 4, 1);
+  g.fillTriangle(12, 2, 7, 4, 8, 1);
+  g.fillRect(4, 3, 4, 3);
+  g.fillRect(5, 2, 2, 2);
+  g.fillTriangle(4, 3, 2, 5, 4, 5);
+  g.fillTriangle(8, 3, 10, 5, 8, 5);
+  g.fillStyle(0x6f5c86, 1);
+  g.fillRect(1, 1, 2, 1);
+  g.fillRect(9, 1, 2, 1);
+  g.fillStyle(0xffcf5c, 1);
+  g.fillRect(5, 3, 1, 1);
+  g.fillRect(7, 3, 1, 1);
+  g.generateTexture('bat', W, H);
   g.destroy();
 }
 

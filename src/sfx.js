@@ -92,6 +92,10 @@ export const sfx = {
     tone(420, 0.12, 'sawtooth', 0.035, 240);
     tone(360, 0.16, 'square', 0.025, 200, 0.14);
   },
+  owl: () => {
+    tone(260, 0.22, 'sine', 0.035, 220);
+    tone(210, 0.3, 'sine', 0.03, 180, 0.2);
+  },
   rooster: () => {
     tone(520, 0.18, 'sawtooth', 0.035, 760);
     tone(760, 0.22, 'square', 0.03, 560, 0.18);

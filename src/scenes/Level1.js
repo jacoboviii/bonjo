@@ -187,6 +187,19 @@ const BIRDS = [
 ];
 const ROOSTER_X = 500;
 
+// Decorative nocturnal flyers. They brush through the sky after dark and are
+// deliberately non-hazardous: enemies still come only from the wave system.
+const NIGHT_FLIERS = [
+  { x: 80, y: 508, amp: 7, speed: 22, dir: 1 },
+  { x: 210, y: 518, amp: 9, speed: 28, dir: -1 },
+  { x: 430, y: 506, amp: 8, speed: 25, dir: 1 },
+  { x: 760, y: 514, amp: 10, speed: 30, dir: -1 },
+  { x: 1400, y: 504, amp: 7, speed: 20, dir: 1 },
+  { x: 2300, y: 512, amp: 9, speed: 28, dir: -1 },
+  { x: 3200, y: 506, amp: 8, speed: 23, dir: 1 },
+  { x: 3950, y: 514, amp: 11, speed: 32, dir: -1 },
+];
+
 // A few solid foreground houses whose roofs are platform surfaces.
 const FOREGROUND_HOUSES = [
   { x: 1040, key: 'foregroundHouseA' },
@@ -272,6 +285,7 @@ export default class Level1 extends Phaser.Scene {
     this.createStreetDressing();
     this.createAgave();
     this.createCritters();
+    this.createNightFliers();
     this.createBoundary();
     this.buildLevel();
     this.createForegroundHouses();
@@ -384,6 +398,7 @@ export default class Level1 extends Phaser.Scene {
     this.updateHud(delta);
     this.updateInteractions();
     this.updateCritters();
+    this.updateNightFliers(dt);
     this.keepDogInBounds();
     this.updateAlphaCrown();
 
@@ -649,6 +664,7 @@ export default class Level1 extends Phaser.Scene {
         .setScale(b.s)
         .setDepth(3);
       bird.setData('homeX', b.x * S);
+      bird.setData('homeScale', b.s);
       bird.setData('scattered', false);
       bird.setData('nextChirp', 0);
       return bird;
@@ -658,6 +674,80 @@ export default class Level1 extends Phaser.Scene {
       .image(ROOSTER_X * S, 600 * S, 'rooster')
       .setOrigin(0.5, 1)
       .setDepth(3);
+  }
+
+  createNightFliers() {
+    this.nightFliers = NIGHT_FLIERS.map((b, i) => {
+      const bat = this.add
+        .image(b.x * S, b.y * S, 'bat')
+        .setDepth(2)
+        .setVisible(false);
+      bat.setData({
+        baseY: b.y * S,
+        amp: b.amp * S,
+        speed: b.speed * S,
+        dir: b.dir,
+        phase: i * 1.7,
+      });
+      return bat;
+    });
+  }
+
+  updateNightFliers(dt) {
+    if (this.phase !== 'night' || !this.nightFliers) return;
+
+    const t = this.time.now / 1000;
+    for (const bat of this.nightFliers) {
+      const speed = bat.getData('speed');
+      const dir = bat.getData('dir');
+      let x = bat.x + dir * speed * dt;
+      if (x < -20 * S) x = WORLD_W + 20 * S;
+      else if (x > WORLD_W + 20 * S) x = -20 * S;
+
+      bat.x = x;
+      bat.y =
+        bat.getData('baseY') +
+        Math.sin(t * 2.1 + bat.getData('phase')) * bat.getData('amp');
+      bat.setFlipX(dir < 0);
+      bat.setScale(1, 0.82 + 0.18 * Math.sin(t * 8 + bat.getData('phase')));
+    }
+  }
+
+  setNightCreatures(night) {
+    // Day company and diurnal wildlife leave the street after dark.
+    this.polo?.setVisible(!night).setActive(!night);
+    this.chihuahua?.setVisible(!night).setActive(!night);
+    this.rooster?.setVisible(!night).setActive(!night);
+
+    for (const bird of this.birds || []) {
+      this.tweens.killTweensOf(bird);
+      bird.setActive(!night).setVisible(!night);
+      if (night) {
+        bird.setData('scattered', false);
+      } else {
+        bird
+          .setPosition(bird.getData('homeX'), 600 * S)
+          .setAlpha(1)
+          .setAngle(0)
+          .setScale(bird.getData('homeScale') || 1);
+        bird.setData('scattered', false);
+      }
+    }
+
+    if (night) {
+      this.activeInteractable = null;
+      this.interactPrompt?.setVisible(false);
+    }
+
+    // Squirrels and crows trade shifts with skunks and owls.
+    this.squirrelGroup?.children.iterate((squirrel) => {
+      squirrel?.setNightMode?.(night);
+    });
+    this.crowGroup?.children.iterate((crow) => {
+      crow?.setNightMode?.(night);
+    });
+
+    for (const bat of this.nightFliers || []) bat.setVisible(night);
   }
 
   updateCritters() {
@@ -686,6 +776,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     for (const bird of this.birds) {
+      if (!bird.active || !bird.visible) continue;
       if (bird.getData('scattered')) continue;
       if (
         Phaser.Math.Distance.Between(bird.x, bird.y, dog.x, dog.y) < 62 * S
@@ -698,6 +789,8 @@ export default class Level1 extends Phaser.Scene {
       if (now > this.nextChirp) {
         const bird = this.birds.find(
           (b) =>
+            b.active &&
+            b.visible &&
             !b.getData('scattered') &&
             Phaser.Math.Distance.Between(b.x, b.y, dog.x, dog.y) < 260 * S,
         );
@@ -708,7 +801,7 @@ export default class Level1 extends Phaser.Scene {
       }
 
       if (
-        this.rooster &&
+        this.rooster?.active &&
         now > this.nextRooster &&
         Phaser.Math.Distance.Between(
           this.rooster.x,
@@ -1191,7 +1284,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   alertChihuahua() {
-    if (!this.chihuahua || this.time.now < this.nextAllyBark) return;
+    if (!this.chihuahua?.active || this.time.now < this.nextAllyBark) return;
     this.nextAllyBark = this.time.now + 900;
     sfx.bark();
     this.floatText(
@@ -1942,6 +2035,7 @@ export default class Level1 extends Phaser.Scene {
     this.nextWave = 2;
     this.gateRusherSpawned = false;
     this.closeDialog();
+    this.setNightCreatures(true);
 
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
@@ -1984,6 +2078,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
     this.closeDialog();
+    this.setNightCreatures(false);
 
     this.health = Math.min(this.maxHealth, this.health + 1);
     this.hunger = Math.min(this.maxHunger, this.hunger + 10);
