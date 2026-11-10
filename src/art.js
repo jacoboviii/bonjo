@@ -65,6 +65,9 @@ export function buildTextures(scene) {
   makeBird(scene);
   makeRooster(scene);
   makeFence(scene);
+  makeForegroundHouse(scene, 'foregroundHouseA', 0xc46b4a, 0x8a4f3a, 0xffd166);
+  makeForegroundHouse(scene, 'foregroundHouseB', 0x2f7f78, 0x1d4a47, 0xf2b544);
+  makeForegroundHouse(scene, 'foregroundHouseC', 0xd99a63, 0xb5533a, 0x2f7f78);
   makeBanner(scene);
   makeStreetProps(scene);
   makeCar(scene, 'carA', 0xf26b5e, 0xfff4e0, 'sedan');
@@ -703,6 +706,10 @@ function makeGate(scene) {
   const W = 36;
   const H = 30;
 
+  // warm, open doorway
+  g.fillStyle(0xffcf6a, 0.1);
+  g.fillRect(8, 4, 20, 23);
+
   // posts and top beam
   g.fillStyle(0x2b1b3d, 1);
   g.fillRect(0, 0, 36, 4);
@@ -712,28 +719,38 @@ function makeGate(scene) {
   g.fillRect(1, 3, 34, 2);
   g.fillRect(2, 4, 2, 26);
   g.fillRect(32, 4, 2, 26);
+  g.fillStyle(GOLD, 0.6);
+  g.fillRect(1, 6, 1, 2);
+  g.fillRect(34, 6, 1, 2);
 
-  // iron bars
-  for (let x = 7; x < 32; x += 5) {
-    g.fillStyle(0x1b1029, 1);
-    g.fillRect(x, 6, 2, 23);
-    g.fillStyle(0x6a5a70, 1);
-    g.fillRect(x, 6, 1, 23);
-  }
-  g.fillStyle(0x2b1b3d, 1);
-  g.fillRect(4, 16, 28, 2);
-
-  // latch and little lamp
+  // gate leaves folded back against the posts
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(5, 6, 2, 20);
+  g.fillRect(8, 6, 1, 20);
+  g.fillRect(27, 6, 2, 20);
+  g.fillRect(30, 6, 1, 20);
+  g.fillStyle(0x6a5a70, 1);
+  g.fillRect(5, 6, 1, 20);
+  g.fillRect(27, 6, 1, 20);
   g.fillStyle(GOLD, 1);
-  g.fillRect(25, 17, 3, 3);
-  g.fillStyle(0xffcf6a, 0.15);
-  g.fillCircle(18, 2, 5);
-  g.fillStyle(GOLD, 1);
-  g.fillRect(16, 0, 4, 3);
+  g.fillRect(5, 9, 2, 1);
+  g.fillRect(5, 20, 2, 1);
+  g.fillRect(27, 9, 2, 1);
+  g.fillRect(27, 20, 2, 1);
 
-  // warm house light behind the gate
+  // a painted threshold line marks the porch boundary
+  g.fillStyle(0x4f8877, 1);
+  g.fillRect(7, 26, 22, 2);
+  g.fillStyle(0xd7e3c3, 1);
+  for (let x = 8; x < 28; x += 5) g.fillRect(x, 26, 2, 1);
+
+  // little lantern above the opening
   g.fillStyle(0xffcf6a, 0.18);
-  g.fillRect(6, 6, 26, 22);
+  g.fillCircle(18, 3, 5);
+  g.fillStyle(GOLD, 1);
+  g.fillRect(16, 1, 4, 3);
+  g.fillStyle(0xfff4e0, 0.8);
+  g.fillRect(17, 1, 2, 1);
 
   g.generateTexture('gate', W, H);
   g.destroy();
@@ -1144,6 +1161,84 @@ function makeFence(scene) {
   g.fillRect(13, 15, 1, 3);
 
   g.generateTexture('fence', W, H);
+  g.destroy();
+}
+
+// Small foreground houses. Their roofs are standable platforms; the full body
+// is solid, so they read like places on the block rather than floating ledges.
+function makeForegroundHouse(scene, key, body, roof, trim) {
+  const g = gfx(scene);
+  const W = 70;
+  const H = 80;
+
+  // roof cap / overhang
+  g.fillStyle(INK, 1);
+  g.fillRect(0, 0, W, 2);
+  g.fillStyle(roof, 1);
+  g.fillRect(0, 2, W, 7);
+  g.fillStyle(0x1b1029, 0.35);
+  g.fillRect(0, 8, W, 3);
+  for (let x = 3; x < W; x += 9) {
+    g.fillStyle(0x1b1029, 0.22);
+    g.fillRect(x, 3, 1, 6);
+  }
+
+  // body / facade
+  g.fillStyle(body, 1);
+  g.fillRect(2, 11, W - 4, H - 11);
+  g.fillStyle(0x1b1029, 0.18);
+  g.fillRect(W - 7, 11, 5, H - 11);
+  g.fillStyle(trim, 0.55);
+  g.fillRect(4, 11, W - 8, 1);
+
+  // windows
+  for (let row = 0; row < 2; row++) {
+    const wy = 22 + row * 20;
+    for (let wx = 9; wx < W - 10; wx += 19) {
+      g.fillStyle(0x1b1029, 0.85);
+      g.fillRect(wx - 1, wy - 1, 12, 13);
+      g.fillStyle(0xffcf6a, 0.85);
+      g.fillRect(wx, wy, 10, 11);
+      g.fillStyle(0x1b1029, 0.7);
+      g.fillRect(wx + 4, wy, 1, 11);
+      g.fillRect(wx, wy + 5, 10, 1);
+    }
+  }
+
+  // door + awning
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(W / 2 - 9, H - 22, 18, 21);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(W / 2 - 7, H - 20, 14, 19);
+  g.fillStyle(trim, 1);
+  g.fillRect(W / 2 - 11, H - 25, 22, 4);
+  for (let i = 0; i < 4; i++) {
+    g.fillStyle(i % 2 ? trim : 0xfff4e0, 1);
+    g.fillRect(W / 2 - 9 + i * 5, H - 22, 5, 2);
+  }
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(W / 2 + 4, H - 12, 2, 2);
+
+  // planters / rooftop details
+  g.fillStyle(0x3a2836, 1);
+  g.fillRect(7, H - 14, 8, 4);
+  g.fillStyle(0x4f8877, 1);
+  g.fillRect(8, H - 18, 2, 4);
+  g.fillRect(12, H - 18, 2, 4);
+
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(48, 2, 12, 7);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(49, 3, 10, 2);
+  g.fillRect(50, 9, 1, 3);
+  g.fillRect(57, 9, 1, 3);
+
+  // little corner accents
+  g.fillStyle(trim, 1);
+  g.fillRect(4, 40, 3, 3);
+  g.fillRect(W - 7, 40, 3, 3);
+
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 

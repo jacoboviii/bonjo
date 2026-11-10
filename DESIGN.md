@@ -200,10 +200,12 @@ health.
 
 ### The porch
 Bonjo's house at the start of the street. Rivals won't enter the first 160
-design px of the block, so the porch is a safe corner. A **porch gate** marks
-that line: gate rushers chew it down, and if it breaks the safe zone is open
-until dawn repairs it. Abuela and the chihuahua live here. Dawn drops a concha
-by the door. The street is the arena; the porch is where you catch your breath.
+design px of the block, so the porch is a safe corner. An **open CASA gateway**
+and painted threshold mark that line: Bonjo walks through the open leaves,
+normal rivals stop at the threshold, and gate rushers chew the gate down. If it
+breaks the safe zone is open until dawn repairs it. Abuela and the chihuahua
+live here. Dawn drops a concha by the door. The street is the arena; the porch is
+where you catch your breath.
 
 ### Checkpoints
 Balloons at the midpoint and on the east block; touch one to set the respawn
@@ -222,7 +224,8 @@ blue mountains, fields/agave, low houses with lit windows, a church tower and
 cross, papel picado. A closer, faster parallax storefront row adds awnings,
 balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
-edges surround the street. The town layers are anchored to the street's world Y
+edges surround the street. A few solid foreground houses rise from the wide gaps
+with standable rooftops. The town layers are anchored to the street's world Y
 so they sit on the sidewalk, and a light blue haze keeps the play lane readable.
 
 Beat sheet:

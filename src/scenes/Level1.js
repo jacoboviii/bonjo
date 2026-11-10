@@ -182,6 +182,13 @@ const BIRDS = [
 ];
 const ROOSTER_X = 500;
 
+// A few solid foreground houses whose roofs are platform surfaces.
+const FOREGROUND_HOUSES = [
+  { x: 1040, key: 'foregroundHouseA' },
+  { x: 2040, key: 'foregroundHouseB' },
+  { x: 3040, key: 'foregroundHouseC' },
+];
+
 const AGAVE_FIELDS = [1300, 2780, 3380];
 
 // Agave clumps on the edges of the block. These sit behind cars and Bonjo so
@@ -256,6 +263,7 @@ export default class Level1 extends Phaser.Scene {
     this.createCritters();
     this.createBoundary();
     this.buildLevel();
+    this.createForegroundHouses();
     this.createLedges();
     this.createInteractiveProps();
     this.createPorch();
@@ -532,6 +540,21 @@ export default class Level1 extends Phaser.Scene {
     this.platforms.refresh();
   }
 
+  createForegroundHouses() {
+    this.foregroundHouseGroup = this.physics.add.staticGroup();
+
+    for (const h of FOREGROUND_HOUSES) {
+      const house = this.add
+        .image(h.x * S, 520 * S, h.key)
+        .setOrigin(0.5, 0)
+        .setDepth(4);
+      this.physics.add.existing(house, true);
+      house.body.setSize(70 * S, 80 * S).setOffset(0, 0);
+      house.body.updateFromGameObject?.();
+      this.foregroundHouseGroup.add(house);
+    }
+  }
+
   createLedges() {
     this.oneWayGroup = this.physics.add.staticGroup();
 
@@ -759,6 +782,17 @@ export default class Level1 extends Phaser.Scene {
       .image(GATE_X * S, 600 * S, 'gate')
       .setOrigin(0.5, 1)
       .setDepth(2.5);
+
+    this.gateSign = this.add
+      .text(GATE_X * S, 600 * S - 34 * S, t('porch.sign'), {
+        fontFamily: 'monospace',
+        fontSize: 5 * S,
+        color: '#fff4e0',
+        stroke: '#1b1029',
+        strokeThickness: 2 * S,
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(3);
   }
 
   createAllyNpcs() {
@@ -1070,6 +1104,7 @@ export default class Level1 extends Phaser.Scene {
     this.controls.consumeTouchJump = () => this.touch.consumeJump();
 
     this.physics.add.collider(this.dog, this.platforms);
+    this.physics.add.collider(this.dog, this.foregroundHouseGroup);
     this.physics.add.collider(
       this.dog,
       this.oneWayGroup,
@@ -1655,6 +1690,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateHealth = this.gateMaxHealth;
     this.gateBroken = false;
     this.porchGate?.clearTint().setAlpha(1);
+    this.gateSign?.setVisible(true);
 
     this.abuelaGift = true;
     this.bellRung = false;
@@ -1860,6 +1896,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.gateHealth <= 0) {
       this.gateBroken = true;
       this.porchGate?.setTint(0x6a5a76).setAlpha(0.55);
+      this.gateSign?.setVisible(false);
       this.showPhaseBanner(t('gate.broken'), '#f26b5e');
       this.cameras.main.flash(160, 242, 107, 94);
       if (rival?.active) {
@@ -1895,13 +1932,18 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showPhaseBanner(text, color) {
+    const fontSize = Math.min(
+      22 * S,
+      Math.max(10 * S, Math.floor((this.scale.width - 48) / (text.length * 0.62))),
+    );
+
     this.phaseBanner = this.add
       .text(this.scale.width / 2, 72 * S, text, {
         fontFamily: 'monospace',
-        fontSize: 22 * S,
+        fontSize,
         color,
         stroke: '#2b1b3d',
-        strokeThickness: 4 * S,
+        strokeThickness: Math.max(2, fontSize * 0.16),
       })
       .setOrigin(0.5)
       .setScrollFactor(0)

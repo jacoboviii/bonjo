@@ -41,12 +41,15 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   flaps. Chain them with the gold rings.
 - **High routes:** one-way fire escapes and laundry lines hide bones and
   conchas above the street. Jump up through them and land on top.
+- **Foreground houses:** three solid houses rise from the wide gaps; their
+  rooftops are standable platforms.
 - **Street life:** taco carts restore hunger, trash cans burst into bones,
   bicycles can be knocked over, and one parked car has an alarm that stuns
   nearby rivals.
 - **The porch:** Bonjo's house at the start of the street is a safe zone.
-  A **porch gate** can be chewed down by gate rushers; if it breaks, the porch
-  is open until dawn. Abuela tosses a concha each day, the bell grants another,
+  An open **CASA gateway** and painted threshold mark the line. Normal rivals
+  stop there; gate rushers try to chew the gate down. If it breaks, the porch is
+  open until dawn. Abuela tosses a concha each day, the bell grants another,
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
   hunger; an empty bar starts costing health. Survive two nights; the final
@@ -297,6 +300,7 @@ files):
 | `agaveField` | 90×26 | tilled field patch |
 | `cat`, `catGray` / `bird` / `rooster` | 18×16 / 12×10 / 20×24 | ambient wildlife |
 | `fence` | 28×32 | level-edge boundary |
+| `foregroundHouseA/B/C` | 70×80 | standable foreground houses |
 | `ledge_*` | 90–110×12 | one-way fire escape / laundry line |
 
 ---
