@@ -283,7 +283,7 @@ files):
 | `bone` | 20×16 | |
 | `concha` | 24×16 | hunger pickup |
 | `heart` | 20×20 | health HUD |
-| `porch` | 112×88 | home safe zone |
+| `bonjoHouse` | 130×80 | two-storey home behind the CASA gateway |
 | `ring` | 32×32 | |
 | `balloon` | 24×40 | checkpoint |
 | `puff` | 16×16 | dust particle |

@@ -855,7 +855,7 @@ export default class Level1 extends Phaser.Scene {
 
   createPorch() {
     this.add
-      .image(28 * S, 600 * S, 'porch')
+      .image(105 * S, 600 * S, 'bonjoHouse')
       .setOrigin(0.5, 1)
       .setDepth(2);
   }

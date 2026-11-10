@@ -96,7 +96,7 @@ export function buildTextures(scene) {
   makeRivalDog(scene, 'rivalRun', 'run');
   makeHeart(scene);
   makeFood(scene);
-  makePorch(scene);
+  makeBonjoHouse(scene);
   makePinata(scene);
   makeRope(scene);
   makeAwning(scene);
@@ -1780,46 +1780,112 @@ function makeFood(scene) {
   g.destroy();
 }
 
-function makePorch(scene) {
+function makeBonjoHouse(scene) {
   const g = gfx(scene);
-  // adobe wall + tiled eave
+  const W = 130;
+  const H = 80;
+
+  // shadow / base
+  g.fillStyle(0x1b1029, 0.28);
+  g.fillRect(4, H - 6, W - 8, 6);
+
+  // adobe body
   g.fillStyle(0xc98a5e, 1);
-  g.fillRect(0, 0, 56, 44);
+  g.fillRect(2, 10, W - 4, H - 10);
+  g.fillStyle(0xa96a45, 0.5);
+  g.fillRect(W - 13, 10, 11, H - 10);
+  g.fillStyle(0xd99a63, 0.6);
+  g.fillRect(4, 10, W - 8, 1);
+
+  // tiled roof and eave
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(0, 0, W, 2);
   g.fillStyle(0xb5533a, 1);
-  g.fillRect(0, 0, 56, 6);
+  g.fillRect(0, 2, W, 8);
   g.fillStyle(0xd9775a, 1);
-  g.fillRect(0, 0, 56, 2);
+  g.fillRect(0, 2, W, 2);
   g.fillStyle(0x8f3f2e, 1);
-  for (let x = 0; x < 56; x += 7) g.fillRect(x, 1, 1, 4);
+  for (let x = 0; x < W; x += 9) g.fillRect(x, 3, 1, 6);
+  g.fillStyle(0x8f3f2e, 1);
+  g.fillRect(0, 10, W, 2);
+  g.fillStyle(0x6a3d2e, 0.5);
+  g.fillRect(5, 12, W - 10, 1);
 
-  // wooden door with a lit transom
-  g.fillStyle(0x5a3328, 1);
-  g.fillRect(14, 12, 20, 32);
+  // floor trim
+  g.fillStyle(0xa96a45, 0.55);
+  g.fillRect(4, 33, W - 8, 2);
+
+  // upper and lower windows
+  const window = (x, y) => {
+    g.fillStyle(0x1b1029, 0.9);
+    g.fillRect(x - 1, y - 1, 15, 14);
+    g.fillStyle(0xffcf6a, 0.85);
+    g.fillRect(x, y, 13, 12);
+    g.fillStyle(0x1b1029, 0.7);
+    g.fillRect(x + 6, y, 1, 12);
+    g.fillRect(x, y + 5, 13, 1);
+    g.fillStyle(0xd9b26a, 1);
+    g.fillRect(x - 2, y + 13, 17, 2);
+    g.fillStyle(0x4f8877, 1);
+    g.fillRect(x + 1, y + 14, 3, 2);
+    g.fillRect(x + 10, y + 14, 2, 2);
+  };
+
+  window(14, 16);
+  window(42, 16);
+  window(78, 16);
+  window(14, 36);
+  window(42, 36);
+
+  // door under the CASA gateway
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(96, 49, 28, 31);
   g.fillStyle(0x8f5a2e, 1);
-  g.fillRect(16, 14, 16, 28);
+  g.fillRect(99, 52, 22, 28);
   g.fillStyle(0xffcf6a, 1);
-  g.fillRect(16, 16, 16, 4);
+  g.fillRect(99, 53, 22, 4);
+  g.fillStyle(0x5a3328, 1);
+  g.fillRect(102, 60, 16, 20);
   g.fillStyle(0xffd166, 1);
-  g.fillRect(29, 28, 2, 2);
-
-  // step
+  g.fillRect(116, 71, 2, 2);
   g.fillStyle(0x9a5a3c, 1);
-  g.fillRect(10, 40, 28, 4);
+  g.fillRect(93, 78, 34, 2);
 
-  // potted plant
+  // flower boxes / little porch details
   g.fillStyle(0x8f3f2e, 1);
-  g.fillRect(42, 34, 6, 8);
-  g.fillStyle(0x4f8f5a, 1);
-  g.fillRect(43, 28, 4, 7);
-  g.fillRect(41, 31, 8, 3);
-
-  // dog bowl
+  g.fillRect(10, H - 8, 11, 5);
+  g.fillStyle(0x4f8877, 1);
+  g.fillRect(11, H - 13, 2, 5);
+  g.fillRect(14, H - 15, 2, 7);
+  g.fillRect(17, H - 12, 2, 4);
+  g.fillStyle(0xe85a4f, 1);
+  g.fillRect(14, H - 16, 2, 2);
   g.fillStyle(0x6f8a80, 1);
-  g.fillRect(4, 38, 8, 3);
+  g.fillRect(82, H - 4, 9, 3);
   g.fillStyle(0xf4dcc0, 1);
-  g.fillRect(6, 36, 4, 2);
+  g.fillRect(84, H - 6, 5, 2);
 
-  g.generateTexture('porch', 56, 44);
+  // rooftop tank / pots
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(88, 2, 14, 8);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(89, 3, 12, 2);
+  g.fillRect(90, 10, 1, 3);
+  g.fillRect(99, 10, 1, 3);
+  g.fillStyle(0x4f8877, 1);
+  g.fillRect(24, 3, 3, 3);
+  g.fillRect(27, 1, 2, 5);
+
+  // small balcony rail above the door
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(94, 39, 32, 2);
+  for (let x = 96; x < 124; x += 6) g.fillRect(x, 39, 1, 5);
+  g.fillStyle(0xe85a4f, 1);
+  g.fillRect(120, 36, 3, 3);
+  g.fillStyle(0x4f8877, 1);
+  g.fillRect(122, 34, 1, 4);
+
+  g.generateTexture('bonjoHouse', W, H);
   g.destroy();
 }
 
