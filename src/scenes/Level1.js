@@ -235,9 +235,10 @@ export default class Level1 extends Phaser.Scene {
     this.envHaze?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
 
-    if (this.boneText) this.boneText.x = W / 2;
-    if (this.comboText) this.comboText.x = W / 2;
-    if (this.objectivesButton) this.objectivesButton.x = W / 2;
+    const hudRight = W - 8 * S;
+    if (this.boneText) this.boneText.x = hudRight;
+    if (this.comboText) this.comboText.x = hudRight;
+    if (this.objectivesButton) this.objectivesButton.x = hudRight;
     if (this.hint) this.hint.x = W / 2;
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
@@ -1456,26 +1457,26 @@ export default class Level1 extends Phaser.Scene {
     this.pips = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.boneText = this.add
-      .text(W / 2, 5 * S, `${t('hud.bones')} 0`, {
+      .text(W - 8 * S, 5 * S, `${t('hud.bones')} 0`, {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
       })
-      .setOrigin(0.5, 0)
+      .setOrigin(1, 0)
       .setScrollFactor(0)
       .setDepth(100);
 
     this.comboText = this.add
-      .text(W / 2, 35 * S, '', {
+      .text(W - 8 * S, 31 * S, '', {
         fontFamily: 'monospace',
         fontSize: 7 * S,
         color: '#ffd166',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
       })
-      .setOrigin(0.5, 0)
+      .setOrigin(1, 0)
       .setScrollFactor(0)
       .setDepth(100)
       .setVisible(false);
@@ -1759,8 +1760,8 @@ export default class Level1 extends Phaser.Scene {
 
     this.objectivesButton = this.add
       .text(
-        W / 2,
-        14 * S,
+        W - 8 * S,
+        17 * S,
         this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
         {
           fontFamily: 'monospace',
@@ -1769,7 +1770,7 @@ export default class Level1 extends Phaser.Scene {
           backgroundColor: '#f4dfb0',
         },
       )
-      .setOrigin(0.5, 0)
+      .setOrigin(1, 0)
       .setScrollFactor(0)
       .setDepth(160)
       .setInteractive({ useHandCursor: true });
@@ -1879,7 +1880,7 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesH = h;
 
     this.objectivesButton
-      .setPosition(W / 2, 14 * S)
+      .setPosition(W - 8 * S, 17 * S)
       .setText(
         this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
       );
@@ -1982,6 +1983,9 @@ export default class Level1 extends Phaser.Scene {
   createTuningPanel() {
     const gui = new GUI({ title: t('tuning.title') });
     this.gui = gui;
+    // Keep the live tuning panel out of the top-right HUD cluster.
+    gui.domElement.style.top = 'auto';
+    gui.domElement.style.bottom = '0';
 
     const move = gui.addFolder(t('tuning.movement'));
     move.add(tuning, 'runSpeed', 80, 500, 5).name(t('tuning.runSpeed'));

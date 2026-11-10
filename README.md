@@ -114,7 +114,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
 - **bottom-center:** 💬 interact when a friendly NPC or quest object is in range
-- **top-center:** tap **OBJETIVOS / OBJECTIVES** to pause and review the goal, errands and what each HUD meter means
+- **top-right:** the bone counter and **OBJETIVOS / OBJECTIVES** menu; tap the menu to pause and review the goal, errands and what each HUD meter means
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
 - On the end screen, **tap anywhere** to replay; the **MAPA / MAP** button returns to the hub.
 - Multi-touch works, so you can run and flap at the same time.
@@ -141,7 +141,7 @@ rank.
 
 ## The tuning panel (the important part)
 
-Press **T**, or click the `BONJO · feel tuning` bar in the top-right.
+Press **T**, or click the `BONJO · feel tuning` bar in the bottom-right.
 
 While playing, drag any slider and *feel* the difference immediately. This is
 how platformer game feel is actually designed: change one number, play for ten
