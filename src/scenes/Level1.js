@@ -116,41 +116,23 @@ const FOODS = [
 const PARKED_CARS = [
   { x: 215, key: 'carB', flip: false },
   { x: 760, key: 'carA', flip: true, alarm: true },
-  { x: 1290, key: 'carC', flip: false },
   { x: 1790, key: 'carB', flip: true },
   { x: 2390, key: 'carC', flip: true },
-  { x: 2980, key: 'carA', flip: false },
   { x: 3320, key: 'carB', flip: false },
-  { x: 3800, key: 'carC', flip: true },
   { x: 4110, key: 'carA', flip: false },
 ];
 
 const BIKES = [
-  { x: 120, key: 'bikeMint', flip: false },
-  { x: 980, key: 'bikeCoral', flip: true },
   { x: 1430, key: 'bikeMint', flip: true },
-  { x: 1950, key: 'bikeCoral', flip: false },
   { x: 2460, key: 'bikeMint', flip: false },
-  { x: 2940, key: 'bikeCoral', flip: true },
-  { x: 3140, key: 'bikeMint', flip: false },
-  { x: 3350, key: 'bikeCoral', flip: false },
-  { x: 3560, key: 'bikeMint', flip: true },
   { x: 3700, key: 'bikeCoral', flip: false },
-  { x: 4060, key: 'bikeMint', flip: false },
 ];
 
 const STREET_PROPS = [
   { x: 470, key: 'hydrant' },
-  { x: 1450, key: 'planter' },
-  { x: 1730, key: 'hydrant' },
-  { x: 2470, key: 'planter' },
-  { x: 2840, key: 'hydrant' },
   { x: 660, key: 'streetlamp' },
-  { x: 1660, key: 'streetlamp' },
+  { x: 1730, key: 'hydrant' },
   { x: 2660, key: 'streetlamp' },
-  { x: 3400, key: 'hydrant' },
-  { x: 3540, key: 'planter' },
-  { x: 3760, key: 'streetlamp' },
   { x: 4060, key: 'planter' },
 ];
 
@@ -180,8 +162,8 @@ const LEDGE_FOODS = [
 ];
 
 // Interactive street furniture.
-const TACO_CARTS = [640, 2160, 3500];
-const TRASH_SPOTS = [960, 2280, 3820];
+const TACO_CARTS = [640, 3500];
+const TRASH_SPOTS = [960, 3820];
 const GATE_X = 160;
 const ABUELA_X = 135;
 const CHIHUAHUA_X = 88;
@@ -190,42 +172,25 @@ const BELL_X = 2450;
 // Ambient wildlife. Cats hiss, birds scatter/chirp, and the rooster crows at
 // dawn. None of them are hazards.
 const CATS = [
-  { x: 200, key: 'cat', s: 0.9, flip: true },
   { x: 850, key: 'catGray', s: 1, flip: false },
   { x: 1850, key: 'cat', s: 0.85, flip: false },
-  { x: 3150, key: 'catGray', s: 0.9, flip: true },
 ];
 const BIRDS = [
-  { x: 230, s: 0.9 },
   { x: 1120, s: 1 },
-  { x: 2500, s: 0.85 },
-  { x: 3700, s: 1 },
+  { x: 2350, s: 0.85 },
 ];
 const ROOSTER_X = 500;
 
-const AGAVE_FIELDS = [830, 1300, 1830, 2350, 2780, 3380];
+const AGAVE_FIELDS = [1300, 2780, 3380];
 
 // Agave clumps on the edges of the block. These sit behind cars and Bonjo so
 // the street still reads while the old agricultural surroundings peek through.
 const AGAVES = [
-  { x: 180, key: 'agaveBloom', s: 0.8, flip: false },
   { x: 250, key: 'agave', s: 0.85, flip: true },
-  { x: 400, key: 'agave', s: 1, flip: false },
-  { x: 417, key: 'agave', s: 0.75, flip: true },
-  { x: 915, key: 'agave', s: 1, flip: true },
-  { x: 935, key: 'agave', s: 0.8, flip: false },
   { x: 1220, key: 'agave', s: 1.05, flip: false },
-  { x: 1255, key: 'agaveBloom', s: 0.9, flip: true },
-  { x: 1680, key: 'agave', s: 0.9, flip: true },
-  { x: 1700, key: 'agave', s: 1.1, flip: false },
-  { x: 2120, key: 'agave', s: 1, flip: false },
   { x: 2150, key: 'agaveBloom', s: 0.85, flip: true },
   { x: 2700, key: 'agave', s: 1.05, flip: true },
-  { x: 2730, key: 'agave', s: 0.8, flip: false },
-  { x: 3440, key: 'agave', s: 1, flip: true },
-  { x: 3470, key: 'agaveBloom', s: 0.9, flip: false },
   { x: 4140, key: 'agave', s: 1.05, flip: false },
-  { x: 4165, key: 'agave', s: 0.8, flip: true },
 ];
 
 export default class Level1 extends Phaser.Scene {
