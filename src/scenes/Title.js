@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
 import { t, getLang, setLang, toggleLang } from '../i18n.js';
+import { drawFolkCard } from '../ui/FolkCard.js';
 
 const S = SCALE;
 
@@ -53,8 +54,18 @@ export default class Title extends Phaser.Scene {
       .setOrigin(0.5, 1)
       .setScale(0.85);
 
-    // atmospheric haze: city recedes, sitting dog and title copy stay clear
+    // atmosphere: city recedes, sitting dog and title copy stay clear
     this.add.rectangle(W / 2, H / 2, W, H, 0x2b5a86, 0.14);
+
+    // Lotería-style paper card framing the hero
+    this.titleCard = this.add.graphics();
+    drawFolkCard(
+      this.titleCard,
+      W / 2,
+      135,
+      Math.min(W - 64, 340),
+      230,
+    );
 
     // a very good dog, sitting and panting
     this.dogGroup = this.add.container(W / 2, 92 * S).setDepth(3);
@@ -94,8 +105,8 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 28 * S, 'BONJO', {
         fontFamily: 'monospace',
         fontSize: 64,
-        color: '#ffd166',
-        stroke: '#2b1b3d',
+        color: '#c94f3d',
+        stroke: '#1d1326',
         strokeThickness: 12,
       })
       .setOrigin(0.5);
@@ -104,9 +115,9 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 48 * S, t('title.subtitle'), {
         fontFamily: 'monospace',
         fontSize: 16,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
-        strokeThickness: 4,
+        color: '#1d1326',
+        stroke: '#f4dfb0',
+        strokeThickness: 2,
       })
       .setOrigin(0.5);
 
@@ -114,9 +125,9 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 64 * S, t('title.place'), {
         fontFamily: 'monospace',
         fontSize: 10,
-        color: '#6ec6a8',
-        stroke: '#2b1b3d',
-        strokeThickness: 3,
+        color: '#2f7f78',
+        stroke: '#f4dfb0',
+        strokeThickness: 2,
       })
       .setOrigin(0.5);
 
@@ -131,9 +142,9 @@ export default class Title extends Phaser.Scene {
         {
           fontFamily: 'monospace',
           fontSize: 20,
-          color: '#fff4e0',
-          stroke: '#2b1b3d',
-          strokeThickness: 6,
+          color: '#c94f3d',
+          stroke: '#1d1326',
+          strokeThickness: 5,
         },
       )
       .setOrigin(0.5);
@@ -171,12 +182,12 @@ export default class Title extends Phaser.Scene {
     const makeLangButton = (x, code) => {
       const active = lang === code;
       const button = this.add
-        .text(x, 8 * S, code.toUpperCase(), {
+        .text(x, 13 * S, code.toUpperCase(), {
           fontFamily: 'monospace',
           fontSize: 14,
-          color: active ? '#ffd166' : '#8f7f97',
-          stroke: '#2b1b3d',
-          strokeThickness: 3,
+          color: active ? '#c94f3d' : '#2f7f78',
+          stroke: '#f4dfb0',
+          strokeThickness: 1,
         })
         .setOrigin(0.5, 0)
         .setDepth(20)
@@ -193,8 +204,8 @@ export default class Title extends Phaser.Scene {
       return button;
     };
 
-    makeLangButton(W - 82, 'en');
-    makeLangButton(W - 44, 'es');
+    makeLangButton(W / 2 + Math.min(W - 64, 340) / 2 - 54, 'en');
+    makeLangButton(W / 2 + Math.min(W - 64, 340) / 2 - 24, 'es');
 
     this.input.keyboard.on('keydown-L', () => {
       toggleLang();

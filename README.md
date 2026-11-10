@@ -171,6 +171,7 @@ there to make them permanent.
 - Walk cycle; sits and pants (purple tongue) after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
 - **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
+- **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: enemy dog barks, alley-cat hisses, bird chirps, crow caws and a dawn rooster
 - **Visible goal HUD**, two-night countdown and dawn warnings
 - **Rival roles** — fast dogs, bone thieves, brutes, gate rushers and the Night 2 **top dog** showdown

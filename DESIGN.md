@@ -259,33 +259,44 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 
 ---
 
-## 9. Art direction
+## 9. Art direction — Blue-Hour La Cuadra
+
+A limited folk-print palette (ink, cream paper, terracotta, coral, marigold,
+teal, magenta, cobalt) with cool, low-contrast backgrounds and warm, saturated
+gameplay layers. Day is clear cobalt-blue; night is deep indigo with warm
+windows. Title, win and game-over screens are framed as lotería cards with
+papel-picado strings and ink borders. Agave, milpa rows and agricultural lots
+are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
+values, and readable foreground/background separation.
 
 **La Cuadra palette**
 
 | Role | Hex |
 | --- | --- |
-| Sky top / ink | `#1b1029` / `#2b1b3d` |
-| Sunset | `#9e4a5e` → `#e0715f` |
+| Ink / outlines | `#1d1326` |
+| Paper / lotería card | `#f4dfb0`, light `#f8e9c6` |
+| Sky top → horizon | `#2b5b96` → `#82b6df` → `#f7d5a8` |
 | Adobe | `#c98a5e`, shadow `#a96a45` |
-| Terracotta roof | `#b5533a`, highlight `#d9775a` |
-| Painted teal | `#3f8f8a` |
-| Marigold windows | `#ffd166` |
-| Papel picado | coral `#f26b5e`, mint `#6ec6a8`, gold `#ffd166`, purple `#b45cd6` |
+| Terracotta | `#c46b4a`, highlight `#d9775a` |
+| Painted teal | `#2f7f78` |
+| Marigold | `#f2b544` |
+| Papel picado | coral `#e85a4f`, mint `#7fc7a3`, marigold `#f2b544`, magenta `#b54a78` |
 | Bonjo fur | `#2a2135` (black chow), rim `#6f5c86`, tongue `#b45cd6` |
 | Rival dog | tan `#c98a4f`, red bandana `#d94f4f` |
 | Health | heart red `#d94f4f` |
 | Hunger | concha pink `#f2a6b8`, bar orange `#f0a03c` |
-| Night overlay | `#0b0614` at 38% |
+| Night | sky tint `#05030d` at 68%; full-scene overlay 45% |
 
 Rules:
-- Background town is darker and lower contrast than gameplay objects.
+- Background town is darker, cooler and lower contrast than gameplay objects.
 - Roof/wall tops are terracotta + teal trim; the player reads "stand here."
 - Every interactive object gets a warm accent: piñata pink/gold, awning
   coral/cream, ring gold, concha pink.
 - Black chow always carries a lavender rim light so he reads against dark walls.
-- At night the town goes dark but the windows stay lit; the HUD stays bright
-  above the overlay.
+- At night the sky goes near-black while the windows stay lit; the HUD stays
+  bright above the overlay.
+- Title/end screens use paper lotería cards with ink borders, corner stamps and
+  papel-picado strings.
 - Avoid sombrero/serape clichés; the specificity is architecture, papel picado,
   church, fields and language.
 

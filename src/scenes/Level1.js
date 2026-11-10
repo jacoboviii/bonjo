@@ -10,6 +10,7 @@ import { makePlatformTexture, makeLedgeTexture } from '../art.js';
 import { SCALE } from '../scale.js';
 import { sfx } from '../sfx.js';
 import TouchControls from '../ui/TouchControls.js';
+import { drawFolkCard } from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
 
 const S = SCALE;
@@ -326,6 +327,9 @@ export default class Level1 extends Phaser.Scene {
     const e = this.endLayout;
     if (!e?.overlay?.active) return;
     e.overlay.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
+    if (e.card) {
+      drawFolkCard(e.card, W / 2, 144, Math.min(W - 64, 440), 220);
+    }
     e.title.x = W / 2;
     e.stats.x = W / 2;
     if (e.rank) e.rank.x = W / 2;
@@ -2492,17 +2496,23 @@ export default class Level1 extends Phaser.Scene {
 
     this.enableReplay(overlay);
 
+    const card = this.add
+      .graphics()
+      .setScrollFactor(0)
+      .setDepth(201);
+    drawFolkCard(card, W / 2, 144, Math.min(W - 64, 440), 220);
+
     const title = this.add
       .text(W / 2, 40 * S, t('gameover.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
-        color: '#f26b5e',
-        stroke: '#2b1b3d',
-        strokeThickness: 4 * S,
+        color: '#c94f3d',
+        stroke: '#1d1326',
+        strokeThickness: 3 * S,
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(201);
+      .setDepth(202);
 
     const stats = this.add
       .text(
@@ -2515,46 +2525,40 @@ export default class Level1 extends Phaser.Scene {
         {
           fontFamily: 'monospace',
           fontSize: 9 * S,
-          color: '#fff4e0',
-          stroke: '#2b1b3d',
-          strokeThickness: 2 * S,
+          color: '#1d1326',
         },
       )
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(201);
+      .setDepth(202);
 
     const rank = this.add
       .text(W / 2, 82 * S, t('run.score', { score: this.score, rank: this.rank }), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
-        color: '#ffd166',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(201);
-
-    const box = this.add
-      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
-      .setStrokeStyle(1 * S, 0x6ec6a8, 1)
-      .setScrollFactor(0)
-      .setDepth(201);
-
-    const prompt = this.add
-      .text(W / 2, 112 * S, t('gameover.again'), {
-        fontFamily: 'monospace',
-        fontSize: 8 * S,
-        color: '#6ec6a8',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
+        color: '#2f7f78',
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
 
-    this.endLayout = { overlay, title, stats, rank, box, prompt };
+    const box = this.add
+      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0xc94f3d, 1)
+      .setStrokeStyle(2 * S, 0x1d1326, 1)
+      .setScrollFactor(0)
+      .setDepth(202);
+
+    const prompt = this.add
+      .text(W / 2, 112 * S, t('gameover.again'), {
+        fontFamily: 'monospace',
+        fontSize: 8 * S,
+        color: '#fff4e0',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(203);
+
+    this.endLayout = { overlay, card, title, stats, rank, box, prompt };
   }
 
   win() {
@@ -2599,61 +2603,61 @@ export default class Level1 extends Phaser.Scene {
 
     this.enableReplay(overlay);
 
+    const card = this.add
+      .graphics()
+      .setScrollFactor(0)
+      .setDepth(201);
+    drawFolkCard(card, W / 2, 144, Math.min(W - 64, 440), 220);
+
     const title = this.add
       .text(W / 2, 40 * S, t('win.title'), {
         fontFamily: 'monospace',
         fontSize: 18 * S,
-        color: '#ffd166',
-        stroke: '#2b1b3d',
-        strokeThickness: 4 * S,
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(201);
-
-    const stats = this.add
-      .text(W / 2, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
-        fontFamily: 'monospace',
-        fontSize: 9 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(201);
-
-    const rank = this.add
-      .text(W / 2, 82 * S, t('run.score', { score: this.score, rank: this.rank }), {
-        fontFamily: 'monospace',
-        fontSize: 8 * S,
-        color: '#6ec6a8',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(201);
-
-    const box = this.add
-      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0x2b1b3d, 0.85)
-      .setStrokeStyle(1 * S, 0x6ec6a8, 1)
-      .setScrollFactor(0)
-      .setDepth(201);
-
-    const prompt = this.add
-      .text(W / 2, 112 * S, t('win.again'), {
-        fontFamily: 'monospace',
-        fontSize: 8 * S,
-        color: '#6ec6a8',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
+        color: '#2f7f78',
+        stroke: '#1d1326',
+        strokeThickness: 3 * S,
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
 
-    this.endLayout = { overlay, title, stats, rank, box, prompt };
+    const stats = this.add
+      .text(W / 2, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
+        fontFamily: 'monospace',
+        fontSize: 9 * S,
+        color: '#1d1326',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(202);
+
+    const rank = this.add
+      .text(W / 2, 82 * S, t('run.score', { score: this.score, rank: this.rank }), {
+        fontFamily: 'monospace',
+        fontSize: 8 * S,
+        color: '#c94f3d',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(202);
+
+    const box = this.add
+      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0xc94f3d, 1)
+      .setStrokeStyle(2 * S, 0x1d1326, 1)
+      .setScrollFactor(0)
+      .setDepth(202);
+
+    const prompt = this.add
+      .text(W / 2, 112 * S, t('win.again'), {
+        fontFamily: 'monospace',
+        fontSize: 8 * S,
+        color: '#fff4e0',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(203);
+
+    this.endLayout = { overlay, card, title, stats, rank, box, prompt };
   }
 
   enableReplay(overlay) {
