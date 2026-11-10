@@ -858,6 +858,14 @@ export default class Level1 extends Phaser.Scene {
       .image(105 * S, 600 * S, 'bonjoHouse')
       .setOrigin(0.5, 1)
       .setDepth(2);
+
+    // Bonjo's own roof is a one-way platform.
+    const roof = this.add.zone(105 * S, (520 + 3) * S, 130 * S, 6 * S);
+    this.physics.add.existing(roof, true);
+    roof.body.checkCollision.down = false;
+    roof.body.checkCollision.left = false;
+    roof.body.checkCollision.right = false;
+    this.foregroundHouseGroup.add(roof);
   }
 
   createFood() {
