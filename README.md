@@ -89,6 +89,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **SPACE** / **W** | Jump (hold for height) | Flap (2 charges) |
 | **Hold SPACE** | — | Glide (slow fall) |
 | **S** / **↓** | — | Dive (subdue rivals, pop crows) |
+| **E** / touch bubble | Talk to friendly NPCs, ring the bell | — |
 | **T** | Show/hide the tuning panel | |
 | **R** | Restart the level | |
 | **V** | Toggle the touch buttons | |
@@ -100,6 +101,7 @@ On a touch device the on-screen controls appear automatically:
 
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
+- **bottom-center:** 💬 interact when a friendly NPC or quest object is in range
 - On the end screen, **tap anywhere** to replay (no R key needed).
 - Multi-touch works, so you can run and flap at the same time.
 - In portrait, the game pauses behind a **rotate your phone** screen with a
@@ -115,9 +117,11 @@ On a desktop you can press **V** to show the touch buttons for testing.
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
 burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 **conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
-over bikes and trip the marked car alarm. Visit Polo and ring the bell during
-the day. Survive two nights and repel the **top dog**; bones, combo and a clean
-run feed your score and rank.
+over bikes and trip the marked car alarm. Press **E** (or tap the bubble
+button) near Polo, the chihuahua, a cat or the rooster to talk; use it at the
+bell to ring it. Polo's dialog hands over the daily concha. Survive two nights
+and repel the **top dog**; bones, combo and a clean run feed your score and
+rank.
 
 ---
 
@@ -182,7 +186,7 @@ there to make them permanent.
 - **One-way fire escapes and laundry lines** with high bones/conchas
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
-- **Polo's daily concha**, bell blessing, and chihuahua warnings
+- **Named NPC dialog cards**, Polo's daily concha, bell blessing, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels** that steal bones; two crows
 - **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**

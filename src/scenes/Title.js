@@ -160,7 +160,7 @@ export default class Title extends Phaser.Scene {
     this.add
       .text(W / 2, 133 * S, t('title.controls'), {
         fontFamily: 'monospace',
-        fontSize: 14,
+        fontSize: 12,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 4,

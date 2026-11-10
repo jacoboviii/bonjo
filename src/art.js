@@ -1988,6 +1988,7 @@ function makeControlButtons(scene) {
     ['btn-right', 'right'],
     ['btn-jump', 'jump'],
     ['btn-dive', 'dive'],
+    ['btn-interact', 'interact'],
   ];
 
   for (const [key, kind] of defs) {
@@ -2006,6 +2007,14 @@ function makeControlButtons(scene) {
     } else if (kind === 'jump') {
       g.fillTriangle(32, 16, 18, 36, 46, 36);
       g.fillRect(28, 34, 8, 10);
+    } else if (kind === 'interact') {
+      // speech bubble + three dots
+      g.fillRect(17, 17, 30, 20);
+      g.fillTriangle(23, 37, 33, 37, 25, 46);
+      g.fillStyle(0x1b1029, 1);
+      g.fillRect(24, 24, 4, 4);
+      g.fillRect(30, 24, 4, 4);
+      g.fillRect(36, 24, 4, 4);
     } else {
       g.fillTriangle(32, 48, 18, 28, 46, 28);
       g.fillRect(28, 18, 8, 10);

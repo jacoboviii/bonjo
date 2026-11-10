@@ -259,6 +259,12 @@ export default class Level1 extends Phaser.Scene {
     this.nextChirp = 0;
     this.nextDistantBark = 0;
     this.nextRooster = 0;
+    this.interactQueued = false;
+    this.nextInteractAt = 0;
+    this.activeInteractable = null;
+    this.dialogOpen = false;
+    this.dialogTimer = null;
+    this.hintWasVisible = false;
 
     this.buildBackground();
     this.createStreetDressing();
@@ -272,6 +278,7 @@ export default class Level1 extends Phaser.Scene {
     this.createPorch();
     this.createPorchGate();
     this.createAllyNpcs();
+    this.setupInteractables();
     this.createInput();
     this.createDog();
     this.createPickups();
@@ -283,6 +290,8 @@ export default class Level1 extends Phaser.Scene {
     this.createAwnings();
     this.createCamera();
     this.createHud();
+    this.createInteractionUi();
+    this.createDialogUi();
     this.createTuningPanel();
     this.showIntro();
     this.updateHud(0);
@@ -331,6 +340,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
 
     this.touch?.relayout(W);
+    this.layoutDialog(W);
     this.layoutEndScreen(W);
   }
 
@@ -824,17 +834,6 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0.5, 1)
       .setDepth(3);
 
-    this.poloLabel = this.add
-      .text(POLO_X * S, 600 * S - 31 * S, 'POLO', {
-        fontFamily: 'monospace',
-        fontSize: 5 * S,
-        color: '#fff4e0',
-        stroke: '#1b1029',
-        strokeThickness: 2 * S,
-      })
-      .setOrigin(0.5, 1)
-      .setDepth(4);
-
     this.poloIcon = this.add
       .image(POLO_X * S, 600 * S - 48 * S, 'concha')
       .setScale(0.6)
@@ -862,6 +861,92 @@ export default class Level1 extends Phaser.Scene {
       repeat: -1,
       ease: 'Sine.inOut',
     });
+  }
+
+  setupInteractables() {
+    // Friendly faces and quest objects answer E / the touch interact button.
+    // Enemies and pickups keep their existing jump/dive/overlap verbs.
+    this.interactables = [
+      {
+        id: 'polo',
+        target: this.polo,
+        range: 58 * S,
+        prompt: 'prompt.talk',
+        action: () => this.talkToPolo(),
+      },
+      {
+        id: 'chihuahua',
+        target: this.chihuahua,
+        range: 52 * S,
+        prompt: 'prompt.talk',
+        action: () => this.talkToChihuahua(),
+      },
+      ...this.cats.map((cat) => ({
+        id: 'cat',
+        target: cat,
+        range: 48 * S,
+        prompt: 'prompt.talk',
+        action: () => this.talkToCat(cat),
+      })),
+      {
+        id: 'rooster',
+        target: this.rooster,
+        range: 54 * S,
+        prompt: 'prompt.talk',
+        available: () => this.phase === 'day',
+        action: () => this.talkToRooster(),
+      },
+      {
+        id: 'bell',
+        target: this.bellPost,
+        range: 58 * S,
+        prompt: 'prompt.ring',
+        available: () => this.phase === 'day' && !this.bellRung,
+        action: () => this.talkToBell(),
+      },
+    ];
+  }
+
+  talkToPolo() {
+    if (this.phase !== 'day') {
+      this.showDialog('name.polo', 'dialog.polo.night');
+      return;
+    }
+
+    if (this.poloGift) {
+      this.showDialog('name.polo', 'dialog.polo.gift');
+      // Let the line land before the concha appears in Polo's hand.
+      this.time.delayedCall(380, () => {
+        if (this.phase === 'day' && this.poloGift) this.givePoloGift();
+      });
+    } else {
+      this.showDialog('name.polo', 'dialog.polo.thanks');
+    }
+  }
+
+  talkToChihuahua() {
+    this.alertChihuahua();
+    this.showDialog(
+      'name.chihuahua',
+      this.phase === 'day'
+        ? 'dialog.chihuahua.day'
+        : 'dialog.chihuahua.night',
+    );
+  }
+
+  talkToCat() {
+    this.showDialog('name.cat', 'dialog.cat');
+  }
+
+  talkToRooster() {
+    sfx.rooster();
+    this.showDialog('name.rooster', 'dialog.rooster');
+  }
+
+  talkToBell() {
+    if (this.phase !== 'day' || this.bellRung) return;
+    this.ringBell();
+    this.showDialog('name.bell', 'dialog.bell');
   }
 
   createPorch() {
@@ -1009,7 +1094,11 @@ export default class Level1 extends Phaser.Scene {
   }
 
   updateInteractions() {
-    if (this.won || this.gameOverFlag || this.dog.dead) return;
+    if (this.won || this.gameOverFlag || this.dog.dead) {
+      this.touch?.setInteractAvailable(false);
+      this.updateInteractionPrompt(null);
+      return;
+    }
 
     if (
       this.alarmCar &&
@@ -1025,31 +1114,52 @@ export default class Level1 extends Phaser.Scene {
       this.triggerCarAlarm();
     }
 
-    if (this.phase !== 'day') return;
-
-    if (
-      this.poloGift &&
-      Phaser.Math.Distance.Between(
-        this.dog.x,
-        this.dog.y,
-        this.polo.x,
-        this.polo.y - 10 * S,
-      ) < 56 * S
-    ) {
-      this.givePoloGift();
+    if (this.dialogOpen) {
+      this.activeInteractable = null;
+      this.touch?.setInteractAvailable(false);
+      this.updateInteractionPrompt(null);
+      if (this.consumeInteractPress()) this.closeDialog();
+      return;
     }
 
-    if (
-      !this.bellRung &&
-      Phaser.Math.Distance.Between(
+    const item = this.findInteractable();
+    this.activeInteractable = item;
+    this.touch?.setInteractAvailable(!!item);
+    this.updateInteractionPrompt(item);
+
+    if (this.consumeInteractPress() && item) item.action();
+  }
+
+  findInteractable() {
+    let best = null;
+    let bestDistance = Infinity;
+
+    for (const item of this.interactables || []) {
+      if (!item.target?.active) continue;
+      if (item.available && !item.available()) continue;
+
+      const distance = Phaser.Math.Distance.Between(
         this.dog.x,
         this.dog.y,
-        this.bellPost.x,
-        this.bellPost.y - 10 * S,
-      ) < 56 * S
-    ) {
-      this.ringBell();
+        item.target.x,
+        item.target.y - 10 * S,
+      );
+      if (distance < item.range && distance < bestDistance) {
+        best = item;
+        bestDistance = distance;
+      }
     }
+
+    return best;
+  }
+
+  consumeInteractPress() {
+    const pressed = this.interactQueued || this.touch?.consumeInteract() || false;
+    this.interactQueued = false;
+
+    if (!pressed || this.time.now < this.nextInteractAt) return false;
+    this.nextInteractAt = this.time.now + 220;
+    return true;
   }
 
   givePoloGift() {
@@ -1110,6 +1220,12 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.input.keyboard.on('keydown-R', () => this.scene.restart());
+    this.input.keyboard.on('keydown-E', () => {
+      this.interactQueued = true;
+    });
+    this.input.on('pointerdown', () => {
+      if (this.dialogOpen) this.closeDialog();
+    });
 
     // Dev helper: skip to the next phase without waiting.
     if (import.meta.env.DEV) {
@@ -1354,7 +1470,7 @@ export default class Level1 extends Phaser.Scene {
     this.hint = this.add
       .text(W / 2, 138 * S, t('level.hint'), {
         fontFamily: 'monospace',
-        fontSize: 7 * S,
+        fontSize: 6 * S,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
@@ -1413,6 +1529,145 @@ export default class Level1 extends Phaser.Scene {
     // On touch devices the buttons are the tutorial, and they occupy the
     // bottom of the screen where the keyboard hint would sit.
     if (this.touch?.visible) this.hint.setVisible(false);
+  }
+
+  createInteractionUi() {
+    this.interactPrompt = this.add
+      .text(0, 0, '', {
+        fontFamily: 'monospace',
+        fontSize: 5 * S,
+        color: '#1b1029',
+        backgroundColor: '#ffd166',
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(20)
+      .setVisible(false)
+      .setInteractive({ useHandCursor: true });
+    this.interactPrompt.setPadding(3 * S, 1 * S, 3 * S, 1 * S);
+    this.interactPrompt.on('pointerdown', () => {
+      this.interactQueued = true;
+    });
+  }
+
+  createDialogUi() {
+    this.dialogRoot = this.add
+      .container(0, 0)
+      .setScrollFactor(0)
+      .setDepth(145)
+      .setVisible(false);
+
+    this.dialogCard = this.add.graphics();
+    this.dialogName = this.add
+      .text(0, 0, '', {
+        fontFamily: 'monospace',
+        fontSize: 6 * S,
+        color: '#ffd166',
+        backgroundColor: '#1d1326',
+      })
+      .setOrigin(0, 0);
+    this.dialogName.setPadding(3 * S, 1 * S, 3 * S, 1 * S);
+
+    this.dialogBody = this.add.text(0, 0, '', {
+      fontFamily: 'monospace',
+      fontSize: 6 * S,
+      color: '#2b1b3d',
+      lineSpacing: 2 * S,
+    });
+    this.dialogHint = this.add
+      .text(0, 0, '', {
+        fontFamily: 'monospace',
+        fontSize: 4 * S,
+        color: '#2b1b3d',
+      })
+      .setOrigin(1, 1)
+      .setAlpha(0.55);
+
+    this.dialogRoot.add([
+      this.dialogCard,
+      this.dialogName,
+      this.dialogBody,
+      this.dialogHint,
+    ]);
+    this.layoutDialog(this.scale.width);
+  }
+
+  layoutDialog(W = this.scale.width) {
+    if (!this.dialogRoot) return;
+
+    const w = Math.min(W - 32, 430);
+    const h = 72;
+    this.dialogRoot.setPosition(W / 2, this.scale.height - 54);
+    drawFolkCard(this.dialogCard, 0, 0, w, h);
+
+    this.dialogName.setPosition(-w / 2 + 22, -h / 2 + 9);
+    this.dialogBody.setPosition(-w / 2 + 22, -h / 2 + 30);
+    this.dialogBody.setWordWrapWidth(w - 44);
+    this.dialogHint.setPosition(w / 2 - 18, h / 2 - 8);
+    this.dialogHint.setText(
+      this.touch?.visible ? t('dialog.closeTouch') : t('dialog.close'),
+    );
+  }
+
+  updateInteractionPrompt(item) {
+    if (!this.interactPrompt) return;
+    if (!item || this.dialogOpen) {
+      this.interactPrompt.setVisible(false);
+      if (this.interactPrompt.input) this.interactPrompt.input.enabled = false;
+      return;
+    }
+
+    const key = this.touch?.visible ? t('prompt.tap') : 'E';
+    this.interactPrompt
+      .setText(`${key} · ${t(item.prompt)}`)
+      .setPosition(
+        item.target.x,
+        item.target.y - item.target.displayHeight - 6 * S,
+      )
+      .setVisible(true);
+    if (this.interactPrompt.input) this.interactPrompt.input.enabled = true;
+  }
+
+  showDialog(nameKey, textKey) {
+    const firstOpen = !this.dialogOpen;
+    this.dialogOpen = true;
+    this.dialogName.setText(t(nameKey));
+    this.dialogBody.setText(t(textKey));
+    this.dialogHint.setText(
+      this.touch?.visible ? t('dialog.closeTouch') : t('dialog.close'),
+    );
+    this.interactPrompt?.setVisible(false);
+    if (this.interactPrompt?.input) this.interactPrompt.input.enabled = false;
+    this.hintWasVisible = this.hint?.visible || false;
+    this.hint?.setVisible(false);
+    this.touch?.setDialogMode(true);
+    this.dialogRoot.setVisible(true).setAlpha(1);
+
+    if (firstOpen) {
+      this.dialogRoot.setAlpha(0);
+      this.tweens.add({
+        targets: this.dialogRoot,
+        alpha: 1,
+        duration: 120,
+        ease: 'Quad.out',
+      });
+    }
+
+    this.dialogTimer?.remove(false);
+    this.dialogTimer = this.time.delayedCall(3800, () => this.closeDialog());
+  }
+
+  closeDialog() {
+    if (!this.dialogOpen) return;
+    this.dialogOpen = false;
+    this.dialogTimer?.remove(false);
+    this.dialogTimer = null;
+    this.tweens.killTweensOf(this.dialogRoot);
+    this.dialogRoot?.setVisible(false);
+    if (this.hintWasVisible && !this.won && !this.gameOverFlag) {
+      this.hint?.setVisible(true);
+    }
+    this.hintWasVisible = false;
+    this.touch?.setDialogMode(false);
   }
 
   createTuningPanel() {
@@ -1684,6 +1939,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveSpawned = 0;
     this.nextWave = 2;
     this.gateRusherSpawned = false;
+    this.closeDialog();
 
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
@@ -1725,6 +1981,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveSpawned = 0;
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
+    this.closeDialog();
 
     this.health = Math.min(this.maxHealth, this.health + 1);
     this.hunger = Math.min(this.maxHunger, this.hunger + 10);
@@ -2485,10 +2742,10 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText.setVisible(false);
     this.gateText?.setVisible(false);
     this.poloIcon?.setVisible(false);
-    this.poloLabel?.setVisible(false);
     this.bellIcon?.setVisible(false);
     this.alphaCrown?.setVisible(false);
     this.gui?.hide();
+    this.closeDialog();
     this.touch?.show(false);
   }
 

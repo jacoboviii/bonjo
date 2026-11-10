@@ -12,6 +12,9 @@ export default class TouchControls {
     this.scene = scene;
     this.state = { left: false, right: false, down: false, jumpHeld: false };
     this.jumpQueued = false;
+    this.interactQueued = false;
+    this.interactAvailable = false;
+    this.dialogMode = false;
     this.visible = false;
     this.buttons = {};
     this.baseScale = {};
@@ -30,6 +33,7 @@ export default class TouchControls {
     this.addButton('right', 128, 240, 'btn-right', 0.9);
     this.addButton('jump', W - 60, 228, 'btn-jump', 1.05);
     this.addButton('dive', W - 128, 254, 'btn-dive', 0.8);
+    this.addButton('interact', W / 2, 250, 'btn-interact', 0.85);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
     scene.input.on('pointerup', (pointer) => this.onUp(pointer));
@@ -41,6 +45,7 @@ export default class TouchControls {
   relayout(width = this.scene.scale.width) {
     if (this.buttons.jump) this.buttons.jump.x = width - 60;
     if (this.buttons.dive) this.buttons.dive.x = width - 128;
+    if (this.buttons.interact) this.buttons.interact.x = width / 2;
   }
 
   addButton(name, x, y, texture, scale) {
@@ -64,6 +69,14 @@ export default class TouchControls {
       // one finger owns the direction pad and can slide between the arrows
       this.dirPointer = pointer.id;
       this.setDirection(name);
+      return;
+    }
+
+    // Interact is a one-shot tap, not a held action.
+    if (name === 'interact') {
+      if (!this.interactAvailable || this.dialogMode) return;
+      this.interactQueued = true;
+      this.flash(name);
       return;
     }
 
@@ -127,11 +140,49 @@ export default class TouchControls {
     img.setAlpha(this.baseAlpha).setScale(this.baseScale[name]);
   }
 
+  flash(name) {
+    const img = this.buttons[name];
+    if (!img) return;
+    img.setAlpha(0.92).setScale(this.baseScale[name] * 0.92);
+    this.scene.time.delayedCall(90, () => {
+      if (!img.active) return;
+      img.setAlpha(this.baseAlpha).setScale(this.baseScale[name]);
+    });
+  }
+
   // One-shot jump press for the Dog (like JustDown, but buffered until read).
   consumeJump() {
     if (!this.jumpQueued) return false;
     this.jumpQueued = false;
     return true;
+  }
+
+  consumeInteract() {
+    if (!this.interactQueued) return false;
+    this.interactQueued = false;
+    return true;
+  }
+
+  setInteractAvailable(available) {
+    this.interactAvailable = available;
+    this.syncButtonVisibility();
+  }
+
+  setDialogMode(active) {
+    this.dialogMode = active;
+    this.reset();
+    this.syncButtonVisibility();
+  }
+
+  syncButtonVisibility() {
+    for (const [name, img] of Object.entries(this.buttons)) {
+      const show =
+        this.visible &&
+        !this.dialogMode &&
+        (name !== 'interact' || this.interactAvailable);
+      img.setVisible(show);
+      if (img.input) img.input.enabled = show;
+    }
   }
 
   reset() {
@@ -140,6 +191,7 @@ export default class TouchControls {
     this.state.down = false;
     this.state.jumpHeld = false;
     this.jumpQueued = false;
+    this.interactQueued = false;
     this.dirPointer = null;
     this.pointerHandlers.clear();
 
@@ -150,8 +202,8 @@ export default class TouchControls {
 
   show(visible = true) {
     this.visible = visible;
-    for (const img of Object.values(this.buttons)) img.setVisible(visible);
     if (!visible) this.reset();
+    this.syncButtonVisibility();
   }
 
   toggle() {

@@ -53,9 +53,10 @@ a health bar.
 
 ### 3. The street is a toy
 
-**Means:** no interact button. Every prop answers a verb the player already
-has: jump/flap into a piñata, land on an awning, glide through a ring, dive onto
-a rival, later dive into a pot or ring a doorbell.
+**Means:** environmental props answer a verb the player already has:
+jump/flap into a piñata, land on an awning, glide through a ring, dive onto a
+rival. Friendly NPCs and quest objects use one context **interact** button for
+dialog, conchas and bell ringing.
 
 **Forbids:** decorative-only props, quick-time events, inventory puzzles, a
 second control scheme.

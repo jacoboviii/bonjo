@@ -19,8 +19,9 @@ The working one-pager lives in [`PILLARS.md`](PILLARS.md). The short version:
    the pavement; the barrio is specific, not generic.
 2. **Subdue, don't destroy.** Rivals are territorial, not evil. Bonjo wins by
    out-jumping them; they yelp and run home.
-3. **The street is a toy.** No interact button: piñatas, awnings, rings and
-   rivals all answer the verbs Bonjo already has.
+3. **The street is a toy.** Piñatas, awnings, rings and rivals answer the verbs
+   Bonjo already has. Friendly NPCs use a single context interact button for
+   dialog and errands.
 
 ---
 
@@ -78,14 +79,19 @@ the conchas and piñatas you missed.
 | SPACE / W (press) | Jump | Flap |
 | SPACE / W (hold) | — | Glide while falling |
 | S / ↓ | — | Dive |
+| E | Talk / ring / interact | Talk / ring / interact |
 | T | Tuning panel | Tuning panel |
 | R | Restart | Restart |
 | Touch ◀ ▶ | Run (slide between) | Steer |
 | Touch ▲ (tap/hold) | Jump | Flap / glide |
 | Touch ▼ | — | Dive |
+| Touch 💬 | Talk / ring / interact | Talk / ring / interact |
 
-There is **no interact button**. Every environmental interaction uses the verbs
-you already have: jump into it, land on it, or dive through it.
+Friendly NPCs and quest objects show a context prompt; **E** or the touch
+bubble starts the interaction. Polo, the chihuahua, cats and the rooster use a
+named lotería-paper dialog card; the bell rings directly. Environmental
+interactions still use the verbs Bonjo already has: jump into it, land on it,
+or dive through it.
 
 Gamepad is out of scope. Touch controls support multi-touch, drag between
 direction arrows, and a portrait "rotate your phone" screen.
@@ -301,6 +307,8 @@ Rules:
   bright above the overlay.
 - Title/end screens use paper lotería cards with ink borders, corner stamps and
   papel-picado strings.
+- Friendly NPC dialog uses the same paper card, with the speaker's name in an
+  ink nameplate inside the window instead of a floating world label.
 - Avoid sombrero/serape clichés; the specificity is architecture, papel picado,
   church, fields and language.
 
@@ -344,7 +352,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
-- **NPCs/quests:** Polo's concha, bell blessing, chihuahua warnings
+- **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
 - Rival dogs (bark/chase/subdue), squirrels (bone thieves), two crows
 - Ambient cats, birds and a rooster; fenced level ends
