@@ -455,13 +455,14 @@ export default class Level1 extends Phaser.Scene {
     this.sun = this.add
       .image(W - 51 * S, 56 * S, 'sun')
       .setScrollFactor(0.04)
-      .setDepth(-29)
+      .setDepth(-28)
       .setAlpha(0.95);
 
     this.moon = this.add
       .image(W * 0.74, 48 * S, 'moon')
       .setScrollFactor(0.04)
-      .setDepth(61)
+      // Sky layer: behind clouds, town, gameplay and the HUD.
+      .setDepth(-27)
       .setAlpha(0)
       .setVisible(false);
 
@@ -484,7 +485,7 @@ export default class Level1 extends Phaser.Scene {
     this.skyNight = this.add
       .rectangle(W / 2, 72 * S, W, 144 * S, 0x05030d, 1)
       .setScrollFactor(0)
-      .setDepth(-23)
+      .setDepth(-29)
       .setAlpha(0);
 
     this.town = this.add
@@ -2310,6 +2311,16 @@ export default class Level1 extends Phaser.Scene {
       alpha: 0.68,
       duration: 900,
     });
+    this.tweens.add({
+      targets: this.cloudsFar,
+      alpha: 0.28,
+      duration: 900,
+    });
+    this.tweens.add({
+      targets: this.cloudsNear,
+      alpha: 0.42,
+      duration: 900,
+    });
 
     this.showPhaseBanner(`${t('hud.night')} ${this.nightsSurvived + 1}`, '#ffd166');
     sfx.bell();
@@ -2375,6 +2386,16 @@ export default class Level1 extends Phaser.Scene {
     this.tweens.add({
       targets: this.skyNight,
       alpha: 0,
+      duration: 900,
+    });
+    this.tweens.add({
+      targets: this.cloudsFar,
+      alpha: 0.5,
+      duration: 900,
+    });
+    this.tweens.add({
+      targets: this.cloudsNear,
+      alpha: 0.75,
       duration: 900,
     });
 
