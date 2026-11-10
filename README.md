@@ -171,7 +171,7 @@ there to make them permanent.
 
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide, dive — each with its own animation pose
-- Walk cycle; sits and pants (purple tongue) after a short standing beat when idle
+- Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
 - **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
@@ -272,7 +272,7 @@ files):
 
 | Key | Size | Notes |
 | --- | --- | --- |
-| `dog`, `dogSit`, `dogWalkA`, `dogWalkB`, `dogGlide`, `dogDive` | 32×32 | black chow, facing right; flipped in code |
+| `dog`, `dogSit`, `dogWalkA–D`, `dogGlide`, `dogDive` | 40×40 | denser black chow with 4-frame walk; flipped in code |
 | `tongue` | 6×8 | panting overlay |
 | `rival`, `rivalRun` | 32×30 | tan neighborhood dog, red bandana |
 | `crow` | 28×18 | facing right |

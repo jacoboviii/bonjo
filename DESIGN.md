@@ -275,7 +275,6 @@ are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
 values, and readable foreground/background separation.
 
 **La Cuadra palette**
-
 | Role | Hex |
 | --- | --- |
 | Ink / outlines | `#1d1326` |

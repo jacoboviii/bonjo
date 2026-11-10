@@ -27,7 +27,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setDepth(10);
-    this.body.setSize(10 * S, 13 * S).setOffset(3 * S, 2 * S);
+    this.body.setSize(12.5 * S, 16.5 * S).setOffset(7.5, 7);
     this.body.setMaxVelocity(430 * S, 1200 * S);
 
     this.controls = { cursors: null, wasd: null };
@@ -52,6 +52,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
       .image(x, y, 'tongue')
       .setDepth(11)
       .setOrigin(0.5, 0)
+      .setScale(1.25)
       .setVisible(false);
     this.tongueAlpha = 0;
     this.tonguePhase = 0;
@@ -222,7 +223,8 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     } else if (onGround) {
       if (Math.abs(this.body.velocity.x) > 20 * S) {
         this.standT = 0;
-        pose = Math.floor(this.animT * 12) % 2 === 0 ? 'dogWalkA' : 'dogWalkB';
+        const walkPoses = ['dogWalkA', 'dogWalkB', 'dogWalkC', 'dogWalkD'];
+        pose = walkPoses[Math.floor(this.animT * 12) % 4];
       } else {
         this.standT += dt;
         pose = this.standT >= SIT_DELAY ? 'dogSit' : 'dog';
@@ -279,9 +281,9 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     const stretch = 0.8 + Math.sin(this.tonguePhase * 1.4) * 0.2;
     const wobble = Math.sin(this.tonguePhase) * 0.2;
 
-    // mouth position in sprite space (texture is 32x32, facing right)
-    const ox = 14 * this.facing;
-    const oy = 2;
+    // mouth position in sprite space (40x40 texture, facing right)
+    const ox = 17.5 * this.facing;
+    const oy = 2.5;
     const rot = this.rotation;
     const rx = ox * Math.cos(rot) - oy * Math.sin(rot);
     const ry = ox * Math.sin(rot) + oy * Math.cos(rot);
@@ -289,6 +291,6 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.tongue.setPosition(this.x + rx, this.y + ry);
     this.tongue.setRotation(rot + wobble * this.facing);
     this.tongue.setFlipX(this.facing < 0);
-    this.tongue.setScale(1, stretch);
+    this.tongue.setScale(1.25, stretch * 1.25);
   }
 }

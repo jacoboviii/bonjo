@@ -69,11 +69,11 @@ export default class Title extends Phaser.Scene {
 
     // a very good dog, sitting and panting
     this.dogGroup = this.add.container(W / 2, 92 * S).setDepth(3);
-    const dog = this.add.sprite(0, 0, 'dogSit').setScale(2);
+    const dog = this.add.sprite(0, 0, 'dogSit').setScale(1.5);
     const tongue = this.add
-      .image(14 * 2, 2 * 2, 'tongue')
+      .image(14 * 1.5, 2 * 1.5, 'tongue')
       .setOrigin(0.5, 0)
-      .setScale(2);
+      .setScale(1.5);
     this.dogGroup.add([dog, tongue]);
 
     this.tweens.add({

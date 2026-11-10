@@ -87,6 +87,8 @@ export function buildTextures(scene) {
   makeDog(scene, 'dogSit', 'sit');
   makeDog(scene, 'dogWalkA', 'walkA');
   makeDog(scene, 'dogWalkB', 'walkB');
+  makeDog(scene, 'dogWalkC', 'walkC');
+  makeDog(scene, 'dogWalkD', 'walkD');
   makeDog(scene, 'dogGlide', 'glide');
   makeDog(scene, 'dogDive', 'dive');
   makeTongue(scene);
@@ -1284,10 +1286,29 @@ function rawGfx(scene) {
   return scene.make.graphics({ x: 0, y: 0, add: false });
 }
 
+// Draw the raw character art on a denser grid while keeping its compact
+// in-game footprint. Coordinates are rounded so the result still reads as
+// crisp pixel art rather than a blurry upscale.
+function denseRawGfx(scene, k) {
+  const g = rawGfx(scene);
+  const px = (v) => Math.round(v * k);
+  return {
+    raw: g,
+    fillStyle: (color, alpha) => g.fillStyle(color, alpha),
+    fillRect: (x, y, w, h) =>
+      g.fillRect(px(x), px(y), Math.max(1, px(w)), Math.max(1, px(h))),
+    fillTriangle: (x1, y1, x2, y2, x3, y3) =>
+      g.fillTriangle(px(x1), px(y1), px(x2), px(y2), px(x3), px(y3)),
+    fillCircle: (x, y, r) => g.fillCircle(px(x), px(y), Math.max(1, px(r))),
+    generateTexture: (key, w, h) => g.generateTexture(key, px(w), px(h)),
+    destroy: () => g.destroy(),
+  };
+}
+
 // The chow is drawn directly at 32x32 (2x the design grid) so it can hold
 // finer detail than the rest of the placeholder art.
 function makeDog(scene, key, pose) {
-  const g = rawGfx(scene);
+  const g = denseRawGfx(scene, 1.25);
 
   // curled fluffy tail over the back
   g.fillStyle(CHOW_DARK, 1);
@@ -1313,6 +1334,12 @@ function makeDog(scene, key, pose) {
   } else if (pose === 'walkB') {
     g.fillRect(9, 23, 4, 8);
     g.fillRect(15, 23, 4, 8);
+  } else if (pose === 'walkC') {
+    g.fillRect(7, 23, 4, 8);
+    g.fillRect(21, 23, 4, 8);
+  } else if (pose === 'walkD') {
+    g.fillRect(11, 23, 4, 8);
+    g.fillRect(17, 23, 4, 8);
   } else if (pose === 'sit') {
     // folded haunch at the back, upright front leg
     g.fillRect(4, 22, 10, 8);
@@ -1334,6 +1361,12 @@ function makeDog(scene, key, pose) {
   } else if (pose === 'walkB') {
     g.fillRect(9, 29, 4, 2);
     g.fillRect(15, 29, 4, 2);
+  } else if (pose === 'walkC') {
+    g.fillRect(7, 29, 4, 2);
+    g.fillRect(21, 29, 4, 2);
+  } else if (pose === 'walkD') {
+    g.fillRect(11, 29, 4, 2);
+    g.fillRect(17, 29, 4, 2);
   } else if (pose === 'sit') {
     g.fillRect(4, 29, 6, 2);
     g.fillRect(19, 29, 4, 2);
@@ -1467,6 +1500,38 @@ function makeDog(scene, key, pose) {
   g.fillRect(4, 14, 2, 1);
   g.fillRect(2, 8, 2, 1);
   g.fillRect(28, 7, 2, 1);
+
+  // Denser pixel pass: tiny rim lights, toe claws, eye/collar glints.
+  const r = g.raw;
+  r.fillStyle(CHOW_RIM, 1);
+  r.fillRect(9, 12, 1, 1);
+  r.fillRect(2, 16, 1, 1);
+  r.fillRect(27, 13, 1, 1);
+  r.fillRect(14, 18, 1, 1);
+  r.fillStyle(CREAM, 1);
+  r.fillRect(30, 14, 1, 1);
+  r.fillStyle(CHOW_LIGHT, 1);
+  r.fillRect(15, 29, 2, 1);
+  r.fillStyle(GOLD, 1);
+  r.fillRect(23, 29, 1, 1);
+
+  if (pose === 'walkA') {
+    r.fillStyle(CHOW_LIGHT, 1);
+    r.fillRect(7, 38, 2, 1);
+    r.fillRect(26, 38, 2, 1);
+  } else if (pose === 'walkB') {
+    r.fillStyle(CHOW_LIGHT, 1);
+    r.fillRect(12, 38, 2, 1);
+    r.fillRect(20, 38, 2, 1);
+  } else if (pose === 'walkC') {
+    r.fillStyle(CHOW_LIGHT, 1);
+    r.fillRect(9, 38, 2, 1);
+    r.fillRect(27, 38, 2, 1);
+  } else if (pose === 'walkD') {
+    r.fillStyle(CHOW_LIGHT, 1);
+    r.fillRect(14, 38, 2, 1);
+    r.fillRect(22, 38, 2, 1);
+  }
 
   g.generateTexture(key, 32, 32);
   g.destroy();
