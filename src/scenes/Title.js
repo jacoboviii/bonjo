@@ -219,7 +219,7 @@ export default class Title extends Phaser.Scene {
     const start = () => {
       if (this.started) return;
       this.started = true;
-      this.scene.start('Level1');
+      this.scene.start('Map');
     };
 
     const startZone = this.add

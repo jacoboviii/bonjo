@@ -51,6 +51,11 @@ retreat. Squirrels are opportunists who steal bones. Crows are a rare annoyance.
 **Tone:** warm, funny, non-lethal. Spanish is used naturally for place and
 flavor (`la cuadra`, `¡guau!`, `¡échale!`, `papel picado`), not as a punchline.
 
+**Map hub:** the title opens a papel-lotería map of La Cuadra. CASA is the
+current playable level; Iglesia, Mercado, Parque and Las Orillas are visible
+future landmarks. Selecting a landmark shows its description; completed levels
+receive an ink stamp and saved best score.
+
 ---
 
 ## 3. Core loop
@@ -80,6 +85,8 @@ the conchas and piñatas you missed.
 | SPACE / W (hold) | — | Glide while falling |
 | S / ↓ | — | Dive |
 | E | Talk / ring / interact | Talk / ring / interact |
+| Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
+| Map: ESC / B | Back to title | Back to title |
 | O | Objectives panel (pauses) | Objectives panel (pauses) |
 | T | Tuning panel | Tuning panel |
 | R | Restart | Restart |
@@ -357,6 +364,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 ### In this slice
 - La Cuadra: town background, flat adobe street, papel picado, porch
 - Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
+- **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, top-dog finale, two-night win
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm

@@ -12,6 +12,7 @@ import { sfx } from '../sfx.js';
 import TouchControls from '../ui/TouchControls.js';
 import { drawFolkCard } from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
+import { markLevelComplete } from '../progress.js';
 
 const S = SCALE;
 // Small UI offsets were authored in the old 2x render space.
@@ -375,6 +376,7 @@ export default class Level1 extends Phaser.Scene {
     if (e.rank) e.rank.x = W / 2;
     e.box.x = W / 2;
     e.prompt.x = W / 2;
+    if (e.mapButton) e.mapButton.x = W - 8 * S;
   }
 
   update(time, delta) {
@@ -1335,6 +1337,9 @@ export default class Level1 extends Phaser.Scene {
       this.interactQueued = true;
     });
     this.input.keyboard.on('keydown-O', () => this.toggleObjectives());
+    this.input.keyboard.on('keydown-M', () => {
+      if (this.won || this.gameOverFlag) this.scene.start('Map');
+    });
     this.input.on('pointerdown', () => {
       if (this.dialogOpen) this.closeDialog();
     });
@@ -3309,7 +3314,8 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(203);
 
-    this.endLayout = { overlay, card, title, stats, rank, box, prompt };
+    const mapButton = this.addEndMapButton(W);
+    this.endLayout = { overlay, card, title, stats, rank, box, prompt, mapButton };
   }
 
   win() {
@@ -3325,6 +3331,7 @@ export default class Level1 extends Phaser.Scene {
     this.hideEndHud();
     this.sun.setVisible(false);
     this.finalizeScore();
+    markLevelComplete('laCuadra', this.score);
     this.logRun('win');
 
     sfx.win();
@@ -3408,7 +3415,29 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(203);
 
-    this.endLayout = { overlay, card, title, stats, rank, box, prompt };
+    const mapButton = this.addEndMapButton(W);
+    this.endLayout = { overlay, card, title, stats, rank, box, prompt, mapButton };
+  }
+
+  addEndMapButton(W) {
+    const mapButton = this.add
+      .text(W - 8 * S, 132 * S, t('map.shortcut'), {
+        fontFamily: 'monospace',
+        fontSize: 4 * S,
+        color: '#fff4e0',
+        backgroundColor: '#1b1029',
+      })
+      .setPadding(3 * U, 1.5 * U, 3 * U, 1.5 * U)
+      .setOrigin(1, 1)
+      .setScrollFactor(0)
+      .setDepth(204)
+      .setInteractive({ useHandCursor: true });
+
+    mapButton.on('pointerdown', (pointer, x, y, event) => {
+      event?.stopPropagation?.();
+      this.scene.start('Map');
+    });
+    return mapButton;
   }
 
   enableReplay(overlay) {

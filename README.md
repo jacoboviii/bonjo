@@ -9,13 +9,15 @@ and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
 glide and dive; subdue rivals; bounce off market awnings; knock a piñata for
 supplies; survive two nights and repel the **top dog** before dawn.
 
-This is a **playable prototype**, not a finished game. The current build is for
-tuning the movement feel and testing the survival loop.
+This is a **playable prototype**, not a finished game. The current build has a
+map hub for La Cuadra, with future landmarks already plotted for expansion.
 
 ![Bonjo contact sheet](screenshots/contact-sheet.png)
 
 Individual 1280×720 screenshots are in [`screenshots/`](screenshots/).
 The contact sheet shows the English UI; the game itself now starts in Spanish.
+
+![La Cuadra landmark map](screenshots/00-map.png)
 
 ---
 
@@ -95,6 +97,8 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **R** | Restart the level | |
 | **V** | Toggle the touch buttons | |
 | **L** | Switch English / Spanish (title screen) | |
+| **Map:** SPACE / ENTER | Play the selected landmark | |
+| **Map:** ESC / B | Back to title | |
 
 ### Phones and tablets
 
@@ -104,7 +108,8 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
 - **bottom-center:** 💬 interact when a friendly NPC or quest object is in range
 - **top-center:** tap **OBJETIVOS / OBJECTIVES** to pause and review the goal, errands and what each HUD meter means
-- On the end screen, **tap anywhere** to replay (no R key needed).
+- On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
+- On the end screen, **tap anywhere** to replay; the **MAPA / MAP** button returns to the hub.
 - Multi-touch works, so you can run and flap at the same time.
 - In portrait, the game pauses behind a **rotate your phone** screen with a
   "play anyway" escape.
@@ -180,6 +185,8 @@ there to make them permanent.
 - Two flaps, glide, dive — each with its own animation pose
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
+- **Map hub**: a papel-lotería map of La Cuadra with CASA playable and Iglesia, Mercado, Parque and Las Orillas marked as future routes
+- **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, and a night shift of skunks, hooting owls and bats
@@ -207,8 +214,9 @@ there to make them permanent.
 - **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
 - Title, top-dog finale, win and game-over screens
 
-**Not in this build:** full menus, save files, gamepad, base upgrades,
-crafting, more than one level, real music. (The objectives panel pauses play.)
+**Not in this build:** full menu systems, save slots, gamepad, base upgrades,
+crafting, more than one playable level, real music. (The map hub already lists
+future landmarks; the objectives panel pauses play.)
 
 ---
 
@@ -225,6 +233,9 @@ bonjo/
 │   ├── tuning.js           EVERY feel number, commented  ← start here
 │   ├── art.js              all pixel textures, town, characters, props
 │   ├── sfx.js              layered WebAudio sound effects
+│   ├── progress.js         saved level completion and best scores
+│   ├── levels/
+│   │   └── index.js        ordered landmark/level registry for the map
 │   ├── objects/
 │   │   ├── Dog.js          Bonjo's movement + sit/pant + walk cycle
 │   │   ├── RivalDog.js     patrol / bark / chase / subdue
@@ -236,6 +247,7 @@ bonjo/
 │   └── scenes/
 │       ├── Boot.js         builds textures, starts title
 │       ├── Title.js        BONJO title screen
+│       ├── Map.js          illustrated La Cuadra landmark/level-select hub
 │       └── Level1.js       La Cuadra, survival loop, waves, HUD, tuning
 └── dist/                   production build (after `npm run build`)
 ```

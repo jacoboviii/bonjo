@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Boot from './scenes/Boot.js';
 import Title from './scenes/Title.js';
+import Map from './scenes/Map.js';
 import Level1 from './scenes/Level1.js';
 import { GAME_W, GAME_H } from './scale.js';
 
@@ -45,7 +46,7 @@ const game = new Phaser.Game({
       debug: false,
     },
   },
-  scene: [Boot, Title, Level1],
+  scene: [Boot, Title, Map, Level1],
 });
 
 if (import.meta.env.DEV) window.__game = game;

@@ -209,6 +209,10 @@ export const sfx = {
     noise({ dur: 0.045, vol: 0.009, type: 'bandpass', f0: 420 * pitch, f1: 180 * pitch, q: 1.4 });
     thump(80 * pitch, 0.012, 0.05);
   },
+  click: () => {
+    noise({ dur: 0.025, vol: 0.008, type: 'bandpass', f0: 1800, f1: 900, q: 1.2 });
+    osc({ type: 'sine', f0: 740, f1: 690, dur: 0.045, vol: 0.01 });
+  },
 
   // Pickups and props.
   bone: () => {
