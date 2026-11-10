@@ -90,6 +90,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **Hold SPACE** | — | Glide (slow fall) |
 | **S** / **↓** | — | Dive (subdue rivals, pop crows) |
 | **E** / touch bubble | Talk to friendly NPCs, ring the bell | — |
+| **O** | Open/close objectives | Open/close objectives |
 | **T** | Show/hide the tuning panel | |
 | **R** | Restart the level | |
 | **V** | Toggle the touch buttons | |
@@ -102,6 +103,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
 - **bottom-center:** 💬 interact when a friendly NPC or quest object is in range
+- **top-center:** tap **OBJETIVOS / OBJECTIVES** to pause and review the goal, errands and what each HUD meter means
 - On the end screen, **tap anywhere** to replay (no R key needed).
 - Multi-touch works, so you can run and flap at the same time.
 - In portrait, the game pauses behind a **rotate your phone** screen with a
@@ -181,7 +183,8 @@ there to make them permanent.
 - **Day/night cycle**: scavenge by day, survive waves of rival dogs at night
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, and a night shift of skunks, hooting owls and bats
-- **Visible goal HUD**, two-night countdown and dawn warnings
+- **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
+- **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — fast dogs, bone thieves, brutes, gate rushers and the Night 2 **top dog** showdown
 - **One-way fire escapes and laundry lines** with high bones/conchas
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
@@ -204,8 +207,8 @@ there to make them permanent.
 - **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
 - Title, top-dog finale, win and game-over screens
 
-**Not in this build:** menus, pause, save files, gamepad, base
-upgrades, crafting, more than one level, real music.
+**Not in this build:** full menus, save files, gamepad, base upgrades,
+crafting, more than one level, real music. (The objectives panel pauses play.)
 
 ---
 

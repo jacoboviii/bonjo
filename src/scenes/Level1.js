@@ -280,6 +280,8 @@ export default class Level1 extends Phaser.Scene {
     this.dialogOpen = false;
     this.dialogTimer = null;
     this.hintWasVisible = false;
+    this.objectivesOpen = false;
+    this.objectivesWasTouch = false;
 
     this.buildBackground();
     this.createStreetDressing();
@@ -348,15 +350,15 @@ export default class Level1 extends Phaser.Scene {
     this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
 
     if (this.boneText) this.boneText.x = W / 2;
-    if (this.goalText) this.goalText.x = W / 2;
-    if (this.questText) this.questText.x = W / 2;
     if (this.comboText) this.comboText.x = W / 2;
+    if (this.objectivesButton) this.objectivesButton.x = W / 2;
     if (this.hint) this.hint.x = W / 2;
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
 
     this.touch?.relayout(W);
     this.layoutDialog(W);
+    this.layoutObjectives(W);
     this.layoutEndScreen(W);
   }
 
@@ -375,6 +377,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+    if (this.objectivesOpen) return;
     const dt = delta / 1000;
 
     if (!this.won && !this.gameOverFlag) {
@@ -1315,10 +1318,14 @@ export default class Level1 extends Phaser.Scene {
       this.gui?.show(this.guiOpen);
     });
 
-    this.input.keyboard.on('keydown-R', () => this.scene.restart());
+    this.input.keyboard.on('keydown-R', () => {
+      this.closeObjectives();
+      this.scene.restart();
+    });
     this.input.keyboard.on('keydown-E', () => {
       this.interactQueued = true;
     });
+    this.input.keyboard.on('keydown-O', () => this.toggleObjectives());
     this.input.on('pointerdown', () => {
       if (this.dialogOpen) this.closeDialog();
     });
@@ -1524,19 +1531,6 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100);
 
-    this.goalText = this.add
-      .text(W / 2, 14 * S, t('goal.survive'), {
-        fontFamily: 'monospace',
-        fontSize: 6 * S,
-        color: '#6ec6a8',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
-      })
-      .setOrigin(0.5, 0)
-      .setScrollFactor(0)
-      .setDepth(100)
-      .setAlpha(0.85);
-
     this.comboText = this.add
       .text(W / 2, 35 * S, '', {
         fontFamily: 'monospace',
@@ -1549,19 +1543,6 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100)
       .setVisible(false);
-
-    this.questText = this.add
-      .text(W / 2, 22 * S, t('quest.day'), {
-        fontFamily: 'monospace',
-        fontSize: 5 * S,
-        color: '#ffd166',
-        stroke: '#2b1b3d',
-        strokeThickness: 2 * S,
-      })
-      .setOrigin(0.5, 0)
-      .setScrollFactor(0)
-      .setDepth(100)
-      .setAlpha(0.75);
 
     this.hint = this.add
       .text(W / 2, 138 * S, t('level.hint'), {
@@ -1576,22 +1557,67 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(100)
       .setAlpha(0.85);
 
+    this.statusPanel = this.add.graphics().setScrollFactor(0).setDepth(99);
+    this.statusPanel.fillStyle(0x1b1029, 0.52);
+    this.statusPanel.fillRect(4 * S, 4 * S, 84 * S, 44 * S);
+    this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.18);
+    this.statusPanel.strokeRect(4 * S, 4 * S, 84 * S, 44 * S);
+
+    const statusStyle = {
+      fontFamily: 'monospace',
+      fontSize: 4.5 * S,
+      color: '#ffd166',
+      stroke: '#2b1b3d',
+      strokeThickness: 1.5 * S,
+    };
+    this.statusFlapLabel = this.add
+      .text(8 * S, 10 * S, t('hud.flaps'), statusStyle)
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(100)
+      .setAlpha(0.9);
+    this.statusHealthLabel = this.add
+      .text(8 * S, 22 * S, t('hud.health'), statusStyle)
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(100)
+      .setAlpha(0.9);
+    this.statusHungerLabel = this.add
+      .text(8 * S, 34 * S, t('hud.hunger'), statusStyle)
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(100)
+      .setAlpha(0.9);
+
     // hearts
     this.hearts = [];
     for (let i = 0; i < this.maxHealth; i++) {
       this.hearts.push(
         this.add
-          .image((8 + i * 14) * S, 23 * S, 'heart')
-          .setOrigin(0, 0)
+          .image((30 + i * 12) * S, 22 * S, 'heart')
+          .setOrigin(0, 0.5)
+          .setScale(1.1)
           .setScrollFactor(0)
           .setDepth(100),
       );
     }
 
+    this.healthText = this.add
+      .text(70 * S, 22 * S, `${this.health}/${this.maxHealth}`, {
+        fontFamily: 'monospace',
+        fontSize: 4.5 * S,
+        color: '#fff4e0',
+        stroke: '#2b1b3d',
+        strokeThickness: 1.5 * S,
+      })
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(100);
+
     // hunger: concha icon + bar
     this.hungerIcon = this.add
-      .image(60 * S, 34 * S, 'concha')
-      .setOrigin(0, 0)
+      .image(78 * S, 34 * S, 'concha')
+      .setOrigin(0, 0.5)
       .setScale(0.7)
       .setScrollFactor(0)
       .setDepth(100);
@@ -1620,6 +1646,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100);
 
+    this.createObjectivesUi();
     this.updateSurvivalHud();
 
     // On touch devices the buttons are the tutorial, and they occupy the
@@ -1766,6 +1793,217 @@ export default class Level1 extends Phaser.Scene {
     this.touch?.setDialogMode(false);
   }
 
+  createObjectivesUi() {
+    const W = this.scale.width;
+
+    this.objectivesButton = this.add
+      .text(
+        W / 2,
+        14 * S,
+        this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
+        {
+          fontFamily: 'monospace',
+          fontSize: 5 * S,
+          color: '#1b1029',
+          backgroundColor: '#f4dfb0',
+        },
+      )
+      .setOrigin(0.5, 0)
+      .setScrollFactor(0)
+      .setDepth(160)
+      .setInteractive({ useHandCursor: true });
+    this.objectivesButton.setPadding(4 * S, 1.5 * S, 4 * S, 1.5 * S);
+    this.objectivesButton.on('pointerdown', () => this.toggleObjectives());
+
+    this.objectivesScrim = this.add
+      .rectangle(0, 0, W, this.scale.height, 0x120a1c, 0.62)
+      .setOrigin(0)
+      .setScrollFactor(0)
+      .setDepth(150)
+      .setVisible(false);
+
+    this.objectivesRoot = this.add
+      .container(0, 0)
+      .setScrollFactor(0)
+      .setDepth(155)
+      .setVisible(false);
+
+    this.objectivesCard = this.add.graphics();
+
+    const titleStyle = {
+      fontFamily: 'monospace',
+      fontSize: 8 * S,
+      color: '#c94f3d',
+      stroke: '#1d1326',
+      strokeThickness: 1.5 * S,
+    };
+    const headingStyle = {
+      fontFamily: 'monospace',
+      fontSize: 5.5 * S,
+      color: '#2f7f78',
+    };
+    const bodyStyle = {
+      fontFamily: 'monospace',
+      fontSize: 5 * S,
+      color: '#2b1b3d',
+      lineSpacing: 2 * S,
+    };
+    const goalStyle = {
+      fontFamily: 'monospace',
+      fontSize: 7 * S,
+      color: '#6ec6a8',
+      stroke: '#2b1b3d',
+      strokeThickness: 1.5 * S,
+    };
+
+    this.objectivesTitle = this.add.text(0, 0, t('objectives.title'), titleStyle).setOrigin(0.5, 0);
+    this.objectivesNowHead = this.add.text(0, 0, t('objectives.now'), headingStyle);
+    this.objectivesNowGoal = this.add.text(0, 0, t('goal.survive'), goalStyle);
+    this.objectivesNowDesc = this.add.text(0, 0, t('objectives.nowDesc'), bodyStyle);
+    this.objectivesErrandsHead = this.add.text(0, 0, t('objectives.errands'), headingStyle);
+    this.objectivesErrandsLine = this.add.text(0, 0, t('objectives.errandsLine'), bodyStyle);
+    this.objectivesErrandsDesc = this.add.text(0, 0, t('objectives.errandsDesc'), bodyStyle);
+    this.objectivesPowersHead = this.add.text(0, 0, t('objectives.powers'), headingStyle);
+    this.objectivesPowers = this.add
+      .text(
+        0,
+        0,
+        [
+          t('objectives.healthDesc'),
+          t('objectives.flapsDesc'),
+          t('objectives.hungerDesc'),
+        ].join('\n'),
+        {
+          ...bodyStyle,
+          fontSize: 4.5 * S,
+        },
+      );
+    this.objectivesClose = this.add
+      .text(0, 0, t('objectives.close'), {
+        fontFamily: 'monospace',
+        fontSize: 4 * S,
+        color: '#2b1b3d',
+      })
+      .setOrigin(1, 0)
+      .setAlpha(0.6)
+      .setScrollFactor(0)
+      .setDepth(160)
+      .setVisible(false)
+      .setInteractive({ useHandCursor: true });
+    this.objectivesClose.setPadding(2 * S, 1 * S, 2 * S, 1 * S);
+    this.objectivesClose.on('pointerdown', () => this.closeObjectives());
+
+    this.objectivesRoot.add([
+      this.objectivesCard,
+      this.objectivesTitle,
+      this.objectivesNowHead,
+      this.objectivesNowGoal,
+      this.objectivesNowDesc,
+      this.objectivesErrandsHead,
+      this.objectivesErrandsLine,
+      this.objectivesErrandsDesc,
+      this.objectivesPowersHead,
+      this.objectivesPowers,
+    ]);
+
+    this.layoutObjectives(W);
+  }
+
+  layoutObjectives(W = this.scale.width) {
+    if (!this.objectivesRoot) return;
+
+    const w = Math.min(W - 40 * U, 500 * U);
+    const h = 240 * U;
+    this.objectivesW = w;
+    this.objectivesH = h;
+
+    this.objectivesButton
+      .setPosition(W / 2, 14 * S)
+      .setText(
+        this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
+      );
+    this.objectivesScrim.setPosition(0, 0).setSize(W, this.scale.height);
+    this.objectivesRoot.setPosition(W / 2, this.scale.height / 2);
+    drawFolkCard(this.objectivesCard, 0, 0, w, h);
+
+    const top = -h / 2;
+    const left = -w / 2 + 30 * U;
+    const wrap = w - 60 * U;
+    this.objectivesTitle.setPosition(0, top + 12 * U);
+    this.objectivesNowHead.setPosition(left, top + 48 * U);
+    this.objectivesNowGoal.setPosition(left, top + 64 * U);
+    this.objectivesNowDesc.setPosition(left, top + 84 * U).setWordWrapWidth(wrap);
+    this.objectivesErrandsHead.setPosition(left, top + 112 * U);
+    this.objectivesErrandsLine.setPosition(left, top + 128 * U);
+    this.objectivesErrandsDesc.setPosition(left, top + 146 * U).setWordWrapWidth(wrap);
+    this.objectivesPowersHead.setPosition(left, top + 172 * U);
+    this.objectivesPowers.setPosition(left, top + 186 * U).setWordWrapWidth(wrap);
+    this.objectivesClose.setPosition(
+      W / 2 + w / 2 - 16 * U,
+      this.scale.height / 2 - h / 2 + 13 * U,
+    );
+  }
+
+  toggleObjectives() {
+    if (this.won || this.gameOverFlag) return;
+    if (this.objectivesOpen) this.closeObjectives();
+    else this.openObjectives();
+  }
+
+  openObjectives() {
+    if (this.objectivesOpen || this.won || this.gameOverFlag) return;
+    if (this.dialogOpen) this.closeDialog();
+
+    this.objectivesOpen = true;
+    this.objectivesWasTouch = !!this.touch?.visible;
+    this.objectivesButton.setVisible(false);
+    this.objectivesClose.setVisible(true);
+    this.touch?.show(false);
+    this.updateObjectivesPanel();
+    this.objectivesScrim.setVisible(true);
+    this.objectivesRoot.setVisible(true);
+    this.physics.world.pause();
+    this.time.paused = true;
+    this.tweens.pauseAll();
+  }
+
+  closeObjectives() {
+    if (!this.objectivesOpen) return;
+
+    this.objectivesOpen = false;
+    this.objectivesScrim.setVisible(false);
+    this.objectivesRoot.setVisible(false);
+    this.objectivesClose.setVisible(false);
+    this.objectivesButton.setVisible(true);
+    if (this.objectivesWasTouch) this.touch?.show(true);
+    this.objectivesWasTouch = false;
+    this.physics.world.resume();
+    this.time.paused = false;
+    this.tweens.resumeAll();
+  }
+
+  updateObjectivesPanel() {
+    if (!this.objectivesNowGoal) return;
+
+    let text = t('goal.survive');
+    let color = '#6ec6a8';
+    if (this.alphaActive && !this.alphaDefeated) {
+      text = t('goal.alpha', { hits: this.alpha?.health ?? 3 });
+      color = '#ffd166';
+    } else if (this.alphaDefeated && this.alphaEnding) {
+      text = t('goal.dawnNow');
+      color = '#b5533a';
+    } else if (this.phase === 'night' && this.phaseTime <= 10) {
+      text = t('goal.dawn', {
+        seconds: Math.ceil(Math.max(0, this.phaseTime)),
+      });
+      color = '#ffd166';
+    }
+
+    this.objectivesNowGoal.setText(text).setColor(color);
+    this.objectivesErrandsLine.setText(t('objectives.errandsLine'));
+  }
+
   createTuningPanel() {
     const gui = new GUI({ title: t('tuning.title') });
     this.gui = gui;
@@ -1869,15 +2107,15 @@ export default class Level1 extends Phaser.Scene {
     // flap pips, top-left
     this.pips.clear();
     for (let i = 0; i < tuning.maxFlaps; i++) {
-      const x = (10 + i * 10) * S;
+      const x = (30 + i * 10) * S;
       if (i < this.dog.flaps) {
         this.pips.fillStyle(0xffd166, 1);
-        this.pips.fillCircle(x, 11 * S, 3.5 * S);
+        this.pips.fillCircle(x, 10 * S, 3.8 * S);
         this.pips.lineStyle(1 * S, 0x2b1b3d, 0.5);
-        this.pips.strokeCircle(x, 11 * S, 3.5 * S);
+        this.pips.strokeCircle(x, 10 * S, 3.8 * S);
       } else {
         this.pips.lineStyle(1 * S, 0xfff4e0, 0.45);
-        this.pips.strokeCircle(x, 11 * S, 3.5 * S);
+        this.pips.strokeCircle(x, 10 * S, 3.8 * S);
       }
     }
 
@@ -1906,16 +2144,21 @@ export default class Level1 extends Phaser.Scene {
     this.hearts.forEach((heart, i) => {
       heart.setAlpha(i < this.health ? 1 : 0.22);
     });
+    this.healthText
+      ?.setText(`${this.health}/${this.maxHealth}`)
+      .setColor(this.health <= 1 ? '#f26b5e' : '#fff4e0');
+    this.statusHealthLabel?.setColor(this.health <= 1 ? '#f26b5e' : '#ffd166');
+    this.statusHungerLabel?.setColor(this.hunger < 25 ? '#f26b5e' : '#ffd166');
 
     this.hungerBar.clear();
-    this.hungerBar.fillStyle(0x2b1b3d, 0.65);
-    this.hungerBar.fillRect(8 * S, 35 * S, 48 * S, 6 * S);
-    this.hungerBar.lineStyle(1 * S, 0xfff4e0, 0.5);
-    this.hungerBar.strokeRect(8 * S, 35 * S, 48 * S, 6 * S);
+    this.hungerBar.fillStyle(0x2b1b3d, 0.8);
+    this.hungerBar.fillRect(30 * S, 31 * S, 44 * S, 6 * S);
+    this.hungerBar.lineStyle(1 * S, 0xfff4e0, 0.55);
+    this.hungerBar.strokeRect(30 * S, 31 * S, 44 * S, 6 * S);
 
-    const width = Math.max(0, (this.hunger / this.maxHunger) * 46 * S);
+    const width = Math.max(0, (this.hunger / this.maxHunger) * 42 * S);
     this.hungerBar.fillStyle(this.hunger < 25 ? 0xf26b5e : 0xf0a03c, 1);
-    this.hungerBar.fillRect(9 * S, 36 * S, width, 4 * S);
+    this.hungerBar.fillRect(31 * S, 32 * S, width, 4 * S);
 
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
@@ -1939,37 +2182,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   updateGoalHud() {
-    if (!this.goalText) return;
-    if (this.won || this.gameOverFlag) {
-      this.questText?.setVisible(false);
-      return;
-    }
-
-    let text = t('goal.survive');
-    let color = '#6ec6a8';
-    let alpha = 0.85;
-
-    if (this.alphaActive && !this.alphaDefeated) {
-      text = t('goal.alpha', { hits: this.alpha?.health ?? 3 });
-      color = '#ffd166';
-      alpha = 1;
-    } else if (this.alphaDefeated && this.alphaEnding) {
-      text = t('goal.dawnNow');
-      color = '#ffd166';
-      alpha = 0.65 + 0.35 * Math.sin(this.time.now * 0.012);
-    } else if (this.phase === 'night' && this.phaseTime <= 10) {
-      text = t('goal.dawn', {
-        seconds: Math.ceil(Math.max(0, this.phaseTime)),
-      });
-      color = '#ffd166';
-      alpha = 0.65 + 0.35 * Math.sin(this.time.now * 0.012);
-    }
-
-    this.goalText.setText(text).setColor(color).setAlpha(alpha);
-
-    this.questText?.setVisible(
-      this.phase === 'day' && (this.poloGift || !this.bellRung),
-    );
+    if (this.won || this.gameOverFlag) return;
+    this.updateObjectivesPanel();
   }
 
   // --- survival loop -------------------------------------------------------
@@ -2828,12 +3042,20 @@ export default class Level1 extends Phaser.Scene {
   }
 
   hideEndHud() {
+    this.closeObjectives();
     this.pips.setVisible(false);
     this.boneText.setVisible(false);
-    this.goalText?.setVisible(false);
-    this.questText?.setVisible(false);
     this.comboText?.setVisible(false);
     this.hint.setVisible(false);
+    this.statusPanel?.setVisible(false);
+    this.statusFlapLabel?.setVisible(false);
+    this.statusHealthLabel?.setVisible(false);
+    this.statusHungerLabel?.setVisible(false);
+    this.healthText?.setVisible(false);
+    this.objectivesButton?.setVisible(false);
+    this.objectivesScrim?.setVisible(false);
+    this.objectivesRoot?.setVisible(false);
+    this.objectivesClose?.setVisible(false);
     this.hearts.forEach((heart) => heart.setVisible(false));
     this.hungerIcon.setVisible(false);
     this.hungerBar.setVisible(false);

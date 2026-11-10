@@ -80,6 +80,7 @@ the conchas and piñatas you missed.
 | SPACE / W (hold) | — | Glide while falling |
 | S / ↓ | — | Dive |
 | E | Talk / ring / interact | Talk / ring / interact |
+| O | Objectives panel (pauses) | Objectives panel (pauses) |
 | T | Tuning panel | Tuning panel |
 | R | Restart | Restart |
 | Touch ◀ ▶ | Run (slide between) | Steer |
@@ -200,11 +201,13 @@ hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
 Day 1 lasts 35 s, Night 1 is 28 s with 3 rival waves, Day 2 is 30 s, Night 2 is
 33 s with 4 waves. Night darkens the street (lit windows pop), sends Polo, the
 chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
-skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s. A visible goal HUD shows “survive 2 nights,” dawn
-warnings and the top-dog hit count. The final night adds gate rushers and, at
+skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
+The compact HUD labels health/flaps/hunger; the **O / OBJETIVOS** panel pauses the
+game and explains the current goal, day errands and each HUD meter, including
+dawn warnings and the top-dog hit count. The final night adds gate rushers and, at
 roughly 12 s left, the top dog. Repel it to win; the timer will wait at zero
-until it is down. The HUD always shows phase, timer, hearts, hunger and gate
-health.
+until it is down. The HUD always shows phase, timer, labeled hearts/flaps/hunger
+and gate health; objectives and errands live in the O panel.
 
 ### The porch
 Bonjo's house at the start of the street is a proper two-storey adobe home
@@ -367,7 +370,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - Tuning panel
 
 ### Cut / later
-- Menus, pause, save data, gamepad
+- Full menus, save data, gamepad (the objectives panel pauses play)
 - More levels, dog variants, upgrades
 - Base upgrades, crafting, persistent progression
 - Breakable pots, doorbells, chickens/goats
