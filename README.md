@@ -292,6 +292,7 @@ files):
 | `bone` | 30×24 | |
 | `concha` | 18×12 | hunger pickup |
 | `sun` / `moon` | 144×144 | day sun and night moon |
+| `speechBubble` | 42×36 | floating touch interaction prompt |
 | `heart` | 15×15 | health HUD |
 | `bonjoHouse` | 390×240 | two-storey home behind the CASA gateway |
 | `ring` | 48×48 | |

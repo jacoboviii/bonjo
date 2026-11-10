@@ -1678,6 +1678,13 @@ export default class Level1 extends Phaser.Scene {
     this.interactPrompt.on('pointerdown', () => {
       this.interactQueued = true;
     });
+
+    this.interactBubble = this.add
+      .image(0, 0, 'speechBubble')
+      .setOrigin(0.5, 1)
+      .setScale(0.55)
+      .setDepth(20)
+      .setVisible(false);
   }
 
   createDialogUi() {
@@ -1743,17 +1750,30 @@ export default class Level1 extends Phaser.Scene {
     if (!this.interactPrompt) return;
     if (!item || this.dialogOpen) {
       this.interactPrompt.setVisible(false);
+      this.interactBubble?.setVisible(false);
       if (this.interactPrompt.input) this.interactPrompt.input.enabled = false;
       return;
     }
 
-    const key = this.touch?.visible ? t('prompt.tap') : 'E';
+    const x = item.target.x;
+    const y = item.target.y - item.target.displayHeight - 6 * S;
+    this.interactBubble.setPosition(x, y);
+
+    if (this.touch?.visible) {
+      // On touch, the action button already says what to do. A quiet floating
+      // bubble above the character is enough of a prompt.
+      this.interactPrompt.setVisible(false);
+      if (this.interactPrompt.input) this.interactPrompt.input.enabled = false;
+      this.interactBubble
+        .setScale(0.52 + Math.sin(this.time.now * 0.006) * 0.025)
+        .setVisible(true);
+      return;
+    }
+
+    this.interactBubble.setVisible(false);
     this.interactPrompt
-      .setText(`${key} · ${t(item.prompt)}`)
-      .setPosition(
-        item.target.x,
-        item.target.y - item.target.displayHeight - 6 * S,
-      )
+      .setText(`E · ${t(item.prompt)}`)
+      .setPosition(x, y)
       .setVisible(true);
     if (this.interactPrompt.input) this.interactPrompt.input.enabled = true;
   }
@@ -1767,6 +1787,7 @@ export default class Level1 extends Phaser.Scene {
       this.touch?.visible ? t('dialog.closeTouch') : t('dialog.close'),
     );
     this.interactPrompt?.setVisible(false);
+    this.interactBubble?.setVisible(false);
     if (this.interactPrompt?.input) this.interactPrompt.input.enabled = false;
     this.hintWasVisible = this.hint?.visible || false;
     this.hint?.setVisible(false);
@@ -1966,6 +1987,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesWasTouch = !!this.touch?.visible;
     this.objectivesButton.setVisible(false);
     this.objectivesClose.setVisible(true);
+    this.interactPrompt?.setVisible(false);
+    this.interactBubble?.setVisible(false);
     this.touch?.show(false);
     this.updateObjectivesPanel();
     this.objectivesScrim.setVisible(true);
@@ -3092,6 +3115,7 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesScrim?.setVisible(false);
     this.objectivesRoot?.setVisible(false);
     this.objectivesClose?.setVisible(false);
+    this.interactBubble?.setVisible(false);
     this.hearts.forEach((heart) => heart.setVisible(false));
     this.hungerIcon.setVisible(false);
     this.hungerBar.setVisible(false);

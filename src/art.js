@@ -93,6 +93,7 @@ export function buildTextures(scene) {
   makeDog(scene, 'dogGlide', 'glide');
   makeDog(scene, 'dogDive', 'dive');
   makeTongue(scene);
+  makeSpeechBubble(scene);
   makeSquirrel(scene, 'squirrel', 'idle');
   makeSquirrel(scene, 'squirrelRun', 'run');
   makeSkunk(scene, 'skunk', 'idle');
@@ -1673,6 +1674,28 @@ function makeDog(scene, key, pose) {
   }
 
   g.generateTexture(key, 32, 32);
+  g.destroy();
+}
+
+function makeSpeechBubble(scene) {
+  const g = gfx(scene);
+  const INK = 0x1b1029;
+  const W = 14;
+  const H = 12;
+
+  // ink outline + cream paper bubble with a little tail
+  g.fillStyle(INK, 1);
+  g.fillRect(1, 1, 12, 8);
+  g.fillTriangle(4, 8, 8, 8, 5, 11);
+  g.fillStyle(CREAM, 1);
+  g.fillRect(2, 2, 10, 6);
+  g.fillTriangle(5, 8, 7, 8, 6, 10);
+  g.fillStyle(INK, 1);
+  g.fillRect(4, 4, 1, 1);
+  g.fillRect(6, 4, 1, 1);
+  g.fillRect(8, 4, 1, 1);
+
+  g.generateTexture('speechBubble', W, H);
   g.destroy();
 }
 
