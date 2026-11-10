@@ -833,6 +833,7 @@ export default class Level1 extends Phaser.Scene {
         .find((r) => r?.active && !r.defeated);
       if (rival) {
         sfx.bark();
+        this.floatText(rival.x, rival.y - 20 * S, t('bark'), '#ffd166');
         this.nextDistantBark = now + 5000 + Math.random() * 4000;
       }
     }

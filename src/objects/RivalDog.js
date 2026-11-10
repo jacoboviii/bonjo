@@ -38,7 +38,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.chasing = false;
     this.defeated = false;
     this.animT = Math.random();
-    this.nextBark = 0;
+    this.nextBark = 1200 + Math.random() * 1800;
     this.nextHit = 0;
     this.nextAttack = 0;
     this.stunUntil = 0;
@@ -98,6 +98,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
         this.setTexture('rival');
         if (this.scene.time.now > this.nextAttack) {
           this.nextAttack = this.scene.time.now + 1500;
+          this.bark();
           this.scene.damageGate?.(this);
         }
       }
@@ -107,12 +108,13 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     const dx = dog.x - this.x;
     const dy = Math.abs(dog.y - this.y);
     const near = !dog.dead && Math.abs(dx) < 220 * S && dy < 110 * S;
+    const ambient = !dog.dead && Math.abs(dx) < 300 * S && dy < 130 * S;
 
-    if (near && !this.chasing && this.scene.time.now > this.nextBark) {
-      this.nextBark = this.scene.time.now + 1600;
-      sfx.bark();
-      this.scene.floatText(this.x, this.y - 20 * S, t('bark'), '#ffd166');
-      if (this.body.blocked.down) this.body.setVelocityY(-180 * S);
+    if ((near || ambient) && this.scene.time.now > this.nextBark) {
+      this.nextBark =
+        this.scene.time.now + (near ? 1800 : 4200 + Math.random() * 2600);
+      this.bark();
+      if (near && this.body.blocked.down) this.body.setVelocityY(-180 * S);
     }
 
     this.chasing = near;
@@ -132,6 +134,11 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(this.dir < 0);
 
     this.playPose(near ? 14 : 9);
+  }
+
+  bark() {
+    sfx.bark();
+    this.scene.floatText(this.x, this.y - 20 * S, t('bark'), '#ffd166');
   }
 
   playPose(rate) {
