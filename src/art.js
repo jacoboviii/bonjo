@@ -108,6 +108,7 @@ export function buildTextures(scene) {
   makeRivalDog(scene, 'rival', 'idle');
   makeRivalDog(scene, 'rivalRun', 'run');
   makeHeart(scene);
+  makeLifeHeart(scene);
   makeFood(scene);
   makeBonjoHouse(scene);
   makePinata(scene);
@@ -2296,6 +2297,35 @@ function makeHeart(scene) {
   g.fillStyle(0xff9a9a, 1);
   g.fillRect(2, 2, 1, 1);
   g.generateTexture('heart', 10, 10);
+  g.destroy();
+}
+
+function makeLifeHeart(scene) {
+  const g = rawGfx(scene);
+  // Marigold rays and a dark medallion make the world pickup read larger
+  // than the small hearts in the status HUD.
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(7, 0, 2, 3);
+  g.fillRect(7, 13, 2, 3);
+  g.fillRect(0, 7, 3, 2);
+  g.fillRect(13, 7, 3, 2);
+  g.fillRect(2, 2, 2, 2);
+  g.fillRect(12, 2, 2, 2);
+  g.fillRect(2, 12, 2, 2);
+  g.fillRect(12, 12, 2, 2);
+  g.fillStyle(0xf4dfb0, 1);
+  g.fillCircle(8, 8, 6);
+  g.fillStyle(0x1b1029, 1);
+  g.fillCircle(8, 8, 5);
+  g.fillStyle(0xd94f4f, 1);
+  g.fillRect(5, 4, 2, 2);
+  g.fillRect(9, 4, 2, 2);
+  g.fillRect(4, 6, 8, 3);
+  g.fillRect(5, 9, 6, 1);
+  g.fillRect(6, 10, 4, 1);
+  g.fillStyle(0xff9a9a, 1);
+  g.fillRect(6, 5, 1, 1);
+  g.generateTexture('lifeHeart', 16, 16);
   g.destroy();
 }
 

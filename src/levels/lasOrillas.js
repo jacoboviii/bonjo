@@ -90,8 +90,11 @@ export const lasOrillas = {
 
   pinatas: [
     [1220, 515],
-    [3000, 525],
+    { x: 3000, y: 525, life: true },
   ],
+
+  // One placed life heart per level; the marked piñata hides another.
+  lives: [[1850, 590]],
 
   awnings: [
     [560, 578],

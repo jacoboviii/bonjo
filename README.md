@@ -44,7 +44,8 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Crows:** one rare aerial pest, plus a far-block crow; they caw when Bonjo gets close.
 - **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its snakes. Bats cross the dark and the cats keep their watch.
 - **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
-  bone, and the third hit bursts it into a shower of bones.
+  bone, and the third hit bursts it into a shower of bones. Most leave a concha;
+  piñatas with a small heart marker leave a **life heart** instead.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
   flaps. Chain them with the gold rings.
 - **High routes:** one-way fire escapes and laundry lines hide bones and
@@ -61,7 +62,10 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   open until dawn. Polo tosses a concha each day, the bell grants another,
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
-  hunger; an empty bar starts costing health. In La Cuadra, survive two nights
+  hunger; an empty bar starts costing health. Each level hides one **life heart**
+  and at least one marked piñata hides another. The first raises max health to
+  four; later hearts heal, and a full-health heart waits for you. In La Cuadra,
+  survive two nights
   and repel the top dog; in Las Orillas, survive three and defeat the Chihuahua
   boss. Bones, combo, subdued rivals and no-hit play feed your final score and
   rank.
@@ -191,7 +195,8 @@ there to make them permanent.
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide, dive — each with its own animation pose
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
-- **Health (3 hearts) + hunger bar**, concha pickups, dawn healing
+- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, concha pickups, dawn healing
+- **Life hearts** placed in every level and hidden in marked piñatas; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, snakes and an aggressive Chihuahua boss
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
@@ -207,7 +212,7 @@ there to make them permanent.
 - **Named NPC dialog cards**, Polo's daily concha, bell blessing, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **snakes** in Las Orillas that steal bones; two crows
-- **Piñatas** (3 hits → bones + a concha) and **bouncing market awnings**
+- **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**
 - Wind rings that refill flaps mid-air
 - Bones, concha food, two checkpoint balloons, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
@@ -318,6 +323,7 @@ files):
 | `sun` / `moon` | 144×144 | day sun and night moon |
 | `speechBubble` | 42×36 | floating touch interaction prompt |
 | `heart` | 15×15 | health HUD |
+| `lifeHeart` | 24×24 | world life pickup and piñata life marker |
 | `bonjoHouse` | 390×240 | two-storey home behind the CASA gateway |
 | `ring` | 48×48 | |
 | `balloon` | 36×60 | checkpoint |

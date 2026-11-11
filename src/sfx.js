@@ -425,6 +425,12 @@ export const sfx = {
     osc({ type: 'sine', f0: 990, f1: 1000, dur: 0.32, vol: 0.016, delay: 0.11 });
     noise({ dur: 0.04, vol: 0.008, type: 'highpass', f0: 2200, q: 0.7 });
   },
+  life: () => {
+    [784, 988, 1318].forEach((f, i) =>
+      osc({ type: 'sine', f0: f, f1: f * 1.01, dur: 0.2, vol: 0.018, delay: i * 0.075 }),
+    );
+    osc({ type: 'triangle', f0: 392, f1: 523, dur: 0.16, vol: 0.012 });
+  },
   win: () => {
     [523, 659, 784, 1046].forEach((f, i) => {
       osc({ type: 'triangle', f0: f, f1: f * 1.005, dur: 0.32, vol: 0.024, delay: i * 0.11 });

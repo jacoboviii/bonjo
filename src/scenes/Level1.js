@@ -34,6 +34,7 @@ let CHECKPOINT_X;
 let CHECKPOINT2_X;
 let CHECKPOINT_Y;
 let FOODS;
+let LIVES;
 let PARKED_CARS;
 let BIKES;
 let STREET_PROPS;
@@ -69,6 +70,7 @@ function applyLevelData(level) {
   CHECKPOINT2_X = level.checkpoints.second;
   CHECKPOINT_Y = level.checkpoints.y;
   FOODS = level.foods;
+  LIVES = level.lives || [];
   PARKED_CARS = level.parkedCars;
   BIKES = level.bikes;
   STREET_PROPS = level.streetProps;
@@ -122,6 +124,7 @@ export default class Level1 extends Phaser.Scene {
 
     // survival state
     this.maxHealth = 3;
+    this.maxLives = 4;
     this.health = 3;
     this.maxHunger = 100;
     this.hunger = 80;
@@ -186,6 +189,7 @@ export default class Level1 extends Phaser.Scene {
     this.createDog();
     this.createPickups();
     this.createFood();
+    this.createLives();
     this.createCrows();
     this.createSquirrels();
     this.createRivals();
@@ -1030,6 +1034,94 @@ export default class Level1 extends Phaser.Scene {
     this.floatText(food.x, food.y - 8 * S, t('float.food'), '#6ec6a8');
   }
 
+  createLives() {
+    this.lifeGroup = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+    });
+
+    for (const [x, y] of LIVES) this.spawnLifeAt(x * S, y * S);
+
+    this.physics.add.overlap(
+      this.dog,
+      this.lifeGroup,
+      this.collectLife,
+      null,
+      this,
+    );
+  }
+
+  spawnLifeAt(x, y) {
+    const life = this.lifeGroup.create(x, y, 'lifeHeart');
+    life.setDepth(7);
+    life.body.setSize(12 * S, 12 * S);
+    life.setData('hintAt', 0);
+
+    this.tweens.add({
+      targets: life,
+      scaleX: 1.12,
+      scaleY: 1.12,
+      duration: 620,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+    this.tweens.add({
+      targets: life,
+      alpha: 0.78,
+      duration: 840,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+
+    return life;
+  }
+
+  collectLife(dog, life) {
+    if (!life.active) return;
+
+    const gained = this.gainLife();
+    if (!gained) {
+      // Leave the heart for later instead of wasting it at full health.
+      if (this.time.now >= (life.getData('hintAt') || 0)) {
+        life.setData('hintAt', this.time.now + 900);
+        this.floatText(life.x, life.y - 8 * S, t('float.lifeFull'), '#ffd166');
+      }
+      return;
+    }
+
+    this.tweens.killTweensOf(life);
+    life.disableBody(true, true);
+    sfx.life();
+    this.spawnPuff(life.x, life.y, 0.9);
+    this.floatText(
+      life.x,
+      life.y - 8 * S,
+      t(gained === 'max' ? 'float.lifeMax' : 'float.life'),
+      '#f26b5e',
+    );
+  }
+
+  gainLife() {
+    if (this.maxHealth < this.maxLives) {
+      this.maxHealth += 1;
+      this.health = this.maxHealth;
+      this.addHudHeart(this.maxHealth - 1);
+      this.layoutHealthText();
+      this.updateSurvivalHud();
+      return 'max';
+    }
+
+    if (this.health < this.maxHealth) {
+      this.health += 1;
+      this.updateSurvivalHud();
+      return 'heal';
+    }
+
+    return null;
+  }
+
   useTacoCart(dog, cart) {
     const now = this.time.now;
     if (now < (cart.getData('next') || 0)) return;
@@ -1416,8 +1508,11 @@ export default class Level1 extends Phaser.Scene {
   createPinatas() {
     this.pinataGroup = this.add.group();
 
-    for (const [x, y] of PINATAS) {
-      this.pinataGroup.add(new Pinata(this, x * S, y * S));
+    for (const entry of PINATAS) {
+      const x = Array.isArray(entry) ? entry[0] : entry.x;
+      const y = Array.isArray(entry) ? entry[1] : entry.y;
+      const hasLife = !Array.isArray(entry) && entry.life === true;
+      this.pinataGroup.add(new Pinata(this, x * S, y * S, { life: hasLife }));
     }
 
     this.physics.add.overlap(this.dog, this.pinataGroup, this.hitPinata, null, this);
@@ -1528,16 +1623,7 @@ export default class Level1 extends Phaser.Scene {
 
     // hearts
     this.hearts = [];
-    for (let i = 0; i < this.maxHealth; i++) {
-      this.hearts.push(
-        this.add
-          .image((30 + i * 12) * S, 22 * S, 'heart')
-          .setOrigin(0, 0.5)
-          .setScale(1.1)
-          .setScrollFactor(0)
-          .setDepth(100),
-      );
-    }
+    for (let i = 0; i < this.maxHealth; i++) this.addHudHeart(i);
 
     this.healthText = this.add
       .text(70 * S, 22 * S, `${this.health}/${this.maxHealth}`, {
@@ -1550,6 +1636,7 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(100);
+    this.layoutHealthText();
 
     // hunger: concha icon + bar
     this.hungerIcon = this.add
@@ -1593,6 +1680,21 @@ export default class Level1 extends Phaser.Scene {
     // On touch devices the buttons are the tutorial, and they occupy the
     // bottom of the screen where the keyboard hint would sit.
     if (this.touch?.visible) this.hint.setVisible(false);
+  }
+
+  addHudHeart(index) {
+    const heart = this.add
+      .image((30 + index * 12) * S, 22 * S, 'heart')
+      .setOrigin(0, 0.5)
+      .setScale(1.1)
+      .setScrollFactor(0)
+      .setDepth(100);
+    this.hearts.push(heart);
+    return heart;
+  }
+
+  layoutHealthText() {
+    if (this.healthText) this.healthText.x = (this.maxHealth >= 4 ? 76 : 70) * S;
   }
 
   createInteractionUi() {
@@ -2994,7 +3096,11 @@ export default class Level1 extends Phaser.Scene {
       }
       this.spawnPuff(pinata.x, pinata.y, 1.5);
       sfx.burst();
-      this.spawnFoodAt(pinata.x, pinata.y + 20 * S);
+      if (pinata.hasLife) {
+        this.spawnLifeAt(pinata.x, pinata.y + 20 * S);
+      } else {
+        this.spawnFoodAt(pinata.x, pinata.y + 20 * S);
+      }
       pinata.destroy();
     }
   }

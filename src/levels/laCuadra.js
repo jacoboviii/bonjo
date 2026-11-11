@@ -73,9 +73,12 @@ export const laCuadra = {
   pinatas: [
     [240, 525],
     [2150, 515],
-    [3350, 525],
+    { x: 3350, y: 525, life: true },
     [3880, 515],
   ],
+
+  // One placed life heart per level; the marked piñata hides another.
+  lives: [[1380, 590]],
 
   awnings: [
     [560, 578],

@@ -178,9 +178,10 @@ One crow patrols a stretch of sky with a sine bob. Dive through it to pop it
 story.
 
 ### Piñatas
-Two hang from ropes over the street. Any contact hits one (350 ms cooldown):
+Piñatas hang from ropes over the street. Any contact hits one (350 ms cooldown):
 wobble, `¡ÉCHALE!`, one bone drops. Three hits burst it into `¡ÓRALE!` — a
-shower of bones and a concha. Purely a reward; never a hazard.
+shower of bones plus a concha. A piñata with a small heart marker leaves a life
+heart instead. Purely a reward; never a hazard.
 
 ### Market awnings
 Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
@@ -205,11 +206,15 @@ Gold rings in gaps. Passing through refills all flaps and gives a small upward
 kick (-140 px/s). 0.5 s re-trigger cooldown. The mid-air "checkpoint" of the
 movement economy.
 
-### Health & hunger
+### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
 knocks him back and grants 1.2 s of invulnerability. Pits cost a heart and respawn
 him at the last checkpoint. Hunger drains at 0.8/s; conchas restore 30. At zero
 hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
+
+Each level has one placed life heart and a marked piñata with another. A life
+heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
+one missing heart. At full health it stays in the world for later.
 
 ### Day, night & waves
 Day 1 lasts 35 s, Night 1 is 28 s with 3 rival waves, Day 2 is 30 s, Night 2 is
@@ -374,7 +379,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
-- **Survival:** 3 hearts, hunger bar, conchas, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
+- **Survival:** 3 hearts (expandable to 4 with life hearts), hunger bar, conchas, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog, Chihuahua boss
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
@@ -382,7 +387,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
 - Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; snakes in Las Orillas; two crows/owls; Chihuahua boss
 - Ambient day birds/rooster; night skunks/snakes, owls, bats and cats; fenced level ends
-- Piñatas, bouncing awnings
+- Piñatas with concha or life-heart drops, bouncing awnings
 - Bones, rings, checkpoints
 - Walk cycle, sit/pant idle
 - Title + top-dog + win + game-over, keyboard + touch, portrait guard
