@@ -7,8 +7,14 @@ dogs from other houses trying to take his turf.
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
 and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
 glide and dive; subdue rivals; bounce off market awnings; knock a piñata for
-supplies. Survive two nights and repel the **top dog** in La Cuadra, or three
-nights and an aggressive **Chihuahua boss** in Las Orillas.
+supplies. Hold CASA for two nights and repel the **top dog**, or survive three
+nights in Las Orillas and drive off the **Chihuahua boss**.
+
+> **The strongest dog keeps the peace.**
+
+Bonjo is the heaviest dog on the block, but his strength is for protection:
+holding gates, clearing roads, carrying what others cannot and ending fights
+without hurting anyone. Each level asks him to save a place, not conquer it.
 
 This is a **playable prototype**, not a finished game. The map hub already has
 La Cuadra and Las Orillas playable, with future landmarks plotted for expansion.
@@ -35,6 +41,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   Orillas** — now playable from the map as a second, field-focused level.
 - **Bonjo:** the only chow on the block. Not a killer — he **subdues** his
   rivals by out-jumping them. When beaten, a rival yelps and runs home.
+- **Bonjo's strength:** weight, momentum and grip are his gifts. He holds gates,
+  clears paths and carries heavy things; strength is how he protects a place,
+  not how he rules it.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
   chase. Dive on one to send it packing. Night waves include **fast** dogs,
   **bone thieves**, **brutes**, and on the final night the **top dog** in La
@@ -65,12 +74,12 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   hunger; an empty bar starts costing health. Each level hides one **life heart**
   and at least one marked piñata hides another. The first raises max health to
   four; later hearts heal, and a full-health heart waits for you. In La Cuadra,
-  survive two nights
-  and repel the top dog; in Las Orillas, survive three and defeat the Chihuahua
-  boss. Bones, combo, subdued rivals and no-hit play feed your final score and
-  rank.
+  hold CASA for two nights and drive off the top dog; in Las Orillas, survive
+  three nights and drive the Chihuahua off the fields. Bones, combo, subdued
+  rivals and no-hit play feed your final score and rank.
 
-Tone: cozy, mischievous, non-lethal. The dog wins the block; nobody gets hurt.
+Tone: cozy, mischievous, non-lethal. The strongest dog makes the block safe;
+nobody gets hurt.
 
 ---
 
@@ -356,9 +365,11 @@ files):
    bravo bark before the first dog.
 3. More **east-block landmarks**: a mercado interior, a basketball court,
    rooftop murals, and a second Polo window.
-4. Expand **Las Orillas** — crop-row traversal, farm hazards, snake patterns
-   and more Chihuahua boss phases.
-5. Camera look-down while diving; landing squash; a proper bark on flap.
+4. Expand **Las Orillas** — crop-row traversal, farm hazards, harvest escort,
+   snake patterns and more Chihuahua boss phases.
+5. Build future landmarks around their **ultimate objective**: sanctuary at the
+   Iglesia, restoration at the Mercado, and a fair peace in the Parque.
+6. Camera look-down while diving; landing squash; a proper bark on flap.
 
 Only after the two-night loop feels right: dog variants, upgrades, saves,
 more blocks.

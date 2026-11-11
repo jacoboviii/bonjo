@@ -1,8 +1,10 @@
 # Bonjo — Day 1: Pillars & the 30-second loop
 
 **The fantasy (one sentence):** You are Bonjo, the only chow on the block — a
-proud little dog who spends the day scavenging his Mexican barrio and the night
-holding it against the neighbor dogs.
+proud, heavy little dog whose strength keeps his Mexican barrio safe enough to
+live in, one night at a time.
+
+> **The strongest dog keeps the peace.**
 
 ---
 
@@ -25,7 +27,7 @@ If it only adds chores, cut it.
 
 ---
 
-## Three pillars
+## Four pillars
 
 ### 1. A proud chow on his rounds
 
@@ -64,7 +66,21 @@ second control scheme.
 **Test:** can a new player discover one interaction in the first minute without
 being told?
 
-*The setting is not a fourth pillar; it's the texture of pillar 1. If a decision
+### 4. Strength in service of peace
+
+**Means:** Bonjo is the heaviest dog on the block. His weight and momentum hold
+gates, clear paths, carry harvest, break up fights and stop bullies. Wins are
+protective, not possessive: rivals go home, the porch stands, the fields are
+safe, and Bonjo steps back.
+
+**Forbids:** conquest as the goal, a throne, killing or maiming, strength
+treated as cruelty, bosses that must die. The crown belongs to the old
+hierarchy; Bonjo would rather sleep on his porch.
+
+**Test:** after a win, does the place feel safer and more ordinary — not
+conquered?
+
+*The setting is not a fifth pillar; it's the texture of pillar 1. If a decision
 could be set in any generic platformer, it isn't specific enough.*
 
 ---

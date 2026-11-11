@@ -22,6 +22,11 @@ The working one-pager lives in [`PILLARS.md`](PILLARS.md). The short version:
 3. **The street is a toy.** Piñatas, awnings, rings and rivals answer the verbs
    Bonjo already has. Friendly NPCs use a single context interact button for
    dialog and errands.
+4. **Strength in service of peace.** Bonjo is the heaviest dog on the block, but
+   his strength is protective, not conquering. He holds gates, clears roads,
+   carries what others cannot, breaks up fights and then steps back. The old
+   top dog takes turf by force; Bonjo makes a place safe enough for ordinary
+   life to return. *The strongest dog keeps the peace.*
 
 ---
 
@@ -42,12 +47,17 @@ level 2: three nights and an aggressive Chihuahua boss.
 **The survival loop:** Day 1 is for scavenging — bones, conchas, piñatas, and
 the layout of the street. Night 1 sends the neighbor dogs. Day 2 is shorter and
 tense. Night 2 is the last stand. Bonjo has three hearts and a hunger bar; the
-porch is safe, dawn heals one heart, and surviving the second night takes the
-block.
+porch is safe, dawn heals one heart, and surviving the second night keeps CASA
+standing.
 
 **The conflict** is turf, not evil. Other dogs from other houses bark, chase
 and guard their corners. Bonjo subsumes them by diving on them; they yelp and
 retreat. Squirrels are opportunists who steal bones. Crows are a rare annoyance.
+
+**Strength as care.** Bonjo's physical advantage is never a license to dominate.
+He is the dog who can hold the gate, carry the harvest and end a fight; the
+reward is a quieter block, not a bigger crown. The old top dog rules by taking
+space. Bonjo makes space for everyone else, then rests.
 
 **Tone:** warm, funny, non-lethal. Spanish is used naturally for place and
 flavor (`la cuadra`, `¡guau!`, `¡échale!`, `papel picado`), not as a punchline.
@@ -76,7 +86,7 @@ dive it before it reaches you → keep one eye on the heart bar → survive unti
 dawn.
 
 **3 minutes:** Day 1 scavenge (35 s) → Night 1 (28 s, 3 waves) → Day 2 (30 s)
-→ Night 2 (33 s, 4 waves) → take the block.
+→ Night 2 (33 s, 4 waves) → hold CASA until dawn.
 
 **Session:** Survive two nights with more bones / a faster time; replay to find
 the conchas and piñatas you missed.
@@ -260,6 +270,10 @@ non-blocking facades and one-way rooftop platforms; the floor gaps beneath them
 are filled. The town layers are anchored to the street's world Y so they sit on
 the sidewalk, and a light blue haze keeps the play lane readable.
 
+**Ultimate objective:** hold CASA until dawn — keep the porch standing and drive
+the top dog off the block. The win screen is not a throne; it is home, still
+standing.
+
 Beat sheet:
 
 1. **The porch.** Bonjo starts outside his house. A concha is nearby; a piñata
@@ -276,7 +290,7 @@ Beat sheet:
    gate rusher. The top dog arrives before dawn.
 7. **The east block.** New gaps, awnings, high laundry/fire-escape routes, a
    second checkpoint and more scavenging.
-8. **Win.** Repel the top dog and survive Night 2: "THE BLOCK IS YOURS."
+8. **Win.** Repel the top dog and survive Night 2: "CASA IS SAFE."
 
 Losing all hearts ends the run: "THE BLOCK WINS."
 
@@ -291,7 +305,24 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 - Farmhouse rooftops remain standable one-way platforms.
 - No porch, Polo, bell or gate defense; those systems are feature-driven off.
 - Palette shifts from terracotta/teal to ochre/olive/dust; more sky.
-- Future: windmill/water-pump traversal, crop hazards and snake-specific attacks.
+- **Ultimate objective:** drive the Chihuahua off the fields and secure them by
+  dawn. Strength is responsibility here: the fields are not loot, they are a
+  place other animals depend on.
+- Future: windmill/water-pump traversal, crop hazards, harvest escort and
+  snake-specific attacks.
+
+### Future landmarks — the objective spine
+
+| Landmark | Ultimate objective | Peace payoff |
+| --- | --- | --- |
+| Iglesia | Ring the bell at dawn and make the church a sanctuary. | The bell answers across the barrio. |
+| Mercado | Clear the market and return what was taken. | Stalls reopen; the daily rhythm resumes. |
+| Parque | Settle the packs without a war. | Rivals share neutral ground. |
+| Finale | Unite the barrio for one last night. | Bonjo rests on his porch while the neighborhood lives. |
+
+The rule is constant: **one place to save, one rival to overcome, one dawn
+payoff.** The finale is not a bigger fight for a bigger crown. It is the
+strongest dog finally getting to be unnecessary.
 
 ---
 
