@@ -863,6 +863,21 @@ export function makeLedgeTexture(scene, key, w, kind = 'fire') {
     }
     g.fillStyle(0x2b1b3d, 0.55);
     g.fillRect(0, 10, w, 2);
+  } else if (kind === 'roof') {
+    // terracotta rooftop slab with a dark under-eave
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(0, 0, w, 2);
+    g.fillStyle(0xc46b4a, 1);
+    g.fillRect(0, 2, w, 5);
+    g.fillStyle(0x8a4f3a, 1);
+    g.fillRect(0, 7, w, 3);
+    g.fillStyle(0xd9b26a, 1);
+    g.fillRect(0, 7, w, 1);
+    g.fillStyle(0x9b5a3a, 1);
+    for (let x = 4; x < w - 2; x += 9) g.fillRect(x, 2, 1, 5);
+    g.fillStyle(0x2b1b3d, 0.8);
+    g.fillRect(4, 10, 2, 2);
+    g.fillRect(w - 6, 10, 2, 2);
   } else {
     // metal fire escape grating
     g.fillStyle(0x2b1b3d, 1);

@@ -75,6 +75,8 @@ export const lasOrillas = {
     [2660, 540],
     [3200, 540],
     [4000, 540], [4450, 540],
+    [1640, 460], [1760, 380], [1640, 300], [1760, 220],
+    [3940, 460], [4060, 380], [3940, 300], [4060, 220],
   ],
 
   squirrels: [
@@ -97,6 +99,7 @@ export const lasOrillas = {
     [1220, 515],
     { x: 3000, y: 525, life: true },
     [4350, 520],
+    [1850, 300],
   ],
 
   // One placed life heart per level; the marked piñata hides another.
@@ -114,6 +117,7 @@ export const lasOrillas = {
     { x: 2600, y: 520, min: 2180, max: 2620 },
     { x: 3550, y: 520, min: 3280, max: 3760 },
     { x: 4400, y: 520, min: 3900, max: 4500 },
+    { x: 1900, y: 300, min: 1700, max: 1950 },
   ],
 
   checkpoints: { first: 1900, second: 3220, y: 582 },
@@ -149,11 +153,22 @@ export const lasOrillas = {
     { x: 3040, y: 470, w: 110, kind: 'laundry' },
     { x: 3900, y: 500, w: 110, kind: 'laundry' },
     { x: 4300, y: 480, w: 100, kind: 'fire' },
+    // high field climbs: farmhouse roofs over the west fields and east edge
+    { x: 1680, y: 420, w: 100, kind: 'roof' },
+    { x: 1800, y: 340, w: 90, kind: 'fire' },
+    { x: 1690, y: 260, w: 100, kind: 'laundry' },
+    { x: 1810, y: 180, w: 90, kind: 'roof' },
+    { x: 3980, y: 420, w: 100, kind: 'roof' },
+    { x: 4100, y: 340, w: 90, kind: 'fire' },
+    { x: 3990, y: 260, w: 100, kind: 'laundry' },
+    { x: 4110, y: 180, w: 90, kind: 'roof' },
   ],
 
   ledgeBones: [
     [330, 490], [1010, 460], [1640, 490], [2380, 470], [3070, 460],
     [3930, 490], [4330, 470],
+    [1710, 410], [1830, 330], [1710, 250], [1830, 170],
+    [4010, 410], [4130, 330], [4010, 250], [4130, 170],
   ],
 
   ledgeFoods: [
@@ -162,6 +177,7 @@ export const lasOrillas = {
     [2430, 465],
     [3100, 455],
     [3970, 485], [4370, 465],
+    [1740, 320], [4040, 320],
   ],
 
   tacoCarts: [1250, 4000],

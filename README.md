@@ -59,8 +59,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   piñatas with a small heart marker leave a **life heart** instead.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
   flaps. Chain them with the gold rings.
-- **High routes:** one-way fire escapes and laundry lines hide bones and
-  conchas above the street. Jump up through them and land on top.
+- **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
+  climb above the street. Higher tiers carry rings, bones and conchas; practice
+  the flap-and-glide chain to reach them.
 - **Foreground houses:** three foreground homes sit on the sidewalk; their
   facades do not block movement, and their rooftops are one-way platforms.
 - **Bonjo's roof:** the house roof is a standable one-way platform above the porch.
@@ -217,7 +218,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **One-way fire escapes and laundry lines** with high bones/conchas
+- **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
 - **Named NPC dialog cards**, Polo's daily concha, bell blessing, and chihuahua warnings
@@ -357,7 +358,7 @@ files):
 | `skunk`, `skunkRun` / `owl`, `owlFlap` / `bat` | 48×42 / 48×30 / 36×21 | night-shift wildlife |
 | `fence` | 84×96 | level-edge boundary |
 | `foregroundHouseA/B/C` | 210×240 | standable foreground houses |
-| `ledge_*` | 270–330×36 | one-way fire escape / laundry line |
+| `ledge_*` | 270–330×36 | one-way fire escape / laundry line / terracotta roof |
 
 ---
 

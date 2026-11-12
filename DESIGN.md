@@ -207,6 +207,14 @@ Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
 
+### Vertical routes
+Both levels have two high climbs that stack fire escapes, laundry lines and
+terracotta roof ledges above the street. Each tier is spaced for a jump plus a
+flap, with high rings to refill the chain. High routes carry extra bones,
+conchas, a vaulted piñata and an aerial crow/owl; the reward is both score and a
+cleaner view of the barrio. Missing a tier drops Bonjo back to the street, so
+the route is optional pressure rather than a hard gate.
+
 ### Bones and score
 Bones are score pickups: 35 placed across both blocks plus piñata drops, trash
 cans and rival rewards. Pickups build a short combo; the end screen combines
@@ -280,7 +288,8 @@ the sidewalk, and a light blue haze keeps the play lane readable.
 
 **Ultimate objective:** hold CASA until dawn — keep the porch standing and drive
 the top dog off the block. The win screen is not a throne; it is home, still
-standing.
+standing. Two layered rooftop climbs rise from the west block and east
+extension.
 
 Beat sheet:
 
@@ -318,6 +327,8 @@ Losing all hearts ends the run: "THE BLOCK WINS."
   place other animals depend on.
 - The field now runs to 4600 design px, with an eastern extension of new bones,
   ledges, rival turf and a farmhouse edge.
+- Two high field climbs rise over the west fields and east edge, using roof,
+  fire-escape and laundry tiers with high rings and aerial hazards.
 - Pacing: 35 s day, 31 s first night with +5 s per night, 31 s between nights;
   the third night lasts 41 s before the Chihuahua pressure.
 - Future: windmill/water-pump traversal, crop hazards, harvest escort and

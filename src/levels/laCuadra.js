@@ -55,6 +55,8 @@ export const laCuadra = {
     [3640, 540],
     [3980, 540],
     [4400, 540], [4820, 540],
+    [1230, 430], [1340, 350], [1230, 270], [1340, 190],
+    [4400, 460], [4520, 380], [4400, 300], [4520, 220],
   ],
 
   squirrels: [
@@ -81,6 +83,7 @@ export const laCuadra = {
     { x: 3350, y: 525, life: true },
     [3880, 515],
     [4650, 520],
+    [1460, 300],
   ],
 
   // One placed life heart per level; the marked piñata hides another.
@@ -100,6 +103,7 @@ export const laCuadra = {
     { x: 2900, y: 520, min: 2660, max: 2960 },
     { x: 4100, y: 520, min: 4030, max: 4180 },
     { x: 4800, y: 520, min: 4400, max: 4900 },
+    { x: 1510, y: 310, min: 1280, max: 1550 },
   ],
 
   checkpoints: { first: 2300, second: 3900, y: 582 },
@@ -153,12 +157,23 @@ export const laCuadra = {
     { x: 4040, y: 490, w: 90, kind: 'fire' },
     { x: 4300, y: 500, w: 110, kind: 'laundry' },
     { x: 4750, y: 470, w: 100, kind: 'fire' },
+    // two high rooftop climbs: one over the west block, one over the east extension
+    { x: 1270, y: 390, w: 90, kind: 'roof' },
+    { x: 1390, y: 310, w: 100, kind: 'fire' },
+    { x: 1270, y: 230, w: 90, kind: 'roof' },
+    { x: 1390, y: 150, w: 100, kind: 'laundry' },
+    { x: 4370, y: 420, w: 100, kind: 'roof' },
+    { x: 4490, y: 340, w: 90, kind: 'fire' },
+    { x: 4370, y: 260, w: 100, kind: 'laundry' },
+    { x: 4490, y: 180, w: 90, kind: 'roof' },
   ],
 
   ledgeBones: [
     [288, 510], [576, 490], [1218, 460], [2004, 470], [2738, 490],
     [3330, 490], [3800, 460], [4070, 480],
     [4330, 490], [4780, 460],
+    [1300, 380], [1420, 300], [1300, 220], [1420, 140],
+    [4400, 410], [4520, 330], [4400, 250], [4520, 170],
   ],
 
   ledgeFoods: [
@@ -167,6 +182,7 @@ export const laCuadra = {
     [3360, 485],
     [3820, 455],
     [4370, 485], [4820, 455],
+    [1340, 300], [4440, 330],
   ],
 
   tacoCarts: [640, 3500, 4600],
