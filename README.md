@@ -219,6 +219,7 @@ there to make them permanent.
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
+- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
 - **Named NPC dialog cards**, Polo's daily concha, bell blessing, and chihuahua warnings
@@ -339,6 +340,7 @@ files):
 | `speechBubble` | 42×36 | floating touch interaction prompt |
 | `heart` | 15×15 | health HUD |
 | `lifeHeart` | 24×24 | world life pickup and piñata life marker |
+| `wingToken` | 24×24 | end-of-level extra-flap power-up |
 | `bonjoHouse` | 390×240 | two-storey home behind the CASA gateway |
 | `ring` | 48×48 | |
 | `balloon` | 36×60 | checkpoint |

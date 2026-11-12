@@ -35,6 +35,7 @@ let CHECKPOINT2_X;
 let CHECKPOINT_Y;
 let FOODS;
 let LIVES;
+let END_REWARD;
 let PARKED_CARS;
 let BIKES;
 let STREET_PROPS;
@@ -71,6 +72,7 @@ function applyLevelData(level) {
   CHECKPOINT_Y = level.checkpoints.y;
   FOODS = level.foods;
   LIVES = level.lives || [];
+  END_REWARD = level.endReward || null;
   PARKED_CARS = level.parkedCars;
   BIKES = level.bikes;
   STREET_PROPS = level.streetProps;
@@ -153,6 +155,7 @@ export default class Level1 extends Phaser.Scene {
     this.comboTimer = 0;
     this.maxCombo = 0;
     this.rivalsSubdued = 0;
+    this.powerUps = 0;
     this.score = 0;
     this.rank = 'D';
     this.poloGift = true;
@@ -190,6 +193,7 @@ export default class Level1 extends Phaser.Scene {
     this.createPickups();
     this.createFood();
     this.createLives();
+    this.createEndReward();
     this.createCrows();
     this.createSquirrels();
     this.createRivals();
@@ -1048,6 +1052,66 @@ export default class Level1 extends Phaser.Scene {
       this.collectLife,
       null,
       this,
+    );
+  }
+
+  createEndReward() {
+    if (!END_REWARD) return;
+
+    this.rewardGroup = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+    });
+    this.endReward = this.rewardGroup.create(
+      END_REWARD.x * S,
+      END_REWARD.y * S,
+      'wingToken',
+    );
+    this.endReward.setDepth(7);
+    this.endReward.body.setSize(12 * S, 12 * S);
+
+    this.tweens.add({
+      targets: this.endReward,
+      scaleX: 1.14,
+      scaleY: 1.14,
+      duration: 620,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+    this.tweens.add({
+      targets: this.endReward,
+      alpha: 0.72,
+      duration: 820,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+
+    this.physics.add.overlap(
+      this.dog,
+      this.rewardGroup,
+      this.collectEndReward,
+      null,
+      this,
+    );
+  }
+
+  collectEndReward(dog, reward) {
+    if (!reward.active) return;
+
+    this.tweens.killTweensOf(reward);
+    reward.disableBody(true, true);
+    this.powerUps += 1;
+    this.dog.maxFlaps = Math.max(this.dog.maxFlaps, tuning.maxFlaps + 1);
+    this.dog.flaps = this.dog.maxFlaps;
+    sfx.life();
+    this.spawnPuff(reward.x, reward.y, 1.2);
+    this.floatText(
+      reward.x,
+      reward.y - 10 * S,
+      t('float.powerFlap'),
+      '#ffd166',
     );
   }
 
@@ -2197,7 +2261,8 @@ export default class Level1 extends Phaser.Scene {
   updateHud(delta) {
     // flap pips, top-left
     this.pips.clear();
-    for (let i = 0; i < tuning.maxFlaps; i++) {
+    const maxFlaps = this.dog?.maxFlaps ?? tuning.maxFlaps;
+    for (let i = 0; i < maxFlaps; i++) {
       const x = (30 + i * 10) * S;
       if (i < this.dog.flaps) {
         this.pips.fillStyle(0xffd166, 1);
@@ -2854,9 +2919,9 @@ export default class Level1 extends Phaser.Scene {
     if (now - ring.getData('last') < 500) return;
     ring.setData('last', now);
 
-    if (this.dog.flaps >= tuning.maxFlaps) return;
+    if (this.dog.flaps >= this.dog.maxFlaps) return;
 
-    this.dog.flaps = tuning.maxFlaps;
+    this.dog.flaps = this.dog.maxFlaps;
     this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -140 * S);
     sfx.ring();
     this.spawnPuff(ring.x, ring.y, 1.2);
@@ -3148,7 +3213,7 @@ export default class Level1 extends Phaser.Scene {
     dog.body.velocity.y = -620 * S;
     dog.jumpCutReady = false;
     dog.grounded = false;
-    dog.flaps = tuning.maxFlaps;
+    dog.flaps = dog.maxFlaps;
 
     this.tweens.add({
       targets: awning,
@@ -3228,7 +3293,7 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setAlpha(1);
     this.dog.dead = false;
     this.dog.invuln = 1.1;
-    this.dog.flaps = tuning.maxFlaps;
+    this.dog.flaps = this.dog.maxFlaps;
     this.touch?.reset();
 
     this.cameras.main.flash(120, 255, 244, 224);
@@ -3290,6 +3355,7 @@ export default class Level1 extends Phaser.Scene {
       this.maxCombo * 20 +
       this.rivalsSubdued * 30 +
       this.health * 50 +
+      this.powerUps * 100 +
       timeBonus +
       noHit +
       alphaBonus

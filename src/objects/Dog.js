@@ -43,7 +43,8 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.grounded = false;
     this.coyote = 0;
     this.buffer = 0;
-    this.flaps = tuning.maxFlaps;
+    this.maxFlaps = tuning.maxFlaps;
+    this.flaps = this.maxFlaps;
     this.gliding = false;
     this.diving = false;
     this.dead = false;
@@ -140,7 +141,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     if (onGround) {
       this.coyote = tuning.coyoteMs / 1000;
-      this.flaps = tuning.maxFlaps; // landing refills your flaps
+      this.flaps = this.maxFlaps; // landing refills your flaps
       this.diving = false;
       this.gliding = false;
       this.jumpCutReady = false;

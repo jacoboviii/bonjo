@@ -115,6 +115,7 @@ export function buildTextures(scene) {
   makeRivalDog(scene, 'rivalBruteRun', 'run', 'brute');
   makeHeart(scene);
   makeLifeHeart(scene);
+  makeWingToken(scene);
   makeFood(scene);
   makeBonjoHouse(scene);
   makePinata(scene);
@@ -2411,6 +2412,39 @@ function makeLifeHeart(scene) {
   g.fillStyle(0xff9a9a, 1);
   g.fillRect(6, 5, 1, 1);
   g.generateTexture('lifeHeart', 16, 16);
+  g.destroy();
+}
+
+function makeWingToken(scene) {
+  const g = rawGfx(scene);
+  // marigold rays around a dark medallion and a pale feather
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(7, 0, 2, 3);
+  g.fillRect(7, 13, 2, 3);
+  g.fillRect(0, 7, 3, 2);
+  g.fillRect(13, 7, 3, 2);
+  g.fillRect(2, 2, 2, 2);
+  g.fillRect(12, 2, 2, 2);
+  g.fillRect(2, 12, 2, 2);
+  g.fillRect(12, 12, 2, 2);
+  g.fillStyle(0xf4dfb0, 1);
+  g.fillCircle(8, 8, 6);
+  g.fillStyle(0x1b1029, 1);
+  g.fillCircle(8, 8, 5);
+
+  // three gold feather blades and a cream quill
+  g.fillStyle(0xffd166, 1);
+  g.fillTriangle(4, 10, 10, 4, 9, 10);
+  g.fillTriangle(5, 11, 11, 5, 10, 11);
+  g.fillTriangle(6, 12, 12, 6, 11, 12);
+  g.fillStyle(0xfff4e0, 1);
+  g.fillRect(5, 10, 1, 1);
+  g.fillRect(6, 9, 1, 1);
+  g.fillRect(7, 8, 1, 1);
+  g.fillRect(8, 7, 1, 1);
+  g.fillRect(9, 6, 1, 1);
+
+  g.generateTexture('wingToken', 16, 16);
   g.destroy();
 }
 

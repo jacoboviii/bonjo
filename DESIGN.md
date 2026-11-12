@@ -215,6 +215,12 @@ conchas, a vaulted piñata and an aerial crow/owl; the reward is both score and 
 cleaner view of the barrio. Missing a tier drops Bonjo back to the street, so
 the route is optional pressure rather than a hard gate.
 
+### End-of-level reward
+The far end of each level holds a floating **Golden Wing** token. Reaching it
+unlocks one extra flap for the rest of that run, refills the flap bank and adds
+a third pip to the HUD. It is deliberately off the survival path: a reason to
+explore the full map, not a requirement to win.
+
 ### Bones and score
 Bones are score pickups: 35 placed across both blocks plus piñata drops, trash
 cans and rival rewards. Pickups build a short combo; the end screen combines
@@ -440,7 +446,8 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
 - **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
-- **Scoring:** bone combo, rivals, no-hit/time bonuses, S–D rank
+- **Scoring:** bone combo, rivals, power-ups, no-hit/time bonuses, S–D rank
+- **End reward:** Golden Wing token at the far end of each level grants +1 flap for the run
 - Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; snakes in Las Orillas; two crows/owls; Chihuahua boss
 - Ambient day birds/rooster; night skunks/snakes, owls, bats and cats; fenced level ends
 - Piñatas with concha or life-heart drops, bouncing awnings
