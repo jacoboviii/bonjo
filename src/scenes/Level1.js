@@ -269,7 +269,13 @@ export default class Level1 extends Phaser.Scene {
     if (e.rank) e.rank.x = W / 2;
     e.box.x = W / 2;
     e.prompt.x = W / 2;
-    if (e.mapButton) e.mapButton.x = W - 8 * S;
+    if (e.mapButton) {
+      const cardW = Math.min(W - 64 * U, 440 * U);
+      e.mapButton.setPosition(
+        W / 2 + cardW / 2 - 20 * U,
+        144 * U + 110 * U - 18 * U,
+      );
+    }
   }
 
   update(time, delta) {
@@ -3422,6 +3428,12 @@ export default class Level1 extends Phaser.Scene {
 
   showGameOverOverlay() {
     const W = this.scale.width;
+    const cardW = Math.min(W - 64 * U, 440 * U);
+    const titleText = t('gameover.title');
+    const titleSize = Math.min(
+      18 * S,
+      Math.max(10 * S, Math.floor((cardW - 48 * U) / (titleText.length * 0.62))),
+    );
 
     const overlay = this.add
       .rectangle(W / 2, 72 * S, W, 144 * S, 0x120a1c, 0.82)
@@ -3434,12 +3446,12 @@ export default class Level1 extends Phaser.Scene {
       .graphics()
       .setScrollFactor(0)
       .setDepth(201);
-    drawFolkCard(card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
+    drawFolkCard(card, W / 2, 144 * U, cardW, 220 * U);
 
     const title = this.add
-      .text(W / 2, 40 * S, t('gameover.title'), {
+      .text(W / 2, 40 * S, titleText, {
         fontFamily: 'monospace',
-        fontSize: 18 * S,
+        fontSize: titleSize,
         color: '#c94f3d',
         stroke: '#1d1326',
         strokeThickness: 3 * S,
@@ -3477,13 +3489,13 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(202);
 
     const box = this.add
-      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0xc94f3d, 1)
+      .rectangle(W / 2, 100 * S, 170 * S, 18 * S, 0xc94f3d, 1)
       .setStrokeStyle(2 * S, 0x1d1326, 1)
       .setScrollFactor(0)
       .setDepth(202);
 
     const prompt = this.add
-      .text(W / 2, 112 * S, t('gameover.again'), {
+      .text(W / 2, 100 * S, t('gameover.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -3531,6 +3543,12 @@ export default class Level1 extends Phaser.Scene {
   showWinOverlay() {
     const elapsed = ((this.time.now - this.startedAt) / 1000).toFixed(1);
     const W = this.scale.width;
+    const cardW = Math.min(W - 64 * U, 440 * U);
+    const titleText = t(this.levelData.winTitleKey || 'win.title');
+    const titleSize = Math.min(
+      18 * S,
+      Math.max(10 * S, Math.floor((cardW - 48 * U) / (titleText.length * 0.62))),
+    );
 
     const overlay = this.add
       .rectangle(W / 2, 72 * S, W, 144 * S, 0x120a1c, 0.82)
@@ -3543,12 +3561,12 @@ export default class Level1 extends Phaser.Scene {
       .graphics()
       .setScrollFactor(0)
       .setDepth(201);
-    drawFolkCard(card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
+    drawFolkCard(card, W / 2, 144 * U, cardW, 220 * U);
 
     const title = this.add
-      .text(W / 2, 40 * S, t(this.levelData.winTitleKey || 'win.title'), {
+      .text(W / 2, 40 * S, titleText, {
         fontFamily: 'monospace',
-        fontSize: 18 * S,
+        fontSize: titleSize,
         color: '#2f7f78',
         stroke: '#1d1326',
         strokeThickness: 3 * S,
@@ -3578,13 +3596,13 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(202);
 
     const box = this.add
-      .rectangle(W / 2, 112 * S, 170 * S, 18 * S, 0xc94f3d, 1)
+      .rectangle(W / 2, 100 * S, 170 * S, 18 * S, 0xc94f3d, 1)
       .setStrokeStyle(2 * S, 0x1d1326, 1)
       .setScrollFactor(0)
       .setDepth(202);
 
     const prompt = this.add
-      .text(W / 2, 112 * S, t('win.again'), {
+      .text(W / 2, 100 * S, t('win.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -3598,13 +3616,19 @@ export default class Level1 extends Phaser.Scene {
   }
 
   addEndMapButton(W) {
+    const cardW = Math.min(W - 64 * U, 440 * U);
     const mapButton = this.add
-      .text(W - 8 * S, 120 * S, t('map.shortcut'), {
-        fontFamily: 'monospace',
-        fontSize: 4 * S,
-        color: '#fff4e0',
-        backgroundColor: '#1b1029',
-      })
+      .text(
+        W / 2 + cardW / 2 - 20 * U,
+        144 * U + 110 * U - 18 * U,
+        t('map.shortcut'),
+        {
+          fontFamily: 'monospace',
+          fontSize: 4 * S,
+          color: '#fff4e0',
+          backgroundColor: '#1b1029',
+        },
+      )
       .setPadding(3 * U, 1.5 * U, 3 * U, 1.5 * U)
       .setOrigin(1, 1)
       .setScrollFactor(0)
