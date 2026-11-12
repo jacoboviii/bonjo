@@ -414,9 +414,9 @@ export default class Map extends Phaser.Scene {
       )
       .setDepth(6);
 
-    const playHeight = this.isTouch ? 30 * U : 16 * U;
+    const playHeight = this.isTouch ? 34 * U : 16 * U;
     const playCenterY =
-      this.detailY + this.detailH - (this.isTouch ? 28 * U : 25 * U);
+      this.detailY + this.detailH - (this.isTouch ? 30 * U : 25 * U);
     this.playBg = this.add
       .rectangle(
         this.detailX + this.detailW / 2,

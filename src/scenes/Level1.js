@@ -111,6 +111,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
+    this.touchDevice =
+      !!(this.sys.game.device.input.touch || navigator.maxTouchPoints > 0);
     this.bonesCount = 0;
     this.won = false;
     this.gameOverFlag = false;
@@ -270,10 +272,11 @@ export default class Level1 extends Phaser.Scene {
     e.box.x = W / 2;
     e.prompt.x = W / 2;
     if (e.mapButton) {
+      const touch = this.touchDevice;
       const cardW = Math.min(W - 64 * U, 440 * U);
       e.mapButton.setPosition(
-        W / 2 + cardW / 2 - 20 * U,
-        144 * U + 110 * U - 18 * U,
+        touch ? W / 2 : W / 2 + cardW / 2 - 20 * U,
+        144 * U + 110 * U - (touch ? 8 * U : 18 * U),
       );
     }
   }
@@ -3488,14 +3491,15 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
+    const promptY = this.touchDevice ? 96 * S : 100 * S;
     const box = this.add
-      .rectangle(W / 2, 100 * S, 170 * S, 18 * S, 0xc94f3d, 1)
+      .rectangle(W / 2, promptY, 170 * S, 18 * S, 0xc94f3d, 1)
       .setStrokeStyle(2 * S, 0x1d1326, 1)
       .setScrollFactor(0)
       .setDepth(202);
 
     const prompt = this.add
-      .text(W / 2, 100 * S, t('gameover.again'), {
+      .text(W / 2, promptY, t('gameover.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -3595,14 +3599,15 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
+    const promptY = this.touchDevice ? 96 * S : 100 * S;
     const box = this.add
-      .rectangle(W / 2, 100 * S, 170 * S, 18 * S, 0xc94f3d, 1)
+      .rectangle(W / 2, promptY, 170 * S, 18 * S, 0xc94f3d, 1)
       .setStrokeStyle(2 * S, 0x1d1326, 1)
       .setScrollFactor(0)
       .setDepth(202);
 
     const prompt = this.add
-      .text(W / 2, 100 * S, t('win.again'), {
+      .text(W / 2, promptY, t('win.again'), {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -3616,21 +3621,27 @@ export default class Level1 extends Phaser.Scene {
   }
 
   addEndMapButton(W) {
+    const touch = this.touchDevice;
     const cardW = Math.min(W - 64 * U, 440 * U);
     const mapButton = this.add
       .text(
-        W / 2 + cardW / 2 - 20 * U,
-        144 * U + 110 * U - 18 * U,
+        touch ? W / 2 : W / 2 + cardW / 2 - 20 * U,
+        144 * U + 110 * U - (touch ? 8 * U : 18 * U),
         t('map.shortcut'),
         {
           fontFamily: 'monospace',
-          fontSize: 4 * S,
+          fontSize: touch ? 6 * S : 4 * S,
           color: '#fff4e0',
           backgroundColor: '#1b1029',
         },
       )
-      .setPadding(3 * U, 1.5 * U, 3 * U, 1.5 * U)
-      .setOrigin(1, 1)
+      .setPadding(
+        touch ? 8 * U : 3 * U,
+        touch ? 8 * U : 1.5 * U,
+        touch ? 8 * U : 3 * U,
+        touch ? 8 * U : 1.5 * U,
+      )
+      .setOrigin(touch ? 0.5 : 1, 1)
       .setScrollFactor(0)
       .setDepth(204)
       .setInteractive({ useHandCursor: true });
