@@ -144,22 +144,27 @@ export default class Title extends Phaser.Scene {
         {
           fontFamily: 'monospace',
           fontSize: 20 * U,
-          color: '#c94f3d',
+          color: isTouch ? '#fff4e0' : '#c94f3d',
           stroke: '#1d1326',
           strokeThickness: 5 * U,
         },
       )
       .setOrigin(0.5);
+    if (isTouch) {
+      prompt.setBackgroundColor('#c94f3d');
+      prompt.setPadding(7 * U, 4 * U, 7 * U, 4 * U);
+      prompt.setDepth(8);
+    }
     this.tweens.add({
       targets: prompt,
-      alpha: 0.35,
+      alpha: isTouch ? 0.8 : 0.35,
       duration: 620,
       yoyo: true,
       repeat: -1,
       ease: 'Sine.inOut',
     });
 
-    this.add
+    const controls = this.add
       .text(W / 2, 133 * S, t('title.controls'), {
         fontFamily: 'monospace',
         fontSize: 12 * U,
@@ -169,6 +174,7 @@ export default class Title extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setAlpha(0.9);
+    controls.setVisible(!isTouch);
 
     this.add
       .text(6 * S, 6 * S, t('title.version'), {
@@ -181,20 +187,23 @@ export default class Title extends Phaser.Scene {
     // --- EN / ES selector ------------------------------------------------
     const lang = getLang();
 
-    const makeLangButton = (x, code) => {
+    const makeLangButton = (x, code, y = 13 * S) => {
       const active = lang === code;
       const button = this.add
-        .text(x, 13 * S, code.toUpperCase(), {
+        .text(x, y, code.toUpperCase(), {
           fontFamily: 'monospace',
-          fontSize: 14 * U,
+          fontSize: isTouch ? 6 * S : 14 * U,
           color: active ? '#c94f3d' : '#2f7f78',
-          stroke: '#f4dfb0',
-          strokeThickness: 1 * U,
+          backgroundColor: isTouch ? '#f4dfb0' : undefined,
+          stroke: isTouch ? '#1d1326' : '#f4dfb0',
+          strokeThickness: isTouch ? 1.5 * U : 1 * U,
         })
         .setOrigin(0.5, 0)
         .setDepth(20)
-        .setAlpha(active ? 1 : 0.75)
+        .setAlpha(active ? 1 : 0.78)
         .setInteractive({ useHandCursor: true });
+
+      if (isTouch) button.setPadding(7 * U, 6 * U, 7 * U, 6 * U);
 
       button.on('pointerdown', (pointer, localX, localY, event) => {
         event?.stopPropagation?.();
@@ -206,8 +215,13 @@ export default class Title extends Phaser.Scene {
       return button;
     };
 
-    makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 54 * U, 'en');
-    makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 24 * U, 'es');
+    if (isTouch) {
+      makeLangButton(W - 92 * U, 'en', 6 * S);
+      makeLangButton(W - 36 * U, 'es', 6 * S);
+    } else {
+      makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 54 * U, 'en');
+      makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 24 * U, 'es');
+    }
 
     this.input.keyboard.on('keydown-L', () => {
       toggleLang();

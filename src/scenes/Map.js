@@ -20,6 +20,8 @@ export default class Map extends Phaser.Scene {
 
   create() {
     this.input.topOnly = true;
+    this.isTouch =
+      this.sys.game.device.input.touch || navigator.maxTouchPoints > 0;
     this.progress = readProgress();
     this.selectedId = 'laCuadra';
     this.nodeViews = [];
@@ -78,7 +80,7 @@ export default class Map extends Phaser.Scene {
     this.add
       .text(W / 2, this.boardTop + 34 * U, t('map.subtitle'), {
         fontFamily: 'monospace',
-        fontSize: 4.5 * S,
+        fontSize: this.isTouch ? 5.5 * S : 4.5 * S,
         color: '#2f7f78',
       })
       .setOrigin(0.5, 0)
@@ -87,11 +89,16 @@ export default class Map extends Phaser.Scene {
     this.backButton = this.add
       .text(8 * S, 7 * S, t('map.back'), {
         fontFamily: 'monospace',
-        fontSize: 4.5 * S,
+        fontSize: this.isTouch ? 5.5 * S : 4.5 * S,
         color: '#1d1326',
         backgroundColor: '#f4dfb0',
       })
-      .setPadding(4 * U, 2 * U, 4 * U, 2 * U)
+      .setPadding(
+        this.isTouch ? 7 * U : 4 * U,
+        this.isTouch ? 7 * U : 2 * U,
+        this.isTouch ? 7 * U : 4 * U,
+        this.isTouch ? 7 * U : 2 * U,
+      )
       .setDepth(20)
       .setInteractive({ useHandCursor: true });
     this.backButton.on('pointerdown', () => this.goBack());
@@ -199,7 +206,7 @@ export default class Map extends Phaser.Scene {
       const label = this.add
         .text(x, y + 16 * U, t(level.nameKey), {
           fontFamily: 'monospace',
-          fontSize: 4.5 * S,
+          fontSize: this.isTouch ? 5.2 * S : 4.5 * S,
           color: locked ? '#6a5a70' : '#2b1b3d',
           stroke: '#f4dfb0',
           strokeThickness: 1.5 * S,
@@ -223,7 +230,12 @@ export default class Map extends Phaser.Scene {
       }
 
       const zone = this.add
-        .zone(x, y, 40 * U, 48 * U)
+        .zone(
+          x,
+          y,
+          this.isTouch ? 52 * U : 40 * U,
+          this.isTouch ? 56 * U : 48 * U,
+        )
         .setDepth(20)
         .setInteractive({ useHandCursor: true });
       zone.on('pointerdown', () => this.selectLevel(level.id));
@@ -356,7 +368,7 @@ export default class Map extends Phaser.Scene {
     this.detailKicker = this.add
       .text(this.detailX + 8 * U, this.detailY + 9 * U, t('map.landmark'), {
         fontFamily: 'monospace',
-        fontSize: 3.8 * S,
+        fontSize: this.isTouch ? 4.2 * S : 3.8 * S,
         color: '#2f7f78',
       })
       .setDepth(6);
@@ -364,7 +376,7 @@ export default class Map extends Phaser.Scene {
     this.detailTitle = this.add
       .text(this.detailX + 8 * U, this.detailY + 22 * U, '', {
         fontFamily: 'monospace',
-        fontSize: 7 * S,
+        fontSize: this.isTouch ? 7.5 * S : 7 * S,
         color: '#c94f3d',
         stroke: '#1d1326',
         strokeThickness: 1.2 * S,
@@ -374,7 +386,7 @@ export default class Map extends Phaser.Scene {
     this.detailStatus = this.add
       .text(this.detailX + 8 * U, this.detailY + 40 * U, '', {
         fontFamily: 'monospace',
-        fontSize: 4.2 * S,
+        fontSize: this.isTouch ? 4.8 * S : 4.2 * S,
         color: '#2f7f78',
       })
       .setDepth(6);
@@ -382,27 +394,35 @@ export default class Map extends Phaser.Scene {
     this.detailDesc = this.add
       .text(this.detailX + 8 * U, this.detailY + 54 * U, '', {
         fontFamily: 'monospace',
-        fontSize: 4.2 * S,
+        fontSize: this.isTouch ? 4.8 * S : 4.2 * S,
         color: '#2b1b3d',
-        lineSpacing: 2 * U,
+        lineSpacing: this.isTouch ? 3 * U : 2 * U,
         wordWrap: { width: this.detailW - 16 * U },
       })
       .setDepth(6);
 
     this.detailBest = this.add
-      .text(this.detailX + 8 * U, this.detailY + this.detailH - 52 * U, '', {
-        fontFamily: 'monospace',
-        fontSize: 3.8 * S,
-        color: '#5b4a52',
-      })
+      .text(
+        this.detailX + 8 * U,
+        this.detailY + this.detailH - (this.isTouch ? 62 * U : 52 * U),
+        '',
+        {
+          fontFamily: 'monospace',
+          fontSize: this.isTouch ? 4.2 * S : 3.8 * S,
+          color: '#5b4a52',
+        },
+      )
       .setDepth(6);
 
+    const playHeight = this.isTouch ? 30 * U : 16 * U;
+    const playCenterY =
+      this.detailY + this.detailH - (this.isTouch ? 28 * U : 25 * U);
     this.playBg = this.add
       .rectangle(
         this.detailX + this.detailW / 2,
-        this.detailY + this.detailH - 25 * U,
+        playCenterY,
         this.detailW - 16 * U,
-        16 * U,
+        playHeight,
         FOLK.coral,
         1,
       )
@@ -418,7 +438,7 @@ export default class Map extends Phaser.Scene {
         t('map.play'),
         {
           fontFamily: 'monospace',
-          fontSize: 4.5 * S,
+          fontSize: this.isTouch ? 6 * S : 4.5 * S,
           color: FOLK.cream,
         },
       )

@@ -131,6 +131,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
 - **bottom-center:** 💬 interact when a friendly NPC or quest object is in range
 - **top-right:** the bone counter and **OBJETIVOS / OBJECTIVES** menu; tap the menu to pause and review the goal, errands and what each HUD meter means
+- The title and map switch to larger touch targets: a tappable play button, bigger EN/ES language pills, a larger map play button and a roomier back button.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
 - On the end screen, **tap anywhere** to replay; the **MAPA / MAP** button returns to the hub.
 - Multi-touch works, so you can run and flap at the same time.
