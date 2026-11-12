@@ -1512,7 +1512,12 @@ export default class Level1 extends Phaser.Scene {
       const x = Array.isArray(entry) ? entry[0] : entry.x;
       const y = Array.isArray(entry) ? entry[1] : entry.y;
       const hasLife = !Array.isArray(entry) && entry.life === true;
-      this.pinataGroup.add(new Pinata(this, x * S, y * S, { life: hasLife }));
+      this.pinataGroup.add(
+        new Pinata(this, x * S, y * S, {
+          life: hasLife,
+          groundY: PLATFORMS[0].y,
+        }),
+      );
     }
 
     this.physics.add.overlap(this.dog, this.pinataGroup, this.hitPinata, null, this);

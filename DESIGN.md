@@ -196,7 +196,7 @@ night it becomes an owl with its own flap frames. Kept rare so the dogs stay the
 story.
 
 ### Piñatas
-Piñatas hang from ropes over the street. Any contact hits one (350 ms cooldown):
+Piñatas hang by ropes from utility poles and cross-street cables. Any contact hits one (350 ms cooldown):
 wobble, `¡ÉCHALE!`, one bone drops. Three hits burst it into `¡ÓRALE!` — a
 shower of bones plus a concha. A piñata with a small heart marker leaves a life
 heart instead. Purely a reward; never a hazard.

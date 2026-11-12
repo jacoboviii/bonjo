@@ -54,7 +54,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   squirrels become skunks at night; Las Orillas uses snakes day and night.
 - **Crows:** one rare aerial pest, plus a far-block crow; their wings flap as they patrol and they caw when Bonjo gets close. At night the same slot becomes a hunting owl.
 - **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its snakes. Bats cross the dark and the cats keep their watch.
-- **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
+- **Piñatas:** hanging by ropes from street utility poles. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones. Most leave a concha;
   piñatas with a small heart marker leave a **life heart** instead.
 - **Market awnings:** land on the striped canvas to bounce high and refill your
