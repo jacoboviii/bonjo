@@ -14,6 +14,9 @@ export default class Title extends Phaser.Scene {
 
   create() {
     this.input.topOnly = true;
+    // Scene instances survive scene.start(); clear the one-shot start guard
+    // so returning from the map does not leave the title inert.
+    this.started = false;
 
     const W = this.scale.width;
     const H = this.scale.height;
