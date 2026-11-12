@@ -1638,7 +1638,7 @@ export default class Level1 extends Phaser.Scene {
         `${t('hud.bones')} 0`,
         {
           fontFamily: 'monospace',
-          fontSize: this.touchDevice ? 5 * S : 8 * S,
+          fontSize: this.touchDevice ? 6.5 * S : 8 * S,
           color: '#fff4e0',
           stroke: '#2b1b3d',
           strokeThickness: 2 * S,
@@ -1678,11 +1678,11 @@ export default class Level1 extends Phaser.Scene {
     const statusH = this.touchDevice ? 30 : hasGate ? 68 : 60;
     const statusW = this.touchDevice ? 132 : 84;
     this.statusPanel = this.add.graphics().setScrollFactor(0).setDepth(99);
-    this.statusPanel.fillStyle(0x1b1029, 0.42);
-    this.statusPanel.fillRect(4 * S, 4 * S, statusW * S, statusH * S);
-    this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.18);
-    this.statusPanel.strokeRect(4 * S, 4 * S, statusW * S, statusH * S);
     if (!this.touchDevice) {
+      this.statusPanel.fillStyle(0x1b1029, 0.42);
+      this.statusPanel.fillRect(4 * S, 4 * S, statusW * S, statusH * S);
+      this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.18);
+      this.statusPanel.strokeRect(4 * S, 4 * S, statusW * S, statusH * S);
       this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.16);
       this.statusPanel.lineBetween(8 * S, 44 * S, 84 * S, 44 * S);
     }
@@ -1751,7 +1751,7 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText = this.add
       .text(8 * S, this.touchDevice ? 19 * S : 48 * S, '', {
         fontFamily: 'monospace',
-        fontSize: this.touchDevice ? 4.2 * S : 8 * S,
+        fontSize: this.touchDevice ? 5.4 * S : 8 * S,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
@@ -1791,7 +1791,7 @@ export default class Level1 extends Phaser.Scene {
         'heart',
       )
       .setOrigin(0, 0.5)
-      .setScale(1.1)
+      .setScale(this.touchDevice ? 1.35 : 1.1)
       .setScrollFactor(0)
       .setDepth(100);
     this.hearts.push(heart);
@@ -2316,12 +2316,12 @@ export default class Level1 extends Phaser.Scene {
       const x = ((this.touchDevice ? 8 : 30) + i * (this.touchDevice ? 9 : 10)) * S;
       if (i < this.dog.flaps) {
         this.pips.fillStyle(0xffd166, 1);
-        this.pips.fillCircle(x, 10 * S, 3.8 * S);
+        this.pips.fillCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
         this.pips.lineStyle(1 * S, 0x2b1b3d, 0.5);
-        this.pips.strokeCircle(x, 10 * S, 3.8 * S);
+        this.pips.strokeCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
       } else {
         this.pips.lineStyle(1 * S, 0xfff4e0, 0.45);
-        this.pips.strokeCircle(x, 10 * S, 3.8 * S);
+        this.pips.strokeCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
       }
     }
 
