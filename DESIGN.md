@@ -85,8 +85,8 @@ jump/flap over it → dive to subdue → collect the dropped bone → bounce an 
 dive it before it reaches you → keep one eye on the heart bar → survive until
 dawn.
 
-**3 minutes:** Day 1 scavenge (35 s) → Night 1 (28 s, 3 waves) → Day 2 (30 s)
-→ Night 2 (33 s, 4 waves) → hold CASA until dawn.
+**3 minutes:** Day 1 scavenge (38 s) → Night 1 (31 s, 3 waves) → Day 2 (33 s)
+→ Night 2 (36 s, 4 waves) → hold CASA until dawn.
 
 **Session:** Survive two nights with more bones / a faster time; replay to find
 the conchas and piñatas you missed.
@@ -235,8 +235,8 @@ heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
 one missing heart. At full health it stays in the world for later.
 
 ### Day, night & waves
-Day 1 lasts 35 s, Night 1 is 28 s with 3 rival waves, Day 2 is 30 s, Night 2 is
-33 s with 4 waves. Night darkens the street (lit windows pop), sends Polo, the
+Day 1 lasts 38 s, Night 1 is 31 s with 3 rival waves, Day 2 is 33 s, Night 2 is
+36 s with 4 waves. Night darkens the street (lit windows pop), sends Polo, the
 chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
 The compact HUD labels health/flaps/hunger; the **O / OBJETIVOS** panel pauses the
@@ -265,7 +265,7 @@ Night 2 and repelling the top dog.
 
 ## 7. Level 1 — La Cuadra (urban core)
 
-World 4200×900 design px. The camera shows 144 design units vertically (432px
+World 5000×900 design px. The camera shows 144 design units vertically (432px
 render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town under a clear blue day sky:
@@ -316,6 +316,10 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 - **Ultimate objective:** drive the Chihuahua off the fields and secure them by
   dawn. Strength is responsibility here: the fields are not loot, they are a
   place other animals depend on.
+- The field now runs to 4600 design px, with an eastern extension of new bones,
+  ledges, rival turf and a farmhouse edge.
+- Pacing: 35 s day, 31 s first night with +5 s per night, 31 s between nights;
+  the third night lasts 41 s before the Chihuahua pressure.
 - Future: windmill/water-pump traversal, crop hazards, harvest escort and
   snake-specific attacks.
 
