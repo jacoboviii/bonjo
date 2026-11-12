@@ -1667,11 +1667,15 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(100)
       .setAlpha(0.85);
 
+    const hasGate = this.features.gateDefense !== false;
+    const statusH = hasGate ? 68 : 60;
     this.statusPanel = this.add.graphics().setScrollFactor(0).setDepth(99);
     this.statusPanel.fillStyle(0x1b1029, 0.52);
-    this.statusPanel.fillRect(4 * S, 4 * S, 84 * S, 44 * S);
+    this.statusPanel.fillRect(4 * S, 4 * S, 84 * S, statusH * S);
     this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.18);
-    this.statusPanel.strokeRect(4 * S, 4 * S, 84 * S, 44 * S);
+    this.statusPanel.strokeRect(4 * S, 4 * S, 84 * S, statusH * S);
+    this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.16);
+    this.statusPanel.lineBetween(8 * S, 44 * S, 84 * S, 44 * S);
 
     const statusStyle = {
       fontFamily: 'monospace',
@@ -1727,7 +1731,7 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.phaseText = this.add
-      .text(8 * S, 54 * S, '', {
+      .text(8 * S, 48 * S, '', {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -1739,7 +1743,7 @@ export default class Level1 extends Phaser.Scene {
 
     if (this.features.gateDefense !== false) {
       this.gateText = this.add
-        .text(8 * S, 65 * S, '', {
+        .text(8 * S, 58 * S, '', {
           fontFamily: 'monospace',
           fontSize: 6 * S,
           color: '#6ec6a8',
@@ -1945,7 +1949,7 @@ export default class Level1 extends Phaser.Scene {
         this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
         {
           fontFamily: 'monospace',
-          fontSize: 5 * S,
+          fontSize: this.touchDevice ? 5.5 * S : 5 * S,
           color: '#1b1029',
           backgroundColor: '#f4dfb0',
         },
@@ -1954,7 +1958,12 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(160)
       .setInteractive({ useHandCursor: true });
-    this.objectivesButton.setPadding(4 * S, 1.5 * S, 4 * S, 1.5 * S);
+    this.objectivesButton.setPadding(
+      this.touchDevice ? 6 * S : 4 * S,
+      this.touchDevice ? 5 * S : 1.5 * S,
+      this.touchDevice ? 6 * S : 4 * S,
+      this.touchDevice ? 5 * S : 1.5 * S,
+    );
     this.objectivesButton.on('pointerdown', () => this.toggleObjectives());
 
     this.objectivesScrim = this.add
@@ -2023,16 +2032,22 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesClose = this.add
       .text(0, 0, t('objectives.close'), {
         fontFamily: 'monospace',
-        fontSize: 4 * S,
-        color: '#2b1b3d',
+        fontSize: this.touchDevice ? 5 * S : 4 * S,
+        color: this.touchDevice ? '#fff4e0' : '#2b1b3d',
+        backgroundColor: this.touchDevice ? '#1b1029' : undefined,
       })
       .setOrigin(1, 0)
-      .setAlpha(0.6)
+      .setAlpha(this.touchDevice ? 1 : 0.6)
       .setScrollFactor(0)
       .setDepth(160)
       .setVisible(false)
       .setInteractive({ useHandCursor: true });
-    this.objectivesClose.setPadding(2 * S, 1 * S, 2 * S, 1 * S);
+    this.objectivesClose.setPadding(
+      this.touchDevice ? 6 * U : 2 * S,
+      this.touchDevice ? 8 * U : 1 * S,
+      this.touchDevice ? 6 * U : 2 * S,
+      this.touchDevice ? 8 * U : 1 * S,
+    );
     this.objectivesClose.on('pointerdown', () => this.closeObjectives());
 
     this.objectivesRoot.add([
