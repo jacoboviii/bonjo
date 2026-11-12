@@ -247,7 +247,7 @@ export default class Level1 extends Phaser.Scene {
 
     const hudRight = W - 8 * S;
     if (this.boneText) {
-      this.boneText.x = this.touchDevice ? 73 * S : hudRight;
+      this.boneText.x = this.touchDevice ? 132 * S : hudRight;
     }
     if (this.comboText) this.comboText.x = hudRight;
     if (this.objectivesButton) this.objectivesButton.x = hudRight;
@@ -1633,12 +1633,12 @@ export default class Level1 extends Phaser.Scene {
 
     this.boneText = this.add
       .text(
-        this.touchDevice ? 73 * S : W - 8 * S,
-        this.touchDevice ? 6 * S : 5 * S,
+        this.touchDevice ? 132 * S : W - 8 * S,
+        this.touchDevice ? 17 * S : 5 * S,
         `${t('hud.bones')} 0`,
         {
           fontFamily: 'monospace',
-          fontSize: this.touchDevice ? 6 * S : 8 * S,
+          fontSize: this.touchDevice ? 5 * S : 8 * S,
           color: '#fff4e0',
           stroke: '#2b1b3d',
           strokeThickness: 2 * S,
@@ -1675,8 +1675,8 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0.85);
 
     const hasGate = this.features.gateDefense !== false;
-    const statusH = this.touchDevice ? 50 : hasGate ? 68 : 60;
-    const statusW = this.touchDevice ? 74 : 84;
+    const statusH = this.touchDevice ? 30 : hasGate ? 68 : 60;
+    const statusW = this.touchDevice ? 132 : 84;
     this.statusPanel = this.add.graphics().setScrollFactor(0).setDepth(99);
     this.statusPanel.fillStyle(0x1b1029, 0.42);
     this.statusPanel.fillRect(4 * S, 4 * S, statusW * S, statusH * S);
@@ -1730,12 +1730,17 @@ export default class Level1 extends Phaser.Scene {
       })
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
-      .setDepth(100);
+      .setDepth(100)
+      .setVisible(!this.touchDevice);
     this.layoutHealthText();
 
     // hunger: concha icon + bar
     this.hungerIcon = this.add
-      .image((this.touchDevice ? 57 : 78) * S, 34 * S, 'concha')
+      .image(
+        (this.touchDevice ? 124 : 78) * S,
+        (this.touchDevice ? 10 : 34) * S,
+        'concha',
+      )
       .setOrigin(0, 0.5)
       .setScale(this.touchDevice ? 0.6 : 0.7)
       .setScrollFactor(0)
@@ -1744,7 +1749,7 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.phaseText = this.add
-      .text(8 * S, this.touchDevice ? 41 * S : 48 * S, '', {
+      .text(8 * S, this.touchDevice ? 19 * S : 48 * S, '', {
         fontFamily: 'monospace',
         fontSize: this.touchDevice ? 4.2 * S : 8 * S,
         color: '#fff4e0',
@@ -1780,7 +1785,11 @@ export default class Level1 extends Phaser.Scene {
 
   addHudHeart(index) {
     const heart = this.add
-      .image((this.touchDevice ? 8 + index * 11 : 30 + index * 12) * S, 22 * S, 'heart')
+      .image(
+        (this.touchDevice ? 36 + index * 10 : 30 + index * 12) * S,
+        (this.touchDevice ? 10 : 22) * S,
+        'heart',
+      )
       .setOrigin(0, 0.5)
       .setScale(1.1)
       .setScrollFactor(0)
@@ -1964,12 +1973,13 @@ export default class Level1 extends Phaser.Scene {
       .text(
         W - 8 * S,
         17 * S,
-        this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
+        'II',
         {
           fontFamily: 'monospace',
-          fontSize: this.touchDevice ? 5.5 * S : 5 * S,
-          color: '#1b1029',
-          backgroundColor: '#f4dfb0',
+          fontStyle: 'bold',
+          fontSize: this.touchDevice ? 7 * S : 6 * S,
+          color: '#fff4e0',
+          backgroundColor: '#1b1029',
         },
       )
       .setOrigin(1, 0)
@@ -1977,10 +1987,10 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(160)
       .setInteractive({ useHandCursor: true });
     this.objectivesButton.setPadding(
-      this.touchDevice ? 6 * S : 4 * S,
-      this.touchDevice ? 5 * S : 1.5 * S,
-      this.touchDevice ? 6 * S : 4 * S,
-      this.touchDevice ? 5 * S : 1.5 * S,
+      this.touchDevice ? 6 * S : 5 * S,
+      this.touchDevice ? 4 * S : 2 * S,
+      this.touchDevice ? 6 * S : 5 * S,
+      this.touchDevice ? 4 * S : 2 * S,
     );
     this.objectivesButton.on('pointerdown', () => this.toggleObjectives());
 
@@ -2093,10 +2103,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesH = h;
 
     this.objectivesButton
-      .setPosition(W - 8 * S, 17 * S)
-      .setText(
-        this.touch?.visible ? t('hud.objectivesTouch') : t('hud.objectives'),
-      );
+      .setPosition(W - 8 * S, this.touchDevice ? 8 * S : 17 * S)
+      .setText('II');
     this.objectivesScrim.setPosition(0, 0).setSize(W, this.scale.height);
     this.objectivesRoot.setPosition(W / 2, this.scale.height / 2);
     drawFolkCard(this.objectivesCard, 0, 0, w, h);
@@ -2350,14 +2358,15 @@ export default class Level1 extends Phaser.Scene {
 
     this.hungerBar.clear();
     this.hungerBar.fillStyle(0x2b1b3d, 0.8);
-    const hungerX = this.touchDevice ? 8 * S : 30 * S;
-    this.hungerBar.fillRect(hungerX, 31 * S, 44 * S, 6 * S);
+    const hungerX = this.touchDevice ? 76 * S : 30 * S;
+    const hungerY = this.touchDevice ? 7 * S : 31 * S;
+    this.hungerBar.fillRect(hungerX, hungerY, 44 * S, 6 * S);
     this.hungerBar.lineStyle(1 * S, 0xfff4e0, 0.55);
-    this.hungerBar.strokeRect(hungerX, 31 * S, 44 * S, 6 * S);
+    this.hungerBar.strokeRect(hungerX, hungerY, 44 * S, 6 * S);
 
     const width = Math.max(0, (this.hunger / this.maxHunger) * 42 * S);
     this.hungerBar.fillStyle(this.hunger < 25 ? 0xf26b5e : 0xf0a03c, 1);
-    this.hungerBar.fillRect(hungerX + 1 * S, 32 * S, width, 4 * S);
+    this.hungerBar.fillRect(hungerX + 1 * S, hungerY + 1 * S, width, 4 * S);
 
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
