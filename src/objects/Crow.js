@@ -30,6 +30,13 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
     this.t = Math.random() * Math.PI * 2;
     this.defeated = false;
     this.nightMode = false;
+    this.dayIdleTexture = 'crow';
+    this.dayFlapTexture = 'crowFlap';
+    this.nightIdleTexture = 'owl';
+    this.nightFlapTexture = 'owlFlap';
+    this.idleTexture = this.dayIdleTexture;
+    this.flapTexture = this.dayFlapTexture;
+    this.animT = Math.random();
     this.nextCaw = 600 + Math.random() * 1800;
 
     this.body.setVelocity(42 * S, 0);
@@ -37,13 +44,19 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
 
   setNightMode(night) {
     this.nightMode = night;
-    if (this.active) this.setTexture(night ? 'owl' : 'crow');
+    this.idleTexture = night ? this.nightIdleTexture : this.dayIdleTexture;
+    this.flapTexture = night ? this.nightFlapTexture : this.dayFlapTexture;
+    if (this.active) this.setTexture(this.idleTexture);
   }
 
   update(dt) {
     if (this.defeated || !this.active) return;
 
     this.t += dt * 3;
+    this.animT += dt;
+    const pose =
+      Math.floor(this.animT * 7) % 2 === 0 ? this.idleTexture : this.flapTexture;
+    if (this.texture.key !== pose) this.setTexture(pose);
 
     if (this.x >= this.maxX) this.dir = -1;
     if (this.x <= this.minX) this.dir = 1;

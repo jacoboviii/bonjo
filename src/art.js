@@ -107,6 +107,12 @@ export function buildTextures(scene) {
   makeSnake(scene, 'snakeRun', 'run');
   makeRivalDog(scene, 'rival', 'idle');
   makeRivalDog(scene, 'rivalRun', 'run');
+  makeRivalDog(scene, 'rivalFast', 'idle', 'fast');
+  makeRivalDog(scene, 'rivalFastRun', 'run', 'fast');
+  makeRivalDog(scene, 'rivalThief', 'idle', 'thief');
+  makeRivalDog(scene, 'rivalThiefRun', 'run', 'thief');
+  makeRivalDog(scene, 'rivalBrute', 'idle', 'brute');
+  makeRivalDog(scene, 'rivalBruteRun', 'run', 'brute');
   makeHeart(scene);
   makeLifeHeart(scene);
   makeFood(scene);
@@ -116,8 +122,10 @@ export function buildTextures(scene) {
   makeAwning(scene);
   makeControlButtons(scene);
 
-  makeCrow(scene);
-  makeOwl(scene);
+  makeCrow(scene, 'crow', 'idle');
+  makeCrow(scene, 'crowFlap', 'flap');
+  makeOwl(scene, 'owl', 'idle');
+  makeOwl(scene, 'owlFlap', 'flap');
   makeBat(scene);
   makeBone(scene);
   makeBalloon(scene, 'balloon', CORAL, false);
@@ -2120,13 +2128,44 @@ function makeSnake(scene, key, pose) {
 
 // --- rival neighborhood dog ------------------------------------------------
 
-function makeRivalDog(scene, key, pose) {
+function makeRivalDog(scene, key, pose, variant = 'normal') {
   const g = rawGfx(scene);
-  const F = 0xc98a4f;
-  const D = 0x8f5a2e;
-  const L = 0xe0a86a;
-  const B = 0xf4dcc0;
-  const R = 0xd94f4f;
+  const palettes = {
+    normal: {
+      fur: 0xc98a4f,
+      dark: 0x8f5a2e,
+      light: 0xe0a86a,
+      belly: 0xf4dcc0,
+      cloth: 0xd94f4f,
+    },
+    fast: {
+      fur: 0xa7c7d6,
+      dark: 0x5d7c8a,
+      light: 0xd8eef4,
+      belly: 0xf4fbfd,
+      cloth: 0x58b9a0,
+    },
+    thief: {
+      fur: 0x8a6d9a,
+      dark: 0x554066,
+      light: 0xc0a6cf,
+      belly: 0xf0e7f4,
+      cloth: 0xb07de8,
+    },
+    brute: {
+      fur: 0xb07a4f,
+      dark: 0x6b432b,
+      light: 0xdfae78,
+      belly: 0xf6e0bc,
+      cloth: 0xc2473f,
+    },
+  };
+  const colors = palettes[variant] || palettes.normal;
+  const F = colors.fur;
+  const D = colors.dark;
+  const L = colors.light;
+  const B = colors.belly;
+  const R = colors.cloth;
   const INK = 0x1a1224;
 
   // tail
@@ -2188,6 +2227,27 @@ function makeRivalDog(scene, key, pose) {
   g.fillRect(30, 15, 2, 3);
   g.fillRect(27, 18, 3, 1);
 
+  // role details
+  if (variant === 'fast') {
+    // pale racing stripe and clipped ear
+    g.fillStyle(L, 1);
+    g.fillRect(7, 15, 12, 1);
+    g.fillRect(10, 16, 5, 1);
+    g.fillRect(19, 6, 2, 2);
+  } else if (variant === 'thief') {
+    // dark bandit mask around the eye
+    g.fillStyle(INK, 1);
+    g.fillRect(22, 10, 8, 3);
+    g.fillStyle(L, 0.8);
+    g.fillRect(23, 10, 2, 1);
+  } else if (variant === 'brute') {
+    // old scar and heavy brow
+    g.fillStyle(L, 1);
+    g.fillRect(23, 6, 1, 3);
+    g.fillStyle(D, 1);
+    g.fillRect(22, 8, 5, 1);
+  }
+
   // eye + angry brow
   g.fillStyle(INK, 1);
   g.fillRect(24, 11, 2, 2);
@@ -2196,11 +2256,21 @@ function makeRivalDog(scene, key, pose) {
   g.fillStyle(D, 1);
   g.fillRect(23, 9, 4, 1);
 
-  // red bandana
-  g.fillStyle(R, 1);
-  g.fillRect(19, 19, 5, 3);
-  g.fillTriangle(19, 22, 28, 22, 23, 27);
-  g.fillRect(18, 21, 3, 3);
+  // neckwear: brutes get a spiked collar, everyone else a bandana
+  if (variant === 'brute') {
+    g.fillStyle(INK, 1);
+    g.fillRect(18, 19, 12, 3);
+    g.fillTriangle(19, 19, 22, 19, 20, 15);
+    g.fillTriangle(24, 19, 27, 19, 25, 15);
+    g.fillTriangle(28, 19, 31, 19, 29, 15);
+    g.fillStyle(R, 1);
+    g.fillRect(21, 20, 7, 1);
+  } else {
+    g.fillStyle(R, 1);
+    g.fillRect(19, 19, 5, 3);
+    g.fillTriangle(19, 22, 28, 22, 23, 27);
+    g.fillRect(18, 21, 3, 3);
+  }
 
   g.fillStyle(L, 1);
   g.fillRect(21, 7, 5, 1);
@@ -2502,7 +2572,7 @@ function makeControlButtons(scene) {
 
 // --- enemies & pickups -----------------------------------------------------
 
-function makeCrow(scene) {
+function makeCrow(scene, key, pose) {
   const g = gfx(scene);
   g.fillStyle(0x1d1526, 1);
   g.fillRect(0, 4, 4, 2); // tail
@@ -2510,7 +2580,12 @@ function makeCrow(scene) {
   g.fillRect(8, 2, 4, 4); // head
 
   g.fillStyle(0x352a44, 1);
-  g.fillRect(3, 1, 5, 3); // raised wing
+  if (pose === 'flap') {
+    g.fillTriangle(2, 1, 9, 4, 5, 6); // wing swept high
+    g.fillRect(4, 0, 4, 2);
+  } else {
+    g.fillRect(3, 1, 5, 3); // raised wing
+  }
 
   g.fillStyle(GOLD, 1);
   g.fillRect(11, 4, 2, 1); // beak
@@ -2525,13 +2600,13 @@ function makeCrow(scene) {
   r.fillStyle(CREAM, 1);
   r.fillRect(18, 6, 1, 1); // eye glint
 
-  g.generateTexture('crow', 14, 9);
+  g.generateTexture(key, 14, 9);
   g.destroy();
 }
 
 // --- owl (nocturnal crow replacement) --------------------------------------
 
-function makeOwl(scene) {
+function makeOwl(scene, key, pose) {
   const g = gfx(scene);
   const W = 16;
   const H = 10;
@@ -2545,14 +2620,24 @@ function makeOwl(scene) {
   g.fillStyle(0x8f7ca8, 0.22);
   g.fillCircle(8, 5, 8);
 
-  // broad swept wings
+  // broad swept wings, with a second flap pose
   g.fillStyle(DARK, 1);
-  g.fillTriangle(1, 1, 7, 4, 6, 8);
-  g.fillTriangle(15, 1, 9, 4, 10, 8);
+  if (pose === 'flap') {
+    g.fillTriangle(0, 4, 7, 3, 5, 9);
+    g.fillTriangle(16, 4, 9, 3, 11, 9);
+  } else {
+    g.fillTriangle(1, 1, 7, 4, 6, 8);
+    g.fillTriangle(15, 1, 9, 4, 10, 8);
+  }
   g.fillStyle(FUR, 1);
   g.fillRect(6, 3, 4, 6);
-  g.fillTriangle(5, 3, 8, 5, 7, 9);
-  g.fillTriangle(11, 3, 8, 5, 9, 9);
+  if (pose === 'flap') {
+    g.fillTriangle(4, 5, 8, 4, 7, 9);
+    g.fillTriangle(12, 5, 8, 4, 9, 9);
+  } else {
+    g.fillTriangle(5, 3, 8, 5, 7, 9);
+    g.fillTriangle(11, 3, 8, 5, 9, 9);
+  }
 
   // tufted head and moonlit rim
   g.fillStyle(FUR, 1);
@@ -2582,7 +2667,7 @@ function makeOwl(scene) {
   g.fillRect(6, 2, 1, 1);
   g.fillRect(10, 2, 1, 1);
 
-  g.generateTexture('owl', W, H);
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 

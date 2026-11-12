@@ -2500,30 +2500,43 @@ export default class Level1 extends Phaser.Scene {
       case 'fast':
         return {
           role,
+          texture: 'rivalFast',
+          runTexture: 'rivalFastRun',
           scale: 0.85,
-          tint: 0x9ff0d8,
           baseSpeed: 72,
           chaseSpeed: 152,
+          lungeSpeed: 260,
+          attackCooldown: 1700,
         };
       case 'thief':
         return {
           role,
+          texture: 'rivalThief',
+          runTexture: 'rivalThiefRun',
           scale: 0.95,
-          tint: 0xd6a8ff,
           baseSpeed: 66,
           chaseSpeed: 138,
+          lungeSpeed: 220,
+          attackCooldown: 2100,
         };
       case 'brute':
         return {
           role,
+          texture: 'rivalBrute',
+          runTexture: 'rivalBruteRun',
           scale: 1.22,
-          tint: 0xffb0a0,
           health: 2,
           baseSpeed: 40,
           chaseSpeed: 96,
+          lungeSpeed: 190,
+          attackCooldown: 2800,
         };
       default:
-        return { role: 'normal' };
+        return {
+          role: 'normal',
+          lungeSpeed: 220,
+          attackCooldown: 2300,
+        };
     }
   }
 

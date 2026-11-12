@@ -273,6 +273,17 @@ export const sfx = {
   },
 
   // Animals.
+  growl: () => {
+    osc({
+      type: 'sawtooth',
+      f0: 145,
+      f1: 92,
+      dur: 0.24,
+      vol: 0.016,
+      filter: { f0: 520, f1: 260, q: 1.4 },
+    });
+    noise({ dur: 0.18, vol: 0.009, type: 'lowpass', f0: 430, f1: 160, q: 1 });
+  },
   bark: () => {
     const k = 0.92 + Math.random() * 0.16;
     noise({ dur: 0.075, vol: 0.034, type: 'bandpass', f0: 460 * k, f1: 210 * k, q: 0.8 });

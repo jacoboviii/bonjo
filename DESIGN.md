@@ -168,13 +168,20 @@ one — or falling on it faster than 160 px/s — subsumes it: yelp, +1 bone, an
 flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
 defeat state beyond "runs home."
 
-Night waves vary by role:
-- **Fast** dogs are smaller and quicker.
-- **Thieves** steal one bone on contact and flee; dive them to recover it.
-- **Brutes** take two dives.
+When a rival gets within ~125 px it plants its feet, crouches, flashes and
+shows `!` for about 0.42 s, then lunges at roughly 220 px/s. The wind-up is the
+dodge window: jump over the charge or dive into it. After a lunge it recovers,
+then returns to patrol/chase.
+
+Night waves vary by role, with distinct silhouettes and palettes:
+- **Fast** dogs are smaller, blue-grey and quicker, with a teal bandana.
+- **Thieves** are masked purple dogs. They steal one bone on contact and flee;
+  dive them to recover it.
+- **Brutes** are larger, scarred and spiked-collar brown dogs. They take two
+  dives and lunge more slowly.
 - **Gate rushers** ignore Bonjo and run for the porch gate.
 - The **top dog** appears at the end of Night 2: gold-tinted, crowned, three
-  dives. The night cannot end until it is repelled.
+  dives, and its own pressure lunge. The night cannot end until it is repelled.
 
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
@@ -183,8 +190,9 @@ make them drop it; if they escape, the bone is lost. They are the "small
 nuisance" layer between rival encounters.
 
 ### Crows (rare aerial hazard)
-One crow patrols a stretch of sky with a sine bob. Dive through it to pop it
-(+1 bone); touch it otherwise and lose a heart. Kept rare so the dogs stay the
+One crow patrols a stretch of sky with a sine bob and a two-frame wingbeat.
+Dive through it to pop it (+1 bone); touch it otherwise and lose a heart. At
+night it becomes an owl with its own flap frames. Kept rare so the dogs stay the
 story.
 
 ### Piñatas
@@ -349,6 +357,7 @@ values, and readable foreground/background separation.
 | Papel picado | coral `#e85a4f`, mint `#7fc7a3`, marigold `#f2b544`, magenta `#b54a78` |
 | Bonjo fur | `#2a2135` (black chow), rim `#6f5c86`, tongue `#b45cd6` |
 | Rival dog | tan `#c98a4f`, red bandana `#d94f4f` |
+| Fast / thief / brute | blue-grey `#a7c7d6`, masked purple `#8a6d9a`, scarred brown `#b07a4f` |
 | Health | heart red `#d94f4f` |
 | Hunger | concha pink `#f2a6b8`, bar orange `#f0a03c` |
 | Night | sky tint `#05030d` at 68%; full-scene overlay 45% |
@@ -383,6 +392,7 @@ compressor keeps mobile speakers from clipping.
 | Bone | wooden clack + bright chime |
 | Ring | filtered strike + metallic partials |
 | Squirrel steal | two-note chatter |
+| Rival growl | low filtered saw + breath noise before a lunge |
 | Rival bark | chest-noise transient + filtered canine woof |
 | Rival subdued | descending, vibrating yelp |
 | Cat hiss | breathy band-passed noise |
@@ -450,7 +460,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 
 | Risk | Mitigation |
 | --- | --- |
-| Rivals feel unfair at speed | Bark + hop telegraph; stop at turf edges; 0.65 s squirrel pause |
+| Rivals feel unfair at speed | 0.42 s crouch/`!`/growl lunge wind-up; stop at turf edges; 0.65 s squirrel pause |
 | Hunger is annoying rather than tense | Slow drain (0.8/s), generous conchas, dawn refill; no death spiral in one minute |
 | Night waves overwhelm | 3/4 waves, 6 s apart, spawn at block edges; porch safe |
 | Health too punishing with 3 hearts | Dawn heal, 1.2 s i-frames, knockback instead of teleport |

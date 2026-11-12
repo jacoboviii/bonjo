@@ -30,13 +30,20 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.setDepth(this.role === 'alpha' ? 10 : 9);
     this.body.setSize(10 * S, 11 * S).setOffset(3 * S, 3 * S);
     this.body.setGravityY(1600 * S);
-    this.body.setMaxVelocity(130 * S, 450 * S);
+    this.body.setMaxVelocity(300 * S, 450 * S);
 
     this.minX = minX;
     this.maxX = maxX;
     this.dir = -1;
+    this.baseScale = opts.scale ?? 1;
     this.baseSpeed = (opts.baseSpeed ?? 55) * S;
     this.chaseSpeed = (opts.chaseSpeed ?? 120) * S;
+    this.lungeSpeed = (opts.lungeSpeed ?? 220) * S;
+    this.attackCooldown = opts.attackCooldown ?? (this.role === 'alpha' ? 2700 : 2300);
+    this.attackState = null;
+    this.attackUntil = 0;
+    this.nextLunge = this.scene.time.now + 900 + Math.random() * 1400;
+    this.nextTrail = 0;
     this.chasing = false;
     this.defeated = false;
     this.animT = Math.random();
@@ -51,10 +58,99 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
 
   stun(ms = 1800) {
     if (this.defeated) return;
+    this.cancelAttack();
     this.stunUntil = this.scene.time.now + ms;
     this.body.setVelocityX(0);
     this.setTint(0xfff4e0);
     this.scene.floatText(this.x, this.y - 22 * S, '!', '#ffd166');
+  }
+
+  restoreBaseTint() {
+    if (this.baseTint !== null) this.setTint(this.baseTint);
+    else this.clearTint();
+  }
+
+  cancelAttack() {
+    this.attackState = null;
+    this.setScale(this.baseScale);
+    this.restoreBaseTint();
+  }
+
+  beginWindup(dog) {
+    this.attackState = 'windup';
+    this.attackUntil =
+      this.scene.time.now + (this.role === 'alpha' ? 520 : 420);
+    this.dir = dog.x < this.x ? -1 : 1;
+    this.body.setVelocityX(0);
+    this.setTexture(this.idleTexture);
+    this.setFlipX(this.dir < 0);
+    this.setScale(this.baseScale * 1.07, this.baseScale * 0.84);
+    this.setTint(0xfff4e0);
+    this.scene.floatText(this.x, this.y - 24 * S, '!', '#ffd166');
+    sfx.growl();
+  }
+
+  beginLunge() {
+    this.attackState = 'lunge';
+    this.attackUntil =
+      this.scene.time.now +
+      (this.role === 'alpha'
+        ? 480
+        : this.role === 'fast'
+          ? 340
+          : this.role === 'brute'
+            ? 440
+            : 420);
+    this.setScale(this.baseScale);
+    this.restoreBaseTint();
+    this.setTexture(this.runTexture);
+    this.nextTrail = 0;
+  }
+
+  beginRecover() {
+    this.attackState = 'recover';
+    this.attackUntil =
+      this.scene.time.now + (this.role === 'alpha' ? 620 : 460);
+    this.body.setVelocityX(0);
+    this.setScale(this.baseScale * 1.04, this.baseScale * 0.92);
+    this.setTexture(this.idleTexture);
+  }
+
+  updateAttack() {
+    const now = this.scene.time.now;
+
+    if (this.attackState === 'windup') {
+      this.body.setVelocityX(0);
+      this.setFlipX(this.dir < 0);
+      if (now >= this.attackUntil) this.beginLunge();
+      return;
+    }
+
+    if (this.attackState === 'lunge') {
+      const atEdge =
+        (this.dir < 0 && this.x <= this.minX) ||
+        (this.dir > 0 && this.x >= this.maxX);
+      this.body.setVelocityX(atEdge ? 0 : this.dir * this.lungeSpeed);
+      this.setFlipX(this.dir < 0);
+      this.playPose(20);
+      if (this.body.blocked.down && now > this.nextTrail) {
+        this.nextTrail = now + 90;
+        this.scene.spawnPuff(
+          this.x - this.dir * 8 * S,
+          this.y + 10 * S,
+          0.4,
+        );
+      }
+      const close = Math.abs(this.scene.dog.x - this.x) < 14 * S;
+      if (now >= this.attackUntil || atEdge || close) this.beginRecover();
+      return;
+    }
+
+    this.body.setVelocityX(0);
+    if (now >= this.attackUntil) {
+      this.cancelAttack();
+      this.nextLunge = now + this.attackCooldown;
+    }
   }
 
   update(dt) {
@@ -68,8 +164,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
         return;
       }
       this.stunUntil = 0;
-      if (this.baseTint !== null) this.setTint(this.baseTint);
-      else this.clearTint();
+      this.restoreBaseTint();
     }
 
     const dog = this.scene.dog;
@@ -82,6 +177,11 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       this.body.setVelocityX(this.dir * this.chaseSpeed);
       this.setFlipX(this.dir < 0);
       this.playPose(14);
+      return;
+    }
+
+    if (this.attackState) {
+      this.updateAttack();
       return;
     }
 
@@ -120,6 +220,19 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.chasing = near;
+
+    const canLunge =
+      near &&
+      this.role !== 'thief' &&
+      this.role !== 'rusher' &&
+      this.body.blocked.down &&
+      Math.abs(dx) > 25 * S &&
+      Math.abs(dx) < 125 * S &&
+      this.scene.time.now > this.nextLunge;
+    if (canLunge) {
+      this.beginWindup(dog);
+      return;
+    }
 
     let vx = 0;
     if (near) {

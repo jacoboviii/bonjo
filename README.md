@@ -45,12 +45,14 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   clears paths and carries heavy things; strength is how he protects a place,
   not how he rules it.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
-  chase. Dive on one to send it packing. Night waves include **fast** dogs,
-  **bone thieves**, **brutes**, and on the final night the **top dog** in La
-  Cuadra or the **Chihuahua boss** in Las Orillas.
+  chase. When they close in, they crouch, flash and bark a warning before a
+  lunging charge — jump it or dive to subdue them. Night waves include
+  **fast** dogs, masked **bone thieves**, spiked-collar **brutes**, and on the
+  final night the **top dog** in La Cuadra or the **Chihuahua boss** in Las
+  Orillas.
 - **Squirrels & snakes:** small bone thieves. La Cuadra's bushy-tailed
   squirrels become skunks at night; Las Orillas uses snakes day and night.
-- **Crows:** one rare aerial pest, plus a far-block crow; they caw when Bonjo gets close.
+- **Crows:** one rare aerial pest, plus a far-block crow; their wings flap as they patrol and they caw when Bonjo gets close. At night the same slot becomes a hunting owl.
 - **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its snakes. Bats cross the dark and the cats keep their watch.
 - **Piñatas:** hanging from ropes. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones. Most leave a concha;
@@ -214,7 +216,7 @@ there to make them permanent.
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or snakes in Las Orillas
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
-- **Rival roles** — fast dogs, bone thieves, brutes, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
+- **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
 - **One-way fire escapes and laundry lines** with high bones/conchas
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
@@ -262,7 +264,7 @@ bonjo/
 │   │   └── lasOrillas.js   field level config and agricultural theme
 │   ├── objects/
 │   │   ├── Dog.js          Bonjo's movement + sit/pant + walk cycle
-│   │   ├── RivalDog.js     patrol / bark / chase / subdue
+│   │   ├── RivalDog.js     patrol / bark / telegraph / lunge / subdue
 │   │   ├── Squirrel.js     patrol, hops, bone thief
 │   │   ├── Crow.js         rare aerial hazard
 │   │   └── Pinata.js       hanging piñata state + rope
@@ -320,7 +322,10 @@ files):
 | `dog`, `dogSit`, `dogWalkA–D`, `dogGlide`, `dogDive` | 60×60 | denser black chow with 4-frame walk; flipped in code |
 | `tongue` | 9×12 | panting overlay |
 | `rival`, `rivalRun` | 48×45 | tan neighborhood dog, red bandana |
-| `crow` | 42×27 | facing right |
+| `rivalFast`, `rivalFastRun` | 48×45 | blue-grey fast dog, teal bandana |
+| `rivalThief`, `rivalThiefRun` | 48×45 | masked purple thief dog |
+| `rivalBrute`, `rivalBruteRun` | 48×45 | scarred brute, spiked collar |
+| `crow`, `crowFlap` | 42×27 | two-frame wingbeat, facing right |
 | `squirrel`, `squirrelRun` | 48×42 | 2-frame run cycle |
 | `snake`, `snakeRun` | 48×42 | Las Orillas critter replacement |
 | `chihuahuaBoss`, `chihuahuaBossRun` | 60×60 | aggressive Las Orillas boss |
@@ -349,7 +354,7 @@ files):
 | `agave`, `agaveBloom` | 78×78, 78×114 | blue-green street/field plants |
 | `agaveField` | 270×78 | tilled field patch |
 | `cat`, `catGray` / `bird` / `rooster` | 54×48 / 36×30 / 60×72 | ambient wildlife |
-| `skunk`, `skunkRun` / `owl` / `bat` | 48×42 / 48×30 / 36×21 | night-shift wildlife |
+| `skunk`, `skunkRun` / `owl`, `owlFlap` / `bat` | 48×42 / 48×30 / 36×21 | night-shift wildlife |
 | `fence` | 84×96 | level-edge boundary |
 | `foregroundHouseA/B/C` | 210×240 | standable foreground houses |
 | `ledge_*` | 270–330×36 | one-way fire escape / laundry line |
