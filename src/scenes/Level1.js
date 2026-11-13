@@ -1347,15 +1347,17 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(this.dog.x, this.dog.y, 1);
 
     // The halo is the visual boundary of the spin's hit area, not a second
-    // damage source. It is drawn at the full damage radius immediately, so the
-    // ring and the hitbox always agree; only its fade animates.
-    const radius = 44 * S;
+    // damage source. Its final radius is exactly the damage radius; the
+    // expanding pulse is only a visual flourish.
+    const radius = 10 * S;
+    const ringBase = 3 * S;
     const ring = this.add
-      .circle(this.dog.x, this.dog.y, radius, 0x000000, 0)
+      .circle(this.dog.x, this.dog.y, ringBase, 0x000000, 0)
       .setStrokeStyle(3 * S, 0xffd166, 0.9)
       .setDepth(9);
     this.tweens.add({
       targets: ring,
+      scale: radius / ringBase,
       alpha: 0,
       duration: 320,
       ease: 'Quad.out',
