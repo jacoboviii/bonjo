@@ -60,6 +60,8 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.slideUntil = 0;
     this.slideDir = 1;
     this.slideSpeed = 0;
+    this.slideCooldownUntil = 0;
+    this.downWasHeld = false;
     this.nextSlidePuff = 0;
     this.stepTimer = 0;
 
@@ -133,6 +135,8 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     const wasDiving = this.diving;
     const wasOnGround = this.grounded;
     const jumpPressed = this.jumpPressed;
+    const downPressed = this.downHeld && !this.downWasHeld;
+    this.downWasHeld = this.downHeld;
 
     if (onGround && !wasOnGround && !wasDiving) {
       this.scene.onLand?.(this);
@@ -194,6 +198,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     }
     if (this.body.velocity.y >= 0) this.jumpCutReady = false;
 
+    // A deliberate down-input on the ground starts a forward slide. Holding
+    // down from a dive does not trigger it on landing; the player must ask.
+    if (onGround && downPressed) this.startSlide();
+
     // --- glide & dive ------------------------------------------------------
     const falling = this.body.velocity.y > 0;
     this.diving = !onGround && this.downHeld;
@@ -215,7 +223,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     // --- horizontal --------------------------------------------------------
     const moveNow = this.scene.time.now;
     if (this.slideUntil > moveNow) {
-      // Dive recovery slide: keep facing direction and carry momentum briefly.
+      // Grounded slide: keep the chosen facing direction and carry momentum.
       this.facing = this.slideDir;
       this.body.velocity.x = this.slideDir * this.slideSpeed;
       if (onGround && moveNow > this.nextSlidePuff) {
@@ -302,6 +310,17 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.updateTongue(dt, onGround);
 
     this.grounded = onGround;
+  }
+
+  startSlide() {
+    const now = this.scene.time.now;
+    if (now < this.slideCooldownUntil || this.slideUntil > now) return;
+    this.slideDir = this.facing || 1;
+    this.slideSpeed = 280 * S;
+    this.slideUntil = now + 260;
+    this.slideCooldownUntil = now + 700;
+    this.body.velocity.x = this.slideDir * this.slideSpeed;
+    this.scene.onSlideStart?.(this);
   }
 
   // The tongue only comes out when the dog is standing still - it's a pant,

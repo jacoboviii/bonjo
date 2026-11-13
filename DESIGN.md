@@ -106,8 +106,9 @@ the conchas and piñatas you missed.
 | A / D or ← / → | Run | Steer |
 | SPACE / W (press) | Jump | Flap |
 | SPACE / W (hold) | — | Glide while falling |
-| S / ↓ | — | Dive |
-| E | Talk / ring / interact | Talk / ring / interact |
+| S / ↓ | Slide attack | Dive |
+| E | Spin attack | Spin attack |
+| F | Talk / ring / interact | Talk / ring / interact |
 | Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
 | Map: ESC / B | Back to title | Back to title |
 | O | Objectives panel (pauses) | Objectives panel (pauses) |
@@ -159,8 +160,9 @@ are design pixels (1 design px = 3 render px).
 | Camera smoothing | 0.1 | soft follow |
 
 **State machine:** grounded → jump → flap ×2 → glide (hold, falling) → dive
-(hold S). Landing refills flaps. Awnings also refill flaps; rings refill them in
-the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
+(hold S in the air). On the ground, a fresh S/↓ press starts a short forward
+slide instead. Landing refills flaps. Awnings also refill flaps; rings refill
+them in the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
 
 ---
 
@@ -172,9 +174,9 @@ talk or ring when an NPC/quest prompt is active, otherwise perform a short
 Bonjo spin. The spin is the everyday attack: one point of damage per spin,
 plus a short daze and a firm knockback. Its halo marks the exact damage radius;
 it is not a second hitbox. Dive is the stronger committed attack:
-two points of damage, a bounce, and a short forward landing slide in the facing
-direction. Slide contact deals one point, so a dive can clean up an enemy it
-lands beside. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
+two points of damage and a bounce. A deliberate down-input on the ground starts
+a short forward slide in the facing direction; slide contact deals one point.
+Dive landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
 squirrels and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
@@ -435,6 +437,7 @@ compressor keeps mobile speakers from clipping.
 | --- | --- |
 | Jump / flap | cloth-noise whoosh + body accent / two feathery air bursts |
 | Footstep / landing | quiet surface tap / low body thump and grit |
+| Ground slide | short gritty whoosh + low body slide |
 | Bone | wooden clack + bright chime |
 | Ring | filtered strike + metallic partials |
 | Squirrel steal | two-note chatter |
@@ -464,7 +467,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 
 ### In this slice
 - La Cuadra: town background, flat adobe street, papel picado, porch
-- Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive
+- Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive, grounded slide, spin
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
 - **Survival:** 3 hearts (expandable to 4 with life hearts), hunger bar, conchas, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas

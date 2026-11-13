@@ -1752,7 +1752,7 @@ export default class Level1 extends Phaser.Scene {
     this.hint = this.add
       .text(W / 2, 138 * S, t('level.hint'), {
         fontFamily: 'monospace',
-        fontSize: 6 * S,
+        fontSize: 5 * S,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
@@ -3067,13 +3067,10 @@ export default class Level1 extends Phaser.Scene {
         0.8,
       );
     }
+  }
 
-    // The landing carries a short forward slide. Contact during the slide
-    // counts as a hit; it is separate from the dive's heavier impact.
-    this.dog.slideDir = this.dog.facing || 1;
-    this.dog.slideSpeed = 250 * S;
-    this.dog.slideUntil = this.time.now + 240;
-    this.dog.body.setVelocityX(this.dog.slideDir * this.dog.slideSpeed);
+  onSlideStart() {
+    sfx.slide();
   }
 
   onSlide(dog) {

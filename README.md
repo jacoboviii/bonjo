@@ -113,7 +113,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **A / D** or arrows | Run | Steer |
 | **SPACE** / **W** | Jump (hold for height) | Flap (2 charges) |
 | **Hold SPACE** | — | Glide (slow fall) |
-| **S** / **↓** | — | Dive (subdue rivals, pop crows) |
+| **S** / **↓** | Slide attack (grounded) | Dive (subdue rivals, pop crows) |
 | **E** / touch spin | Spin-attack nearby rivals | — |
 | **F** / touch talk | Talk to friendly NPCs, ring the bell | — |
 | **O** | Open/close objectives | Open/close objectives |
@@ -129,7 +129,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 On a touch device the on-screen controls appear automatically:
 
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
-- **bottom-right:** action cluster — ▲ flap, ▼ dive and the spin button
+- **bottom-right:** action cluster — ▲ flap, ▼ dive/slide and the spin button
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
 - **top bar:** flaps, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
@@ -153,8 +153,9 @@ burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
-spin that dazes, nudges back and damages nearby rivals. The dive remains the
-stronger finisher and ends in a short damaging slide. Polo's dialog hands over
+spin that dazes, knocks back and damages nearby rivals. Dive from the air for
+the heavier finisher; press down while grounded for a short damaging slide.
+Polo's dialog hands over
 the daily concha. Survive the level's nights and final boss; bones, combo and a
 clean run feed your score and rank.
 
@@ -223,7 +224,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; dive is the heavier finisher and ends in a damaging slide
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; grounded down-input slides, and an airborne dive is the heavier finisher
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
