@@ -1345,12 +1345,6 @@ export default class Level1 extends Phaser.Scene {
 
     sfx.spin();
     this.spawnPuff(this.dog.x, this.dog.y, 1);
-    this.floatText(
-      this.dog.x,
-      this.dog.y - 24 * S,
-      t('float.spin'),
-      '#ffd166',
-    );
 
     // The halo is the visual boundary of the spin's hit area, not a second
     // damage source. It is drawn at the full damage radius immediately, so the
