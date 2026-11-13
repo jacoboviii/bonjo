@@ -175,7 +175,8 @@ after the 90 ms minimum.
 talk or ring when an NPC/quest prompt is active, otherwise perform a short
 Bonjo spin. The spin is the everyday attack: one point of damage per spin,
 plus a short daze and a firm knockback. Its halo expands to the exact damage radius, sized to cover Bonjo plus
-an adjacent enemy sprite; it is not a second hitbox. Dive is the stronger committed attack:
+an adjacent enemy sprite; it is not a second hitbox. The hit test measures to the
+nearest body edge so mismatched sprite origins cannot make a touching target miss. Dive is the stronger committed attack:
 two points of damage, a stronger bounce and a ground shockwave that chips
 nearby rivals for one point. A deliberate down-input on the ground starts
 a short forward dodge-slide in the facing direction. It deals no damage and
@@ -184,11 +185,11 @@ after a short grounded rest or on landing. Bonjo is briefly damage-immune
 during each slide. Every connecting spin or dive throws a small impact ring,
 dust burst and light camera kick; the dive's version is the heaviest. Dive
 landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo
-once, startles squirrels and can hit a piñata.
+once, subdues bone-thief critters and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
-is flap, dive and the always-available spin button; the talk button appears
-above that cluster when an NPC or bell prompt is nearby.
+is flap, spin and dive, with spin beside jump; the talk button appears above
+that cluster when an NPC or bell prompt is nearby.
 
 ### Rival dogs (main enemy)
 The first level has a light daytime patrol of four rivals, four critters and

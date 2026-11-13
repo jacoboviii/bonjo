@@ -35,13 +35,13 @@ export default class TouchControls {
 
     const W = scene.scale.width;
     // All touch buttons share one size and sit on the same line. The three
-    // action buttons form a single right-hand cluster.
+    // action buttons form a single right-hand cluster, with spin beside jump.
     const buttonScale = 0.9;
     this.addButton('left', 56 * U, 240 * U, 'btn-left', buttonScale);
     this.addButton('right', 128 * U, 240 * U, 'btn-right', buttonScale);
     this.addButton('jump', W - 60 * U, 240 * U, 'btn-jump', buttonScale);
-    this.addButton('dive', W - 124 * U, 240 * U, 'btn-dive', buttonScale);
-    this.addButton('interact', W - 188 * U, 240 * U, 'btn-spin', buttonScale);
+    this.addButton('interact', W - 124 * U, 240 * U, 'btn-spin', buttonScale);
+    this.addButton('dive', W - 188 * U, 240 * U, 'btn-dive', buttonScale);
     this.addButton('talk', W - 124 * U, 174 * U, 'btn-interact', buttonScale);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
@@ -53,8 +53,8 @@ export default class TouchControls {
 
   relayout(width = this.scene.scale.width) {
     if (this.buttons.jump) this.buttons.jump.x = width - 60 * U;
-    if (this.buttons.dive) this.buttons.dive.x = width - 124 * U;
-    if (this.buttons.interact) this.buttons.interact.x = width - 188 * U;
+    if (this.buttons.interact) this.buttons.interact.x = width - 124 * U;
+    if (this.buttons.dive) this.buttons.dive.x = width - 188 * U;
     if (this.buttons.talk) this.buttons.talk.x = width - 124 * U;
   }
 

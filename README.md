@@ -129,7 +129,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 On a touch device the on-screen controls appear automatically:
 
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
-- **bottom-right:** action cluster — ▲ flap, ▼ dive/slide and the spin button
+- **bottom-right:** action cluster — ▲ flap, ✦ spin and ▼ dive/slide, with spin beside jump
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
 - **top bar:** ALAS stamina, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
@@ -153,8 +153,8 @@ burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
-spin that dazes, knocks back and damages nearby rivals. Dive from the air for
-the heavier finisher and its damaging landing shockwave; press down while
+spin that dazes, knocks back and damages nearby rivals and bone thieves. Dive
+from the air for the heavier finisher and its damaging landing shockwave; press down while
 grounded for a short dodge-slide that spends one ALAS pip and deals no damage.
 Every connecting spin or dive adds a small impact ring, dust burst and camera
 kick.
@@ -228,7 +228,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, ALAS stamina and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; grounded down-input slides dodge briefly and spend one ALAS pip each, sharing stamina with air flaps; an airborne dive is the heavier finisher
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals and bone thieves; grounded down-input slides dodge briefly and spend one ALAS pip each, sharing stamina with air flaps; an airborne dive is the heavier finisher
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra ALAS pip (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

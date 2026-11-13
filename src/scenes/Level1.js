@@ -1365,12 +1365,7 @@ export default class Level1 extends Phaser.Scene {
       onComplete: () => ring.destroy(),
     });
     for (const rival of this.rivalGroup?.getChildren() || []) {
-      if (
-        rival.active &&
-        !rival.defeated &&
-        Phaser.Math.Distance.Between(this.dog.x, this.dog.y, rival.x, rival.y) <
-          radius
-      ) {
+      if (rival.active && !rival.defeated && this.inSpinRange(rival, radius)) {
         this.applySpinHit(rival);
       }
     }
@@ -1379,32 +1374,43 @@ export default class Level1 extends Phaser.Scene {
       if (
         squirrel.active &&
         !squirrel.defeated &&
-        Phaser.Math.Distance.Between(
-          this.dog.x,
-          this.dog.y,
-          squirrel.x,
-          squirrel.y,
-        ) < radius
+        this.inSpinRange(squirrel, radius)
       ) {
-        const wasStartled = squirrel.startled > 0;
-        squirrel.startled = Math.max(squirrel.startled || 0, 0.65);
-        if (!wasStartled) this.critterVoice(squirrel);
+        this.spinHitSquirrel(squirrel);
       }
     }
 
     for (const pinata of this.pinataGroup?.getChildren() || []) {
-      if (
-        pinata.active &&
-        Phaser.Math.Distance.Between(
-          this.dog.x,
-          this.dog.y,
-          pinata.x,
-          pinata.y,
-        ) < radius
-      ) {
+      if (pinata.active && this.inSpinRange(pinata, radius)) {
         this.hitPinata(this.dog, pinata);
       }
     }
+  }
+
+  inSpinRange(target, radius = 18 * S) {
+    if (!target.body) return false;
+
+    // Sprite origins and body offsets differ between Bonjo and each enemy.
+    // Measure to the nearest edge of the target body so a visually adjacent
+    // target still lands inside the same circular halo.
+    const closestX = Phaser.Math.Clamp(
+      this.dog.x,
+      target.body.left,
+      target.body.right,
+    );
+    const closestY = Phaser.Math.Clamp(
+      this.dog.y,
+      target.body.top,
+      target.body.bottom,
+    );
+    return (
+      Phaser.Math.Distance.Between(
+        this.dog.x,
+        this.dog.y,
+        closestX,
+        closestY,
+      ) < radius
+    );
   }
 
   findInteractable() {
@@ -3049,7 +3055,7 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
-  onAttackHit(rival, kind) {
+  onAttackHit(target, kind) {
     const config = {
       spin: {
         color: 0xffd166,
@@ -3072,7 +3078,7 @@ export default class Level1 extends Phaser.Scene {
     }[kind];
     if (!config) return;
 
-    this.spawnImpactBurst(rival.x, rival.y, config);
+    this.spawnImpactBurst(target.x, target.y, config);
     this.cameras.main.shake(config.shakeDuration, config.shakeIntensity);
     sfx.impact();
   }
@@ -3293,27 +3299,43 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
+  subdueSquirrel(squirrel) {
+    if (squirrel.defeated || !squirrel.active) return;
+
+    squirrel.defeated = true;
+    squirrel.body.enable = false;
+    this.dropSquirrelBone(squirrel);
+    this.critterVoice(squirrel);
+    this.spawnPuff(squirrel.x, squirrel.y, 1);
+    this.tweens.add({
+      targets: squirrel,
+      y: squirrel.y - 14 * S,
+      alpha: 0,
+      angle: 90,
+      duration: 250,
+      onComplete: () => squirrel.destroy(),
+    });
+  }
+
+  spinHitSquirrel(squirrel) {
+    if (squirrel.defeated || !squirrel.active) return;
+    this.subdueSquirrel(squirrel);
+    this.onAttackHit(squirrel, 'spin');
+  }
+
   hitSquirrel(dog, squirrel) {
     if (squirrel.defeated || !squirrel.active) return;
 
+    // Spin is an attack window for small bone thieves too.
+    if (this.dog.spinUntil > this.time.now) {
+      this.spinHitSquirrel(squirrel);
+      return;
+    }
+
     // dive or land on it: it drops the bone and flees
     if (this.dog.diving || this.dog.body.velocity.y > 160 * S) {
-      squirrel.defeated = true;
-      squirrel.body.enable = false;
-
-      this.dropSquirrelBone(squirrel);
+      this.subdueSquirrel(squirrel);
       sfx.stomp();
-      this.critterVoice(squirrel);
-      this.spawnPuff(squirrel.x, squirrel.y, 1);
-      this.tweens.add({
-        targets: squirrel,
-        y: squirrel.y - 14 * S,
-        alpha: 0,
-        angle: 90,
-        duration: 250,
-        onComplete: () => squirrel.destroy(),
-      });
-
       this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
       return;
     }
