@@ -2583,6 +2583,7 @@ function makeControlButtons(scene) {
     ['btn-jump', 'jump'],
     ['btn-dive', 'dive'],
     ['btn-interact', 'interact'],
+    ['btn-spin', 'spin'],
   ];
 
   for (const [key, kind] of defs) {
@@ -2609,6 +2610,16 @@ function makeControlButtons(scene) {
       g.fillRect(24, 24, 4, 4);
       g.fillRect(30, 24, 4, 4);
       g.fillRect(36, 24, 4, 4);
+    } else if (kind === 'spin') {
+      // four-blade pinwheel for the spin action
+      g.fillTriangle(32, 9, 25, 29, 39, 29);
+      g.fillTriangle(55, 32, 35, 25, 35, 39);
+      g.fillTriangle(32, 55, 25, 35, 39, 35);
+      g.fillTriangle(9, 32, 29, 25, 29, 39);
+      g.fillStyle(0x1b1029, 1);
+      g.fillCircle(32, 32, 6);
+      g.fillStyle(0xfff4e0, 1);
+      g.fillCircle(32, 32, 2);
     } else {
       g.fillTriangle(32, 48, 18, 28, 46, 28);
       g.fillRect(28, 18, 8, 10);

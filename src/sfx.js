@@ -284,6 +284,11 @@ export const sfx = {
     });
     noise({ dur: 0.18, vol: 0.009, type: 'lowpass', f0: 430, f1: 160, q: 1 });
   },
+  spin: () => {
+    noise({ dur: 0.2, vol: 0.025, type: 'bandpass', f0: 420, f1: 1500, q: 0.8 });
+    osc({ type: 'triangle', f0: 520, f1: 900, dur: 0.18, vol: 0.018 });
+    osc({ type: 'sine', f0: 1040, dur: 0.12, vol: 0.01, delay: 0.08 });
+  },
   bark: () => {
     const k = 0.92 + Math.random() * 0.16;
     noise({ dur: 0.075, vol: 0.034, type: 'bandpass', f0: 460 * k, f1: 210 * k, q: 0.8 });

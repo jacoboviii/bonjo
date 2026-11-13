@@ -169,6 +169,7 @@ export default class Level1 extends Phaser.Scene {
     this.nextRooster = 0;
     this.interactQueued = false;
     this.nextInteractAt = 0;
+    this.nextSpinAt = 0;
     this.activeInteractable = null;
     this.dialogOpen = false;
     this.dialogTimer = null;
@@ -1325,7 +1326,84 @@ export default class Level1 extends Phaser.Scene {
     this.touch?.setInteractAvailable(!!item);
     this.updateInteractionPrompt(item);
 
-    if (this.consumeInteractPress() && item) item.action();
+    if (this.consumeInteractPress()) {
+      if (item) item.action();
+      else this.spinAttack();
+    }
+  }
+
+  spinAttack() {
+    if (this.won || this.gameOverFlag || this.dog.dead || this.dialogOpen) return;
+    const now = this.time.now;
+    if (now < this.nextSpinAt) return;
+    this.nextSpinAt = now + 650;
+
+    this.dog.spinStart = now;
+    this.dog.spinUntil = now + 320;
+    this.dog.spinDir = this.dog.facing >= 0 ? 1 : -1;
+
+    sfx.spin();
+    this.spawnPuff(this.dog.x, this.dog.y, 1);
+    this.floatText(
+      this.dog.x,
+      this.dog.y - 24 * S,
+      t('float.spin'),
+      '#ffd166',
+    );
+
+    const ring = this.add
+      .circle(this.dog.x, this.dog.y, 12 * S, 0x000000, 0)
+      .setStrokeStyle(3 * S, 0xffd166, 0.9)
+      .setDepth(9);
+    this.tweens.add({
+      targets: ring,
+      scale: 3.6,
+      alpha: 0,
+      duration: 320,
+      ease: 'Quad.out',
+      onComplete: () => ring.destroy(),
+    });
+
+    const radius = 44 * S;
+    for (const rival of this.rivalGroup?.getChildren() || []) {
+      if (
+        rival.active &&
+        !rival.defeated &&
+        Phaser.Math.Distance.Between(this.dog.x, this.dog.y, rival.x, rival.y) <
+          radius
+      ) {
+        rival.stun(rival.role === 'alpha' ? 800 : 1300);
+      }
+    }
+
+    for (const squirrel of this.squirrelGroup?.getChildren() || []) {
+      if (
+        squirrel.active &&
+        !squirrel.defeated &&
+        Phaser.Math.Distance.Between(
+          this.dog.x,
+          this.dog.y,
+          squirrel.x,
+          squirrel.y,
+        ) < radius
+      ) {
+        squirrel.startled = Math.max(squirrel.startled || 0, 0.65);
+      }
+    }
+
+    for (const pinata of this.pinataGroup?.getChildren() || []) {
+      if (
+        pinata.active &&
+        Phaser.Math.Distance.Between(
+          this.dog.x,
+          this.dog.y,
+          pinata.x,
+          pinata.y,
+        ) < radius
+      ) {
+        this.hitPinata(this.dog, pinata);
+      }
+    }
   }
 
   findInteractable() {

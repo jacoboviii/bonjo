@@ -166,6 +166,13 @@ the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
 
 ## 6. Systems
 
+### Context action
+`E` / the touch action button does one of two things depending on proximity:
+talk or ring when an NPC/quest prompt is active, otherwise perform a short
+Bonjo spin. The spin has a ~650 ms cooldown, rotates Bonjo once, and stuns
+nearby rivals for 0.8–1.3 s. It also startles squirrels and can hit a piñata.
+It is a breathing-room tool, not a replacement for the dive subdue.
+
 ### Rival dogs (main enemy)
 The first level has a light daytime patrol of four rivals, four critters and
 three crows. Las Orillas raises that to five rivals, five snakes and four crows;
@@ -426,6 +433,7 @@ compressor keeps mobile speakers from clipping.
 | Rival growl | low filtered saw + breath noise before a lunge |
 | Rival bark | chest-noise transient + filtered canine woof |
 | Rival subdued | descending, vibrating yelp |
+| Bonjo spin | quick cloth whoosh + bright two-note chime |
 | Cat hiss | breathy band-passed noise |
 | Bird scatter / chirp | quick shimmering sine chirps |
 | Crow caw | filtered squawk with a second throaty pulse |

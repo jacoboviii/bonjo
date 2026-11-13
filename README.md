@@ -114,7 +114,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **SPACE** / **W** | Jump (hold for height) | Flap (2 charges) |
 | **Hold SPACE** | — | Glide (slow fall) |
 | **S** / **↓** | — | Dive (subdue rivals, pop crows) |
-| **E** / touch bubble | Talk to friendly NPCs, ring the bell | — |
+| **E** / touch action | Talk/ring when prompted; otherwise spin-stun nearby rivals | — |
 | **O** | Open/close objectives | Open/close objectives |
 | **T** | Show/hide the tuning panel | |
 | **R** | Restart the level | |
@@ -129,7 +129,7 @@ On a touch device the on-screen controls appear automatically:
 
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** ▲ flap (hold to glide), ▼ dive
-- **bottom-center:** 💬 interact when a friendly NPC or quest object is in range
+- **bottom-center:** action button — 💬 talk/ring when a prompt is available, otherwise spin-stun
 - **top bar:** flaps, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
 - The title and map switch to larger touch targets: a tappable play button, bigger EN/ES language pills, a larger map play button and a roomier back button.
@@ -149,11 +149,12 @@ On a desktop you can press **V** to show the touch buttons for testing.
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
 burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 **conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
-over bikes and trip the marked car alarm. Press **E** (or tap the bubble
+over bikes and trip the marked car alarm. Press **E** (or tap the action
 button) near Polo, the chihuahua, a cat or the daytime rooster to talk; use it
-at the bell to ring it. Polo's dialog hands over the daily concha. Survive the
-level's nights and final boss; bones, combo and a clean run feed your score and
-rank.
+at the bell to ring it. With no prompt nearby, the same button makes Bonjo do a
+cute spin that stuns nearby rivals. Polo's dialog hands over the daily concha.
+Survive the level's nights and final boss; bones, combo and a clean run feed
+your score and rank.
 
 ---
 
@@ -220,6 +221,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
+- **Context action button** — talk or ring when prompted, otherwise a cute spin attack that stuns nearby rivals
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

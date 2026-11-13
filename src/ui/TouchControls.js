@@ -37,7 +37,7 @@ export default class TouchControls {
     this.addButton('right', 128 * U, 240 * U, 'btn-right', 0.9);
     this.addButton('jump', W - 60 * U, 228 * U, 'btn-jump', 1.05);
     this.addButton('dive', W - 128 * U, 254 * U, 'btn-dive', 0.8);
-    this.addButton('interact', W / 2, 250 * U, 'btn-interact', 0.85);
+    this.addButton('interact', W / 2, 250 * U, 'btn-spin', 0.85);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
     scene.input.on('pointerup', (pointer) => this.onUp(pointer));
@@ -76,9 +76,10 @@ export default class TouchControls {
       return;
     }
 
-    // Interact is a one-shot tap, not a held action.
+    // The action button is a one-shot tap: talk when a prompt is available,
+    // otherwise spin. It is always visible on touch.
     if (name === 'interact') {
-      if (!this.interactAvailable || this.dialogMode) return;
+      if (this.dialogMode) return;
       this.interactQueued = true;
       this.flash(name);
       return;
@@ -173,6 +174,11 @@ export default class TouchControls {
 
   setInteractAvailable(available) {
     this.interactAvailable = available;
+    const button = this.buttons.interact;
+    if (button) {
+      const texture = available ? 'btn-interact' : 'btn-spin';
+      if (button.texture.key !== texture) button.setTexture(texture);
+    }
     this.syncButtonVisibility();
   }
 
@@ -184,10 +190,7 @@ export default class TouchControls {
 
   syncButtonVisibility() {
     for (const [name, img] of Object.entries(this.buttons)) {
-      const show =
-        this.visible &&
-        !this.dialogMode &&
-        (name !== 'interact' || this.interactAvailable);
+      const show = this.visible && !this.dialogMode;
       img.setVisible(show);
       if (img.input) img.input.enabled = show;
     }

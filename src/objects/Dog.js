@@ -54,6 +54,9 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.trailTimer = 0;
     this.animT = 0;
     this.standT = 0;
+    this.spinUntil = 0;
+    this.spinStart = 0;
+    this.spinDir = 1;
     this.stepTimer = 0;
 
     // Purple chow tongue, rendered as its own sprite so it can wiggle.
@@ -259,7 +262,16 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     }
     if (this.texture.key !== pose) this.setTexture(pose);
 
-    if (this.diving) {
+    const now = this.scene.time.now;
+    if (this.spinUntil && now >= this.spinUntil) this.spinUntil = 0;
+    if (this.spinUntil) {
+      const progress = Phaser.Math.Clamp(
+        (now - this.spinStart) / (this.spinUntil - this.spinStart),
+        0,
+        1,
+      );
+      this.setRotation(progress * Math.PI * 2 * this.spinDir);
+    } else if (this.diving) {
       this.setRotation(Phaser.Math.DegToRad(14 * this.facing));
       if (this.trailTimer <= 0) {
         this.trailTimer = 0.06;
