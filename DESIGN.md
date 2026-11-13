@@ -86,7 +86,7 @@ dive it before it reaches you → keep one eye on the heart bar → survive unti
 dawn.
 
 **3 minutes:** Day 1 scavenge (38 s) → Night 1 (31 s, 3 waves) → Day 2 (33 s)
-→ Night 2 (36 s, 4 waves) → hold CASA until dawn.
+→ Night 2 (36 s, 3 waves) → hold CASA until dawn.
 
 **Session:** Survive two nights with more bones / a faster time; replay to find
 the conchas and piñatas you missed.
@@ -169,7 +169,7 @@ flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
 defeat state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and
-shows `!` for about 0.42 s, then lunges at roughly 220 px/s. The wind-up is the
+shows `!` for about 0.6 s, then lunges at roughly 190 px/s. The wind-up is the
 dodge window: jump over the charge or dive into it. After a lunge it recovers,
 then returns to patrol/chase.
 
@@ -240,7 +240,7 @@ movement economy.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
-knocks him back and grants 1.2 s of invulnerability. Pits cost a heart and respawn
+knocks him back and grants 1.7 s of invulnerability. Pits cost a heart and respawn
 him at the last checkpoint. Hunger drains at 0.8/s; conchas restore 30. At zero
 hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
 
@@ -249,8 +249,8 @@ heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
 one missing heart. At full health it stays in the world for later.
 
 ### Day, night & waves
-Day 1 lasts 38 s, Night 1 is 31 s with 3 rival waves, Day 2 is 33 s, Night 2 is
-36 s with 4 waves. Night darkens the street (lit windows pop), sends Polo, the
+Day 1 lasts 38 s, Night 1 is 31 s with 2 rival waves, Day 2 is 33 s, Night 2 is
+36 s with 3 waves. Night darkens the street (lit windows pop), sends Polo, the
 chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
 The compact HUD labels health/flaps/hunger; the **O / OBJETIVOS** panel pauses the
@@ -482,10 +482,10 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 
 | Risk | Mitigation |
 | --- | --- |
-| Rivals feel unfair at speed | 0.42 s crouch/`!`/growl lunge wind-up; stop at turf edges; 0.65 s squirrel pause |
+| Rivals feel unfair at speed | 0.6 s crouch/`!`/growl lunge wind-up; slower lunges and longer cooldowns; stop at turf edges; 0.65 s squirrel pause |
 | Hunger is annoying rather than tense | Slow drain (0.8/s), generous conchas, dawn refill; no death spiral in one minute |
-| Night waves overwhelm | 3/4 waves, 6 s apart, spawn at block edges; porch safe |
-| Health too punishing with 3 hearts | Dawn heal, 1.2 s i-frames, knockback instead of teleport |
+| Night waves overwhelm | 2/3 waves, 6 s apart, spawn at block edges; porch safe |
+| Health too punishing with 3 hearts | Dawn heal, 1.7 s i-frames, knockback instead of teleport |
 | Piñata supplies trivialize survival | 3 hits, cooldown, modest food drop |
 | Awnings break level pacing | One-way, placed in gaps as optional high routes |
 | Black chow disappears at night | Lavender rim light + bright tongue/collar |

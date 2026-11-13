@@ -2463,7 +2463,7 @@ export default class Level1 extends Phaser.Scene {
     this.phaseTime =
       this.levelData.timings.night +
       this.nightsSurvived * this.levelData.timings.nightStep;
-    this.waveTotal = 3 + this.nightsSurvived;
+    this.waveTotal = 2 + this.nightsSurvived;
     this.waveSpawned = 0;
     this.nextWave = 2;
     this.gateRusherSpawned = false;
@@ -2627,8 +2627,8 @@ export default class Level1 extends Phaser.Scene {
           scale: 0.85,
           baseSpeed: 72,
           chaseSpeed: 152,
-          lungeSpeed: 260,
-          attackCooldown: 1700,
+          lungeSpeed: 220,
+          attackCooldown: 2400,
         };
       case 'thief':
         return {
@@ -2638,8 +2638,8 @@ export default class Level1 extends Phaser.Scene {
           scale: 0.95,
           baseSpeed: 66,
           chaseSpeed: 138,
-          lungeSpeed: 220,
-          attackCooldown: 2100,
+          lungeSpeed: 190,
+          attackCooldown: 3000,
         };
       case 'brute':
         return {
@@ -2650,14 +2650,14 @@ export default class Level1 extends Phaser.Scene {
           health: 2,
           baseSpeed: 40,
           chaseSpeed: 96,
-          lungeSpeed: 190,
-          attackCooldown: 2800,
+          lungeSpeed: 165,
+          attackCooldown: 3600,
         };
       default:
         return {
           role: 'normal',
-          lungeSpeed: 220,
-          attackCooldown: 2300,
+          lungeSpeed: 190,
+          attackCooldown: 3200,
         };
     }
   }
@@ -3311,7 +3311,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     sfx.hurt();
-    this.dog.invuln = 1.2;
+    this.dog.invuln = 1.7;
     this.dog.setTint(0xff6b6b);
     this.time.delayedCall(180, () => this.dog.clearTint());
 
@@ -3344,7 +3344,7 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setRotation(0);
     this.dog.setAlpha(1);
     this.dog.dead = false;
-    this.dog.invuln = 1.1;
+    this.dog.invuln = 1.5;
     this.dog.flaps = this.dog.maxFlaps;
     this.touch?.reset();
 

@@ -38,8 +38,8 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.baseScale = opts.scale ?? 1;
     this.baseSpeed = (opts.baseSpeed ?? 55) * S;
     this.chaseSpeed = (opts.chaseSpeed ?? 120) * S;
-    this.lungeSpeed = (opts.lungeSpeed ?? 220) * S;
-    this.attackCooldown = opts.attackCooldown ?? (this.role === 'alpha' ? 2700 : 2300);
+    this.lungeSpeed = (opts.lungeSpeed ?? 190) * S;
+    this.attackCooldown = opts.attackCooldown ?? (this.role === 'alpha' ? 3400 : 3200);
     this.attackState = null;
     this.attackUntil = 0;
     this.nextLunge = this.scene.time.now + 900 + Math.random() * 1400;
@@ -79,7 +79,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
   beginWindup(dog) {
     this.attackState = 'windup';
     this.attackUntil =
-      this.scene.time.now + (this.role === 'alpha' ? 520 : 420);
+      this.scene.time.now + (this.role === 'alpha' ? 650 : 600);
     this.dir = dog.x < this.x ? -1 : 1;
     this.body.setVelocityX(0);
     this.setTexture(this.idleTexture);
@@ -227,7 +227,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       this.role !== 'rusher' &&
       this.body.blocked.down &&
       Math.abs(dx) > 25 * S &&
-      Math.abs(dx) < 125 * S &&
+      Math.abs(dx) < 110 * S &&
       this.scene.time.now > this.nextLunge;
     if (canLunge) {
       this.beginWindup(dog);
