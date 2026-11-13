@@ -5,6 +5,8 @@ export const lasOrillas = {
   nameKey: 'map.orillas',
   introKey: 'level.intro.orillas',
   winTitleKey: 'win.orillasTitle',
+  storyIntroKey: 'story.orillas',
+  winEpilogueKey: 'win.orillasEpilogue',
   world: { width: 4600, height: 900 },
   spawn: { x: 64, y: 548 },
   theme: {

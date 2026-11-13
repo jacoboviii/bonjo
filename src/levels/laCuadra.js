@@ -16,6 +16,8 @@ export const laCuadra = {
   porch: { x: 105, key: 'bonjoHouse', roofWidth: 130 },
   safeZone: 160,
   features: { porch: true, errands: true, gateDefense: true },
+  storyIntroKey: 'story.casa',
+  winEpilogueKey: 'win.casaEpilogue',
 
   platforms: [
     { x: 0, y: 600, w: 520, h: 300 }, // starting ground

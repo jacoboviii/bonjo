@@ -249,6 +249,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.boneText) {
       this.boneText.x = this.touchDevice ? 132 * S : hudRight;
     }
+    if (this.storyLabel?.active) this.storyLabel.x = W / 2;
     if (this.comboText) this.comboText.x = hudRight;
     if (this.objectivesButton) this.objectivesButton.x = hudRight;
     if (this.hint) this.hint.x = W / 2;
@@ -270,6 +271,10 @@ export default class Level1 extends Phaser.Scene {
     }
     e.title.x = W / 2;
     e.stats.x = W / 2;
+    if (e.epilogue) {
+      e.epilogue.x = W / 2;
+      e.epilogue.setWordWrapWidth(Math.min(W - 64 * U, 440 * U) - 24 * U);
+    }
     if (e.rank) e.rank.x = W / 2;
     e.box.x = W / 2;
     e.prompt.x = W / 2;
@@ -2285,6 +2290,37 @@ export default class Level1 extends Phaser.Scene {
       yoyo: true,
       onComplete: () => this.introLabel?.destroy(),
     });
+
+    if (this.levelData.storyIntroKey) {
+      this.storyLabel = this.add
+        .text(
+          this.scale.width / 2,
+          65 * S,
+          t(this.levelData.storyIntroKey),
+          {
+            fontFamily: 'monospace',
+            fontSize: 5.5 * S,
+            color: '#fff4e0',
+            stroke: '#2b1b3d',
+            strokeThickness: 2 * S,
+            align: 'center',
+            wordWrap: { width: this.scale.width - 40 * U },
+          },
+        )
+        .setOrigin(0.5, 0)
+        .setScrollFactor(0)
+        .setDepth(100)
+        .setAlpha(0);
+
+      this.tweens.add({
+        targets: this.storyLabel,
+        alpha: 1,
+        duration: 350,
+        hold: 1200,
+        yoyo: true,
+        onComplete: () => this.storyLabel?.destroy(),
+      });
+    }
   }
 
   // --- per-frame helpers ---------------------------------------------------
@@ -3622,8 +3658,25 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
+    const epilogue = this.add
+      .text(
+        W / 2,
+        53 * S,
+        t(this.levelData.winEpilogueKey || 'win.casaEpilogue'),
+        {
+          fontFamily: 'monospace',
+          fontSize: 4 * S,
+          color: '#2b1b3d',
+          align: 'center',
+          wordWrap: { width: cardW - 24 * U },
+        },
+      )
+      .setOrigin(0.5, 0)
+      .setScrollFactor(0)
+      .setDepth(202);
+
     const stats = this.add
-      .text(W / 2, 64 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
+      .text(W / 2, 66 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
         fontFamily: 'monospace',
         fontSize: 9 * S,
         color: '#1d1326',
@@ -3660,7 +3713,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(203);
 
     const mapButton = this.addEndMapButton(W);
-    this.endLayout = { overlay, card, title, stats, rank, box, prompt, mapButton };
+    this.endLayout = { overlay, card, title, epilogue, stats, rank, box, prompt, mapButton };
   }
 
   addEndMapButton(W) {

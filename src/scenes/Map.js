@@ -465,7 +465,9 @@ export default class Map extends Phaser.Scene {
             : t('map.current'),
       )
       .setColor(locked ? '#6a5a70' : progress.cleared ? '#2f7f78' : '#ffa94d');
-    this.detailDesc.setText(t(level.descKey));
+    this.detailDesc.setText(
+      t(progress.cleared && level.peaceKey ? level.peaceKey : level.descKey),
+    );
     this.detailBest.setText(
       progress.best ? t('map.best', { score: progress.best }) : '',
     );

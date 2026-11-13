@@ -59,6 +59,12 @@ He is the dog who can hold the gate, carry the harvest and end a fight; the
 reward is a quieter block, not a bigger crown. The old top dog rules by taking
 space. Bonjo makes space for everyone else, then rests.
 
+**Story delivery.** Each level has a short tension line at its opening and a
+peaceful epilogue on the win card. After completion, the map landmark switches
+from its objective description to a restored-place description. Rival defeat
+banners say they step aside, not fall. The story lives in the change of the
+place and the next line of dialogue, not in a cutscene.
+
 **Tone:** warm, funny, non-lethal. Spanish is used naturally for place and
 flavor (`la cuadra`, `¡guau!`, `¡échale!`, `papel picado`), not as a punchline.
 
