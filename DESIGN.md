@@ -172,8 +172,8 @@ them in the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
 `E` / the touch action button does one of two things depending on proximity:
 talk or ring when an NPC/quest prompt is active, otherwise perform a short
 Bonjo spin. The spin is the everyday attack: one point of damage per spin,
-plus a short daze and a firm knockback. Its small halo expands to the exact body-sized damage radius;
-it is not a second hitbox. Dive is the stronger committed attack:
+plus a short daze and a firm knockback. Its halo expands to the exact damage radius, sized to cover Bonjo plus
+an adjacent enemy sprite; it is not a second hitbox. Dive is the stronger committed attack:
 two points of damage and a bounce. A deliberate down-input on the ground starts
 a short forward slide in the facing direction; slide contact deals one point.
 Bonjo has two slide charges, recharging after 1.2 s, and is briefly damage-immune

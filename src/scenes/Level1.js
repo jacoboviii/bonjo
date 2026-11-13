@@ -1347,10 +1347,11 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(this.dog.x, this.dog.y, 1);
 
     // The halo is the visual boundary of the spin's hit area, not a second
-    // damage source. Its final radius is exactly the damage radius; the
-    // expanding pulse is only a visual flourish.
-    const radius = 10 * S;
-    const ringBase = 3 * S;
+    // damage source. The radius covers Bonjo plus an adjacent enemy sprite,
+    // which makes touching sprites register reliably. Its final radius is
+    // exactly the damage radius; the expanding pulse is only a flourish.
+    const radius = 18 * S;
+    const ringBase = 4 * S;
     const ring = this.add
       .circle(this.dog.x, this.dog.y, ringBase, 0x000000, 0)
       .setStrokeStyle(3 * S, 0xffd166, 0.9)
