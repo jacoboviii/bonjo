@@ -20,7 +20,7 @@ export const DEFAULTS = Object.freeze({
   diveMaxFall: 1100, // max dive speed
 
   // --- running -----------------------------------------------------------
-  runSpeed: 260, // top horizontal speed
+  runSpeed: 230, // top horizontal speed
   groundAccel: 2400, // how fast you reach top speed on the ground
   airAccel: 1500, // how fast you steer in the air
   groundFriction: 2600, // how fast you stop on the ground
