@@ -186,8 +186,10 @@ spends one ALAS pip, using the same stamina pool as air flaps; the pips refill
 after a short grounded rest or on landing. Bonjo is briefly damage-immune
 during each slide. Every connecting spin or dive throws a small impact ring,
 dust burst and light camera kick; the dive's version is the heaviest. Dive
-landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo
-once, subdues bone-thief critters and can hit a piñata.
+landings no longer slide automatically. The spin starts immediately, snaps
+through one rotation in 260 ms and has a ~420 ms cooldown; one press during
+that recovery is buffered so it fires as soon as the cooldown ends. It subdues
+bone-thief critters and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
 is flap, spin and dive, with spin beside jump; the talk button appears above

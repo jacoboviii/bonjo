@@ -20,6 +20,13 @@ const S = SCALE;
 // Small UI offsets were authored in the old 2x render space.
 const U = S / 2;
 
+// The spin is the default attack, so it starts immediately and recovers
+// quickly. The cooldown stays above the rival hit cooldown so chained spins
+// can still damage the same target.
+const SPIN_COOLDOWN_MS = 420;
+const SPIN_DURATION_MS = 260;
+const SPIN_RING_MS = 220;
+
 let WORLD_W;
 let WORLD_H;
 let PLATFORMS;
@@ -171,6 +178,7 @@ export default class Level1 extends Phaser.Scene {
     this.actionQueued = false;
     this.nextInteractAt = 0;
     this.nextSpinAt = 0;
+    this.spinBufferAt = 0;
     this.activeInteractable = null;
     this.dialogOpen = false;
     this.dialogTimer = null;
@@ -297,6 +305,10 @@ export default class Level1 extends Phaser.Scene {
     if (!this.won && !this.gameOverFlag) {
       this.dog.update(delta);
       this.updateSpinAttack();
+      if (this.spinBufferAt && this.time.now >= this.spinBufferAt) {
+        this.spinBufferAt = 0;
+        this.spinAttack();
+      }
       this.updateSurvival(dt);
 
       this.crowGroup.children.iterate((crow) => {
@@ -1337,11 +1349,17 @@ export default class Level1 extends Phaser.Scene {
   spinAttack() {
     if (this.won || this.gameOverFlag || this.dog.dead || this.dialogOpen) return;
     const now = this.time.now;
-    if (now < this.nextSpinAt) return;
-    this.nextSpinAt = now + 650;
+    if (now < this.nextSpinAt) {
+      // Keep one press buffered so a slightly early input fires as soon as the
+      // short recovery ends instead of being lost.
+      this.spinBufferAt = this.nextSpinAt;
+      return;
+    }
+    this.spinBufferAt = 0;
+    this.nextSpinAt = now + SPIN_COOLDOWN_MS;
 
     this.dog.spinStart = now;
-    this.dog.spinUntil = now + 320;
+    this.dog.spinUntil = now + SPIN_DURATION_MS;
     this.dog.spinDir = this.dog.facing >= 0 ? 1 : -1;
 
     sfx.spin();
@@ -1351,7 +1369,7 @@ export default class Level1 extends Phaser.Scene {
     // damage source. It follows Bonjo for the whole spin, so moving or jumping
     // carries the ring and its damage window with him.
     const radius = 18 * S;
-    const ringBase = 4 * S;
+    const ringBase = 6 * S;
     this.spinRadius = radius;
     this.spinHitTargets = new Set();
     this.spinRing?.destroy();
@@ -1364,7 +1382,7 @@ export default class Level1 extends Phaser.Scene {
       targets: ring,
       scale: radius / ringBase,
       alpha: 0,
-      duration: 320,
+      duration: SPIN_RING_MS,
       ease: 'Quad.out',
       onComplete: () => {
         ring.destroy();
