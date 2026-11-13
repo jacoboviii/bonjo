@@ -176,8 +176,9 @@ direction. Slide contact deals one point, so a dive can clean up an enemy it
 lands beside. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
 squirrels and can hit a piñata.
 
-On touch, all five controls use the same button size on one bottom line. The
-right-hand cluster is flap, dive and the contextual talk/spin button.
+On touch, all five controls use the same button size. The bottom-right cluster
+is flap, dive and the always-available spin button; the talk button appears
+above that cluster when an NPC or bell prompt is nearby.
 
 ### Rival dogs (main enemy)
 The first level has a light daytime patrol of four rivals, four critters and

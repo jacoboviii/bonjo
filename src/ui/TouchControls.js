@@ -17,6 +17,7 @@ export default class TouchControls {
     this.state = { left: false, right: false, down: false, jumpHeld: false };
     this.jumpQueued = false;
     this.interactQueued = false;
+    this.actionQueued = false;
     this.interactAvailable = false;
     this.dialogMode = false;
     this.visible = false;
@@ -41,6 +42,7 @@ export default class TouchControls {
     this.addButton('jump', W - 60 * U, 240 * U, 'btn-jump', buttonScale);
     this.addButton('dive', W - 124 * U, 240 * U, 'btn-dive', buttonScale);
     this.addButton('interact', W - 188 * U, 240 * U, 'btn-spin', buttonScale);
+    this.addButton('talk', W - 124 * U, 174 * U, 'btn-interact', buttonScale);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
     scene.input.on('pointerup', (pointer) => this.onUp(pointer));
@@ -53,6 +55,7 @@ export default class TouchControls {
     if (this.buttons.jump) this.buttons.jump.x = width - 60 * U;
     if (this.buttons.dive) this.buttons.dive.x = width - 124 * U;
     if (this.buttons.interact) this.buttons.interact.x = width - 188 * U;
+    if (this.buttons.talk) this.buttons.talk.x = width - 124 * U;
   }
 
   addButton(name, x, y, texture, scale) {
@@ -79,11 +82,16 @@ export default class TouchControls {
       return;
     }
 
-    // The action button is a one-shot tap: talk when a prompt is available,
-    // otherwise spin. It is always visible on touch.
+    // Separate one-shot buttons: talk is contextual, action is always spin.
+    if (name === 'talk') {
+      if (!this.interactAvailable || this.dialogMode) return;
+      this.interactQueued = true;
+      this.flash(name);
+      return;
+    }
     if (name === 'interact') {
       if (this.dialogMode) return;
-      this.interactQueued = true;
+      this.actionQueued = true;
       this.flash(name);
       return;
     }
@@ -175,13 +183,14 @@ export default class TouchControls {
     return true;
   }
 
+  consumeAction() {
+    if (!this.actionQueued) return false;
+    this.actionQueued = false;
+    return true;
+  }
+
   setInteractAvailable(available) {
     this.interactAvailable = available;
-    const button = this.buttons.interact;
-    if (button) {
-      const texture = available ? 'btn-interact' : 'btn-spin';
-      if (button.texture.key !== texture) button.setTexture(texture);
-    }
     this.syncButtonVisibility();
   }
 
@@ -193,7 +202,10 @@ export default class TouchControls {
 
   syncButtonVisibility() {
     for (const [name, img] of Object.entries(this.buttons)) {
-      const show = this.visible && !this.dialogMode;
+      const show =
+        this.visible &&
+        !this.dialogMode &&
+        (name !== 'talk' || this.interactAvailable);
       img.setVisible(show);
       if (img.input) img.input.enabled = show;
     }
@@ -207,6 +219,7 @@ export default class TouchControls {
     this.state.jumpHeld = false;
     this.jumpQueued = false;
     this.interactQueued = false;
+    this.actionQueued = false;
     this.dirPointer = null;
     this.pointerHandlers.clear();
 

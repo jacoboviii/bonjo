@@ -168,6 +168,7 @@ export default class Level1 extends Phaser.Scene {
     this.nextDistantBark = 0;
     this.nextRooster = 0;
     this.interactQueued = false;
+    this.actionQueued = false;
     this.nextInteractAt = 0;
     this.nextSpinAt = 0;
     this.activeInteractable = null;
@@ -1317,7 +1318,9 @@ export default class Level1 extends Phaser.Scene {
       this.activeInteractable = null;
       this.touch?.setInteractAvailable(false);
       this.updateInteractionPrompt(null);
-      if (this.consumeInteractPress()) this.closeDialog();
+      if (this.consumeInteractPress() || this.consumeActionPress()) {
+        this.closeDialog();
+      }
       return;
     }
 
@@ -1326,10 +1329,8 @@ export default class Level1 extends Phaser.Scene {
     this.touch?.setInteractAvailable(!!item);
     this.updateInteractionPrompt(item);
 
-    if (this.consumeInteractPress()) {
-      if (item) item.action();
-      else this.spinAttack();
-    }
+    if (this.consumeInteractPress() && item) item.action();
+    if (this.consumeActionPress()) this.spinAttack();
   }
 
   spinAttack() {
@@ -1438,6 +1439,12 @@ export default class Level1 extends Phaser.Scene {
     return true;
   }
 
+  consumeActionPress() {
+    const pressed = this.actionQueued || this.touch?.consumeAction() || false;
+    this.actionQueued = false;
+    return pressed;
+  }
+
   givePoloGift() {
     this.poloGift = false;
     this.poloIcon.setVisible(false);
@@ -1500,6 +1507,9 @@ export default class Level1 extends Phaser.Scene {
       this.scene.restart();
     });
     this.input.keyboard.on('keydown-E', () => {
+      this.actionQueued = true;
+    });
+    this.input.keyboard.on('keydown-F', () => {
       this.interactQueued = true;
     });
     this.input.keyboard.on('keydown-O', () => this.toggleObjectives());
@@ -1999,7 +2009,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.interactBubble.setVisible(false);
     this.interactPrompt
-      .setText(`E · ${t(item.prompt)}`)
+      .setText(`F · ${t(item.prompt)}`)
       .setPosition(x, y)
       .setVisible(true);
     if (this.interactPrompt.input) this.interactPrompt.input.enabled = true;
