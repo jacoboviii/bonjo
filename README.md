@@ -111,9 +111,9 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | Key | Ground | Air |
 | --- | --- | --- |
 | **A / D** or arrows | Run | Steer |
-| **SPACE** / **W** | Jump (hold for height) | Flap (2 charges) |
+| **SPACE** / **W** | Jump (hold for height) | Flap (spends 1 ALAS pip) |
 | **Hold SPACE** | — | Glide (slow fall) |
-| **S** / **↓** | Slide attack (grounded, 2 charges, brief dodge) | Dive (subdue rivals, pop crows) |
+| **S** / **↓** | Dodge-slide (grounded, spends 1 ALAS pip, brief dodge) | Dive (subdue rivals, pop crows) |
 | **E** / touch spin | Spin-attack nearby rivals | — |
 | **F** / touch talk | Talk to friendly NPCs, ring the bell | — |
 | **O** | Open/close objectives | Open/close objectives |
@@ -131,7 +131,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** action cluster — ▲ flap, ▼ dive/slide and the spin button
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
-- **top bar:** flaps, health, hunger, bones and the day/gate readout live in one compact strip
+- **top bar:** ALAS stamina, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
 - The title and map switch to larger touch targets: a tappable play button, bigger EN/ES language pills, a larger map play button and a roomier back button.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
@@ -155,8 +155,9 @@ near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
 spin that dazes, knocks back and damages nearby rivals. Dive from the air for
 the heavier finisher and its damaging landing shockwave; press down while
-grounded for a short damaging slide. Every connecting attack adds a small
-impact ring, dust burst and camera kick.
+grounded for a short dodge-slide that spends one ALAS pip and deals no damage.
+Every connecting spin or dive adds a small impact ring, dust burst and camera
+kick.
 Polo's dialog hands over
 the daily concha. Survive the level's nights and final boss; bones, combo and a
 clean run feed your score and rank.
@@ -214,6 +215,7 @@ there to make them permanent.
 
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide, dive — each with its own animation pose
+- **ALAS stamina** pays for air flaps and grounded dodge-slides; landing or a short rest refills it
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, concha pickups, dawn healing
 - **Life hearts** placed in every level and hidden in marked piñatas; the first raises max health, later hearts heal
@@ -224,11 +226,11 @@ there to make them permanent.
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
-- **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
+- **Compact labeled status HUD** for health, ALAS stamina and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; grounded down-input slides (two quick charges with brief dodge frames), and an airborne dive is the heavier finisher
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; grounded down-input slides dodge briefly and spend one ALAS pip each, sharing stamina with air flaps; an airborne dive is the heavier finisher
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
-- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
+- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra ALAS pip (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks

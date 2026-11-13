@@ -106,7 +106,7 @@ the conchas and piñatas you missed.
 | A / D or ← / → | Run | Steer |
 | SPACE / W (press) | Jump | Flap |
 | SPACE / W (hold) | — | Glide while falling |
-| S / ↓ | Slide attack | Dive |
+| S / ↓ | Dodge-slide | Dive |
 | E | Spin attack | Spin attack |
 | F | Talk / ring / interact | Talk / ring / interact |
 | Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
@@ -116,7 +116,7 @@ the conchas and piñatas you missed.
 | R | Restart | Restart |
 | Touch ◀ ▶ | Run (slide between) | Steer |
 | Touch ▲ (tap/hold) | Jump | Flap / glide |
-| Touch ▼ | — | Dive |
+| Touch ▼ | Dodge-slide | Dive |
 | Touch 💬 | Talk / ring / interact | Talk / ring / interact |
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
@@ -161,8 +161,10 @@ are design pixels (1 design px = 3 render px).
 
 **State machine:** grounded → jump → flap ×2 → glide (hold, falling) → dive
 (hold S in the air). On the ground, a fresh S/↓ press starts a short forward
-slide instead. Landing refills flaps. Awnings also refill flaps; rings refill
-them in the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
+slide instead. Grounded slides spend ALAS pips, so they share stamina with air
+flaps. Landing refills ALAS; a grounded slide also refills after a short rest.
+Awnings and rings refill ALAS in the air. Jump cut only applies to ground jumps,
+after the 90 ms minimum.
 
 ---
 
@@ -176,11 +178,12 @@ plus a short daze and a firm knockback. Its halo expands to the exact damage rad
 an adjacent enemy sprite; it is not a second hitbox. Dive is the stronger committed attack:
 two points of damage, a stronger bounce and a ground shockwave that chips
 nearby rivals for one point. A deliberate down-input on the ground starts
-a short forward slide in the facing direction; slide contact deals one point.
-Bonjo has two slide charges, recharging after 1.2 s, and is briefly damage-immune
-during each slide. Every connecting attack throws a small impact ring, dust
-burst and light camera kick; the dive's version is the heaviest. Dive landings
-no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo
+a short forward dodge-slide in the facing direction. It deals no damage and
+spends one ALAS pip, using the same stamina pool as air flaps; the pips refill
+after a short grounded rest or on landing. Bonjo is briefly damage-immune
+during each slide. Every connecting spin or dive throws a small impact ring,
+dust burst and light camera kick; the dive's version is the heaviest. Dive
+landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo
 once, startles squirrels and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
@@ -284,7 +287,7 @@ Day 1 lasts 38 s, Night 1 is 31 s with 2 rival waves, Day 2 is 33 s, Night 2 is
 36 s with 3 waves. Night darkens the street (lit windows pop), sends Polo, the
 chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
-The compact HUD labels health/flaps/hunger; the **O / OBJETIVOS** panel pauses the
+The compact HUD labels health/ALAS stamina/hunger; the **O / OBJETIVOS** panel pauses the
 game and explains the current goal, day errands and each HUD meter, including
 dawn warnings and the top-dog hit count. The final night adds gate rushers and, at
 roughly 12 s left, the top dog. Repel it to win; the timer will wait at zero
@@ -475,7 +478,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 
 ### In this slice
 - La Cuadra: town background, flat adobe street, papel picado, porch
-- Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive, grounded slide, spin
+- Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive, grounded stamina-driven dodge-slide, spin
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
 - **Survival:** 3 hearts (expandable to 4 with life hearts), hunger bar, conchas, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas

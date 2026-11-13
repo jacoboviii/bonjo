@@ -3060,15 +3060,6 @@ export default class Level1 extends Phaser.Scene {
         shakeDuration: 60,
         shakeIntensity: 0.0018,
       },
-      slide: {
-        color: 0xfff4e0,
-        radius: 15 * S,
-        width: 3 * S,
-        duration: 220,
-        puffs: 4,
-        shakeDuration: 75,
-        shakeIntensity: 0.0022,
-      },
       dive: {
         color: 0xfff4e0,
         radius: 17 * S,
@@ -3174,6 +3165,10 @@ export default class Level1 extends Phaser.Scene {
         rival.body.setVelocityY(-70 * S);
       }
     }
+  }
+
+  onSlideBlocked() {
+    this.floatText(this.dog.x, this.dog.y - 16 * S, t('float.tired'), '#f26b5e');
   }
 
   onSlideStart() {
@@ -3394,13 +3389,11 @@ export default class Level1 extends Phaser.Scene {
 
   hitRival(dog, rival) {
     if (rival.defeated || !rival.active) return;
-    // The spin and the landing slide are attacks, not vulnerability windows.
+    // Spin is an attack window; slide is a dodge window. Neither is a
+    // vulnerability window.
     if (this.dog.spinUntil > this.time.now) return;
     if (this.dog.slideUntil > this.time.now) {
-      const wasReady =
-        rival.maxHealth <= 1 || this.time.now >= (rival.nextHit || 0);
-      this.damageRival(rival, 1, { source: 'slide', bounce: false });
-      if (wasReady) this.onAttackHit(rival, 'slide');
+      // Slide is a dodge, not an attack: passing through a rival is safe.
       return;
     }
 
@@ -3413,9 +3406,9 @@ export default class Level1 extends Phaser.Scene {
     this.hurt(rival);
   }
 
-  // Spin is the everyday attack: half a point of damage per spin, plus a
-  // short daze and a little knockback. Dive remains the stronger committed
-  // attack that removes a full point and bounces Bonjo away.
+  // Spin is the everyday attack: one point per spin, plus a short daze and
+  // knockback. Dive remains the stronger committed attack with two direct
+  // points and a bounce.
   applySpinHit(rival) {
     if (rival.defeated || !rival.active) return;
 

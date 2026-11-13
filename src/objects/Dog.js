@@ -14,8 +14,9 @@ function moveTowards(current, target, maxDelta) {
 // ---------------------------------------------------------------------------
 // The dog. A small state machine on top of Arcade Physics:
 //
-//   ground jump  ->  flap (2 charges)  ->  glide (hold, while falling)
+//   ground jump  ->  flap (spends one ALAS pip)  ->  glide (hold, falling)
 //                                    \->  dive (hold S)
+//   grounded dodge-slide also spends one ALAS pip.
 //
 // All the numbers come from tuning.js so they can be changed live.
 // ---------------------------------------------------------------------------
@@ -60,9 +61,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.slideUntil = 0;
     this.slideDir = 1;
     this.slideSpeed = 0;
-    this.slideCharges = 2;
-    this.maxSlideCharges = 2;
-    this.slideRechargeAt = 0;
+    this.flapRechargeAt = 0;
     this.dodgeUntil = 0;
     this.downWasHeld = false;
     this.nextSlidePuff = 0;
@@ -155,7 +154,19 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     if (onGround) {
       this.coyote = tuning.coyoteMs / 1000;
-      this.flaps = this.maxFlaps; // landing refills your flaps
+      // Air flaps are refilled by landing. Grounded slides draw from the same
+      // ALAS pips, so they refill after a short grounded recharge instead of
+      // instantly every frame.
+      if (!wasOnGround) {
+        this.flaps = this.maxFlaps;
+        this.flapRechargeAt = 0;
+      } else if (
+        this.flapRechargeAt > 0 &&
+        this.scene.time.now >= this.flapRechargeAt
+      ) {
+        this.flaps = this.maxFlaps;
+        this.flapRechargeAt = 0;
+      }
       this.diving = false;
       this.gliding = false;
       this.jumpCutReady = false;
@@ -225,9 +236,6 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     // --- horizontal --------------------------------------------------------
     const moveNow = this.scene.time.now;
-    if (this.slideCharges < this.maxSlideCharges && moveNow >= this.slideRechargeAt) {
-      this.slideCharges = this.maxSlideCharges;
-    }
     if (this.slideUntil > moveNow) {
       // Grounded slide: keep the chosen facing direction and carry momentum.
       this.facing = this.slideDir;
@@ -320,10 +328,15 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
   startSlide() {
     const now = this.scene.time.now;
-    if (now < this.slideUntil || this.slideCharges <= 0) return;
+    if (now < this.slideUntil) return;
+    if (this.flaps <= 0) {
+      this.scene.onSlideBlocked?.(this);
+      return;
+    }
 
-    this.slideCharges -= 1;
-    this.slideRechargeAt = now + 1200;
+    // Slides spend the same ALAS stamina as air flaps.
+    this.flaps -= 1;
+    this.flapRechargeAt = now + 1200;
     this.dodgeUntil = now + 320;
     this.slideDir = this.facing || 1;
     this.slideSpeed = 280 * S;
