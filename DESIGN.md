@@ -161,6 +161,10 @@ the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
 ## 6. Systems
 
 ### Rival dogs (main enemy)
+The first level has a light daytime patrol of four rivals, four critters and
+three crows. Las Orillas raises that to five rivals, five snakes and four crows;
+future levels should continue the same step-up.
+
 Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
 same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
 They stop at the edges of their turf rather than running into pits. Diving onto

@@ -59,21 +59,19 @@ export const laCuadra = {
     [4400, 460], [4520, 380], [4400, 300], [4520, 220],
   ],
 
+  // The first level is the lightest patrol. Later levels add more rivals,
+  // critters and aerial hazards.
   squirrels: [
     { x: 700, y: 588, min: 640, max: 960 },
     { x: 1300, y: 588, min: 1140, max: 1460 },
     { x: 2700, y: 588, min: 2660, max: 2960 },
-    { x: 3400, y: 588, min: 3280, max: 3580 },
     { x: 3900, y: 588, min: 3680, max: 3940 },
-    { x: 4700, y: 588, min: 4300, max: 4900 },
   ],
 
   rivals: [
     { x: 360, y: 587, min: 180, max: 480 },
     { x: 1750, y: 587, min: 1660, max: 1960 },
-    { x: 3120, y: 587, min: 3090, max: 3190 },
     { x: 3850, y: 587, min: 3680, max: 3950 },
-    { x: 4100, y: 587, min: 4030, max: 4180 },
     { x: 4500, y: 587, min: 4300, max: 4900 },
   ],
 
@@ -103,7 +101,6 @@ export const laCuadra = {
   crows: [
     { x: 2900, y: 520, min: 2660, max: 2960 },
     { x: 4100, y: 520, min: 4030, max: 4180 },
-    { x: 4800, y: 520, min: 4400, max: 4900 },
     { x: 1510, y: 310, min: 1280, max: 1550 },
   ],
 
