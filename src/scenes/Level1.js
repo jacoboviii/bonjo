@@ -1352,20 +1352,21 @@ export default class Level1 extends Phaser.Scene {
       '#ffd166',
     );
 
+    // The halo is the visual boundary of the spin's hit area, not a second
+    // damage source. Its final radius matches the damage radius exactly.
+    const radius = 44 * S;
     const ring = this.add
       .circle(this.dog.x, this.dog.y, 12 * S, 0x000000, 0)
       .setStrokeStyle(3 * S, 0xffd166, 0.9)
       .setDepth(9);
     this.tweens.add({
       targets: ring,
-      scale: 3.6,
+      scale: radius / (12 * S),
       alpha: 0,
       duration: 320,
       ease: 'Quad.out',
       onComplete: () => ring.destroy(),
     });
-
-    const radius = 44 * S;
     for (const rival of this.rivalGroup?.getChildren() || []) {
       if (
         rival.active &&
@@ -3289,9 +3290,9 @@ export default class Level1 extends Phaser.Scene {
     if (rival.defeated || !rival.active) return;
 
     const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
-    rival.stun(450);
-    rival.body.setVelocityX(dir * 135 * S);
-    rival.body.setVelocityY(-70 * S);
+    rival.stun(550);
+    rival.body.setVelocityX(dir * 230 * S);
+    rival.body.setVelocityY(-105 * S);
     this.damageRival(rival, 1, { source: 'spin', bounce: false });
   }
 
