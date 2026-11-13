@@ -8,7 +8,7 @@ const S = SCALE;
 // while the dog is nearby. Dive/stomp it to make it drop the bone. If it
 // reaches the end of its patrol while carrying, it escapes with the loot.
 // At night the same bone-thief slot becomes a nocturnal skunk by default;
-// levels can supply another critter, such as Las Orillas snakes.
+// levels can supply another critter, such as the Las Orillas geese.
 // ---------------------------------------------------------------------------
 export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, minX, maxX, opts = {}) {
@@ -33,6 +33,7 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     this.runTexture = this.dayRunTexture;
     this.nightIdleTexture = opts.nightIdleTexture || 'skunk';
     this.nightRunTexture = opts.nightRunTexture || 'skunkRun';
+    this.voice = opts.voice || null;
 
     this.carrying = false;
     this.carried = null;

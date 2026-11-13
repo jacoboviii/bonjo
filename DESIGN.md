@@ -41,7 +41,7 @@ arena: one flat run of pavement broken by a few gaps, with awnings and rings
 over the holes.
 
 At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
-agave, dust, snakes, and farm dogs who have never seen a chow before. That's
+agave, dust, geese, and farm dogs who have never seen a chow before. That's
 level 2: three nights and an aggressive Chihuahua boss.
 
 **The survival loop:** Day 1 is for scavenging — bones, conchas, piñatas, and
@@ -189,7 +189,7 @@ above that cluster when an NPC or bell prompt is nearby.
 
 ### Rival dogs (main enemy)
 The first level has a light daytime patrol of four rivals, four critters and
-three crows. Las Orillas raises that to five rivals, five snakes and four crows;
+three crows. Las Orillas raises that to five rivals, five geese and four crows;
 future levels should continue the same step-up.
 
 Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
@@ -354,7 +354,8 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 
 - Continuous field floor with no pit gaps; houses and props sit on solid ground.
 - Agave rows and crop-line dressing.
-- Snakes replace the squirrel bone-thief slot, including at night.
+- Geese replace the squirrel bone-thief slot, including at night. They waddle,
+  flutter between patrol points and honk when startled or caught stealing.
 - **Three nights**, ending with an aggressive **Chihuahua boss** instead of the top dog.
 - Farmhouse rooftops remain standable one-way platforms.
 - No porch, Polo, bell or gate defense; those systems are feature-driven off.
@@ -369,7 +370,7 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 - Pacing: 35 s day, 31 s first night with +5 s per night, 31 s between nights;
   the third night lasts 41 s before the Chihuahua pressure.
 - Future: windmill/water-pump traversal, crop hazards, harvest escort and
-  snake-specific attacks.
+  goose-specific attacks.
 
 ### Future landmarks — the objective spine
 
@@ -448,6 +449,7 @@ compressor keeps mobile speakers from clipping.
 | Rival growl | low filtered saw + breath noise before a lunge |
 | Rival bark | chest-noise transient + filtered canine woof |
 | Rival subdued | descending, vibrating yelp |
+| Goose honk | nasal sawtooth honk with a short square-wave tail |
 | Bonjo spin | quick cloth whoosh + bright two-note chime |
 | Attack connect | dry impact tick + low body thump |
 | Dive slam | deep double thump + low grit + bright impact tail |
@@ -483,8 +485,8 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, power-ups, no-hit/time bonuses, S–D rank
 - **End reward:** Golden Wing token at the far end of each level grants +1 flap for the run
-- Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; snakes in Las Orillas; two crows/owls; Chihuahua boss
-- Ambient day birds/rooster; night skunks/snakes, owls, bats and cats; fenced level ends
+- Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; geese in Las Orillas; two crows/owls; Chihuahua boss
+- Ambient day birds/rooster; night skunks/geese, owls, bats and cats; fenced level ends
 - Piñatas with concha or life-heart drops, bouncing awnings
 - Bones, rings, checkpoints
 - Walk cycle, sit/pant idle

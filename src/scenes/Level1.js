@@ -1386,7 +1386,9 @@ export default class Level1 extends Phaser.Scene {
           squirrel.y,
         ) < radius
       ) {
+        const wasStartled = squirrel.startled > 0;
         squirrel.startled = Math.max(squirrel.startled || 0, 0.65);
+        if (!wasStartled) this.critterVoice(squirrel);
       }
     }
 
@@ -3290,6 +3292,12 @@ export default class Level1 extends Phaser.Scene {
     this.hurt(crow);
   }
 
+  critterVoice(critter) {
+    if (critter.voice && typeof sfx[critter.voice] === 'function') {
+      sfx[critter.voice]();
+    }
+  }
+
   hitSquirrel(dog, squirrel) {
     if (squirrel.defeated || !squirrel.active) return;
 
@@ -3300,6 +3308,7 @@ export default class Level1 extends Phaser.Scene {
 
       this.dropSquirrelBone(squirrel);
       sfx.stomp();
+      this.critterVoice(squirrel);
       this.spawnPuff(squirrel.x, squirrel.y, 1);
       this.tweens.add({
         targets: squirrel,
@@ -3340,6 +3349,7 @@ export default class Level1 extends Phaser.Scene {
     squirrel.boneIcon.setVisible(true).setPosition(squirrel.x, squirrel.y - 12 * S);
 
     sfx.steal();
+    this.critterVoice(squirrel);
     this.floatText(squirrel.x, squirrel.y - 22 * S, t('float.hey'), '#ffd166');
   }
 

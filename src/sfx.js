@@ -289,6 +289,18 @@ export const sfx = {
     osc({ type: 'triangle', f0: 520, f1: 900, dur: 0.18, vol: 0.018 });
     osc({ type: 'sine', f0: 1040, dur: 0.12, vol: 0.01, delay: 0.08 });
   },
+  honk: () => {
+    osc({
+      type: 'sawtooth',
+      f0: 390,
+      f1: 230,
+      dur: 0.16,
+      vol: 0.02,
+      filter: { f0: 1500, f1: 850, q: 1.3 },
+    });
+    osc({ type: 'square', f0: 250, f1: 190, dur: 0.12, vol: 0.008, delay: 0.04 });
+    noise({ dur: 0.05, vol: 0.008, type: 'bandpass', f0: 1000, f1: 600, q: 1.1 });
+  },
   slide: () => {
     noise({ dur: 0.18, vol: 0.022, type: 'bandpass', f0: 1600, f1: 420, q: 0.8 });
     thump(90, 0.018, 0.1);

@@ -50,10 +50,10 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   **fast** dogs, masked **bone thieves**, spiked-collar **brutes**, and on the
   final night the **top dog** in La Cuadra or the **Chihuahua boss** in Las
   Orillas.
-- **Squirrels & snakes:** small bone thieves. La Cuadra's bushy-tailed
-  squirrels become skunks at night; Las Orillas uses snakes day and night.
+- **Squirrels, skunks & geese:** small bone thieves. La Cuadra's bushy-tailed
+  squirrels become skunks at night; Las Orillas uses geese day and night.
 - **Crows:** one rare aerial pest, plus a far-block crow; their wings flap as they patrol and they caw when Bonjo gets close. At night the same slot becomes a hunting owl.
-- **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its snakes. Bats cross the dark and the cats keep their watch.
+- **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its geese. Bats cross the dark and the cats keep their watch.
 - **Piñatas:** hanging by ropes from street utility poles. Jump, flap or dive into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones. Most leave a concha;
   piñatas with a small heart marker leave a **life heart** instead.
@@ -218,11 +218,11 @@ there to make them permanent.
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, concha pickups, dawn healing
 - **Life hearts** placed in every level and hidden in marked piñatas; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
-- **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, snakes and an aggressive Chihuahua boss
+- **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, geese and an aggressive Chihuahua boss
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
-- **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or snakes in Las Orillas
+- **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
@@ -234,7 +234,7 @@ there to make them permanent.
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
 - **Named NPC dialog cards**, Polo's daily concha, bell blessing, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
-- **Squirrels/skunks** in La Cuadra and **snakes** in Las Orillas that steal bones; two crows
+- **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**
 - Wind rings that refill flaps mid-air
 - Bones, concha food, two checkpoint balloons, a safe **porch**
@@ -339,7 +339,7 @@ files):
 | `rivalBrute`, `rivalBruteRun` | 48×45 | scarred brute, spiked collar |
 | `crow`, `crowFlap` | 42×27 | two-frame wingbeat, facing right |
 | `squirrel`, `squirrelRun` | 48×42 | 2-frame run cycle |
-| `snake`, `snakeRun` | 48×42 | Las Orillas critter replacement |
+| `goose`, `gooseRun` | 48×42 | Las Orillas bone thief; honks when startled |
 | `chihuahuaBoss`, `chihuahuaBossRun` | 60×60 | aggressive Las Orillas boss |
 | `pinata` | 36×45 | star piñata + streamers |
 | `rope` | 3×12 | tiling piñata rope |
@@ -384,7 +384,7 @@ files):
 3. More **east-block landmarks**: a mercado interior, a basketball court,
    rooftop murals, and a second Polo window.
 4. Expand **Las Orillas** — crop-row traversal, farm hazards, harvest escort,
-   snake patterns and more Chihuahua boss phases.
+   goose patterns and more Chihuahua boss phases.
 5. Build future landmarks around their **ultimate objective**: sanctuary at the
    Iglesia, restoration at the Mercado, and a fair peace in the Parque.
 6. Camera look-down while diving; landing squash; a proper bark on flap.

@@ -1,5 +1,5 @@
 // Las Orillas — the agricultural edge of town. A continuous field floor,
-// snakes and a three-night Chihuahua boss. Geometry is in design units.
+// geese and a three-night Chihuahua boss. Geometry is in design units.
 export const lasOrillas = {
   id: 'orillas',
   nameKey: 'map.orillas',
@@ -26,10 +26,11 @@ export const lasOrillas = {
   goalKey: 'goal.orillas',
   objectiveDescKey: 'objectives.nowDesc.orillas',
   critters: {
-    idleTexture: 'snake',
-    runTexture: 'snakeRun',
-    nightIdleTexture: 'snake',
-    nightRunTexture: 'snakeRun',
+    idleTexture: 'goose',
+    runTexture: 'gooseRun',
+    nightIdleTexture: 'goose',
+    nightRunTexture: 'gooseRun',
+    voice: 'honk',
   },
   boss: {
     texture: 'chihuahuaBoss',
