@@ -2285,8 +2285,8 @@ export default class Level1 extends Phaser.Scene {
     this.tweens.add({
       targets: this.introLabel,
       alpha: 1,
-      duration: 350,
-      hold: 900,
+      duration: 400,
+      hold: 2200,
       yoyo: true,
       onComplete: () => this.introLabel?.destroy(),
     });
@@ -2315,8 +2315,8 @@ export default class Level1 extends Phaser.Scene {
       this.tweens.add({
         targets: this.storyLabel,
         alpha: 1,
-        duration: 350,
-        hold: 1200,
+        duration: 400,
+        hold: 2800,
         yoyo: true,
         onComplete: () => this.storyLabel?.destroy(),
       });
