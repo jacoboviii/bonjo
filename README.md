@@ -153,8 +153,9 @@ burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
-spin that dazes, knocks back and damages nearby rivals and bone thieves. Dive
-from the air for the heavier finisher and its damaging landing shockwave; press down while
+spin that dazes, knocks back and damages nearby rivals and bone thieves. The
+spinning halo and its damage travel with Bonjo, even while moving or jumping.
+Dive from the air for the heavier finisher and its damaging landing shockwave; press down while
 grounded for a short dodge-slide that spends one ALAS pip and deals no damage.
 Every connecting spin or dive adds a small impact ring, dust burst and camera
 kick.

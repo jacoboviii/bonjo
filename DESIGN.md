@@ -175,8 +175,10 @@ after the 90 ms minimum.
 talk or ring when an NPC/quest prompt is active, otherwise perform a short
 Bonjo spin. The spin is the everyday attack: one point of damage per spin,
 plus a short daze and a firm knockback. Its halo expands to the exact damage radius, sized to cover Bonjo plus
-an adjacent enemy sprite; it is not a second hitbox. The hit test measures to the
-nearest body edge so mismatched sprite origins cannot make a touching target miss. Dive is the stronger committed attack:
+an adjacent enemy sprite; it is not a second hitbox. The halo and damage check
+follow Bonjo for the full spin, even while moving or jumping. The hit test
+measures to the nearest body edge so mismatched sprite origins cannot make a
+touching target miss. Dive is the stronger committed attack:
 two points of damage, a stronger bounce and a ground shockwave that chips
 nearby rivals for one point. A deliberate down-input on the ground starts
 a short forward dodge-slide in the facing direction. It deals no damage and

@@ -296,6 +296,7 @@ export default class Level1 extends Phaser.Scene {
 
     if (!this.won && !this.gameOverFlag) {
       this.dog.update(delta);
+      this.updateSpinAttack();
       this.updateSurvival(dt);
 
       this.crowGroup.children.iterate((crow) => {
@@ -1347,25 +1348,52 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(this.dog.x, this.dog.y, 1);
 
     // The halo is the visual boundary of the spin's hit area, not a second
-    // damage source. The radius covers Bonjo plus an adjacent enemy sprite,
-    // which makes touching sprites register reliably. Its final radius is
-    // exactly the damage radius; the expanding pulse is only a flourish.
+    // damage source. It follows Bonjo for the whole spin, so moving or jumping
+    // carries the ring and its damage window with him.
     const radius = 18 * S;
     const ringBase = 4 * S;
+    this.spinRadius = radius;
+    this.spinHitTargets = new Set();
+    this.spinRing?.destroy();
     const ring = this.add
       .circle(this.dog.x, this.dog.y, ringBase, 0x000000, 0)
       .setStrokeStyle(3 * S, 0xffd166, 0.9)
       .setDepth(9);
+    this.spinRing = ring;
     this.tweens.add({
       targets: ring,
       scale: radius / ringBase,
       alpha: 0,
       duration: 320,
       ease: 'Quad.out',
-      onComplete: () => ring.destroy(),
+      onComplete: () => {
+        ring.destroy();
+        if (this.spinRing === ring) this.spinRing = null;
+      },
     });
+
+    this.updateSpinAttack();
+  }
+
+  updateSpinAttack() {
+    if (this.dog.spinUntil <= this.time.now) {
+      this.spinHitTargets = null;
+      return;
+    }
+
+    const radius = this.spinRadius || 18 * S;
+    this.spinRing?.setPosition(this.dog.x, this.dog.y);
+    const hitTargets =
+      this.spinHitTargets || (this.spinHitTargets = new Set());
+
     for (const rival of this.rivalGroup?.getChildren() || []) {
-      if (rival.active && !rival.defeated && this.inSpinRange(rival, radius)) {
+      if (
+        rival.active &&
+        !rival.defeated &&
+        !hitTargets.has(rival) &&
+        this.inSpinRange(rival, radius)
+      ) {
+        hitTargets.add(rival);
         this.applySpinHit(rival);
       }
     }
@@ -1374,14 +1402,21 @@ export default class Level1 extends Phaser.Scene {
       if (
         squirrel.active &&
         !squirrel.defeated &&
+        !hitTargets.has(squirrel) &&
         this.inSpinRange(squirrel, radius)
       ) {
+        hitTargets.add(squirrel);
         this.spinHitSquirrel(squirrel);
       }
     }
 
     for (const pinata of this.pinataGroup?.getChildren() || []) {
-      if (pinata.active && this.inSpinRange(pinata, radius)) {
+      if (
+        pinata.active &&
+        !hitTargets.has(pinata) &&
+        this.inSpinRange(pinata, radius)
+      ) {
+        hitTargets.add(pinata);
         this.hitPinata(this.dog, pinata);
       }
     }
