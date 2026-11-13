@@ -174,11 +174,14 @@ talk or ring when an NPC/quest prompt is active, otherwise perform a short
 Bonjo spin. The spin is the everyday attack: one point of damage per spin,
 plus a short daze and a firm knockback. Its halo expands to the exact damage radius, sized to cover Bonjo plus
 an adjacent enemy sprite; it is not a second hitbox. Dive is the stronger committed attack:
-two points of damage and a bounce. A deliberate down-input on the ground starts
+two points of damage, a stronger bounce and a ground shockwave that chips
+nearby rivals for one point. A deliberate down-input on the ground starts
 a short forward slide in the facing direction; slide contact deals one point.
 Bonjo has two slide charges, recharging after 1.2 s, and is briefly damage-immune
-during each slide. Dive landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
-squirrels and can hit a piñata.
+during each slide. Every connecting attack throws a small impact ring, dust
+burst and light camera kick; the dive's version is the heaviest. Dive landings
+no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo
+once, startles squirrels and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
 is flap, dive and the always-available spin button; the talk button appears
@@ -446,6 +449,8 @@ compressor keeps mobile speakers from clipping.
 | Rival bark | chest-noise transient + filtered canine woof |
 | Rival subdued | descending, vibrating yelp |
 | Bonjo spin | quick cloth whoosh + bright two-note chime |
+| Attack connect | dry impact tick + low body thump |
+| Dive slam | deep double thump + low grit + bright impact tail |
 | Cat hiss | breathy band-passed noise |
 | Bird scatter / chirp | quick shimmering sine chirps |
 | Crow caw | filtered squawk with a second throaty pulse |

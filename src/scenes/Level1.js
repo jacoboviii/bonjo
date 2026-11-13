@@ -3019,6 +3019,71 @@ export default class Level1 extends Phaser.Scene {
     });
   }
 
+  spawnImpactBurst(
+    x,
+    y,
+    { color = 0xffd166, radius = 13 * S, width = 2.5 * S, duration = 220, puffs = 3 } = {},
+  ) {
+    const start = 3 * S;
+    const ring = this.add
+      .circle(x, y, start, 0x000000, 0)
+      .setStrokeStyle(width, color, 0.95)
+      .setDepth(21);
+    this.tweens.add({
+      targets: ring,
+      scale: radius / start,
+      alpha: 0,
+      duration,
+      ease: 'Quad.out',
+      onComplete: () => ring.destroy(),
+    });
+
+    for (let i = 0; i < puffs; i++) {
+      this.spawnPuff(
+        x + Phaser.Math.Between(-5 * S, 5 * S),
+        y + Phaser.Math.Between(-5 * S, 3 * S),
+        0.45,
+      );
+    }
+  }
+
+  onAttackHit(rival, kind) {
+    const config = {
+      spin: {
+        color: 0xffd166,
+        radius: 13 * S,
+        width: 2.5 * S,
+        duration: 200,
+        puffs: 3,
+        shakeDuration: 60,
+        shakeIntensity: 0.0018,
+      },
+      slide: {
+        color: 0xfff4e0,
+        radius: 15 * S,
+        width: 3 * S,
+        duration: 220,
+        puffs: 4,
+        shakeDuration: 75,
+        shakeIntensity: 0.0022,
+      },
+      dive: {
+        color: 0xfff4e0,
+        radius: 17 * S,
+        width: 3.5 * S,
+        duration: 260,
+        puffs: 5,
+        shakeDuration: 150,
+        shakeIntensity: 0.006,
+      },
+    }[kind];
+    if (!config) return;
+
+    this.spawnImpactBurst(rival.x, rival.y, config);
+    this.cameras.main.shake(config.shakeDuration, config.shakeIntensity);
+    sfx.impact();
+  }
+
   floatText(x, y, message, color = '#ffd166') {
     const label = this.add
       .text(x, y, message, {
@@ -3061,19 +3126,77 @@ export default class Level1 extends Phaser.Scene {
   }
 
   onDiveLand() {
-    sfx.stomp();
-    this.cameras.main.shake(120, 0.005);
-    for (let i = 0; i < 4; i++) {
+    sfx.slam();
+    this.cameras.main.shake(190, 0.009);
+    for (let i = 0; i < 9; i++) {
       this.spawnPuff(
-        this.dog.x + Phaser.Math.Between(-9 * S, 9 * S),
-        this.dog.y + 7 * S,
+        this.dog.x + Phaser.Math.Between(-18 * S, 18 * S),
+        this.dog.y + Phaser.Math.Between(3 * S, 10 * S),
         0.8,
       );
+    }
+
+    // Heavy landing: a ground shockwave expands to the damage radius and
+    // chips nearby rivals. The direct dive remains the stronger two-point hit.
+    const waveRadius = 26 * S;
+    const ring = this.add
+      .circle(this.dog.x, this.dog.y + 6 * S, 10 * S, 0x000000, 0)
+      .setStrokeStyle(3 * S, 0xfff4e0, 0.92)
+      .setDepth(9);
+    this.tweens.add({
+      targets: ring,
+      scale: waveRadius / (10 * S),
+      alpha: 0,
+      duration: 330,
+      ease: 'Quad.out',
+      onComplete: () => ring.destroy(),
+    });
+
+    for (const rival of this.rivalGroup?.getChildren() || []) {
+      if (
+        !rival.active ||
+        rival.defeated ||
+        Phaser.Math.Distance.Between(this.dog.x, this.dog.y, rival.x, rival.y) >
+          waveRadius
+      ) {
+        continue;
+      }
+      const defeated = this.damageRival(rival, 1, {
+        source: 'diveWave',
+        bounce: false,
+      });
+      if (!defeated && rival.active) {
+        const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
+        rival.stun(450);
+        rival.body.setVelocityX(dir * 160 * S);
+        rival.body.setVelocityY(-70 * S);
+      }
     }
   }
 
   onSlideStart() {
     sfx.slide();
+
+    const ring = this.add
+      .circle(this.dog.x, this.dog.y + 6 * S, 3 * S, 0x000000, 0)
+      .setStrokeStyle(2 * S, 0xfff4e0, 0.8)
+      .setDepth(9);
+    this.tweens.add({
+      targets: ring,
+      scale: 4,
+      alpha: 0,
+      duration: 240,
+      ease: 'Quad.out',
+      onComplete: () => ring.destroy(),
+    });
+
+    for (let i = 0; i < 3; i++) {
+      this.spawnPuff(
+        this.dog.x - this.dog.facing * Phaser.Math.Between(2 * S, 9 * S),
+        this.dog.y + Phaser.Math.Between(4 * S, 9 * S),
+        0.55,
+      );
+    }
   }
 
   onSlide(dog) {
@@ -3264,7 +3387,10 @@ export default class Level1 extends Phaser.Scene {
     // The spin and the landing slide are attacks, not vulnerability windows.
     if (this.dog.spinUntil > this.time.now) return;
     if (this.dog.slideUntil > this.time.now) {
+      const wasReady =
+        rival.maxHealth <= 1 || this.time.now >= (rival.nextHit || 0);
       this.damageRival(rival, 1, { source: 'slide', bounce: false });
+      if (wasReady) this.onAttackHit(rival, 'slide');
       return;
     }
 
@@ -3283,11 +3409,14 @@ export default class Level1 extends Phaser.Scene {
   applySpinHit(rival) {
     if (rival.defeated || !rival.active) return;
 
+    const wasReady =
+      rival.maxHealth <= 1 || this.time.now >= (rival.nextHit || 0);
     const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
     rival.stun(550);
     rival.body.setVelocityX(dir * 230 * S);
     rival.body.setVelocityY(-105 * S);
     this.damageRival(rival, 1, { source: 'spin', bounce: false });
+    if (wasReady) this.onAttackHit(rival, 'spin');
   }
 
   damageRival(rival, amount = 1, opts = {}) {
@@ -3306,6 +3435,10 @@ export default class Level1 extends Phaser.Scene {
       });
 
       if (rival.health > 0) {
+        if (opts.bounce) {
+          this.onAttackHit(rival, 'dive');
+          this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
+        }
         sfx.yelp();
         this.spawnPuff(rival.x, rival.y, 0.8);
         this.floatText(
@@ -3314,7 +3447,6 @@ export default class Level1 extends Phaser.Scene {
           `${rival.health}/${rival.maxHealth}`,
           '#ffd166',
         );
-        if (opts.bounce) this.dog.body.velocity.y = -tuning.flapImpulse * 0.7 * S;
         return false;
       }
     }
@@ -3351,7 +3483,10 @@ export default class Level1 extends Phaser.Scene {
       onComplete: () => rival.destroy(),
     });
 
-    if (opts.bounce) this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
+    if (opts.bounce) {
+      this.onAttackHit(rival, 'dive');
+      this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
+    }
     return true;
   }
 

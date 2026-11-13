@@ -154,7 +154,9 @@ over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
 spin that dazes, knocks back and damages nearby rivals. Dive from the air for
-the heavier finisher; press down while grounded for a short damaging slide.
+the heavier finisher and its damaging landing shockwave; press down while
+grounded for a short damaging slide. Every connecting attack adds a small
+impact ring, dust burst and camera kick.
 Polo's dialog hands over
 the daily concha. Survive the level's nights and final boss; bones, combo and a
 clean run feed your score and rank.

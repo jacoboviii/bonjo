@@ -440,6 +440,16 @@ export const sfx = {
     noise({ dur: 0.07, vol: 0.025, type: 'lowpass', f0: 750, f1: 150, q: 0.8 });
     noise({ dur: 0.12, vol: 0.012, type: 'highpass', f0: 1600, f1: 500, q: 0.8, delay: 0.03 });
   },
+  impact: () => {
+    thump(112, 0.018, 0.09);
+    noise({ dur: 0.045, vol: 0.012, type: 'highpass', f0: 1700, f1: 700, q: 0.7 });
+  },
+  slam: () => {
+    thump(52, 0.085, 0.24);
+    thump(88, 0.04, 0.16, 0.035);
+    noise({ dur: 0.16, vol: 0.035, type: 'lowpass', f0: 900, f1: 120, q: 0.7 });
+    noise({ dur: 0.18, vol: 0.018, type: 'highpass', f0: 1900, f1: 500, q: 0.7, delay: 0.04 });
+  },
   checkpoint: () => {
     osc({ type: 'triangle', f0: 660, f1: 670, dur: 0.22, vol: 0.022 });
     osc({ type: 'sine', f0: 990, f1: 1000, dur: 0.32, vol: 0.016, delay: 0.11 });
