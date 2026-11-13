@@ -3445,6 +3445,7 @@ export default class Level1 extends Phaser.Scene {
   hurt(source = null) {
     if (this.won || this.gameOverFlag || this.dog.dead) return;
     if (this.dog.invuln > 0) return;
+    if (this.dog.dodgeUntil > this.time.now) return;
 
     this.resetCombo();
     this.health -= 1;

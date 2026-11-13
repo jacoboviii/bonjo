@@ -113,7 +113,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **A / D** or arrows | Run | Steer |
 | **SPACE** / **W** | Jump (hold for height) | Flap (2 charges) |
 | **Hold SPACE** | — | Glide (slow fall) |
-| **S** / **↓** | Slide attack (grounded) | Dive (subdue rivals, pop crows) |
+| **S** / **↓** | Slide attack (grounded, 2 charges, brief dodge) | Dive (subdue rivals, pop crows) |
 | **E** / touch spin | Spin-attack nearby rivals | — |
 | **F** / touch talk | Talk to friendly NPCs, ring the bell | — |
 | **O** | Open/close objectives | Open/close objectives |
@@ -224,7 +224,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; grounded down-input slides, and an airborne dive is the heavier finisher
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals; grounded down-input slides (two quick charges with brief dodge frames), and an airborne dive is the heavier finisher
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

@@ -176,7 +176,8 @@ plus a short daze and a firm knockback. Its small halo expands to the exact body
 it is not a second hitbox. Dive is the stronger committed attack:
 two points of damage and a bounce. A deliberate down-input on the ground starts
 a short forward slide in the facing direction; slide contact deals one point.
-Dive landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
+Bonjo has two slide charges, recharging after 1.2 s, and is briefly damage-immune
+during each slide. Dive landings no longer slide automatically. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
 squirrels and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster

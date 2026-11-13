@@ -60,7 +60,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.slideUntil = 0;
     this.slideDir = 1;
     this.slideSpeed = 0;
-    this.slideCooldownUntil = 0;
+    this.slideCharges = 2;
+    this.maxSlideCharges = 2;
+    this.slideRechargeAt = 0;
+    this.dodgeUntil = 0;
     this.downWasHeld = false;
     this.nextSlidePuff = 0;
     this.stepTimer = 0;
@@ -222,6 +225,9 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     // --- horizontal --------------------------------------------------------
     const moveNow = this.scene.time.now;
+    if (this.slideCharges < this.maxSlideCharges && moveNow >= this.slideRechargeAt) {
+      this.slideCharges = this.maxSlideCharges;
+    }
     if (this.slideUntil > moveNow) {
       // Grounded slide: keep the chosen facing direction and carry momentum.
       this.facing = this.slideDir;
@@ -314,11 +320,14 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
   startSlide() {
     const now = this.scene.time.now;
-    if (now < this.slideCooldownUntil || this.slideUntil > now) return;
+    if (now < this.slideUntil || this.slideCharges <= 0) return;
+
+    this.slideCharges -= 1;
+    this.slideRechargeAt = now + 1200;
+    this.dodgeUntil = now + 320;
     this.slideDir = this.facing || 1;
     this.slideSpeed = 280 * S;
     this.slideUntil = now + 260;
-    this.slideCooldownUntil = now + 700;
     this.body.velocity.x = this.slideDir * this.slideSpeed;
     this.scene.onSlideStart?.(this);
   }
