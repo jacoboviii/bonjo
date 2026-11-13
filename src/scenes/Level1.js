@@ -1372,7 +1372,7 @@ export default class Level1 extends Phaser.Scene {
         Phaser.Math.Distance.Between(this.dog.x, this.dog.y, rival.x, rival.y) <
           radius
       ) {
-        rival.stun(rival.role === 'alpha' ? 800 : 1300);
+        this.applySpinHit(rival);
       }
     }
 
@@ -3244,71 +3244,99 @@ export default class Level1 extends Phaser.Scene {
 
   hitRival(dog, rival) {
     if (rival.defeated || !rival.active) return;
+    // The spin is an attack, not a vulnerability window.
+    if (this.dog.spinUntil > this.time.now) return;
 
     // dive or land on it: the other dog yelps and runs home
     if (this.dog.diving || this.dog.body.velocity.y > 160 * S) {
-      if (rival.maxHealth > 1) {
-        if (this.time.now < (rival.nextHit || 0)) return;
-        rival.nextHit = this.time.now + 520;
-        rival.health -= 1;
-        rival.setTint(0xfff4e0);
-        this.time.delayedCall(140, () => {
-          if (!rival.active || rival.defeated) return;
-          if (rival.baseTint !== null) rival.setTint(rival.baseTint);
-          else rival.clearTint();
-        });
-
-        if (rival.health > 0) {
-          sfx.yelp();
-          this.spawnPuff(rival.x, rival.y, 0.8);
-          this.floatText(
-            rival.x,
-            rival.y - 16 * S,
-            `${rival.health}/${rival.maxHealth}`,
-            '#ffd166',
-          );
-          this.dog.body.velocity.y = -tuning.flapImpulse * 0.7 * S;
-          return;
-        }
-      }
-
-      rival.defeated = true;
-      rival.body.enable = false;
-
-      let reward = 1;
-      if (rival.role === 'alpha') {
-        reward = 3;
-        this.onAlphaDefeated();
-      } else if (rival.role === 'brute') {
-        reward = 2;
-      }
-
-      if (rival.stolenBones) {
-        this.bonesCount += rival.stolenBones;
-        rival.stolenBones = 0;
-      }
-
-      this.bonesCount += reward;
-      this.rivalsSubdued += 1;
-      sfx.yelp();
-      this.spawnPuff(rival.x, rival.y, rival.role === 'alpha' ? 1.5 : 1);
-      this.floatText(rival.x, rival.y - 12 * S, `+${reward}`, '#ffd166');
-
-      this.tweens.add({
-        targets: rival,
-        y: rival.y - 16 * S,
-        alpha: 0,
-        scaleX: 0.7,
-        scaleY: 0.7,
-        duration: 260,
-        onComplete: () => rival.destroy(),
-      });
-
-      this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
+      this.damageRival(rival, 1, { source: 'dive', bounce: true });
       return;
     }
 
     this.hurt(rival);
+  }
+
+  // Spin is the everyday attack: half a point of damage per spin, plus a
+  // short daze and a little knockback. Dive remains the stronger committed
+  // attack that removes a full point and bounces Bonjo away.
+  applySpinHit(rival) {
+    if (rival.defeated || !rival.active) return;
+
+    rival.spinCharge = (rival.spinCharge || 0) + 0.5;
+    const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
+    rival.stun(450);
+    rival.body.setVelocityX(dir * 135 * S);
+    rival.body.setVelocityY(-70 * S);
+
+    if (rival.spinCharge >= 1) {
+      rival.spinCharge -= 1;
+      this.damageRival(rival, 1, { source: 'spin', bounce: false });
+    }
+  }
+
+  damageRival(rival, amount = 1, opts = {}) {
+    if (rival.defeated || !rival.active) return false;
+
+    if (rival.maxHealth > 1) {
+      const now = this.time.now;
+      if (now < (rival.nextHit || 0)) return false;
+      rival.nextHit = now + (opts.source === 'spin' ? 350 : 520);
+      rival.health = Math.max(0, rival.health - amount);
+      rival.setTint(0xfff4e0);
+      this.time.delayedCall(140, () => {
+        if (!rival.active || rival.defeated) return;
+        if (rival.baseTint !== null) rival.setTint(rival.baseTint);
+        else rival.clearTint();
+      });
+
+      if (rival.health > 0) {
+        sfx.yelp();
+        this.spawnPuff(rival.x, rival.y, 0.8);
+        this.floatText(
+          rival.x,
+          rival.y - 16 * S,
+          `${rival.health}/${rival.maxHealth}`,
+          '#ffd166',
+        );
+        if (opts.bounce) this.dog.body.velocity.y = -tuning.flapImpulse * 0.7 * S;
+        return false;
+      }
+    }
+
+    rival.defeated = true;
+    rival.body.enable = false;
+
+    let reward = 1;
+    if (rival.role === 'alpha') {
+      reward = 3;
+      this.onAlphaDefeated();
+    } else if (rival.role === 'brute') {
+      reward = 2;
+    }
+
+    if (rival.stolenBones) {
+      this.bonesCount += rival.stolenBones;
+      rival.stolenBones = 0;
+    }
+
+    this.bonesCount += reward;
+    this.rivalsSubdued += 1;
+    sfx.yelp();
+    this.spawnPuff(rival.x, rival.y, rival.role === 'alpha' ? 1.5 : 1);
+    this.floatText(rival.x, rival.y - 12 * S, `+${reward}`, '#ffd166');
+
+    this.tweens.add({
+      targets: rival,
+      y: rival.y - 16 * S,
+      alpha: 0,
+      scaleX: 0.7,
+      scaleY: 0.7,
+      duration: 260,
+      onComplete: () => rival.destroy(),
+    });
+
+    if (opts.bounce) this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
+    return true;
   }
 
   hitPinata(dog, pinata) {
