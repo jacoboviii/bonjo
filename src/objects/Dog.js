@@ -57,6 +57,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.spinUntil = 0;
     this.spinStart = 0;
     this.spinDir = 1;
+    this.slideUntil = 0;
+    this.slideDir = 1;
+    this.slideSpeed = 0;
+    this.nextSlidePuff = 0;
     this.stepTimer = 0;
 
     // Purple chow tongue, rendered as its own sprite so it can wiggle.
@@ -209,20 +213,32 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.body.velocity.y = Math.min(this.body.velocity.y, maxFall);
 
     // --- horizontal --------------------------------------------------------
-    let targetSpeed = 0;
-    if (this.leftHeld) targetSpeed -= tuning.runSpeed * S;
-    if (this.rightHeld) targetSpeed += tuning.runSpeed * S;
-
-    if (targetSpeed !== 0) {
-      const accel = (onGround ? tuning.groundAccel : tuning.airAccel) * S;
-      this.body.velocity.x = moveTowards(this.body.velocity.x, targetSpeed, accel * dt);
+    const moveNow = this.scene.time.now;
+    if (this.slideUntil > moveNow) {
+      // Dive recovery slide: keep facing direction and carry momentum briefly.
+      this.facing = this.slideDir;
+      this.body.velocity.x = this.slideDir * this.slideSpeed;
+      if (onGround && moveNow > this.nextSlidePuff) {
+        this.nextSlidePuff = moveNow + 75;
+        this.scene.onSlide?.(this);
+      }
     } else {
-      const friction = (onGround ? tuning.groundFriction : tuning.airFriction) * S;
-      this.body.velocity.x = moveTowards(this.body.velocity.x, 0, friction * dt);
-    }
+      if (this.slideUntil) this.slideUntil = 0;
+      let targetSpeed = 0;
+      if (this.leftHeld) targetSpeed -= tuning.runSpeed * S;
+      if (this.rightHeld) targetSpeed += tuning.runSpeed * S;
 
-    if (Math.abs(this.body.velocity.x) > 8 * S) {
-      this.facing = this.body.velocity.x > 0 ? 1 : -1;
+      if (targetSpeed !== 0) {
+        const accel = (onGround ? tuning.groundAccel : tuning.airAccel) * S;
+        this.body.velocity.x = moveTowards(this.body.velocity.x, targetSpeed, accel * dt);
+      } else {
+        const friction = (onGround ? tuning.groundFriction : tuning.airFriction) * S;
+        this.body.velocity.x = moveTowards(this.body.velocity.x, 0, friction * dt);
+      }
+
+      if (Math.abs(this.body.velocity.x) > 8 * S) {
+        this.facing = this.body.velocity.x > 0 ? 1 : -1;
+      }
     }
     this.setFlipX(this.facing < 0);
 

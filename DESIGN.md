@@ -169,10 +169,12 @@ the air. Jump cut only applies to ground jumps, after the 90 ms minimum.
 ### Context action
 `E` / the touch action button does one of two things depending on proximity:
 talk or ring when an NPC/quest prompt is active, otherwise perform a short
-Bonjo spin. The spin is the everyday attack: half a point of damage per spin,
+Bonjo spin. The spin is the everyday attack: one point of damage per spin,
 plus a short daze and a small knockback. Dive is the stronger committed attack:
-one full point of damage and a bounce. The spin has a ~650 ms cooldown, rotates
-Bonjo once, startles squirrels and can hit a piñata.
+two points of damage, a bounce, and a short forward landing slide in the facing
+direction. Slide contact deals one point, so a dive can clean up an enemy it
+lands beside. The spin has a ~650 ms cooldown, rotates Bonjo once, startles
+squirrels and can hit a piñata.
 
 On touch, all five controls use the same button size on one bottom line. The
 right-hand cluster is flap, dive and the contextual talk/spin button.

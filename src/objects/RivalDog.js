@@ -19,7 +19,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.idleTexture = opts.texture || 'rival';
     this.runTexture = opts.runTexture || 'rivalRun';
     this.role = opts.role || 'normal';
-    this.health = opts.health || (this.role === 'brute' ? 2 : 1);
+    this.health = opts.health ?? (this.role === 'alpha' ? 5 : this.role === 'brute' ? 3 : 2);
     this.maxHealth = this.health;
     this.baseTint = opts.tint ?? null;
 

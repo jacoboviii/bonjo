@@ -39,7 +39,7 @@ export const lasOrillas = {
     defeatKey: 'boss.chihuahuaDown',
     scale: 1.4,
     tint: null,
-    health: 3,
+    health: 5,
     baseSpeed: 80,
     chaseSpeed: 170,
     crown: false,

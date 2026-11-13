@@ -151,7 +151,7 @@ burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
 over bikes and trip the marked car alarm. Press **E** (or tap the action
 button) near Polo, the chihuahua, a cat or the daytime rooster to talk; use it
 at the bell to ring it. With no prompt nearby, the same button makes Bonjo do a
-cute spin that dazes, nudges back and chips nearby rivals; the dive remains the stronger finisher. Polo's dialog hands over the daily concha.
+cute spin that dazes, nudges back and damages nearby rivals; the dive remains the stronger finisher and ends in a short damaging slide. Polo's dialog hands over the daily concha.
 Survive the level's nights and final boss; bones, combo and a clean run feed
 your score and rank.
 
@@ -220,7 +220,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, flap charges and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context action button** — talk or ring when prompted, otherwise a cute spin attack that dazes, pushes back and chips nearby rivals; dive is the heavier finisher
+- **Context action button** — talk or ring when prompted, otherwise a cute spin attack that dazes, pushes back and damages nearby rivals; dive is the heavier finisher and ends in a damaging slide
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

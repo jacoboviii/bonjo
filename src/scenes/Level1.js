@@ -2257,7 +2257,8 @@ export default class Level1 extends Phaser.Scene {
     let color = '#6ec6a8';
     if (this.alphaActive && !this.alphaDefeated) {
       text = t(this.levelData.boss?.goalKey || 'goal.alpha', {
-        hits: this.alpha?.health ?? 3,
+        hits: this.alpha?.health ?? 5,
+        max: this.alpha?.maxHealth ?? 5,
       });
       color = '#ffd166';
     } else if (this.alphaDefeated && this.alphaEnding) {
@@ -2761,7 +2762,7 @@ export default class Level1 extends Phaser.Scene {
           texture: 'rivalBrute',
           runTexture: 'rivalBruteRun',
           scale: 1.22,
-          health: 2,
+          health: 3,
           baseSpeed: 40,
           chaseSpeed: 96,
           lungeSpeed: 165,
@@ -2883,7 +2884,7 @@ export default class Level1 extends Phaser.Scene {
       runTexture: boss.runTexture,
       scale: boss.scale ?? 1.35,
       tint: boss.tint === undefined ? 0xffd166 : boss.tint,
-      health: boss.health ?? 3,
+      health: boss.health ?? 5,
       baseSpeed: boss.baseSpeed ?? 62,
       chaseSpeed: boss.chaseSpeed ?? 142,
     });
@@ -3061,6 +3062,17 @@ export default class Level1 extends Phaser.Scene {
         0.8,
       );
     }
+
+    // The landing carries a short forward slide. Contact during the slide
+    // counts as a hit; it is separate from the dive's heavier impact.
+    this.dog.slideDir = this.dog.facing || 1;
+    this.dog.slideSpeed = 250 * S;
+    this.dog.slideUntil = this.time.now + 240;
+    this.dog.body.setVelocityX(this.dog.slideDir * this.dog.slideSpeed);
+  }
+
+  onSlide(dog) {
+    this.spawnPuff(dog.x - dog.facing * 7 * S, dog.y + 8 * S, 0.5);
   }
 
   // --- game events ---------------------------------------------------------
@@ -3244,12 +3256,16 @@ export default class Level1 extends Phaser.Scene {
 
   hitRival(dog, rival) {
     if (rival.defeated || !rival.active) return;
-    // The spin is an attack, not a vulnerability window.
+    // The spin and the landing slide are attacks, not vulnerability windows.
     if (this.dog.spinUntil > this.time.now) return;
+    if (this.dog.slideUntil > this.time.now) {
+      this.damageRival(rival, 1, { source: 'slide', bounce: false });
+      return;
+    }
 
     // dive or land on it: the other dog yelps and runs home
     if (this.dog.diving || this.dog.body.velocity.y > 160 * S) {
-      this.damageRival(rival, 1, { source: 'dive', bounce: true });
+      this.damageRival(rival, 2, { source: 'dive', bounce: true });
       return;
     }
 
@@ -3262,16 +3278,11 @@ export default class Level1 extends Phaser.Scene {
   applySpinHit(rival) {
     if (rival.defeated || !rival.active) return;
 
-    rival.spinCharge = (rival.spinCharge || 0) + 0.5;
     const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
     rival.stun(450);
     rival.body.setVelocityX(dir * 135 * S);
     rival.body.setVelocityY(-70 * S);
-
-    if (rival.spinCharge >= 1) {
-      rival.spinCharge -= 1;
-      this.damageRival(rival, 1, { source: 'spin', bounce: false });
-    }
+    this.damageRival(rival, 1, { source: 'spin', bounce: false });
   }
 
   damageRival(rival, amount = 1, opts = {}) {
