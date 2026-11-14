@@ -3375,11 +3375,19 @@ export default class Level1 extends Phaser.Scene {
     );
   }
 
+  isStomping(target) {
+    if (!target.body) return false;
+    return (
+      this.dog.body.velocity.y > 10 * S &&
+      this.dog.body.center.y < target.body.center.y
+    );
+  }
+
   hitCrow(dog, crow) {
     if (crow.defeated || !crow.active) return;
 
-    // A fast fall pops the crow.
-    if (this.dog.body.velocity.y > 160 * S) {
+    // Any fall onto the crow pops it, not only a high-speed dive.
+    if (this.isStomping(crow)) {
       crow.defeated = true;
       crow.body.enable = false;
 
@@ -3461,8 +3469,8 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    // A fast fall drops the bone and sends it fleeing.
-    if (this.dog.body.velocity.y > 160 * S) {
+    // A fall onto it drops the bone and sends it fleeing.
+    if (this.isStomping(squirrel)) {
       this.subdueSquirrel(squirrel);
       sfx.stomp();
       this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
@@ -3570,8 +3578,8 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    // A fast fall stomps the rival.
-    if (this.dog.body.velocity.y > 160 * S) {
+    // A fall onto it stomps the rival.
+    if (this.isStomping(rival)) {
       this.damageRival(rival, 2, { source: 'stomp', bounce: true });
       return;
     }
