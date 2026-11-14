@@ -154,8 +154,9 @@ an enemy bounces Bonjo safely without damaging either of them. Eat **bones** to 
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
-spin that dazes, knocks back and damages nearby rivals, bone thieves and crows. The
-spinning halo and its damage travel with Bonjo, even while moving or jumping.
+spin that dazes, knocks back and damages nearby rivals, bone thieves and crows.
+The spinning halo and its damage travel with Bonjo, even while moving or
+jumping; a spin that connects from above also bounces Bonjo off the target.
 Press down while grounded for the heavy slide finisher; it spends one IMPULSE pip,
 deals two points with strong knockback and leaves a meteor-like trail of warm
 afterimages and embers. Every connecting spin or slide adds a small impact ring,

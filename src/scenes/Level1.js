@@ -3386,6 +3386,11 @@ export default class Level1 extends Phaser.Scene {
     );
   }
 
+  isAboveEnemy(target) {
+    if (!target.body) return false;
+    return this.dog.body.bottom <= target.body.top + 8 * S;
+  }
+
   bounceOffEnemy() {
     // Landing on an enemy is a safe bounce, not an attack.
     this.dog.stompGraceUntil = this.time.now + 320;
@@ -3414,8 +3419,10 @@ export default class Level1 extends Phaser.Scene {
 
   spinHitCrow(crow) {
     if (crow.defeated || !crow.active) return;
+    const above = this.isAboveEnemy(crow);
     this.subdueCrow(crow);
     this.onAttackHit(crow, 'spin');
+    if (above) this.bounceOffEnemy();
   }
 
   hitCrow(dog, crow) {
@@ -3456,8 +3463,10 @@ export default class Level1 extends Phaser.Scene {
 
   spinHitSquirrel(squirrel) {
     if (squirrel.defeated || !squirrel.active) return;
+    const above = this.isAboveEnemy(squirrel);
     this.subdueSquirrel(squirrel);
     this.onAttackHit(squirrel, 'spin');
+    if (above) this.bounceOffEnemy();
   }
 
   slideHitSquirrel(squirrel) {
@@ -3617,6 +3626,7 @@ export default class Level1 extends Phaser.Scene {
     rival.body.setVelocityY(-105 * S);
     this.damageRival(rival, 1, { source: 'spin', bounce: false });
     if (wasReady) this.onAttackHit(rival, 'spin');
+    if (this.isAboveEnemy(rival)) this.bounceOffEnemy();
   }
 
   damageRival(rival, amount = 1, opts = {}) {
