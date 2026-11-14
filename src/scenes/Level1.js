@@ -594,10 +594,11 @@ export default class Level1 extends Phaser.Scene {
 
     LEDGES.forEach((l, i) => {
       const key = `ledge_${i}_${l.kind}_${l.w}`;
+      const ledgeH = l.kind === 'terrace' ? 24 : 12;
       makeLedgeTexture(this, key, l.w, l.kind);
       const ledge = this.oneWayGroup.create(
         (l.x + l.w / 2) * S,
-        (l.y + 6) * S,
+        (l.y + ledgeH / 2) * S,
         key,
       );
       ledge.setDepth(3);

@@ -20,20 +20,30 @@ export const laCuadra = {
   storyIntroKey: 'story.casa',
   winEpilogueKey: 'win.casaEpilogue',
 
+  // One continuous pavement: every former pit is filled. Height changes are
+  // handled by one-way terraces below, so falling means dropping to the street,
+  // never losing a life in a pit.
   platforms: [
     { x: 0, y: 600, w: 520, h: 300 }, // starting ground
+    { x: 520, y: 600, w: 80, h: 300 }, // filled former west gap
     { x: 600, y: 600, w: 400, h: 300 },
     { x: 1000, y: 600, w: 100, h: 300 }, // filled under the first foreground house
     { x: 1100, y: 600, w: 400, h: 300 },
+    { x: 1500, y: 600, w: 120, h: 300 }, // filled former market gap
     { x: 1620, y: 600, w: 380, h: 300 },
     { x: 2000, y: 600, w: 100, h: 300 }, // filled under the second foreground house
     { x: 2100, y: 600, w: 400, h: 300 }, // checkpoint block
+    { x: 2500, y: 600, w: 120, h: 300 }, // filled former midpoint gap
     { x: 2620, y: 600, w: 380, h: 300 },
     { x: 3000, y: 600, w: 80, h: 300 }, // filled under the third foreground house
     { x: 3080, y: 600, w: 120, h: 300 },
+    { x: 3200, y: 600, w: 60, h: 300 }, // filled former east gap
     { x: 3260, y: 600, w: 340, h: 300 }, // east block
+    { x: 3600, y: 600, w: 60, h: 300 }, // filled former east gap
     { x: 3660, y: 600, w: 300, h: 300 },
+    { x: 3960, y: 600, w: 60, h: 300 }, // filled former east gap
     { x: 4020, y: 600, w: 180, h: 300 }, // far end
+    { x: 4140, y: 600, w: 60, h: 300 }, // filled former east gap
     { x: 4200, y: 600, w: 800, h: 300 }, // east extension
   ],
 
@@ -167,6 +177,25 @@ export const laCuadra = {
     { x: 4490, y: 340, w: 90, kind: 'fire' },
     { x: 4370, y: 260, w: 100, kind: 'laundry' },
     { x: 4490, y: 180, w: 90, kind: 'roof' },
+    // low one-way terraces: step up, drop down, never a lethal pit
+    { x: 300, y: 566, w: 90, kind: 'terrace' },
+    { x: 390, y: 546, w: 90, kind: 'terrace' },
+    { x: 820, y: 560, w: 100, kind: 'terrace' },
+    { x: 920, y: 540, w: 100, kind: 'terrace' },
+    { x: 1220, y: 568, w: 100, kind: 'terrace' },
+    { x: 1320, y: 548, w: 100, kind: 'terrace' },
+    { x: 1760, y: 562, w: 110, kind: 'terrace' },
+    { x: 1870, y: 542, w: 110, kind: 'terrace' },
+    { x: 2200, y: 568, w: 100, kind: 'terrace' },
+    { x: 2300, y: 548, w: 100, kind: 'terrace' },
+    { x: 2820, y: 560, w: 110, kind: 'terrace' },
+    { x: 2930, y: 540, w: 110, kind: 'terrace' },
+    { x: 3350, y: 566, w: 100, kind: 'terrace' },
+    { x: 3450, y: 546, w: 100, kind: 'terrace' },
+    { x: 3800, y: 560, w: 110, kind: 'terrace' },
+    { x: 3860, y: 540, w: 110, kind: 'terrace' },
+    { x: 4450, y: 566, w: 100, kind: 'terrace' },
+    { x: 4550, y: 546, w: 100, kind: 'terrace' },
   ],
 
   ledgeBones: [

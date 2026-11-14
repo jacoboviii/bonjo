@@ -841,9 +841,29 @@ function makeStreetProps(scene) {
 export function makeLedgeTexture(scene, key, w, kind = 'fire') {
   if (scene.textures.exists(key)) return;
   const g = gfx(scene);
-  const H = 12;
+  const H = kind === 'terrace' ? 24 : 12;
 
-  if (kind === 'laundry') {
+  if (kind === 'terrace') {
+    // Low adobe street terrace with a tiled cap.
+    g.fillStyle(0x2b1b3d, 1);
+    g.fillRect(0, 0, w, 2);
+    g.fillStyle(0xc46b4a, 1);
+    g.fillRect(0, 2, w, 4);
+    g.fillStyle(0xd9775a, 1);
+    g.fillRect(0, 2, w, 1);
+    g.fillStyle(0xe8c9a0, 1);
+    g.fillRect(0, 6, w, 2);
+    g.fillStyle(0xa96a45, 1);
+    g.fillRect(0, 8, w, 12);
+    g.fillStyle(0x8f3f2e, 1);
+    for (let x = 4; x < w - 2; x += 9) g.fillRect(x, 2, 1, 4);
+    g.fillRect(0, 20, w, 4);
+    g.fillStyle(0x6a3d2e, 0.8);
+    g.fillRect(0, 20, w, 1);
+    g.fillStyle(0x2b1b3d, 0.8);
+    g.fillRect(4, 22, 2, 2);
+    g.fillRect(w - 6, 22, 2, 2);
+  } else if (kind === 'laundry') {
     // posts and line
     g.fillStyle(0x2b1b3d, 1);
     g.fillRect(0, 0, 2, 12);

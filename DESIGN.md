@@ -37,7 +37,7 @@ same route, the same corners, the same smells. He likes his walks.
 
 **La Cuadra** is the urban core: flat-roofed houses, a church tower, a tienda
 awning, strings of papel picado, dogs behind every gate. The street is the
-arena: one flat run of pavement broken by a few gaps, with awnings and rings
+arena: one continuous run of pavement with raised adobe terraces, awnings and rings
 over the holes.
 
 At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
@@ -267,7 +267,7 @@ heart instead. Every dropped pickup scatters and falls to the ground. Purely a
 reward; never a hazard.
 
 ### Market awnings
-Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
+Striped canvas canopies above the former gaps. Landing on one from above bounces Bonjo
 ~120 design px, restores one flap charge, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
@@ -302,9 +302,8 @@ tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
 ### Wind rings
-Gold rings in gaps. Passing through gives a small upward kick (-140 px/s).
-0.5 s re-trigger cooldown. They no longer refill stamina; that comes from
-collecting conchas dropped by enemies.
+Gold rings float above the pavement. Passing through restores one flap charge
+and gives a stronger upward kick (-180 px/s). 0.5 s re-trigger cooldown.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
@@ -365,7 +364,7 @@ cross, papel picado. A closer, faster parallax storefront row adds awnings,
 balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with
-non-blocking facades and one-way rooftop platforms; the floor gaps beneath them
+non-blocking facades and one-way rooftop platforms; the pavement beneath them
 are filled. The town layers are anchored to the street's world Y so they sit on
 the sidewalk, and a light blue haze keeps the play lane readable.
 
@@ -379,7 +378,7 @@ Beat sheet:
 1. **The porch.** Bonjo starts outside his house. A concha is nearby; a piñata
    hangs over the corner; a rival dog patrols the near block. Learn jump → flap
    → slide, and eat a bone when the hunger bar dips.
-2. **The first gap.** A market awning and a gold ring over the hole. Bounce the
+2. **The first terrace.** A market awning and a gold ring above the pavement. Bounce the
    awning, pass through the ring, keep moving.
 3. **The long block.** A squirrel drags a bone; a rival guards the turf. Day 1
    is for scavenging — clear what you can before dark.
@@ -389,7 +388,7 @@ Beat sheet:
 6. **Day 2 / Night 2.** A shorter day, a harder night; thieves, brutes and a
    gate rusher. Polo and the bell must be visited before nightfall; at night,
    check the gate and subdue two rivals. Then the top dog arrives at Casa before dawn.
-7. **The east block.** New gaps, awnings, high laundry/fire-escape routes, a
+7. **The east block.** Terraces, awnings, high laundry/fire-escape routes, a
    second checkpoint and more scavenging.
 8. **Win.** Repel the top dog and survive Night 2: "CASA IS SAFE."
 
@@ -572,7 +571,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | Night waves overwhelm | 2/3 waves, 6 s apart, spawn at block edges; porch safe |
 | Health too punishing with 3 hearts | Dawn heal, 1.7 s i-frames, knockback instead of teleport |
 | Piñata supplies trivialize survival | 3 hits, cooldown, modest food drop |
-| Awnings break level pacing | One-way, placed in gaps as optional high routes |
+| Awnings break level pacing | One-way, placed above the pavement as optional high routes |
 | Black chow disappears at night | Lavender rim light + bright tongue/collar |
 | Mexican setting feels superficial | Specific architecture/food/plant details; Spanish used naturally; no costume humor |
 | Too many enemy types | Rivals are the story; squirrels/crow are seasoning |
