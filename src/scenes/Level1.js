@@ -182,6 +182,7 @@ export default class Level1 extends Phaser.Scene {
     this.activeInteractable = null;
     this.dialogOpen = false;
     this.dialogTimer = null;
+    this.dialogPausedAt = 0;
     this.hintWasVisible = false;
     this.objectivesOpen = false;
     this.objectivesWasTouch = false;
@@ -300,6 +301,12 @@ export default class Level1 extends Phaser.Scene {
 
   update(time, delta) {
     if (this.objectivesOpen) return;
+    if (this.dialogOpen) {
+      if (this.consumeInteractPress() || this.consumeActionPress()) {
+        this.closeDialog();
+      }
+      return;
+    }
     const dt = delta / 1000;
 
     if (!this.won && !this.gameOverFlag) {
@@ -2169,6 +2176,9 @@ export default class Level1 extends Phaser.Scene {
     this.dialogRoot.setVisible(true).setAlpha(1);
 
     if (firstOpen) {
+      this.dialogPausedAt = this.time.now;
+      this.spinBufferAt = 0;
+      this.physics.world.pause();
       this.dialogRoot.setAlpha(0);
       this.tweens.add({
         targets: this.dialogRoot,
@@ -2187,6 +2197,12 @@ export default class Level1 extends Phaser.Scene {
     this.dialogOpen = false;
     this.dialogTimer?.remove(false);
     this.dialogTimer = null;
+    if (this.dialogPausedAt) {
+      // Exclude conversation time from the run score timer.
+      this.startedAt += this.time.now - this.dialogPausedAt;
+      this.dialogPausedAt = 0;
+    }
+    this.physics.world.resume();
     this.tweens.killTweensOf(this.dialogRoot);
     this.dialogRoot?.setVisible(false);
     if (this.hintWasVisible && !this.won && !this.gameOverFlag) {

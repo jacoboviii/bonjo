@@ -122,7 +122,9 @@ the conchas and piñatas you missed.
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
 bubble starts the interaction. Polo, the chihuahua, cats and the daytime
-rooster use a named lotería-paper dialog card; the bell rings directly.
+rooster use a named lotería-paper dialog card; the bell rings directly. An
+open dialog card pauses gameplay, hunger, phase timers and enemy movement until
+it closes.
 Environmental
 interactions still use the verbs Bonjo already has: jump into it, land on it,
 or slide through it.
@@ -449,7 +451,8 @@ Rules:
   a pale cratered moon rises above the darkness, and the HUD stays bright.
 - Title/end screens use paper lotería cards with ink borders, corner stamps and
   papel-picado strings.
-- Friendly NPC dialog uses the same paper card, with the speaker's name in an
+- Friendly NPC dialog uses the same paper card, pauses gameplay while open and
+  excludes its duration from the run timer, with the speaker's name in an
   ink nameplate inside the window instead of a floating world label.
 - Avoid sombrero/serape clichés; the specificity is architecture, papel picado,
   church, fields and language.
