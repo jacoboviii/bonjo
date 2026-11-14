@@ -3316,6 +3316,11 @@ export default class Level1 extends Phaser.Scene {
     this.dog.flaps = Math.min(this.dog.maxFlaps, this.dog.flaps + amount);
   }
 
+  maybeDropConcha(x, y, chance = 0.4) {
+    if (Math.random() >= chance) return null;
+    return this.spawnFoodAt(x, y);
+  }
+
   collectBone(dog, bone) {
     if (!bone.active) return;
     bone.disableBody(true, true);
@@ -3378,8 +3383,8 @@ export default class Level1 extends Phaser.Scene {
       crow.defeated = true;
       crow.body.enable = false;
 
-      this.grantStamina(1);
       this.bonesCount += 1;
+      this.maybeDropConcha(crow.x, crow.y);
       sfx.stomp();
       this.spawnPuff(crow.x, crow.y, 0.9);
       this.floatText(crow.x, crow.y - 8 * S, '+1');
@@ -3410,8 +3415,8 @@ export default class Level1 extends Phaser.Scene {
 
     squirrel.defeated = true;
     squirrel.body.enable = false;
-    this.grantStamina(1);
     this.dropSquirrelBone(squirrel);
+    this.maybeDropConcha(squirrel.x + 8 * S, squirrel.y - 8 * S);
     this.critterVoice(squirrel);
     this.spawnPuff(squirrel.x, squirrel.y, 1);
     this.tweens.add({
@@ -3638,9 +3643,9 @@ export default class Level1 extends Phaser.Scene {
       rival.stolenBones = 0;
     }
 
-    this.grantStamina(1);
     this.bonesCount += reward;
     this.rivalsSubdued += 1;
+    this.maybeDropConcha(rival.x, rival.y - 8 * S);
     sfx.yelp();
     this.spawnPuff(rival.x, rival.y, rival.role === 'alpha' ? 1.5 : 1);
     this.floatText(rival.x, rival.y - 12 * S, `+${reward}`, '#ffd166');

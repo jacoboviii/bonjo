@@ -160,15 +160,15 @@ are design pixels (1 design px = 3 render px).
 
 **State machine:** grounded → jump → flap ×2 → glide (hold, falling). A fresh
 S/↓ press on the ground starts the slide attack. Air flaps and slides both spend
-IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned by
-subduing enemies and collecting conchas; it no longer refills on landing, resting,
-awnings or rings. Jump cut only applies to ground jumps, after the 90 ms minimum.
+IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned
+by collecting conchas, which enemies sometimes drop; it no longer refills on
+landing, resting, awnings or rings. Jump cut only applies to ground jumps, after the 90 ms minimum.
 
 ### IMPULSE stamina
 The two IMPULSE pips are the shared stamina meter. A ground jump is free; an air
 flap or a slide attack spends one pip. There is no passive or landing refill.
-Subduing a rival, crow or bone thief grants one pip, and every collected concha
-grants one. The Golden Wing raises the maximum to three and fills the meter.
+Each defeated enemy has a 40% chance to drop a concha, and every collected
+concha restores one pip. The Golden Wing raises the maximum to three and fills the meter.
 At zero, air flaps and slides are unavailable, but Bonjo can still run, ground
 jump and glide.
 
@@ -206,8 +206,8 @@ future levels should continue the same step-up.
 Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
 same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
 They stop at the edges of their turf rather than running into pits. Sliding
-into one, or falling on it faster than 160 px/s, subsumes it: yelp, +1 bone,
-+1 IMPULSE and it flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
+into one, or falling on it faster than 160 px/s, subsumes it: yelp, +1 bone and
+a 40% chance of a concha; it flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
 defeat state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and
@@ -278,7 +278,7 @@ night. These are all optional, but they reward learning the block.
 ### Wind rings
 Gold rings in gaps. Passing through gives a small upward kick (-140 px/s).
 0.5 s re-trigger cooldown. They no longer refill stamina; that comes from
-subduing enemies and collecting conchas.
+collecting conchas dropped by enemies.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
