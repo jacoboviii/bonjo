@@ -238,7 +238,9 @@ Night waves vary by role, with distinct silhouettes and palettes:
   slides and lunge more slowly.
 - **Gate rushers** ignore Bonjo and run for the porch gate.
 - The **top dog** appears at the end of Night 2 on the lawn in front of Casa:
-  gold-tinted, crowned, three slides, and its own pressure lunge. The night cannot end until it is repelled.
+  gold-tinted, crowned, three slides, and its own pressure lunge. It is leashed
+  to its platform, knockback stops at the turf edge, and a fallen boss resets
+  to Casa so the finale cannot be lost off-screen. The night cannot end until it is repelled.
 
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.

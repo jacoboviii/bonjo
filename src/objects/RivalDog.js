@@ -163,6 +163,16 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
 
     this.animT += dt;
 
+    // Keep knockback and lunges inside the rival's turf. Without this a
+    // stunned rival can slide off a ledge and fall out of the level.
+    if (this.x <= this.minX) {
+      this.x = this.minX;
+      if (this.body.velocity.x < 0) this.body.setVelocityX(0);
+    } else if (this.x >= this.maxX) {
+      this.x = this.maxX;
+      if (this.body.velocity.x > 0) this.body.setVelocityX(0);
+    }
+
     if (this.stunUntil) {
       if (this.scene.time.now < this.stunUntil) {
         // Let a short knockback slide finish before pinning the rival in place.

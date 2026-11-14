@@ -340,6 +340,7 @@ export default class Level1 extends Phaser.Scene {
     this.updateNightFliers(dt);
     this.keepDogInBounds();
     this.updateAlphaCrown();
+    this.updateAlphaSafety();
 
     if (!this.won && !this.gameOverFlag && this.dog.y > WORLD_H + 40 * S) {
       this.fall();
@@ -360,6 +361,26 @@ export default class Level1 extends Phaser.Scene {
     } else {
       this.alphaCrown.setVisible(false);
     }
+  }
+
+  updateAlphaSafety() {
+    if (
+      !this.alphaActive ||
+      this.alphaDefeated ||
+      !this.alpha?.active ||
+      this.won ||
+      this.gameOverFlag
+    ) {
+      return;
+    }
+
+    if (this.alpha.y <= WORLD_H) return;
+
+    const x = (this.levelData.bossSpawnX ?? this.dog.x / S) * S;
+    const y = (this.levelData.enemySpawnY ?? 587) * S;
+    this.alpha.body.reset(x, y);
+    this.alpha.body.setVelocity(0, 0);
+    this.floatText(x, y - 24 * S, t('bark'), '#ffd166');
   }
 
   keepDogInBounds() {
