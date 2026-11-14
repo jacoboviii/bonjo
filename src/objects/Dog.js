@@ -45,6 +45,8 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.buffer = 0;
     this.maxFlaps = tuning.maxFlaps;
     this.flaps = this.maxFlaps;
+    this.maxStamina = 2;
+    this.stamina = this.maxStamina;
     this.gliding = false;
     this.dead = false;
     this.invuln = 0;
@@ -151,6 +153,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     if (onGround) {
       this.coyote = tuning.coyoteMs / 1000;
+      if (!wasOnGround) this.flaps = this.maxFlaps; // double-jump charges refill
       this.gliding = false;
       this.jumpCutReady = false;
     } else {
@@ -298,13 +301,13 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
   startSlide() {
     const now = this.scene.time.now;
     if (now < this.slideUntil) return;
-    if (this.flaps <= 0) {
+    if (this.stamina <= 0) {
       this.scene.onSlideBlocked?.(this);
       return;
     }
 
-    // Slides spend the same ALAS stamina as air flaps.
-    this.flaps -= 1;
+    // Only the committed slide burns IMPULSE stamina.
+    this.stamina -= 1;
     this.dodgeUntil = now + 340;
     this.slideDir = this.facing || 1;
     this.slideSpeed = 300 * S;

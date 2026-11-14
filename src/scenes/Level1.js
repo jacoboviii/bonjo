@@ -1966,6 +1966,17 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100)
       .setAlpha(0.95);
+    this.staminaText = this.add
+      .text(0, 10 * S, '', {
+        fontFamily: 'monospace',
+        fontSize: 5 * S,
+        color: '#fff4e0',
+        stroke: '#2b1b3d',
+        strokeThickness: 1.5 * S,
+      })
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(100);
 
     this.bossTracker = this.add
       .container(0, 0)
@@ -2402,6 +2413,7 @@ export default class Level1 extends Phaser.Scene {
         [
           t('objectives.healthDesc'),
           t('objectives.flapsDesc'),
+          t('objectives.staminaDesc'),
           t('objectives.hungerDesc'),
         ].join('\n'),
         {
@@ -2450,7 +2462,7 @@ export default class Level1 extends Phaser.Scene {
     if (!this.objectivesRoot) return;
 
     const w = Math.min(W - 40 * U, 500 * U);
-    const h = 240 * U;
+    const h = 264 * U;
     this.objectivesW = w;
     this.objectivesH = h;
 
@@ -2794,9 +2806,13 @@ export default class Level1 extends Phaser.Scene {
       }
     }
 
+    const staminaX = (pipStartX + maxFlaps * pipGap + 2) * S;
     this.staminaIcon
-      .setPosition((pipStartX + maxFlaps * pipGap + 2) * S, 10 * S)
+      .setPosition(staminaX, 10 * S)
       .setScale(this.touchDevice ? 0.65 : 0.6);
+    this.staminaText
+      .setPosition(staminaX + 10 * S, 10 * S)
+      .setText(`${this.dog?.stamina ?? 0}`);
 
     this.boneText.setText(`${t('hud.bones')} ${this.bonesCount}`);
 
@@ -3629,6 +3645,14 @@ export default class Level1 extends Phaser.Scene {
 
   grantStamina(amount = 1) {
     if (!this.dog) return;
+    this.dog.stamina = Math.min(
+      this.dog.maxStamina,
+      this.dog.stamina + amount,
+    );
+  }
+
+  grantFlap(amount = 1) {
+    if (!this.dog) return;
     this.dog.flaps = Math.min(this.dog.maxFlaps, this.dog.flaps + amount);
   }
 
@@ -3659,7 +3683,7 @@ export default class Level1 extends Phaser.Scene {
     ring.setData('last', now);
 
     const before = this.dog.flaps;
-    this.grantStamina(1);
+    this.grantFlap(1);
     this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -180 * S);
     sfx.ring();
     this.spawnPuff(ring.x, ring.y, 1.2);
@@ -4141,7 +4165,7 @@ export default class Level1 extends Phaser.Scene {
     dog.jumpCutReady = false;
     dog.grounded = false;
     const before = dog.flaps;
-    this.grantStamina(1);
+    this.grantFlap(1);
     if (dog.flaps > before) {
       this.floatText(awning.x, awning.y - 14 * S, t('float.flap'), '#6ec6a8');
     }
@@ -4253,6 +4277,7 @@ export default class Level1 extends Phaser.Scene {
     this.spinTail = null;
     this.pips.setVisible(false);
     this.staminaIcon?.setVisible(false);
+    this.staminaText?.setVisible(false);
     this.boneText.setVisible(false);
     this.comboText?.setVisible(false);
     this.hint.setVisible(false);

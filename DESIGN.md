@@ -151,7 +151,8 @@ are design pixels (1 design px = 3 render px).
 | Air friction | 500 | preserves momentum |
 | Jump impulse | 420 | ~55 px (3.4 tiles) |
 | Flap impulse | 380 | ~45 px per flap |
-| IMPULSE stamina | 2 | earned from conchas and enemies |
+| Flap charges | 2 | double jumps; refill on landing |
+| IMPULSE stamina | 2 | slide charges; earned from conchas and enemies |
 | Glide gravity | 400 | 25% of normal |
 | Glide max fall | 120 | slow, steerable descent |
 | Jump cut | 0.45 | tap = short hop, hold = full jump |
@@ -164,20 +165,22 @@ are design pixels (1 design px = 3 render px).
 **State machine:** grounded → jump → flap ×2 → glide (hold, falling). The glide
 pose stretches both front paws forward and trails the hind paws, like a small
 flying dog. A fresh
-S/↓ press starts the slide attack, on the ground or in the air. Air flaps and slides both spend
-IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned
-by collecting conchas, which enemies sometimes drop; landing and resting do not
-refill it, but gold rings and awnings restore one pip to support vertical routes. Jump cut only applies to ground jumps, after the 90 ms minimum.
+S/↓ press starts the slide attack, on the ground or in the air. Double jumps use
+their own flap charges, which refill on landing and can be topped up by rings and
+awnings. IMPULSE is a separate slide-only stamina meter, earned by collecting
+conchas that enemies sometimes drop. Jump cut only applies to ground jumps,
+after the 90 ms minimum.
 
-### IMPULSE stamina
-The two IMPULSE pips are the shared stamina meter. A ground jump is free; an air
-flap or a slide attack spends one pip. There is no passive or landing refill;
-rings and awnings are the traversal refills.
-Each defeated enemy has a 40% chance to drop a concha, and every collected
-concha restores one pip. Gold rings and awnings also restore one pip and give
-the climb back some momentum. The Golden Wing raises the maximum to three and fills the meter.
-At zero, air flaps and slides are unavailable, but Bonjo can still run, ground
-jump and glide.
+### Flaps & IMPULSE
+Flap charges are the double-jump resource: Bonjo starts with two, spends one per
+air flap, and refills all of them on landing. Rings and awnings restore one flap
+charge each. The Golden Wing raises the maximum to three.
+
+IMPULSE is separate and gates only the slide attack. Bonjo starts with two slide
+charges; each slide spends one. IMPULSE does not refill passively or on landing.
+Each defeated enemy has a 40% chance to drop a concha, and every collected concha
+restores one IMPULSE pip. At zero, slides are unavailable, but jumping, flapping
+and gliding remain available.
 
 ---
 
@@ -198,7 +201,7 @@ measures to the nearest body edge so mismatched sprite origins cannot make a
 touching target miss. A deliberate down-input, on the ground or in the air,
 starts the slide attack: two points of damage, strong knockback and a heavy
 impact, spending one
-IMPULSE pip from the same stamina pool as air flaps. A stretched gold aura follows
+IMPULSE pip from the slide-only stamina pool. A stretched gold aura follows
 Bonjo while a trail of warm afterimages and embers streams behind him. Bonjo is
 briefly damage-immune during each slide. Every connecting tail sweep or slide throws a small impact ring,
 dust burst and light camera kick; the slide's version is the heaviest. The spin
@@ -265,7 +268,7 @@ reward; never a hazard.
 
 ### Market awnings
 Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
-~120 design px, restores one IMPULSE pip, squashes the canvas and plays a boing. They are
+~120 design px, restores one flap charge, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
 
@@ -279,7 +282,7 @@ the route is optional pressure rather than a hard gate.
 
 ### End-of-level reward
 The far end of each level holds a floating **Golden Wing** token. Reaching it
-unlocks one extra IMPULSE pip for the rest of that run, fills the stamina meter
+unlocks one extra flap charge for the rest of that run, fills the flap bank
 and adds a third pip to the HUD. It is deliberately off the survival path: a reason to
 explore the full map, not a requirement to win.
 
@@ -323,7 +326,7 @@ chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
 The compact HUD uses the bone icon for hunger and the concha icon for IMPULSE;
 the same two icon textures are used by the course pickups. The HUD labels
-health/IMPULSE stamina/hunger. An off-screen boss arrow points toward the top dog
+health, flap charges, IMPULSE stamina and hunger. An off-screen boss arrow points toward the top dog
 and labels its Casa location. The **O / OBJETIVOS** panel pauses the
 game and explains the current goal, day errands and each HUD meter, including
 dawn warnings and the top-dog hit count. Dayfall is gated on the day errands: Polo's gift and the bell ring. Nightfall
@@ -331,7 +334,7 @@ then waits at the zero timer until both are done. Dawn is gated on the night
 errands: check the gate at night and subdue two rivals. Errand progress never
 resets, and the pause panel lists day and night checks. The final night adds gate
 rushers and, at roughly 12 s left, the top dog on the lawn in front of Casa. Repel it to win; the timer will wait at zero
-until it is down. The HUD always shows phase, timer, labeled hearts/IMPULSE/hunger
+until it is down. The HUD always shows phase, timer, labeled hearts/flaps/IMPULSE/hunger
 and gate health; objectives and errands live in the O panel.
 
 ### The porch
@@ -520,7 +523,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 
 ### In this slice
 - La Cuadra: town background, flat adobe street, papel picado, porch
-- Movement: run, jump, variable height, coyote, buffer, stamina-gated flaps and slide attack, glide, spin
+- Movement: run, jump, variable height, coyote, buffer, flap-charge double jumps, slide-only IMPULSE stamina, glide, spin
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
 - **Survival:** 3 hearts (expandable to 4 with life hearts), bone-fed hunger bar, concha-charged stamina, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
@@ -529,7 +532,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Defense:** porch gate with health and a compromised safe zone
 - **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, power-ups, no-hit/time bonuses, S–D rank
-- **End reward:** Golden Wing token at the far end of each level grants +1 IMPULSE pip for the run
+- **End reward:** Golden Wing token at the far end of each level grants +1 flap charge for the run
 - Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; geese in Las Orillas; two crows/owls; Chihuahua boss
 - Ambient day birds/rooster; night skunks/geese, owls, bats and cats; fenced level ends
 - Piñatas with concha or life-heart drops, bouncing awnings

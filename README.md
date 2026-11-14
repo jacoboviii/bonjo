@@ -59,8 +59,8 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   to the ground. Most leave a concha; piñatas with a small heart marker leave a
   **life heart** instead.
 - **Market awnings:** land on the striped canvas to bounce high and restore one
-  IMPULSE pip. Gold rings give a stronger mid-air upward kick and also restore
-  one IMPULSE pip, keeping vertical routes viable.
+  FLAP charge. Gold rings give a stronger mid-air upward kick and also restore
+  one FLAP charge, keeping vertical routes viable.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry rings, bones and conchas; practice
   the flap-and-glide chain to reach them.
@@ -77,7 +77,8 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
   hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
-  used for air jumps and slides. Each level has two placed **life hearts** and
+  used only for the slide attack; flap charges for double jumps are separate and
+  refill on landing. Each level has two placed **life hearts** and
   at least one marked piñata hides another. The first raises max health to four;
   later hearts heal, and a full-health heart waits for you. Checkpoints heal one
   heart, and dawn restores two. In La Cuadra,
@@ -115,7 +116,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | Key | Ground | Air |
 | --- | --- | --- |
 | **A / D** or arrows | Run | Steer |
-| **SPACE** / **W** | Jump (hold for height) | Flap (spends 1 IMPULSE pip) |
+| **SPACE** / **W** | Jump (hold for height) | Double jump / flap (refills on landing) |
 | **Hold SPACE** | — | Glide (slow fall) |
 | **S** / **↓** | Slide attack (spends 1 IMPULSE pip, heavy damage) | Air slide attack (spends 1 IMPULSE pip) |
 | **E** / touch spin | Tail-sweep attack nearby rivals | — |
@@ -135,7 +136,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** action cluster — ▲ flap, ✦ spin and ▼ slide, with spin beside jump
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
-- **top bar:** IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
+- **top bar:** flap charges, IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
 - The title and map switch to larger touch targets: a tappable play button, bigger EN/ES language pills, a larger map play button and a roomier back button.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
@@ -191,7 +192,7 @@ seconds, keep or revert.
 | Air | gravity | normal falling weight |
 | | glide gravity / fall speed | how floaty the glide is |
 | | jump / flap power | height gained per jump / flap |
-| | IMPULSE pips | maximum stamina charges |
+| | flap charges | double jumps before landing |
 | | jump cut | how much a released jump is shortened |
 | | min jump hold | minimum time before a jump can be cut |
 | | coyote (ms) | grace period to jump after leaving a ledge |
@@ -224,7 +225,7 @@ there to make them permanent.
 
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide and slide — each with its own animation pose
-- **IMPULSE stamina** pays for air flaps and slide attacks; refill it with conchas dropped by enemies, or with gold rings and awnings
+- **Flap charges** are the double-jump resource and refill on landing; **IMPULSE stamina** only gates the slide and refills with conchas dropped by enemies
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
@@ -235,11 +236,11 @@ there to make them permanent.
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
-- **Compact labeled status HUD** for health, IMPULSE stamina and hunger; phase, countdown and gate remain on-screen
+- **Compact labeled status HUD** for flap charges, IMPULSE stamina, health and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each, sharing stamina with air flaps
+- **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
-- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra IMPULSE pip (and a third HUD pip)
+- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
