@@ -55,8 +55,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Crows:** one rare aerial pest, plus a far-block crow; their wings flap as they patrol and they caw when Bonjo gets close. At night the same slot becomes a hunting owl.
 - **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its geese. Bats cross the dark and the cats keep their watch.
 - **Piñatas:** hanging by ropes from street utility poles. Jump, flap or spin into one; each hit drops a
-  bone, and the third hit bursts it into a shower of bones. Most leave a concha;
-  piñatas with a small heart marker leave a **life heart** instead.
+  bone, and the third hit bursts it into a shower of bones. All contents tumble
+  to the ground. Most leave a concha; piñatas with a small heart marker leave a
+  **life heart** instead.
 - **Market awnings:** land on the striped canvas to bounce high and restore one
   IMPULSE pip. Gold rings give a stronger mid-air upward kick and also restore
   one IMPULSE pip, keeping vertical routes viable.
@@ -155,7 +156,9 @@ burst it; **slide** a **rival dog** to make it drop a bone and flee. Landing on
 an enemy bounces Bonjo safely without damaging either of them. Eat **bones** to keep hunger up; grab **conchas** to recharge IMPULSE. Use taco carts, loot trash cans, knock
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
-bell to ring it. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
+bell to ring it. Both errands are required each day: the day timer waits at zero
+until Polo and the bell are done. Dialog cards pause the game until you close
+them. Press **E** (or tap the spin button) to make Bonjo plant his
 paws and whip his fluffy tail in a quick sweep that dazes, nudges back and
 damages nearby rivals, bone thieves and crows. The tail arc and its damage
 travel with Bonjo, even while moving or jumping; a sweep that connects from
@@ -239,7 +242,7 @@ there to make them permanent.
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
-- **Named NPC dialog cards** that pause the action, Polo's daily concha, bell blessing, and chihuahua warnings
+- **Named NPC dialog cards** that pause the action; mandatory daily Polo + bell errands that hold off nightfall, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**

@@ -30,6 +30,7 @@ export default class Pinata extends Phaser.Physics.Arcade.Image {
     // A utility pole and cross-street cable anchor the piñata instead of
     // letting the rope end in mid-air.
     const groundY = (opts.groundY ?? scene.levelData?.platforms?.[0]?.y ?? 600) * S;
+    this.groundY = groundY;
     const postX = x - 54 * S;
     const post = scene.add.graphics().setDepth(3);
     post.fillStyle(0x2b1b3d, 1);

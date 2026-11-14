@@ -169,6 +169,7 @@ export default class Level1 extends Phaser.Scene {
     this.rank = 'D';
     this.poloGift = true;
     this.bellRung = false;
+    this.errandGateHintShown = false;
     this.nextAlarm = 0;
     this.nextAllyBark = 0;
     this.nextChirp = 0;
@@ -1087,7 +1088,7 @@ export default class Level1 extends Phaser.Scene {
     };
   }
 
-  spawnFoodAt(x, y) {
+  spawnFoodAt(x, y, opts = {}) {
     const food = this.foodGroup.create(x, y, 'conchaIcon');
     food.setDepth(7);
     food.setScale(0.6);
@@ -1102,6 +1103,7 @@ export default class Level1 extends Phaser.Scene {
       ease: 'Sine.inOut',
     });
 
+    if (opts.groundY != null) this.dropPickupToGround(food, opts.groundY);
     return food;
   }
 
@@ -1195,7 +1197,7 @@ export default class Level1 extends Phaser.Scene {
     );
   }
 
-  spawnLifeAt(x, y) {
+  spawnLifeAt(x, y, opts = {}) {
     const life = this.lifeGroup.create(x, y, 'lifeHeart');
     life.setDepth(7);
     life.body.setSize(16 * S, 16 * S);
@@ -1219,6 +1221,7 @@ export default class Level1 extends Phaser.Scene {
       ease: 'Sine.inOut',
     });
 
+    if (opts.groundY != null) this.dropPickupToGround(life, opts.groundY);
     return life;
   }
 
@@ -1640,6 +1643,11 @@ export default class Level1 extends Phaser.Scene {
       t('float.gift'),
       '#ffd166',
     );
+  }
+
+  errandsComplete() {
+    if (this.features?.errands === false) return true;
+    return !this.poloGift && this.bellRung;
   }
 
   ringBell() {
@@ -2477,7 +2485,14 @@ export default class Level1 extends Phaser.Scene {
 
     let text = t(this.levelData.goalKey || 'goal.survive');
     let color = '#6ec6a8';
-    if (this.alphaActive && !this.alphaDefeated) {
+    if (
+      this.phase === 'day' &&
+      this.phaseTime <= 0 &&
+      !this.errandsComplete()
+    ) {
+      text = t('goal.errands');
+      color = '#ffd166';
+    } else if (this.alphaActive && !this.alphaDefeated) {
       text = t(this.levelData.boss?.goalKey || 'goal.alpha', {
         hits: this.alpha?.health ?? 5,
         max: this.alpha?.maxHealth ?? 5,
@@ -2768,9 +2783,15 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar.fillStyle(this.hunger < 25 ? 0xf26b5e : 0xf0a03c, 1);
     this.hungerBar.fillRect(hungerX + 1 * S, hungerY + 1 * S, width, 4 * S);
 
+    const waitingErrands =
+      this.phase === 'day' &&
+      this.phaseTime <= 0 &&
+      !this.errandsComplete();
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
-    const phaseLabel = `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`;
+    const phaseLabel = waitingErrands
+      ? t('hud.errandsPending')
+      : `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`;
     let gateLabel = '';
     if (this.gateText) {
       gateLabel = this.gateBroken
@@ -2784,7 +2805,9 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText.setText(
       this.touchDevice && gateLabel ? `${phaseLabel} · ${gateLabel}` : phaseLabel,
     );
-    this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
+    this.phaseText.setColor(
+      waitingErrands || this.phase === 'night' ? '#ffd166' : '#fff4e0',
+    );
 
     this.updateGoalHud();
   }
@@ -2815,7 +2838,18 @@ export default class Level1 extends Phaser.Scene {
     if (this.won || this.gameOverFlag) return;
 
     if (this.phase === 'day') {
-      if (this.phaseTime <= 0) this.startNight();
+      if (this.phaseTime <= 0) {
+        if (!this.errandsComplete()) {
+          this.phaseTime = 0;
+          if (!this.errandGateHintShown) {
+            this.errandGateHintShown = true;
+            this.showPhaseBanner(t('errands.required'), '#ffd166');
+            this.updateGoalHud();
+          }
+        } else {
+          this.startNight();
+        }
+      }
     } else {
       if (this.waveSpawned < this.waveTotal) {
         this.nextWave -= dt;
@@ -2952,6 +2986,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.poloGift = true;
     this.bellRung = false;
+    this.errandGateHintShown = false;
     this.poloIcon?.setVisible(true);
     this.bellIcon?.setVisible(true);
 
@@ -3953,7 +3988,8 @@ export default class Level1 extends Phaser.Scene {
       onComplete: () => pinata.setAngle(0),
     });
 
-    this.spawnBoneAt(pinata.x, pinata.y + 12 * S);
+    const drop = { groundY: pinata.groundY };
+    this.spawnBoneAt(pinata.x, pinata.y + 12 * S, drop);
     this.floatText(
       pinata.x,
       pinata.y - 22 * S,
@@ -3966,20 +4002,36 @@ export default class Level1 extends Phaser.Scene {
         this.spawnBoneAt(
           pinata.x + (i - 1) * 16 * S,
           pinata.y + (i % 2 ? 8 : 18) * S,
+          drop,
         );
       }
       this.spawnPuff(pinata.x, pinata.y, 1.5);
       sfx.burst();
       if (pinata.hasLife) {
-        this.spawnLifeAt(pinata.x, pinata.y + 20 * S);
+        this.spawnLifeAt(pinata.x, pinata.y + 20 * S, drop);
       } else {
-        this.spawnFoodAt(pinata.x, pinata.y + 20 * S);
+        this.spawnFoodAt(pinata.x, pinata.y + 20 * S, drop);
       }
       pinata.destroy();
     }
   }
 
-  spawnBoneAt(x, y) {
+  dropPickupToGround(pickup, groundY, spread = 18) {
+    pickup.setData('falling', true);
+    this.tweens.add({
+      targets: pickup,
+      x: pickup.x + Phaser.Math.Between(-spread * S, spread * S),
+      y: groundY - 7 * S,
+      duration: Phaser.Math.Between(420, 610),
+      delay: Phaser.Math.Between(0, 90),
+      ease: 'Bounce.out',
+      onComplete: () => {
+        if (pickup.active) pickup.setData('falling', false);
+      },
+    });
+  }
+
+  spawnBoneAt(x, y, opts = {}) {
     const bone = this.boneGroup.create(x, y, 'boneIcon');
     bone.setDepth(7);
     bone.setScale(0.7);
@@ -3994,6 +4046,7 @@ export default class Level1 extends Phaser.Scene {
       ease: 'Sine.inOut',
     });
 
+    if (opts.groundY != null) this.dropPickupToGround(bone, opts.groundY);
     this.spawnPuff(x, y, 0.6);
   }
 
