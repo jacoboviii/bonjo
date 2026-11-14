@@ -42,7 +42,7 @@ export default class TouchControls {
     this.addButton('right', 128 * U, 240 * U, 'btn-right', buttonScale);
     this.addButton('jump', W - 60 * U, 240 * U, 'btn-jump', buttonScale);
     this.addButton('interact', W - 124 * U, 240 * U, 'btn-spin', buttonScale);
-    this.addButton('slide', W - 188 * U, 240 * U, 'btn-dive', buttonScale);
+    this.addButton('slide', W - 188 * U, 240 * U, 'btn-slide', buttonScale);
     this.addButton('talk', W - 124 * U, 174 * U, 'btn-interact', buttonScale);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));

@@ -352,6 +352,7 @@ files):
 | `boneIcon`, `conchaIcon` | 42×30 / 48×30 | course pickups + HUD icons |
 | `sun` / `moon` | 144×144 | day sun and night moon |
 | `speechBubble` | 42×36 | floating touch interaction prompt |
+| `btn-slide`, `pauseIcon` | 96×96 / 42×42 | charge-action and pause button icons |
 | `heart` | 15×15 | health HUD |
 | `lifeHeart` | 24×24 | world life pickup and piñata life marker |
 | `wingToken` | 24×24 | end-of-level extra-flap power-up |

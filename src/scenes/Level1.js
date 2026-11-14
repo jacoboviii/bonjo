@@ -2216,28 +2216,16 @@ export default class Level1 extends Phaser.Scene {
     const W = this.scale.width;
 
     this.objectivesButton = this.add
-      .text(
+      .image(
         W - 8 * S,
-        17 * S,
-        'II',
-        {
-          fontFamily: 'monospace',
-          fontStyle: 'bold',
-          fontSize: this.touchDevice ? 7 * S : 6 * S,
-          color: '#fff4e0',
-          backgroundColor: '#1b1029',
-        },
+        this.touchDevice ? 8 * S : 17 * S,
+        'pauseIcon',
       )
       .setOrigin(1, 0)
       .setScrollFactor(0)
       .setDepth(160)
+      .setScale(this.touchDevice ? 0.9 : 0.7)
       .setInteractive({ useHandCursor: true });
-    this.objectivesButton.setPadding(
-      this.touchDevice ? 6 * S : 5 * S,
-      this.touchDevice ? 4 * S : 2 * S,
-      this.touchDevice ? 6 * S : 5 * S,
-      this.touchDevice ? 4 * S : 2 * S,
-    );
     this.objectivesButton.on('pointerdown', () => this.toggleObjectives());
 
     this.objectivesScrim = this.add
@@ -2350,7 +2338,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.objectivesButton
       .setPosition(W - 8 * S, this.touchDevice ? 8 * S : 17 * S)
-      .setText('II');
+      .setScale(this.touchDevice ? 0.9 : 0.7);
     this.objectivesScrim.setPosition(0, 0).setSize(W, this.scale.height);
     this.objectivesRoot.setPosition(W / 2, this.scale.height / 2);
     drawFolkCard(this.objectivesCard, 0, 0, w, h);

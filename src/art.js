@@ -123,6 +123,7 @@ export function buildTextures(scene) {
   makeRope(scene);
   makeAwning(scene);
   makeControlButtons(scene);
+  makePauseIcon(scene);
 
   makeCrow(scene, 'crow', 'idle');
   makeCrow(scene, 'crowFlap', 'flap');
@@ -2704,7 +2705,7 @@ function makeControlButtons(scene) {
     ['btn-left', 'left'],
     ['btn-right', 'right'],
     ['btn-jump', 'jump'],
-    ['btn-dive', 'dive'],
+    ['btn-slide', 'slide'],
     ['btn-interact', 'interact'],
     ['btn-spin', 'spin'],
   ];
@@ -2743,6 +2744,13 @@ function makeControlButtons(scene) {
       g.fillCircle(32, 32, 6);
       g.fillStyle(0xfff4e0, 1);
       g.fillCircle(32, 32, 2);
+    } else if (kind === 'slide') {
+      // twin speed chevrons and a dust streak for the charge attack
+      g.fillTriangle(17, 17, 32, 32, 17, 47);
+      g.fillTriangle(32, 17, 47, 32, 32, 47);
+      g.fillStyle(0xf0a03c, 1);
+      g.fillRect(17, 50, 30, 3);
+      g.fillRect(25, 56, 22, 2);
     } else {
       g.fillTriangle(32, 48, 18, 28, 46, 28);
       g.fillRect(28, 18, 8, 10);
@@ -2751,6 +2759,28 @@ function makeControlButtons(scene) {
     g.generateTexture(key, 64, 64);
     g.destroy();
   }
+}
+
+function makePauseIcon(scene) {
+  const g = gfx(scene);
+  const W = 14;
+  const H = 14;
+
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(0, 1, W, H - 2);
+  g.fillRect(1, 0, W - 2, H);
+  g.lineStyle(1, 0xfff4e0, 0.9);
+  g.lineBetween(0.5, 0.5, W - 0.5, 0.5);
+  g.lineBetween(W - 0.5, 0.5, W - 0.5, H - 0.5);
+  g.lineBetween(W - 0.5, H - 0.5, 0.5, H - 0.5);
+  g.lineBetween(0.5, H - 0.5, 0.5, 0.5);
+
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(4, 3, 2, 8);
+  g.fillRect(8, 3, 2, 8);
+
+  g.generateTexture('pauseIcon', W, H);
+  g.destroy();
 }
 
 // --- enemies & pickups -----------------------------------------------------
