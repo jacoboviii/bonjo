@@ -58,9 +58,10 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   bone, and the third hit bursts it into a shower of bones. All contents tumble
   to the ground. Most leave a concha; piñatas with a small heart marker leave a
   **life heart** instead.
-- **Market awnings:** land on the striped canvas to bounce high and restore one
-  FLAP charge. Gold rings give a stronger mid-air upward kick and also restore
-  one FLAP charge, keeping vertical routes viable.
+- **Market awnings:** striped canvas canopies project from storefront facades.
+  Land on one to bounce high and restore one FLAP charge. Gold rings give a
+  stronger mid-air upward kick and also restore one FLAP charge, keeping
+  vertical routes viable.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry rings, bones and conchas; practice
   the flap-and-glide chain to reach them.

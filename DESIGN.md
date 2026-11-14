@@ -267,7 +267,9 @@ heart instead. Every dropped pickup scatters and falls to the ground. Purely a
 reward; never a hazard.
 
 ### Market awnings
-Striped canvas canopies above the street. Landing on one from above bounces Bonjo
+Striped canvas canopies project from the little storefront facades along the
+street, so they read as mounted awnings rather than floating slabs. Landing on
+one from above bounces Bonjo
 ~120 design px, restores one flap charge, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.

@@ -121,6 +121,7 @@ export function buildTextures(scene) {
   makeBonjoHouse(scene);
   makePinata(scene);
   makeRope(scene);
+  makeShopfront(scene);
   makeAwning(scene);
   makeControlButtons(scene);
   makePauseIcon(scene);
@@ -2445,6 +2446,70 @@ function makeRope(scene) {
   g.fillStyle(0xa97a45, 1);
   g.fillRect(0, 2, 1, 3);
   g.generateTexture('rope', 2, 8);
+  g.destroy();
+}
+
+// Small street-level storefront used behind every market awning. The awning
+// sits at y=578, 22 design px above the pavement, so the window ends just above
+// the canvas and the door sits beneath it.
+function makeShopfront(scene) {
+  const g = gfx(scene);
+  const W = 56;
+  const H = 66;
+
+  // adobe wall and plaster tone
+  g.fillStyle(0xe0b07a, 1);
+  g.fillRect(0, 0, W, H);
+  g.fillStyle(0xc98a5e, 1);
+  for (let y = 4; y < H; y += 7) g.fillRect(0, y, W, 1);
+  g.fillStyle(0x1b1029, 0.1);
+  g.fillRect(0, H - 3, W, 3);
+
+  // terracotta coping and painted band
+  g.fillStyle(0xb5533a, 1);
+  g.fillRect(0, 0, W, 5);
+  g.fillStyle(0xd9775a, 1);
+  g.fillRect(0, 0, W, 2);
+  g.fillStyle(0x3f8f8a, 1);
+  g.fillRect(0, 5, W, 3);
+  g.fillStyle(0xe8c9a0, 1);
+  g.fillRect(0, 8, W, 1);
+
+  // hanging sign above the shop window
+  g.fillStyle(0x1b1029, 0.8);
+  g.fillRect(4, 11, W - 8, 9);
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(6, 13, W - 12, 5);
+  g.fillStyle(0x1b1029, 0.8);
+  for (let x = 8; x < W - 8; x += 6) g.fillRect(x, 14, 3, 1);
+
+  // shop window with warm panes
+  g.fillStyle(0x1b1029, 0.9);
+  g.fillRect(7, 23, 19, 16);
+  g.fillStyle(0xffcf6a, 0.9);
+  g.fillRect(8, 24, 17, 14);
+  g.fillStyle(0x1b1029, 0.75);
+  g.fillRect(16, 24, 1, 14);
+  g.fillRect(8, 31, 17, 1);
+  g.fillStyle(0xfff4e0, 0.45);
+  g.fillRect(9, 25, 3, 4);
+
+  // doorway beneath the awning
+  g.fillStyle(0x241625, 1);
+  g.fillRect(W - 21, 45, 15, H - 45);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(W - 9, 56, 1, 1);
+  g.fillStyle(0x1b1029, 0.35);
+  g.fillRect(W - 21, 45, 15, 2);
+
+  // awning mounting shadow and little iron brackets
+  g.fillStyle(0x1b1029, 0.28);
+  g.fillRect(2, 40, W - 4, 5);
+  g.fillStyle(0x8f3f2e, 1);
+  g.fillRect(3, 45, 2, 8);
+  g.fillRect(W - 5, 45, 2, 8);
+
+  g.generateTexture('shopfront', W, H);
   g.destroy();
 }
 

@@ -112,6 +112,7 @@ export const laCuadra = {
   lives: [[1380, 590], [3300, 590]],
   endReward: { x: 4910, y: 570, type: 'flap' },
 
+  awningFacade: 'shopfront',
   awnings: [
     [560, 578],
     [1560, 578],
