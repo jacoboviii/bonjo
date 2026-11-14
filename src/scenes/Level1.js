@@ -1430,6 +1430,18 @@ export default class Level1 extends Phaser.Scene {
       }
     }
 
+    for (const crow of this.crowGroup?.getChildren() || []) {
+      if (
+        crow.active &&
+        !crow.defeated &&
+        !hitTargets.has(crow) &&
+        this.inSpinRange(crow, radius)
+      ) {
+        hitTargets.add(crow);
+        this.spinHitCrow(crow);
+      }
+    }
+
     for (const pinata of this.pinataGroup?.getChildren() || []) {
       if (
         pinata.active &&
@@ -3141,15 +3153,6 @@ export default class Level1 extends Phaser.Scene {
         shakeDuration: 150,
         shakeIntensity: 0.006,
       },
-      stomp: {
-        color: 0xfff4e0,
-        radius: 17 * S,
-        width: 3.5 * S,
-        duration: 240,
-        puffs: 5,
-        shakeDuration: 130,
-        shakeIntensity: 0.005,
-      },
     }[kind];
     if (!config) return;
 
@@ -3383,29 +3386,43 @@ export default class Level1 extends Phaser.Scene {
     );
   }
 
+  bounceOffEnemy() {
+    // Landing on an enemy is a safe bounce, not an attack.
+    this.dog.stompGraceUntil = this.time.now + 320;
+    this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
+    sfx.stomp();
+    this.spawnPuff(this.dog.x, this.dog.y + 4 * S, 0.55);
+  }
+
+  subdueCrow(crow) {
+    crow.defeated = true;
+    crow.body.enable = false;
+    this.bonesCount += 1;
+    this.maybeDropConcha(crow.x, crow.y);
+    sfx.stomp();
+    this.spawnPuff(crow.x, crow.y, 0.9);
+    this.floatText(crow.x, crow.y - 8 * S, '+1');
+    this.tweens.add({
+      targets: crow,
+      y: crow.y - 10 * S,
+      alpha: 0,
+      angle: 90,
+      duration: 250,
+      onComplete: () => crow.destroy(),
+    });
+  }
+
+  spinHitCrow(crow) {
+    if (crow.defeated || !crow.active) return;
+    this.subdueCrow(crow);
+    this.onAttackHit(crow, 'spin');
+  }
+
   hitCrow(dog, crow) {
     if (crow.defeated || !crow.active) return;
 
-    // Any fall onto the crow pops it, not only a high-speed dive.
     if (this.isStomping(crow)) {
-      crow.defeated = true;
-      crow.body.enable = false;
-
-      this.bonesCount += 1;
-      this.maybeDropConcha(crow.x, crow.y);
-      sfx.stomp();
-      this.spawnPuff(crow.x, crow.y, 0.9);
-      this.floatText(crow.x, crow.y - 8 * S, '+1');
-      this.tweens.add({
-        targets: crow,
-        y: crow.y - 10 * S,
-        alpha: 0,
-        angle: 90,
-        duration: 250,
-        onComplete: () => crow.destroy(),
-      });
-
-      this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
+      this.bounceOffEnemy();
       return;
     }
 
@@ -3469,11 +3486,9 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    // A fall onto it drops the bone and sends it fleeing.
+    // Landing on it is a safe bounce; attacks subdue it.
     if (this.isStomping(squirrel)) {
-      this.subdueSquirrel(squirrel);
-      sfx.stomp();
-      this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
+      this.bounceOffEnemy();
       return;
     }
 
@@ -3578,11 +3593,10 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    // A fall onto it stomps the rival. Keep a short grace window while Bonjo
-    // bounces off so the same overlapping body cannot hurt him on the way up.
+    // Landing on a rival is a safe bounce, not an attack; the spin and slide
+    // are the damage windows.
     if (this.isStomping(rival)) {
-      this.dog.stompGraceUntil = this.time.now + 320;
-      this.damageRival(rival, 2, { source: 'stomp', bounce: true });
+      this.bounceOffEnemy();
       return;
     }
 
@@ -3621,10 +3635,6 @@ export default class Level1 extends Phaser.Scene {
       });
 
       if (rival.health > 0) {
-        if (opts.bounce) {
-          this.onAttackHit(rival, 'stomp');
-          this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
-        }
         sfx.yelp();
         this.spawnPuff(rival.x, rival.y, 0.8);
         this.floatText(
@@ -3670,10 +3680,6 @@ export default class Level1 extends Phaser.Scene {
       onComplete: () => rival.destroy(),
     });
 
-    if (opts.bounce) {
-      this.onAttackHit(rival, 'stomp');
-      this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
-    }
     return true;
   }
 

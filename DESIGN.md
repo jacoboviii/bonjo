@@ -192,7 +192,7 @@ briefly damage-immune during each slide. Every connecting spin or slide throws a
 dust burst and light camera kick; the slide's version is the heaviest. The spin
 starts immediately, snaps through one rotation in 260 ms and has a ~420 ms
 cooldown; one press during that recovery is buffered so it fires as soon as the
-cooldown ends. It subdues bone-thief critters and can hit a piñata.
+cooldown ends. It subdues bone-thief critters and crows, and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
 is flap, spin and slide, with spin beside jump; the talk button appears above
@@ -206,10 +206,11 @@ future levels should continue the same step-up.
 Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
 same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
 They stop at the edges of their turf rather than running into pits. Sliding
-into one, or landing on it from above, subsumes it: yelp, +1 bone, a bounce
-clear and a 40% chance of a concha; it flees home. Any other contact costs a
-heart and knocks Bonjo back. The stomp bounce has a short grace window so the
-same overlapping body cannot hurt Bonjo on the way up. No gore, no
+into one or hitting it with the spin subsumes it: yelp, +1 bone and a 40%
+chance of a concha; it flees home. Landing on one from above is a safe bounce,
+not an attack. Any other contact costs a heart and knocks Bonjo back. The stomp
+bounce has a short grace window so the same overlapping body cannot hurt Bonjo
+on the way up. No gore, no
 defeat state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and
@@ -229,14 +230,14 @@ Night waves vary by role, with distinct silhouettes and palettes:
 
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
-They freeze for 0.65 s (`HEY!`) then sprint to the edge with it. Slide/stomp to
-make them drop it; if they escape, the bone is lost. They are the "small
+They freeze for 0.65 s (`HEY!`) then sprint to the edge with it. Slide or spin
+to make them drop it; stomping only bounces. If they escape, the bone is lost. They are the "small
 nuisance" layer between rival encounters.
 
 ### Crows (rare aerial hazard)
 One crow patrols a stretch of sky with a sine bob and a two-frame wingbeat.
-Land on it from a fall to pop it (+1 bone); touch it otherwise and lose a heart. At
-night it becomes an owl with its own flap frames. Kept rare so the dogs stay the
+Spin through it to pop it (+1 bone); landing on it only bounces. Touch it
+otherwise and lose a heart. At night it becomes an owl with its own flap frames. Kept rare so the dogs stay the
 story.
 
 ### Piñatas
