@@ -51,6 +51,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.nextHit = 0;
     this.nextAttack = 0;
     this.stunUntil = 0;
+    this.stunSlideUntil = 0;
     this.stolenBones = 0;
 
     this.body.setVelocityX(-this.baseSpeed);
@@ -60,6 +61,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     if (this.defeated) return;
     this.cancelAttack();
     this.stunUntil = this.scene.time.now + ms;
+    this.stunSlideUntil = 0;
     this.body.setVelocityX(0);
     this.setTint(0xfff4e0);
     this.scene.floatText(this.x, this.y - 22 * S, '!', '#ffd166');
@@ -160,10 +162,14 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
 
     if (this.stunUntil) {
       if (this.scene.time.now < this.stunUntil) {
-        this.body.setVelocityX(0);
+        // Let a short knockback slide finish before pinning the rival in place.
+        if (this.scene.time.now >= (this.stunSlideUntil || 0)) {
+          this.body.setVelocityX(0);
+        }
         return;
       }
       this.stunUntil = 0;
+      this.stunSlideUntil = 0;
       this.restoreBaseTint();
     }
 

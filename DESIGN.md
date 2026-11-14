@@ -180,7 +180,7 @@ jump and glide.
 `E` / the touch action button does one of two things depending on proximity:
 talk or ring when an NPC/quest prompt is active, otherwise perform a short
 Bonjo spin. The spin is the everyday attack: one point of damage per spin,
-plus a short daze and a firm knockback. Its halo expands to the exact damage radius, sized to cover Bonjo plus
+plus a short daze and a small slide-back. Its halo expands to the exact damage radius, sized to cover Bonjo plus
 an adjacent enemy sprite; it is not a second hitbox. The halo and damage check
 follow Bonjo for the full spin, even while moving or jumping. A spin that hits
 from above also bounces Bonjo off the target. The hit test

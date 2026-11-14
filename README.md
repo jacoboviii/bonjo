@@ -154,7 +154,7 @@ an enemy bounces Bonjo safely without damaging either of them. Eat **bones** to 
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
-spin that dazes, knocks back and damages nearby rivals, bone thieves and crows.
+spin that dazes, nudges back and damages nearby rivals, bone thieves and crows.
 The spinning halo and its damage travel with Bonjo, even while moving or
 jumping; a spin that connects from above also bounces Bonjo off the target.
 Press down while grounded for the heavy slide finisher; it spends one IMPULSE pip,
@@ -229,7 +229,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, IMPULSE stamina and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals, bone thieves and crows; grounded down-input slides are the heavy finisher, deal two points and spend one IMPULSE pip each, sharing stamina with air flaps
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, nudges back and damages nearby rivals, bone thieves and crows; grounded down-input slides are the heavy finisher, deal two points and spend one IMPULSE pip each, sharing stamina with air flaps
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra IMPULSE pip (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

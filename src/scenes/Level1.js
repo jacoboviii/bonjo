@@ -3587,6 +3587,7 @@ export default class Level1 extends Phaser.Scene {
     });
     if (!defeated && rival.active) {
       rival.stun(500);
+      rival.stunSlideUntil = this.time.now + 240;
       rival.body.setVelocityX(dir * 300 * S);
       rival.body.setVelocityY(-110 * S);
     }
@@ -3622,8 +3623,9 @@ export default class Level1 extends Phaser.Scene {
       rival.maxHealth <= 1 || this.time.now >= (rival.nextHit || 0);
     const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
     rival.stun(550);
-    rival.body.setVelocityX(dir * 230 * S);
-    rival.body.setVelocityY(-105 * S);
+    rival.stunSlideUntil = this.time.now + 140;
+    rival.body.setVelocityX(dir * 60 * S);
+    rival.body.setVelocityY(0);
     this.damageRival(rival, 1, { source: 'spin', bounce: false });
     if (wasReady) this.onAttackHit(rival, 'spin');
     if (this.isAboveEnemy(rival)) this.bounceOffEnemy();
