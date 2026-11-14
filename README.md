@@ -350,7 +350,7 @@ files):
 | `rivalThief`, `rivalThiefRun` | 48×45 | masked purple thief dog |
 | `rivalBrute`, `rivalBruteRun` | 48×45 | scarred brute, spiked collar |
 | `crow`, `crowFlap` | 42×27 | two-frame wingbeat, facing right |
-| `squirrel`, `squirrelRun` | 48×42 | 2-frame run cycle |
+| `squirrel`, `squirrelRun` | 48×42 | bushy tail, tufted ears and buck teeth; 2-frame run cycle |
 | `goose`, `gooseRun` | 48×42 | Las Orillas bone thief; honks when startled |
 | `chihuahuaBoss`, `chihuahuaBossRun` | 60×60 | aggressive Las Orillas boss |
 | `pinata` | 36×45 | star piñata + streamers |

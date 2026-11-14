@@ -243,7 +243,9 @@ Night waves vary by role, with distinct silhouettes and palettes:
   to Casa so the finale cannot be lost off-screen. The night cannot end until it is repelled.
 
 ### Squirrels (bone thieves)
-Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
+Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px. Their
+silhouette is a huge scalloped tail, pointed tufted ears and two prominent buck
+teeth.
 They freeze for 0.65 s (`HEY!`) then sprint to the edge with it. Slide or spin
 to make them drop it; stomping only bounces. If they escape, the bone is lost. They are the "small
 nuisance" layer between rival encounters.

@@ -1940,37 +1940,51 @@ const SQ_INK = 0x1a1224;
 function makeSquirrel(scene, key, pose) {
   const g = rawGfx(scene);
 
-  // big bushy tail behind the body
+  // Huge S-curved, scalloped tail. This is the silhouette that reads
+  // "squirrel" even at 32x28.
   g.fillStyle(SQ_DARK, 1);
-  g.fillRect(4, 11, 7, 11);
-  g.fillRect(2, 7, 6, 7);
-  g.fillRect(3, 3, 5, 5);
-  g.fillRect(6, 1, 4, 4);
+  g.fillCircle(5, 10, 4.2);
+  g.fillCircle(4.2, 5, 3.4);
+  g.fillRect(1, 5, 5, 5);
+  g.fillRect(1, 1, 4, 5);
+  g.fillTriangle(2, 14, 10, 12, 8, 22);
+  g.fillRect(4, 14, 6, 8);
+
   g.fillStyle(SQ_FUR, 1);
-  g.fillRect(5, 11, 4, 8);
-  g.fillRect(3, 7, 4, 4);
-  g.fillRect(4, 3, 3, 4);
+  g.fillCircle(5, 10, 3.1);
+  g.fillCircle(4.2, 5.2, 2.5);
+  g.fillRect(2, 5, 4, 4);
+  g.fillRect(2, 2, 3, 4);
+  g.fillTriangle(3.5, 14, 9, 13, 8, 20);
+  g.fillRect(5, 14, 4, 7);
+
+  // tail highlight, fur notches and cream tip
   g.fillStyle(SQ_LIGHT, 1);
-  g.fillRect(5, 3, 1, 3);
-  g.fillRect(8, 1, 2, 2);
+  g.fillRect(2, 4, 1, 5);
+  g.fillRect(4, 9, 1, 5);
+  g.fillRect(6, 16, 2, 3);
   g.fillStyle(SQ_BELLY, 1);
-  g.fillRect(7, 0, 3, 2);
+  g.fillRect(2, 1, 2, 2);
+  g.fillRect(5, 7, 1, 2);
 
   // body
+  g.fillStyle(SQ_DARK, 1);
+  g.fillRect(8, 13, 15, 12);
+  g.fillRect(10, 11, 11, 3);
   g.fillStyle(SQ_FUR, 1);
-  g.fillRect(8, 13, 14, 11);
-  g.fillRect(10, 11, 9, 3);
-  g.fillRect(10, 24, 10, 2);
+  g.fillRect(9, 14, 13, 10);
+  g.fillRect(10, 12, 10, 2);
 
-  // belly
+  // belly and chest
   g.fillStyle(SQ_BELLY, 1);
-  g.fillRect(10, 19, 11, 5);
+  g.fillRect(11, 18, 10, 5);
+  g.fillRect(10, 22, 2, 2);
 
-  // legs
+  // legs / paws
   g.fillStyle(SQ_DARK, 1);
   if (pose === 'run') {
     g.fillRect(10, 23, 4, 4);
-    g.fillRect(17, 23, 4, 4);
+    g.fillRect(18, 23, 4, 4);
   } else {
     g.fillRect(9, 23, 3, 4);
     g.fillRect(19, 23, 3, 4);
@@ -1978,45 +1992,57 @@ function makeSquirrel(scene, key, pose) {
   g.fillStyle(SQ_BELLY, 1);
   if (pose === 'run') {
     g.fillRect(10, 26, 4, 1);
-    g.fillRect(17, 26, 4, 1);
+    g.fillRect(18, 26, 4, 1);
   } else {
     g.fillRect(9, 26, 3, 1);
     g.fillRect(19, 26, 3, 1);
   }
 
-  // head + cheek
+  // head outline and pointed, tufted ears
+  g.fillStyle(SQ_DARK, 1);
+  g.fillRect(19, 8, 10, 10);
+  g.fillRect(18, 12, 3, 5);
+  g.fillTriangle(21, 9, 24, 2, 27, 9);
+  g.fillTriangle(27, 8, 29, 4, 31, 9);
+
   g.fillStyle(SQ_FUR, 1);
-  g.fillRect(20, 9, 9, 10);
-  g.fillRect(19, 13, 3, 5);
+  g.fillRect(20, 9, 8, 8);
+  g.fillRect(19, 12, 2, 5);
+  g.fillTriangle(22, 8, 24, 4, 26, 8);
+  g.fillTriangle(27, 8, 29, 5, 30, 8);
 
-  // ear
-  g.fillStyle(SQ_DARK, 1);
-  g.fillRect(22, 5, 3, 4);
+  // ear tufts
   g.fillStyle(SQ_LIGHT, 1);
-  g.fillRect(23, 6, 1, 2);
+  g.fillRect(23, 3, 1, 2);
+  g.fillRect(28, 4, 1, 2);
 
-  // muzzle, nose, tooth
+  // cheek pouch, muzzle, nose
   g.fillStyle(SQ_BELLY, 1);
-  g.fillRect(26, 14, 5, 4);
-  g.fillRect(28, 17, 1, 2);
-  g.fillStyle(SQ_DARK, 1);
-  g.fillRect(30, 15, 1, 1);
-
-  // eye
+  g.fillRect(22, 15, 4, 3);
+  g.fillRect(25, 13, 6, 5);
   g.fillStyle(SQ_INK, 1);
-  g.fillRect(25, 12, 2, 2);
+  g.fillRect(30, 14, 1, 1);
+
+  // two prominent buck teeth
+  g.fillStyle(0xffffff, 1);
+  g.fillRect(28, 17, 1, 2);
+  g.fillRect(30, 17, 1, 1);
+
+  // pale eye ring + dark pupil
   g.fillStyle(SQ_BELLY, 1);
-  g.fillRect(25, 12, 1, 1);
+  g.fillRect(24, 11, 3, 3);
+  g.fillStyle(SQ_INK, 1);
+  g.fillRect(25, 12, 1, 2);
 
-  // highlights
+  // fur highlights
   g.fillStyle(SQ_LIGHT, 1);
-  g.fillRect(9, 13, 8, 1);
-  g.fillRect(21, 9, 5, 1);
-  g.fillRect(4, 7, 2, 1);
-
+  g.fillRect(10, 14, 7, 1);
+  g.fillRect(21, 9, 4, 1);
+  g.fillRect(2, 4, 1, 3);
+  g.fillRect(4, 9, 1, 3);
   if (pose === 'run') {
-    g.fillStyle(SQ_LIGHT, 1);
     g.fillRect(6, 2, 2, 1);
+    g.fillRect(12, 15, 2, 1);
   }
 
   g.generateTexture(key, 32, 28);
