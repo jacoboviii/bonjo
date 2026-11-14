@@ -7,7 +7,7 @@ const S = SCALE;
 
 // ---------------------------------------------------------------------------
 // A dog from another house. Patrols its turf, barks and chases Bonjo when he
-// gets close, and flees when Bonjo dives on it. This is the block rivalry.
+// gets close, and flees when Bonjo slides into it or lands on it. This is the block rivalry.
 // ---------------------------------------------------------------------------
 export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, minX, maxX, opts = {}) {
@@ -169,7 +169,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
 
     const dog = this.scene.dog;
 
-    // A thief that got a bone runs for the far edge; dive it to recover it.
+    // A thief that got a bone runs for the far edge; slide it to recover it.
     if (this.role === 'thief' && this.stolenBones) {
       this.dir = this.x < dog.x ? -1 : 1;
       if (this.x <= this.minX) this.dir = 1;

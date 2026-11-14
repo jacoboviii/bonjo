@@ -4,7 +4,7 @@ import { SCALE } from '../scale.js';
 const S = SCALE;
 
 // ---------------------------------------------------------------------------
-// A hanging piñata. Bonjo can jump/flap/dive into it; each hit showers a bone,
+// A hanging piñata. Bonjo can jump/flap into it; each hit showers a bone,
 // and the third hit bursts it. Marked piñatas release a life heart instead of
 // a concha. Purely a reward, never a hazard.
 // ---------------------------------------------------------------------------

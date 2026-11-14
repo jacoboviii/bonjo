@@ -4,8 +4,9 @@
 // so they scale with the game.
 //
 // Left/right are held and support dragging from one to the other without
-// lifting your finger. Jump is a tap for flap and a hold for glide. Dive is
-// held. Multi-touch is enabled, so you can run and flap at the same time.
+// lifting your finger. Jump is a tap for flap and a hold for glide. The down
+// button starts the slide on the ground. Multi-touch is enabled, so you can run
+// and flap at the same time.
 import { SCALE } from '../scale.js';
 
 const U = SCALE / 2;
@@ -26,7 +27,7 @@ export default class TouchControls {
     this.baseAlpha = 0.5;
 
     // which pointer is dragging the left/right pair, and which pointer holds
-    // the jump/dive buttons
+    // the jump/down buttons
     this.dirPointer = null;
     this.pointerHandlers = new Map();
 
@@ -41,7 +42,7 @@ export default class TouchControls {
     this.addButton('right', 128 * U, 240 * U, 'btn-right', buttonScale);
     this.addButton('jump', W - 60 * U, 240 * U, 'btn-jump', buttonScale);
     this.addButton('interact', W - 124 * U, 240 * U, 'btn-spin', buttonScale);
-    this.addButton('dive', W - 188 * U, 240 * U, 'btn-dive', buttonScale);
+    this.addButton('slide', W - 188 * U, 240 * U, 'btn-dive', buttonScale);
     this.addButton('talk', W - 124 * U, 174 * U, 'btn-interact', buttonScale);
 
     scene.input.on('pointermove', (pointer) => this.onMove(pointer));
@@ -54,7 +55,7 @@ export default class TouchControls {
   relayout(width = this.scene.scale.width) {
     if (this.buttons.jump) this.buttons.jump.x = width - 60 * U;
     if (this.buttons.interact) this.buttons.interact.x = width - 124 * U;
-    if (this.buttons.dive) this.buttons.dive.x = width - 188 * U;
+    if (this.buttons.slide) this.buttons.slide.x = width - 188 * U;
     if (this.buttons.talk) this.buttons.talk.x = width - 124 * U;
   }
 
@@ -140,8 +141,8 @@ export default class TouchControls {
     if (name === 'jump') {
       if (!this.state.jumpHeld) this.jumpQueued = true;
       this.state.jumpHeld = true;
-    } else if (name === 'dive') {
-      // Dog reads this as its held down input.
+    } else if (name === 'slide') {
+      // Dog reads this as its held down input; a fresh press starts a slide.
       this.state.down = true;
     } else {
       this.state[name] = true;
@@ -153,7 +154,7 @@ export default class TouchControls {
 
   release(name) {
     if (name === 'jump') this.state.jumpHeld = false;
-    else if (name === 'dive') this.state.down = false;
+    else if (name === 'slide') this.state.down = false;
     else this.state[name] = false;
 
     const img = this.buttons[name];
@@ -215,7 +216,6 @@ export default class TouchControls {
     this.state.left = false;
     this.state.right = false;
     this.state.down = false;
-    this.state.dive = false;
     this.state.jumpHeld = false;
     this.jumpQueued = false;
     this.interactQueued = false;

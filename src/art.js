@@ -96,7 +96,6 @@ export function buildTextures(scene) {
   makeDog(scene, 'dogWalkC', 'walkC');
   makeDog(scene, 'dogWalkD', 'walkD');
   makeDog(scene, 'dogGlide', 'glide');
-  makeDog(scene, 'dogDive', 'dive');
   makeTongue(scene);
   makeSpeechBubble(scene);
   makeSquirrel(scene, 'squirrel', 'idle');
@@ -117,6 +116,8 @@ export function buildTextures(scene) {
   makeLifeHeart(scene);
   makeWingToken(scene);
   makeFood(scene);
+  makeBoneIcon(scene);
+  makeConchaIcon(scene);
   makeBonjoHouse(scene);
   makePinata(scene);
   makeRope(scene);
@@ -2514,6 +2515,77 @@ function makeFood(scene) {
   g.fillStyle(0xe8b27a, 1);
   g.fillRect(2, 7, 8, 1);
   g.generateTexture('concha', 12, 8);
+  g.destroy();
+}
+
+// Dedicated HUD icons. They are drawn larger than the pickup sprites so the
+// bone and concha stay legible inside the tiny top strip.
+function makeBoneIcon(scene) {
+  const g = gfx(scene);
+  const OUTLINE = 0x46332a;
+  const BONE = 0xfff8ea;
+  const SHADE = 0xd8c4a8;
+  const LIGHT = 0xffffff;
+
+  g.fillStyle(OUTLINE, 1);
+  g.fillRect(4, 3, 6, 5);
+  g.fillCircle(3, 2.5, 2.4);
+  g.fillCircle(3, 7.5, 2.4);
+  g.fillCircle(10, 2.5, 2.4);
+  g.fillCircle(10, 7.5, 2.4);
+
+  g.fillStyle(BONE, 1);
+  g.fillRect(4, 4, 6, 3);
+  g.fillCircle(3, 3.2, 1.6);
+  g.fillCircle(3, 6.8, 1.6);
+  g.fillCircle(10, 3.2, 1.6);
+  g.fillCircle(10, 6.8, 1.6);
+
+  g.fillStyle(SHADE, 1);
+  g.fillRect(4, 6, 6, 1);
+  g.fillRect(2, 7, 2, 1);
+  g.fillRect(10, 7, 2, 1);
+
+  g.fillStyle(LIGHT, 1);
+  g.fillRect(5, 4, 4, 1);
+  g.fillRect(2, 2, 1, 1);
+  g.fillRect(10, 2, 1, 1);
+
+  g.generateTexture('boneIcon', 14, 10);
+  g.destroy();
+}
+
+function makeConchaIcon(scene) {
+  const g = gfx(scene);
+  const OUTLINE = 0x704154;
+  const SHELL = 0xf2a6b8;
+  const SHELL_DARK = 0xd97a8e;
+  const CREAM = 0xfff4e0;
+  const CRUST = 0xe8b27a;
+  const LIGHT = 0xffd9e1;
+
+  // Shell fan, outlined so it reads against the sky and night palette.
+  g.fillStyle(OUTLINE, 1);
+  g.fillCircle(8, 3.5, 5.2);
+  g.fillRect(2, 3.5, 12, 6);
+  g.fillRect(1, 7, 14, 2);
+
+  g.fillStyle(SHELL, 1);
+  g.fillCircle(8, 3.5, 4.2);
+  g.fillRect(3, 3.5, 10, 5);
+  g.fillStyle(CREAM, 1);
+  g.fillRect(3, 6.5, 10, 2);
+  g.fillStyle(CRUST, 1);
+  g.fillRect(3, 8.5, 10, 1);
+
+  // Fan ridges and a bright top highlight.
+  g.fillStyle(SHELL_DARK, 1);
+  for (let x = 5; x <= 11; x += 2) g.fillRect(x, 1, 1, 6);
+  g.fillStyle(LIGHT, 1);
+  g.fillRect(4, 1, 4, 1);
+  g.fillRect(3, 2, 2, 1);
+
+  g.generateTexture('conchaIcon', 16, 10);
   g.destroy();
 }
 

@@ -6,7 +6,7 @@ dogs from other houses trying to take his turf.
 
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
 and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
-glide and dive; subdue rivals; bounce off market awnings; knock a piñata for
+glide and slide; subdue rivals; bounce off market awnings; knock a piñata for
 supplies. Hold CASA for two nights and repel the **top dog**, or survive three
 nights in Las Orillas and drive off the **Chihuahua boss**.
 
@@ -46,7 +46,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   not how he rules it.
 - **Rivals:** dogs from other houses guard their turf, bark (`¡GUAU!`) and
   chase. When they close in, they crouch, flash and bark a warning before a
-  lunging charge — jump it or dive to subdue them. Night waves include
+  lunging charge — jump over it or slide into it to subdue it. Night waves include
   **fast** dogs, masked **bone thieves**, spiked-collar **brutes**, and on the
   final night the **top dog** in La Cuadra or the **Chihuahua boss** in Las
   Orillas.
@@ -54,11 +54,11 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   squirrels become skunks at night; Las Orillas uses geese day and night.
 - **Crows:** one rare aerial pest, plus a far-block crow; their wings flap as they patrol and they caw when Bonjo gets close. At night the same slot becomes a hunting owl.
 - **Alley life:** by day, small birds scatter and a rooster crows; in La Cuadra the squirrels and crows give way to skunks and owls at night, while Las Orillas keeps its geese. Bats cross the dark and the cats keep their watch.
-- **Piñatas:** hanging by ropes from street utility poles. Jump, flap or dive into one; each hit drops a
+- **Piñatas:** hanging by ropes from street utility poles. Jump, flap or spin into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones. Most leave a concha;
   piñatas with a small heart marker leave a **life heart** instead.
-- **Market awnings:** land on the striped canvas to bounce high and refill your
-  flaps. Chain them with the gold rings.
+- **Market awnings:** land on the striped canvas to bounce high. Gold rings give
+  a mid-air upward kick; stamina itself comes from conchas and subduing enemies.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry rings, bones and conchas; practice
   the flap-and-glide chain to reach them.
@@ -73,8 +73,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   stop there; gate rushers try to chew the gate down. If it breaks, the porch is
   open until dawn. Polo tosses a concha each day, the bell grants another,
   and the chihuahua barks warnings.
-- **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Conchas restore
-  hunger; an empty bar starts costing health. Each level hides one **life heart**
+- **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
+  hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
+  used for air jumps and slides. Each level hides one **life heart**
   and at least one marked piñata hides another. The first raises max health to
   four; later hearts heal, and a full-health heart waits for you. In La Cuadra,
   hold CASA for two nights and drive off the top dog; in Las Orillas, survive
@@ -111,9 +112,9 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | Key | Ground | Air |
 | --- | --- | --- |
 | **A / D** or arrows | Run | Steer |
-| **SPACE** / **W** | Jump (hold for height) | Flap (spends 1 ALAS pip) |
+| **SPACE** / **W** | Jump (hold for height) | Flap (spends 1 IMPULSE pip) |
 | **Hold SPACE** | — | Glide (slow fall) |
-| **S** / **↓** | Dodge-slide (grounded, spends 1 ALAS pip, brief dodge) | Dive (subdue rivals, pop crows) |
+| **S** / **↓** | Slide attack (grounded, spends 1 IMPULSE pip, heavy damage) | — |
 | **E** / touch spin | Spin-attack nearby rivals | — |
 | **F** / touch talk | Talk to friendly NPCs, ring the bell | — |
 | **O** | Open/close objectives | Open/close objectives |
@@ -129,9 +130,9 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 On a touch device the on-screen controls appear automatically:
 
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
-- **bottom-right:** action cluster — ▲ flap, ✦ spin and ▼ dive/slide, with spin beside jump
+- **bottom-right:** action cluster — ▲ flap, ✦ spin and ▼ slide, with spin beside jump
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
-- **top bar:** ALAS stamina, health, hunger, bones and the day/gate readout live in one compact strip
+- **top bar:** IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
 - The title and map switch to larger touch targets: a tappable play button, bigger EN/ES language pills, a larger map play button and a roomier back button.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
@@ -148,17 +149,17 @@ On a desktop you can press **V** to show the touch buttons for testing.
 ### Interactions in one sentence
 
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
-burst it; **dive** a **rival dog** to make it drop a bone and flee. Eat
-**conchas** to keep the hunger bar up. Use taco carts, loot trash cans, knock
+burst it; **slide** a **rival dog** or land on it to make it drop a bone and flee.
+Eat **bones** to keep hunger up; grab **conchas** to recharge IMPULSE. Use taco carts, loot trash cans, knock
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
 spin that dazes, knocks back and damages nearby rivals and bone thieves. The
 spinning halo and its damage travel with Bonjo, even while moving or jumping.
-Dive from the air for the heavier finisher and its damaging landing shockwave; press down while
-grounded for a short dodge-slide that spends one ALAS pip and deals no damage.
-Every connecting spin or dive adds a small impact ring, dust burst and camera
-kick.
+Press down while grounded for the heavy slide finisher; it spends one IMPULSE pip,
+deals two points with strong knockback and leaves a meteor-like trail of warm
+afterimages and embers. Every connecting spin or slide adds a small impact ring,
+dust burst and camera kick.
 Polo's dialog hands over
 the daily concha. Survive the level's nights and final boss; bones, combo and a
 clean run feed your score and rank.
@@ -180,9 +181,8 @@ seconds, keep or revert.
 | | ground friction | how quickly you stop |
 | Air | gravity | normal falling weight |
 | | glide gravity / fall speed | how floaty the glide is |
-| | dive gravity / fall speed | how violent the dive is |
 | | jump / flap power | height gained per jump / flap |
-| | flaps | how many flaps before landing |
+| | IMPULSE pips | maximum stamina charges |
 | | jump cut | how much a released jump is shortened |
 | | min jump hold | minimum time before a jump can be cut |
 | | coyote (ms) | grace period to jump after leaving a ledge |
@@ -206,7 +206,6 @@ there to make them permanent.
 
 - `gravity 1200` → moon dog, much more hang time
 - `flap power 500`, `flaps 3` → generous, floaty explorer
-- `dive gravity 5000` → aggressive slam, good for stomping rivals and crows
 - `jump cut 1.0` → no variable jump height (hold/release stops mattering)
 - `coyote 0` and `jump buffer 0` → feel how much those two invisible helpers do
 
@@ -215,10 +214,10 @@ there to make them permanent.
 ## What's in this build
 
 - Run, variable-height jump, coyote time, jump buffering
-- Two flaps, glide, dive — each with its own animation pose
-- **ALAS stamina** pays for air flaps and grounded dodge-slides; landing or a short rest refills it
+- Two flaps, glide and slide — each with its own animation pose
+- **IMPULSE stamina** pays for air flaps and slide attacks; refill it with conchas or by subduing enemies
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
-- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, concha pickups, dawn healing
+- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, dawn healing
 - **Life hearts** placed in every level and hidden in marked piñatas; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, geese and an aggressive Chihuahua boss
@@ -227,11 +226,11 @@ there to make them permanent.
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
-- **Compact labeled status HUD** for health, ALAS stamina and hunger; phase, countdown and gate remain on-screen
+- **Compact labeled status HUD** for health, IMPULSE stamina and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals and bone thieves; grounded down-input slides dodge briefly and spend one ALAS pip each, sharing stamina with air flaps; an airborne dive is the heavier finisher
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, knocks back and damages nearby rivals and bone thieves; grounded down-input slides are the heavy finisher, deal two points and spend one IMPULSE pip each, sharing stamina with air flaps
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
-- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra ALAS pip (and a third HUD pip)
+- **End-of-level Golden Wing**: reach the far end of either level for a run-long extra IMPULSE pip (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
@@ -239,8 +238,8 @@ there to make them permanent.
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**
-- Wind rings that refill flaps mid-air
-- Bones, concha food, two checkpoint balloons, a safe **porch**
+- Wind rings that give a mid-air upward kick
+- Bones for hunger, conchas for stamina, two checkpoint balloons, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
 - Atmospheric haze pushes the city back while keeping Bonjo and the hazards readable
 - Extended east blocks and field edges with extra bones, props, enemy turf and a second checkpoint
@@ -334,7 +333,7 @@ files):
 
 | Key | Size | Notes |
 | --- | --- | --- |
-| `dog`, `dogSit`, `dogWalkA–D`, `dogGlide`, `dogDive` | 60×60 | denser black chow with 4-frame walk; flipped in code |
+| `dog`, `dogSit`, `dogWalkA–D`, `dogGlide` | 60×60 | denser black chow with 4-frame walk; flipped in code |
 | `tongue` | 9×12 | panting overlay |
 | `rival`, `rivalRun` | 48×45 | tan neighborhood dog, red bandana |
 | `rivalFast`, `rivalFastRun` | 48×45 | blue-grey fast dog, teal bandana |
@@ -347,8 +346,9 @@ files):
 | `pinata` | 36×45 | star piñata + streamers |
 | `rope` | 3×12 | tiling piñata rope |
 | `awning` | 120×36 | striped bounce canopy |
-| `bone` | 30×24 | |
-| `concha` | 18×12 | hunger pickup |
+| `bone` | 30×24 | hunger pickup / score |
+| `concha` | 18×12 | IMPULSE stamina charge |
+| `boneIcon`, `conchaIcon` | 42×30 / 48×30 | high-detail HUD icons |
 | `sun` / `moon` | 144×144 | day sun and night moon |
 | `speechBubble` | 42×36 | floating touch interaction prompt |
 | `heart` | 15×15 | health HUD |
@@ -390,7 +390,7 @@ files):
    goose patterns and more Chihuahua boss phases.
 5. Build future landmarks around their **ultimate objective**: sanctuary at the
    Iglesia, restoration at the Mercado, and a fair peace in the Parque.
-6. Camera look-down while diving; landing squash; a proper bark on flap.
+6. Camera look-down while sliding; landing squash; a proper bark on flap.
 
 Only after the two-night loop feels right: dog variants, upgrades, saves,
 more blocks.

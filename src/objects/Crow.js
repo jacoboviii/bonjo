@@ -7,7 +7,7 @@ const S = SCALE;
 
 // ---------------------------------------------------------------------------
 // A crow patrols a horizontal stretch, bobbing on a sine wave.
-// Dive into it (or land on it) to pop it. Touch it any other way and you're
+// Land on it from a fall to pop it. Touch it any other way and you're
 // knocked back to the last checkpoint. At night the same aerial slot becomes
 // a hunting owl.
 // ---------------------------------------------------------------------------

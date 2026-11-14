@@ -15,9 +15,6 @@ export const DEFAULTS = Object.freeze({
   glideGravity: 400, // much gentler fall while gliding
   glideMaxFall: 120, // slow, floaty descent
 
-  // --- dive --------------------------------------------------------------
-  diveGravity: 3000, // slam downward
-  diveMaxFall: 1100, // max dive speed
 
   // --- running -----------------------------------------------------------
   runSpeed: 200, // top horizontal speed

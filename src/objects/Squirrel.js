@@ -5,7 +5,7 @@ const S = SCALE;
 
 // ---------------------------------------------------------------------------
 // A squirrel patrols a platform, hops, and runs off with any bone it can grab
-// while the dog is nearby. Dive/stomp it to make it drop the bone. If it
+// while the dog is nearby. Slide/stomp it to make it drop the bone. If it
 // reaches the end of its patrol while carrying, it escapes with the loot.
 // At night the same bone-thief slot becomes a nocturnal skunk by default;
 // levels can supply another critter, such as the Las Orillas geese.

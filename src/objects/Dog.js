@@ -15,8 +15,7 @@ function moveTowards(current, target, maxDelta) {
 // The dog. A small state machine on top of Arcade Physics:
 //
 //   ground jump  ->  flap (spends one ALAS pip)  ->  glide (hold, falling)
-//                                    \->  dive (hold S)
-//   grounded dodge-slide also spends one ALAS pip.
+//   grounded slide attack also spends one ALAS pip.
 //
 // All the numbers come from tuning.js so they can be changed live.
 // ---------------------------------------------------------------------------
@@ -47,7 +46,6 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.maxFlaps = tuning.maxFlaps;
     this.flaps = this.maxFlaps;
     this.gliding = false;
-    this.diving = false;
     this.dead = false;
     this.invuln = 0;
     this.jumpCutReady = false;
@@ -61,7 +59,6 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.slideUntil = 0;
     this.slideDir = 1;
     this.slideSpeed = 0;
-    this.flapRechargeAt = 0;
     this.dodgeUntil = 0;
     this.downWasHeld = false;
     this.nextSlidePuff = 0;
@@ -134,13 +131,12 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     const dt = Math.min(dtMs, 50) / 1000;
     const onGround = this.body.blocked.down || this.body.touching.down;
-    const wasDiving = this.diving;
     const wasOnGround = this.grounded;
     const jumpPressed = this.jumpPressed;
     const downPressed = this.downHeld && !this.downWasHeld;
     this.downWasHeld = this.downHeld;
 
-    if (onGround && !wasOnGround && !wasDiving) {
+    if (onGround && !wasOnGround) {
       this.scene.onLand?.(this);
     }
 
@@ -154,28 +150,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     if (onGround) {
       this.coyote = tuning.coyoteMs / 1000;
-      // Air flaps are refilled by landing. Grounded slides draw from the same
-      // ALAS pips, so they refill after a short grounded recharge instead of
-      // instantly every frame.
-      if (!wasOnGround) {
-        this.flaps = this.maxFlaps;
-        this.flapRechargeAt = 0;
-      } else if (
-        this.flapRechargeAt > 0 &&
-        this.scene.time.now >= this.flapRechargeAt
-      ) {
-        this.flaps = this.maxFlaps;
-        this.flapRechargeAt = 0;
-      }
-      this.diving = false;
       this.gliding = false;
       this.jumpCutReady = false;
     } else {
       this.coyote = Math.max(0, this.coyote - dt);
-    }
-
-    if (wasDiving && onGround && !this.grounded) {
-      this.scene.onDiveLand(this);
     }
 
     // --- jump buffering ----------------------------------------------------
@@ -212,21 +190,16 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     }
     if (this.body.velocity.y >= 0) this.jumpCutReady = false;
 
-    // A deliberate down-input on the ground starts a forward slide. Holding
-    // down from a dive does not trigger it on landing; the player must ask.
+    // A deliberate down-input on the ground starts the slide attack.
     if (onGround && downPressed) this.startSlide();
 
-    // --- glide & dive ------------------------------------------------------
+    // --- glide -------------------------------------------------------------
     const falling = this.body.velocity.y > 0;
-    this.diving = !onGround && this.downHeld;
-    this.gliding = !onGround && !this.diving && this.jumpHeld && falling;
+    this.gliding = !onGround && this.jumpHeld && falling;
 
     let gravity = tuning.gravity * S;
     let maxFall = tuning.maxFall * S;
-    if (this.diving) {
-      gravity = tuning.diveGravity * S;
-      maxFall = tuning.diveMaxFall * S;
-    } else if (this.gliding) {
+    if (this.gliding) {
       gravity = tuning.glideGravity * S;
       maxFall = tuning.glideMaxFall * S;
     }
@@ -279,10 +252,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.trailTimer -= dt;
 
     let pose;
-    if (this.diving) {
-      pose = 'dogDive';
-      this.standT = 0;
-    } else if (this.gliding) {
+    if (this.gliding) {
       pose = 'dogGlide';
       this.standT = 0;
     } else if (onGround) {
@@ -309,12 +279,6 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
         1,
       );
       this.setRotation(progress * Math.PI * 2 * this.spinDir);
-    } else if (this.diving) {
-      this.setRotation(Phaser.Math.DegToRad(14 * this.facing));
-      if (this.trailTimer <= 0) {
-        this.trailTimer = 0.06;
-        this.scene.spawnPuff(this.x, this.y + 3 * S, 0.55);
-      }
     } else if (this.gliding) {
       this.setRotation(Phaser.Math.DegToRad(-6 * this.facing));
     } else {
@@ -336,11 +300,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
 
     // Slides spend the same ALAS stamina as air flaps.
     this.flaps -= 1;
-    this.flapRechargeAt = now + 1200;
-    this.dodgeUntil = now + 320;
+    this.dodgeUntil = now + 340;
     this.slideDir = this.facing || 1;
-    this.slideSpeed = 280 * S;
-    this.slideUntil = now + 260;
+    this.slideSpeed = 300 * S;
+    this.slideUntil = now + 280;
     this.body.velocity.x = this.slideDir * this.slideSpeed;
     this.scene.onSlideStart?.(this);
   }

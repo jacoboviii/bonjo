@@ -7,7 +7,7 @@
 **Render:** 432px tall (3× the 144-unit design height); internal width follows the device landscape aspect (768px at 16:9, up to 1280px on wide screens) so the canvas fills the screen
 **Pitch:** Bonjo is the only chow on the block. By day he scavenges the barrio;
 by night he holds the street against waves of rival dogs. Survive two nights in
-La Cuadra or three in Las Orillas, keep the turf, and don't run out of conchas.
+La Cuadra or three in Las Orillas, keep the turf, and don't run out of bones.
 
 ---
 
@@ -46,12 +46,13 @@ level 2: three nights and an aggressive Chihuahua boss.
 
 **The survival loop:** Day 1 is for scavenging — bones, conchas, piñatas, and
 the layout of the street. Night 1 sends the neighbor dogs. Day 2 is shorter and
-tense. Night 2 is the last stand. Bonjo has three hearts and a hunger bar; the
+tense. Night 2 is the last stand. Bonjo has three hearts, a bone-fed hunger bar
+and a concha-charged stamina meter; the
 porch is safe, dawn heals one heart, and surviving the second night keeps CASA
 standing.
 
 **The conflict** is turf, not evil. Other dogs from other houses bark, chase
-and guard their corners. Bonjo subsumes them by diving on them; they yelp and
+and guard their corners. Bonjo subsumes them by sliding into them; they yelp and
 retreat. Squirrels are opportunists who steal bones. Crows are a rare annoyance.
 
 **Strength as care.** Bonjo's physical advantage is never a license to dominate.
@@ -84,11 +85,11 @@ become data configurations instead of copied scenes.
 ## 3. Core loop
 
 **30 seconds (day):** Walk the block → spot a rival → it barks and charges →
-jump/flap over it → dive to subdue → collect the dropped bone → bounce an awning
-→ hit a piñata → eat a concha before the hunger bar empties.
+jump/flap over it → slide to subdue → collect the dropped bone → bounce an awning
+→ hit a piñata → eat a bone before the hunger bar empties.
 
 **30 seconds (night):** Hold the pavement → a rival spawns from a doorway →
-dive it before it reaches you → keep one eye on the heart bar → survive until
+slide it before it reaches you → keep one eye on the heart bar → survive until
 dawn.
 
 **3 minutes:** Day 1 scavenge (38 s) → Night 1 (31 s, 3 waves) → Day 2 (33 s)
@@ -106,7 +107,7 @@ the conchas and piñatas you missed.
 | A / D or ← / → | Run | Steer |
 | SPACE / W (press) | Jump | Flap |
 | SPACE / W (hold) | — | Glide while falling |
-| S / ↓ | Dodge-slide | Dive |
+| S / ↓ | Slide attack | — |
 | E | Spin attack | Spin attack |
 | F | Talk / ring / interact | Talk / ring / interact |
 | Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
@@ -116,7 +117,7 @@ the conchas and piñatas you missed.
 | R | Restart | Restart |
 | Touch ◀ ▶ | Run (slide between) | Steer |
 | Touch ▲ (tap/hold) | Jump | Flap / glide |
-| Touch ▼ | Dodge-slide | Dive |
+| Touch ▼ | Slide attack | — |
 | Touch 💬 | Talk / ring / interact | Talk / ring / interact |
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
@@ -124,7 +125,7 @@ bubble starts the interaction. Polo, the chihuahua, cats and the daytime
 rooster use a named lotería-paper dialog card; the bell rings directly.
 Environmental
 interactions still use the verbs Bonjo already has: jump into it, land on it,
-or dive through it.
+or slide through it.
 
 Gamepad is out of scope. Touch controls support multi-touch, drag between
 direction arrows, and a portrait "rotate your phone" screen.
@@ -147,11 +148,9 @@ are design pixels (1 design px = 3 render px).
 | Air friction | 500 | preserves momentum |
 | Jump impulse | 420 | ~55 px (3.4 tiles) |
 | Flap impulse | 380 | ~45 px per flap |
-| Flaps | 2 | land or ring to refill |
+| IMPULSE stamina | 2 | earned from conchas and enemies |
 | Glide gravity | 400 | 25% of normal |
 | Glide max fall | 120 | slow, steerable descent |
-| Dive gravity | 3000 | committed slam |
-| Dive max fall | 1100 | fast |
 | Jump cut | 0.45 | tap = short hop, hold = full jump |
 | Min jump hold | 90 ms | quick taps still give a real hop |
 | Coyote time | 100 ms | jump just after leaving a ledge |
@@ -159,12 +158,19 @@ are design pixels (1 design px = 3 render px).
 | Camera look-ahead | 34 px | leads your facing direction |
 | Camera smoothing | 0.1 | soft follow |
 
-**State machine:** grounded → jump → flap ×2 → glide (hold, falling) → dive
-(hold S in the air). On the ground, a fresh S/↓ press starts a short forward
-slide instead. Grounded slides spend ALAS pips, so they share stamina with air
-flaps. Landing refills ALAS; a grounded slide also refills after a short rest.
-Awnings and rings refill ALAS in the air. Jump cut only applies to ground jumps,
-after the 90 ms minimum.
+**State machine:** grounded → jump → flap ×2 → glide (hold, falling). A fresh
+S/↓ press on the ground starts the slide attack. Air flaps and slides both spend
+IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned by
+subduing enemies and collecting conchas; it no longer refills on landing, resting,
+awnings or rings. Jump cut only applies to ground jumps, after the 90 ms minimum.
+
+### IMPULSE stamina
+The two IMPULSE pips are the shared stamina meter. A ground jump is free; an air
+flap or a slide attack spends one pip. There is no passive or landing refill.
+Subduing a rival, crow or bone thief grants one pip, and every collected concha
+grants one. The Golden Wing raises the maximum to three and fills the meter.
+At zero, air flaps and slides are unavailable, but Bonjo can still run, ground
+jump and glide.
 
 ---
 
@@ -178,21 +184,18 @@ plus a short daze and a firm knockback. Its halo expands to the exact damage rad
 an adjacent enemy sprite; it is not a second hitbox. The halo and damage check
 follow Bonjo for the full spin, even while moving or jumping. The hit test
 measures to the nearest body edge so mismatched sprite origins cannot make a
-touching target miss. Dive is the stronger committed attack:
-two points of damage, a stronger bounce and a ground shockwave that chips
-nearby rivals for one point. A deliberate down-input on the ground starts
-a short forward dodge-slide in the facing direction. It deals no damage and
-spends one ALAS pip, using the same stamina pool as air flaps; the pips refill
-after a short grounded rest or on landing. Bonjo is briefly damage-immune
-during each slide. Every connecting spin or dive throws a small impact ring,
-dust burst and light camera kick; the dive's version is the heaviest. Dive
-landings no longer slide automatically. The spin starts immediately, snaps
-through one rotation in 260 ms and has a ~420 ms cooldown; one press during
-that recovery is buffered so it fires as soon as the cooldown ends. It subdues
-bone-thief critters and can hit a piñata.
+touching target miss. A deliberate down-input on the ground starts the slide
+attack: two points of damage, strong knockback and a heavy impact, spending one
+IMPULSE pip from the same stamina pool as air flaps. A stretched gold aura follows
+Bonjo while a trail of warm afterimages and embers streams behind him. Bonjo is
+briefly damage-immune during each slide. Every connecting spin or slide throws a small impact ring,
+dust burst and light camera kick; the slide's version is the heaviest. The spin
+starts immediately, snaps through one rotation in 260 ms and has a ~420 ms
+cooldown; one press during that recovery is buffered so it fires as soon as the
+cooldown ends. It subdues bone-thief critters and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
-is flap, spin and dive, with spin beside jump; the talk button appears above
+is flap, spin and slide, with spin beside jump; the talk button appears above
 that cluster when an NPC or bell prompt is nearby.
 
 ### Rival dogs (main enemy)
@@ -202,35 +205,35 @@ future levels should continue the same step-up.
 
 Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
 same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
-They stop at the edges of their turf rather than running into pits. Diving onto
-one — or falling on it faster than 160 px/s — subsumes it: yelp, +1 bone, and it
-flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
+They stop at the edges of their turf rather than running into pits. Sliding
+into one, or falling on it faster than 160 px/s, subsumes it: yelp, +1 bone,
++1 IMPULSE and it flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
 defeat state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and
 shows `!` for about 0.6 s, then lunges at roughly 190 px/s. The wind-up is the
-dodge window: jump over the charge or dive into it. After a lunge it recovers,
+dodge window: jump over the charge or slide through it. After a lunge it recovers,
 then returns to patrol/chase.
 
 Night waves vary by role, with distinct silhouettes and palettes:
 - **Fast** dogs are smaller, blue-grey and quicker, with a teal bandana.
 - **Thieves** are masked purple dogs. They steal one bone on contact and flee;
-  dive them to recover it.
+  slide them to recover it.
 - **Brutes** are larger, scarred and spiked-collar brown dogs. They take two
-  dives and lunge more slowly.
+  slides and lunge more slowly.
 - **Gate rushers** ignore Bonjo and run for the porch gate.
 - The **top dog** appears at the end of Night 2: gold-tinted, crowned, three
-  dives, and its own pressure lunge. The night cannot end until it is repelled.
+  slides, and its own pressure lunge. The night cannot end until it is repelled.
 
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
-They freeze for 0.65 s (`HEY!`) then sprint to the edge with it. Dive/stomp to
+They freeze for 0.65 s (`HEY!`) then sprint to the edge with it. Slide/stomp to
 make them drop it; if they escape, the bone is lost. They are the "small
 nuisance" layer between rival encounters.
 
 ### Crows (rare aerial hazard)
 One crow patrols a stretch of sky with a sine bob and a two-frame wingbeat.
-Dive through it to pop it (+1 bone); touch it otherwise and lose a heart. At
+Land on it from a fall to pop it (+1 bone); touch it otherwise and lose a heart. At
 night it becomes an owl with its own flap frames. Kept rare so the dogs stay the
 story.
 
@@ -242,29 +245,29 @@ heart instead. Purely a reward; never a hazard.
 
 ### Market awnings
 Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
-~120 design px, refills flaps, squashes the canvas and plays a boing. They are
+~120 design px, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
 
 ### Vertical routes
 Both levels have two high climbs that stack fire escapes, laundry lines and
 terracotta roof ledges above the street. Each tier is spaced for a jump plus a
-flap, with high rings to refill the chain. High routes carry extra bones,
+flap, with high rings that give a mid-air kick. High routes carry extra bones,
 conchas, a vaulted piñata and an aerial crow/owl; the reward is both score and a
 cleaner view of the barrio. Missing a tier drops Bonjo back to the street, so
 the route is optional pressure rather than a hard gate.
 
 ### End-of-level reward
 The far end of each level holds a floating **Golden Wing** token. Reaching it
-unlocks one extra flap for the rest of that run, refills the flap bank and adds
-a third pip to the HUD. It is deliberately off the survival path: a reason to
+unlocks one extra IMPULSE pip for the rest of that run, fills the stamina meter
+and adds a third pip to the HUD. It is deliberately off the survival path: a reason to
 explore the full map, not a requirement to win.
 
 ### Bones and score
-Bones are score pickups: 35 placed across both blocks plus piñata drops, trash
-cans and rival rewards. Pickups build a short combo; the end screen combines
-bones, max combo, subdued rivals, health, no-hit and time into a score and an
-S–D rank.
+Bones are score pickups and Bonjo's food: 35 placed across both blocks plus
+piñata drops, trash cans and rival rewards. Each bone restores 12 hunger and
+builds a short combo; the end screen combines bones, max combo, subdued rivals,
+health, no-hit and time into a score and an S–D rank.
 
 ### Street props and errands
 Taco carts restore hunger; trash cans burst into bones; bicycles can be knocked
@@ -273,15 +276,16 @@ tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
 ### Wind rings
-Gold rings in gaps. Passing through refills all flaps and gives a small upward
-kick (-140 px/s). 0.5 s re-trigger cooldown. The mid-air "checkpoint" of the
-movement economy.
+Gold rings in gaps. Passing through gives a small upward kick (-140 px/s).
+0.5 s re-trigger cooldown. They no longer refill stamina; that comes from
+subduing enemies and collecting conchas.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
 knocks him back and grants 1.7 s of invulnerability. Pits cost a heart and respawn
-him at the last checkpoint. Hunger drains at 0.8/s; conchas restore 30. At zero
-hunger, Bonjo loses a heart every 8 s until he eats. Dawn restores one heart.
+him at the last checkpoint. Hunger drains at 0.8/s; bones restore 12 and taco
+carts restore 28. At zero hunger, Bonjo loses a heart every 8 s until he eats.
+Dawn restores one heart and 10 hunger.
 
 Each level has one placed life heart and a marked piñata with another. A life
 heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
@@ -292,11 +296,12 @@ Day 1 lasts 38 s, Night 1 is 31 s with 2 rival waves, Day 2 is 33 s, Night 2 is
 36 s with 3 waves. Night darkens the street (lit windows pop), sends Polo, the
 chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
-The compact HUD labels health/ALAS stamina/hunger; the **O / OBJETIVOS** panel pauses the
+The compact HUD uses the bone icon for hunger and the concha icon for IMPULSE;
+it labels health/IMPULSE stamina/hunger. The **O / OBJETIVOS** panel pauses the
 game and explains the current goal, day errands and each HUD meter, including
 dawn warnings and the top-dog hit count. The final night adds gate rushers and, at
 roughly 12 s left, the top dog. Repel it to win; the timer will wait at zero
-until it is down. The HUD always shows phase, timer, labeled hearts/flaps/hunger
+until it is down. The HUD always shows phase, timer, labeled hearts/IMPULSE/hunger
 and gate health; objectives and errands live in the O panel.
 
 ### The porch
@@ -340,13 +345,13 @@ Beat sheet:
 
 1. **The porch.** Bonjo starts outside his house. A concha is nearby; a piñata
    hangs over the corner; a rival dog patrols the near block. Learn jump → flap
-   → dive, and eat when the hunger bar dips.
+   → slide, and eat a bone when the hunger bar dips.
 2. **The first gap.** A market awning and a gold ring over the hole. Bounce the
    awning, pass through the ring, keep moving.
 3. **The long block.** A squirrel drags a bone; a rival guards the turf. Day 1
    is for scavenging — clear what you can before dark.
 4. **The checkpoint.** Second awning/piñata; the midpoint balloon; a safe beat.
-5. **Night 1.** The street darkens; three rivals spawn near Bonjo. Dive them or
+5. **Night 1.** The street darkens; three rivals spawn near Bonjo. Slide them or
    retreat to the porch. Dawn heals a heart and drops a concha.
 6. **Day 2 / Night 2.** A shorter day, a harder night; thieves, brutes and a
    gate rusher. The top dog arrives before dawn.
@@ -420,7 +425,8 @@ values, and readable foreground/background separation.
 | Rival dog | tan `#c98a4f`, red bandana `#d94f4f` |
 | Fast / thief / brute | blue-grey `#a7c7d6`, masked purple `#8a6d9a`, scarred brown `#b07a4f` |
 | Health | heart red `#d94f4f` |
-| Hunger | concha pink `#f2a6b8`, bar orange `#f0a03c` |
+| Hunger | bone cream `#f4dcc0`, bar orange `#f0a03c` |
+| IMPULSE | concha pink `#f2a6b8`, gold pip `#ffd166` |
 | Night | sky tint `#05030d` at 68%; full-scene overlay 45% |
 
 Rules:
@@ -460,7 +466,6 @@ compressor keeps mobile speakers from clipping.
 | Goose honk | nasal sawtooth honk with a short square-wave tail |
 | Bonjo spin | quick cloth whoosh + bright two-note chime |
 | Attack connect | dry impact tick + low body thump |
-| Dive slam | deep double thump + low grit + bright impact tail |
 | Cat hiss | breathy band-passed noise |
 | Bird scatter / chirp | quick shimmering sine chirps |
 | Crow caw | filtered squawk with a second throaty pulse |
@@ -483,16 +488,16 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 
 ### In this slice
 - La Cuadra: town background, flat adobe street, papel picado, porch
-- Movement: run, jump, variable height, coyote, buffer, flaps, glide, dive, grounded stamina-driven dodge-slide, spin
+- Movement: run, jump, variable height, coyote, buffer, stamina-gated flaps and slide attack, glide, spin
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
-- **Survival:** 3 hearts (expandable to 4 with life hearts), hunger bar, conchas, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
+- **Survival:** 3 hearts (expandable to 4 with life hearts), bone-fed hunger bar, concha-charged stamina, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog, Chihuahua boss
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
 - **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
 - **Scoring:** bone combo, rivals, power-ups, no-hit/time bonuses, S–D rank
-- **End reward:** Golden Wing token at the far end of each level grants +1 flap for the run
+- **End reward:** Golden Wing token at the far end of each level grants +1 IMPULSE pip for the run
 - Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; geese in Las Orillas; two crows/owls; Chihuahua boss
 - Ambient day birds/rooster; night skunks/geese, owls, bats and cats; fenced level ends
 - Piñatas with concha or life-heart drops, bouncing awnings
@@ -528,7 +533,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | Risk | Mitigation |
 | --- | --- |
 | Rivals feel unfair at speed | 0.6 s crouch/`!`/growl lunge wind-up; slower lunges and longer cooldowns; stop at turf edges; 0.65 s squirrel pause |
-| Hunger is annoying rather than tense | Slow drain (0.8/s), generous conchas, dawn refill; no death spiral in one minute |
+| Hunger is annoying rather than tense | Slow drain (0.8/s), plentiful bones, dawn refill; no death spiral in one minute |
 | Night waves overwhelm | 2/3 waves, 6 s apart, spawn at block edges; porch safe |
 | Health too punishing with 3 hearts | Dawn heal, 1.7 s i-frames, knockback instead of teleport |
 | Piñata supplies trivialize survival | 3 hits, cooldown, modest food drop |
@@ -541,7 +546,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - Does hunger add tension or just chores? Playtest a full two-night run.
 - Should nights get longer each cycle, or waves get denser?
 - Should subdued rivals stay gone for the night, or respawn?
-- Should food restore health as well as hunger?
+- Should bones restore health as well as hunger?
 - Is the porch safe zone too safe? Does it need a cost?
 
 ---
@@ -556,14 +561,14 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 | Quick taps feel dead | min jump hold 60–120 ms |
 | Too easy to overshoot landings | air friction +150, run speed −20 |
 | Glide is boring | glide gravity 550, glide max fall 160 |
-| Dive feels mushy | dive gravity 4000, dive max fall 1300 |
+| Slide feels weak | slide damage 2, stronger knockback and impact |
 | Rivals too aggressive | bark range 160, chase speed 100 |
 | Piñata too generous | 2 bones per burst, cooldown 500 ms |
 | Awnings too strong | bounce −520 instead of −620 |
-| Hunger is a chore | drain 0.5/s, conchas +40 |
-| Hunger never matters | drain 1.0/s, fewer conchas |
+| Hunger is a chore | drain 0.5/s, bones +18 |
+| Hunger never matters | drain 1.0/s, fewer bones |
 | Night 1 overwhelms | waveTotal 2, spawn every 8 s |
 | Nights too easy | +1 wave, or night length +5 s |
 | Health too punishing | 4 hearts, or 1.5 s i-frames |
-| Porch too safe | shrink safe zone to 120 px, or add a concha cost |
+| Porch too safe | shrink safe zone to 120 px, or add a stamina cost |
 | Waves spawn too close | spawn at the platform edge, never within 70 px |

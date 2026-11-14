@@ -305,6 +305,7 @@ export default class Level1 extends Phaser.Scene {
     if (!this.won && !this.gameOverFlag) {
       this.dog.update(delta);
       this.updateSpinAttack();
+      this.updateSlideTrail();
       if (this.spinBufferAt && this.time.now >= this.spinBufferAt) {
         this.spinBufferAt = 0;
         this.spinAttack();
@@ -908,7 +909,7 @@ export default class Level1 extends Phaser.Scene {
 
   setupInteractables() {
     // Friendly faces and quest objects answer E / the touch interact button.
-    // Enemies and pickups keep their existing jump/dive/overlap verbs.
+    // Enemies and pickups keep their existing jump/slide/overlap verbs.
     const items = [];
 
     if (this.polo) {
@@ -1061,12 +1062,12 @@ export default class Level1 extends Phaser.Scene {
 
     food.disableBody(true, true);
     this.runStats.food += 1;
-    this.hunger = Math.min(this.maxHunger, this.hunger + 30);
+    this.grantStamina(1);
     this.updateSurvivalHud();
 
     sfx.eat();
     this.spawnPuff(food.x, food.y, 0.7);
-    this.floatText(food.x, food.y - 8 * S, t('float.food'), '#6ec6a8');
+    this.floatText(food.x, food.y - 8 * S, t('float.charge'), '#6ec6a8');
   }
 
   createLives() {
@@ -1782,6 +1783,12 @@ export default class Level1 extends Phaser.Scene {
     const W = this.scale.width;
 
     this.pips = this.add.graphics().setScrollFactor(0).setDepth(100);
+    this.staminaIcon = this.add
+      .image(0, 10 * S, 'conchaIcon')
+      .setOrigin(0, 0.5)
+      .setScrollFactor(0)
+      .setDepth(100)
+      .setAlpha(0.95);
 
     this.boneText = this.add
       .text(
@@ -1886,15 +1893,15 @@ export default class Level1 extends Phaser.Scene {
       .setVisible(!this.touchDevice);
     this.layoutHealthText();
 
-    // hunger: concha icon + bar
+    // hunger: bone icon + bar
     this.hungerIcon = this.add
       .image(
-        (this.touchDevice ? 124 : 78) * S,
+        (this.touchDevice ? 122 : 75) * S,
         (this.touchDevice ? 10 : 34) * S,
-        'concha',
+        'boneIcon',
       )
       .setOrigin(0, 0.5)
-      .setScale(this.touchDevice ? 0.6 : 0.7)
+      .setScale(0.6)
       .setScrollFactor(0)
       .setDepth(100);
 
@@ -2372,8 +2379,6 @@ export default class Level1 extends Phaser.Scene {
     air.add(tuning, 'gravity', 400, 4000, 10).name(t('tuning.gravity'));
     air.add(tuning, 'glideGravity', 50, 1200, 10).name(t('tuning.glideGravity'));
     air.add(tuning, 'glideMaxFall', 30, 400, 5).name(t('tuning.glideFall'));
-    air.add(tuning, 'diveGravity', 800, 6000, 50).name(t('tuning.diveGravity'));
-    air.add(tuning, 'diveMaxFall', 300, 1600, 10).name(t('tuning.diveFall'));
     air.add(tuning, 'jumpImpulse', 200, 700, 5).name(t('tuning.jump'));
     air.add(tuning, 'flapImpulse', 150, 700, 5).name(t('tuning.flap'));
     air.add(tuning, 'maxFlaps', 0, 5, 1).name(t('tuning.flaps'));
@@ -2496,8 +2501,10 @@ export default class Level1 extends Phaser.Scene {
     // flap pips, top-left
     this.pips.clear();
     const maxFlaps = this.dog?.maxFlaps ?? tuning.maxFlaps;
+    const pipStartX = this.touchDevice ? 8 : 36;
+    const pipGap = this.touchDevice ? 9 : 10;
     for (let i = 0; i < maxFlaps; i++) {
-      const x = ((this.touchDevice ? 8 : 30) + i * (this.touchDevice ? 9 : 10)) * S;
+      const x = (pipStartX + i * pipGap) * S;
       if (i < this.dog.flaps) {
         this.pips.fillStyle(0xffd166, 1);
         this.pips.fillCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
@@ -2508,6 +2515,10 @@ export default class Level1 extends Phaser.Scene {
         this.pips.strokeCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
       }
     }
+
+    this.staminaIcon
+      .setPosition((pipStartX + maxFlaps * pipGap + 2) * S, 10 * S)
+      .setScale(this.touchDevice ? 0.65 : 0.6);
 
     this.boneText.setText(`${t('hud.bones')} ${this.bonesCount}`);
 
@@ -3119,14 +3130,23 @@ export default class Level1 extends Phaser.Scene {
         shakeDuration: 60,
         shakeIntensity: 0.0018,
       },
-      dive: {
+      slide: {
         color: 0xfff4e0,
-        radius: 17 * S,
+        radius: 20 * S,
         width: 3.5 * S,
         duration: 260,
         puffs: 5,
         shakeDuration: 150,
         shakeIntensity: 0.006,
+      },
+      stomp: {
+        color: 0xfff4e0,
+        radius: 17 * S,
+        width: 3.5 * S,
+        duration: 240,
+        puffs: 5,
+        shakeDuration: 130,
+        shakeIntensity: 0.005,
       },
     }[kind];
     if (!config) return;
@@ -3177,93 +3197,127 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(this.dog.x + this.dog.facing * 3 * S, this.dog.y + 6 * S, 0.5);
   }
 
-  onDiveLand() {
-    sfx.slam();
-    this.cameras.main.shake(190, 0.009);
-    for (let i = 0; i < 9; i++) {
-      this.spawnPuff(
-        this.dog.x + Phaser.Math.Between(-18 * S, 18 * S),
-        this.dog.y + Phaser.Math.Between(3 * S, 10 * S),
-        0.8,
-      );
-    }
-
-    // Heavy landing: a ground shockwave expands to the damage radius and
-    // chips nearby rivals. The direct dive remains the stronger two-point hit.
-    const waveRadius = 26 * S;
-    const ring = this.add
-      .circle(this.dog.x, this.dog.y + 6 * S, 10 * S, 0x000000, 0)
-      .setStrokeStyle(3 * S, 0xfff4e0, 0.92)
-      .setDepth(9);
-    this.tweens.add({
-      targets: ring,
-      scale: waveRadius / (10 * S),
-      alpha: 0,
-      duration: 330,
-      ease: 'Quad.out',
-      onComplete: () => ring.destroy(),
-    });
-
-    for (const rival of this.rivalGroup?.getChildren() || []) {
-      if (
-        !rival.active ||
-        rival.defeated ||
-        Phaser.Math.Distance.Between(this.dog.x, this.dog.y, rival.x, rival.y) >
-          waveRadius
-      ) {
-        continue;
-      }
-      const defeated = this.damageRival(rival, 1, {
-        source: 'diveWave',
-        bounce: false,
-      });
-      if (!defeated && rival.active) {
-        const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
-        rival.stun(450);
-        rival.body.setVelocityX(dir * 160 * S);
-        rival.body.setVelocityY(-70 * S);
-      }
-    }
-  }
-
   onSlideBlocked() {
     this.floatText(this.dog.x, this.dog.y - 16 * S, t('float.tired'), '#f26b5e');
   }
 
+  spawnSlideAfterimage(dog) {
+    if (!dog?.active) return;
+
+    // The bright body is the meteor head; these tinted echoes become its tail.
+    const ghost = this.add
+      .image(dog.x, dog.y, dog.texture.key)
+      .setFlipX(dog.flipX)
+      .setRotation(dog.rotation)
+      .setScale(dog.scaleX, dog.scaleY)
+      .setTint(0xffb347)
+      .setAlpha(0.42)
+      .setDepth(dog.depth - 1);
+
+    this.tweens.add({
+      targets: ghost,
+      x: ghost.x - dog.facing * 10 * S,
+      scaleX: ghost.scaleX * 0.55,
+      scaleY: ghost.scaleY * 0.55,
+      alpha: 0,
+      duration: 240,
+      ease: 'Quad.out',
+      onComplete: () => ghost.destroy(),
+    });
+  }
+
+  spawnSlideEmber(dog) {
+    const ember = this.add
+      .circle(
+        dog.x - dog.facing * Phaser.Math.Between(4 * S, 10 * S),
+        dog.y + Phaser.Math.Between(-4 * S, 7 * S),
+        Phaser.Math.Between(1 * S, 2 * S),
+        Math.random() < 0.5 ? 0xffd166 : 0xf0a03c,
+        0.9,
+      )
+      .setDepth(8);
+
+    this.tweens.add({
+      targets: ember,
+      x: ember.x - dog.facing * Phaser.Math.Between(10 * S, 22 * S),
+      y: ember.y - Phaser.Math.Between(1 * S, 7 * S),
+      alpha: 0,
+      scale: 0.2,
+      duration: 280,
+      ease: 'Quad.out',
+      onComplete: () => ember.destroy(),
+    });
+  }
+
+  updateSlideTrail() {
+    if (!this.slideAura) return;
+    if (this.dog.slideUntil > this.time.now) {
+      this.slideAura.setPosition(this.dog.x, this.dog.y);
+    } else {
+      const aura = this.slideAura;
+      this.slideAura = null;
+      this.tweens.add({
+        targets: aura,
+        alpha: 0,
+        duration: 120,
+        onComplete: () => aura.destroy(),
+      });
+    }
+  }
+
   onSlideStart() {
+    this.slideHitTargets = new Set();
     sfx.slide();
+
+    // A stretched meteor head that follows the whole dash.
+    this.slideAura?.destroy();
+    this.slideAura = this.add
+      .ellipse(this.dog.x, this.dog.y, 34 * S, 20 * S, 0xffd166, 0.08)
+      .setStrokeStyle(2 * S, 0xffd166, 0.72)
+      .setDepth(9);
 
     const ring = this.add
       .circle(this.dog.x, this.dog.y + 6 * S, 3 * S, 0x000000, 0)
-      .setStrokeStyle(2 * S, 0xfff4e0, 0.8)
+      .setStrokeStyle(2 * S, 0xffd166, 0.7)
       .setDepth(9);
     this.tweens.add({
       targets: ring,
-      scale: 4,
+      scale: 3.2,
       alpha: 0,
-      duration: 240,
+      duration: 200,
       ease: 'Quad.out',
       onComplete: () => ring.destroy(),
     });
 
+    this.spawnSlideAfterimage(this.dog);
     for (let i = 0; i < 3; i++) {
       this.spawnPuff(
         this.dog.x - this.dog.facing * Phaser.Math.Between(2 * S, 9 * S),
         this.dog.y + Phaser.Math.Between(4 * S, 9 * S),
         0.55,
       );
+      this.spawnSlideEmber(this.dog);
     }
   }
 
   onSlide(dog) {
     this.spawnPuff(dog.x - dog.facing * 7 * S, dog.y + 8 * S, 0.5);
+    this.spawnSlideAfterimage(dog);
+    this.spawnSlideEmber(dog);
+    this.spawnSlideEmber(dog);
   }
 
   // --- game events ---------------------------------------------------------
 
+  grantStamina(amount = 1) {
+    if (!this.dog) return;
+    this.dog.flaps = Math.min(this.dog.maxFlaps, this.dog.flaps + amount);
+  }
+
   collectBone(dog, bone) {
     if (!bone.active) return;
     bone.disableBody(true, true);
+    this.hunger = Math.min(this.maxHunger, this.hunger + 12);
     this.bonesCount += 1;
     this.combo += 1;
     this.comboTimer = 2.5;
@@ -3281,13 +3335,9 @@ export default class Level1 extends Phaser.Scene {
     if (now - ring.getData('last') < 500) return;
     ring.setData('last', now);
 
-    if (this.dog.flaps >= this.dog.maxFlaps) return;
-
-    this.dog.flaps = this.dog.maxFlaps;
     this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -140 * S);
     sfx.ring();
     this.spawnPuff(ring.x, ring.y, 1.2);
-    this.floatText(ring.x, ring.y - 10 * S, t('float.flap'), '#6ec6a8');
   }
 
   touchCheckpoint() {
@@ -3321,11 +3371,12 @@ export default class Level1 extends Phaser.Scene {
   hitCrow(dog, crow) {
     if (crow.defeated || !crow.active) return;
 
-    // diving (or falling fast) pops the crow
-    if (this.dog.diving || this.dog.body.velocity.y > 160 * S) {
+    // A fast fall pops the crow.
+    if (this.dog.body.velocity.y > 160 * S) {
       crow.defeated = true;
       crow.body.enable = false;
 
+      this.grantStamina(1);
       this.bonesCount += 1;
       sfx.stomp();
       this.spawnPuff(crow.x, crow.y, 0.9);
@@ -3357,6 +3408,7 @@ export default class Level1 extends Phaser.Scene {
 
     squirrel.defeated = true;
     squirrel.body.enable = false;
+    this.grantStamina(1);
     this.dropSquirrelBone(squirrel);
     this.critterVoice(squirrel);
     this.spawnPuff(squirrel.x, squirrel.y, 1);
@@ -3376,17 +3428,34 @@ export default class Level1 extends Phaser.Scene {
     this.onAttackHit(squirrel, 'spin');
   }
 
+  slideHitSquirrel(squirrel) {
+    if (
+      squirrel.defeated ||
+      !squirrel.active ||
+      this.slideHitTargets?.has(squirrel)
+    ) {
+      return;
+    }
+    this.slideHitTargets?.add(squirrel);
+    this.subdueSquirrel(squirrel);
+    this.onAttackHit(squirrel, 'slide');
+  }
+
   hitSquirrel(dog, squirrel) {
     if (squirrel.defeated || !squirrel.active) return;
 
-    // Spin is an attack window for small bone thieves too.
+    // Spin and slide are attack windows for small bone thieves too.
+    if (this.dog.slideUntil > this.time.now) {
+      this.slideHitSquirrel(squirrel);
+      return;
+    }
     if (this.dog.spinUntil > this.time.now) {
       this.spinHitSquirrel(squirrel);
       return;
     }
 
-    // dive or land on it: it drops the bone and flees
-    if (this.dog.diving || this.dog.body.velocity.y > 160 * S) {
+    // A fast fall drops the bone and sends it fleeing.
+    if (this.dog.body.velocity.y > 160 * S) {
       this.subdueSquirrel(squirrel);
       sfx.stomp();
       this.dog.body.velocity.y = -tuning.flapImpulse * 0.8 * S;
@@ -3462,19 +3531,41 @@ export default class Level1 extends Phaser.Scene {
     });
   }
 
+  slideHitRival(rival) {
+    if (
+      rival.defeated ||
+      !rival.active ||
+      this.slideHitTargets?.has(rival)
+    ) {
+      return;
+    }
+    this.slideHitTargets?.add(rival);
+
+    const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
+    const defeated = this.damageRival(rival, 2, {
+      source: 'slide',
+      bounce: false,
+    });
+    if (!defeated && rival.active) {
+      rival.stun(500);
+      rival.body.setVelocityX(dir * 300 * S);
+      rival.body.setVelocityY(-110 * S);
+    }
+    this.onAttackHit(rival, 'slide');
+  }
+
   hitRival(dog, rival) {
     if (rival.defeated || !rival.active) return;
-    // Spin is an attack window; slide is a dodge window. Neither is a
-    // vulnerability window.
+    // Spin and slide are attack windows; neither is a vulnerability window.
     if (this.dog.spinUntil > this.time.now) return;
     if (this.dog.slideUntil > this.time.now) {
-      // Slide is a dodge, not an attack: passing through a rival is safe.
+      this.slideHitRival(rival);
       return;
     }
 
-    // dive or land on it: the other dog yelps and runs home
-    if (this.dog.diving || this.dog.body.velocity.y > 160 * S) {
-      this.damageRival(rival, 2, { source: 'dive', bounce: true });
+    // A fast fall stomps the rival.
+    if (this.dog.body.velocity.y > 160 * S) {
+      this.damageRival(rival, 2, { source: 'stomp', bounce: true });
       return;
     }
 
@@ -3482,8 +3573,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   // Spin is the everyday attack: one point per spin, plus a short daze and
-  // knockback. Dive remains the stronger committed attack with two direct
-  // points and a bounce.
+  // knockback. Slide is the committed ground finisher: two points, strong
+  // knockback and heavy impact.
   applySpinHit(rival) {
     if (rival.defeated || !rival.active) return;
 
@@ -3514,7 +3605,7 @@ export default class Level1 extends Phaser.Scene {
 
       if (rival.health > 0) {
         if (opts.bounce) {
-          this.onAttackHit(rival, 'dive');
+          this.onAttackHit(rival, 'stomp');
           this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
         }
         sfx.yelp();
@@ -3545,6 +3636,7 @@ export default class Level1 extends Phaser.Scene {
       rival.stolenBones = 0;
     }
 
+    this.grantStamina(1);
     this.bonesCount += reward;
     this.rivalsSubdued += 1;
     sfx.yelp();
@@ -3562,7 +3654,7 @@ export default class Level1 extends Phaser.Scene {
     });
 
     if (opts.bounce) {
-      this.onAttackHit(rival, 'dive');
+      this.onAttackHit(rival, 'stomp');
       this.dog.body.velocity.y = -tuning.flapImpulse * 1.15 * S;
     }
     return true;
@@ -3636,7 +3728,6 @@ export default class Level1 extends Phaser.Scene {
     dog.body.velocity.y = -620 * S;
     dog.jumpCutReady = false;
     dog.grounded = false;
-    dog.flaps = dog.maxFlaps;
 
     this.tweens.add({
       targets: awning,
@@ -3737,7 +3828,10 @@ export default class Level1 extends Phaser.Scene {
 
   hideEndHud() {
     this.closeObjectives();
+    this.slideAura?.destroy();
+    this.slideAura = null;
     this.pips.setVisible(false);
+    this.staminaIcon?.setVisible(false);
     this.boneText.setVisible(false);
     this.comboText?.setVisible(false);
     this.hint.setVisible(false);
