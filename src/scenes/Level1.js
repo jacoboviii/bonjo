@@ -326,6 +326,7 @@ export default class Level1 extends Phaser.Scene {
 
     if (!this.won && !this.gameOverFlag) {
       this.dog.update(delta);
+      this.updateCheckpoints();
       this.updateErrands();
       this.updateSpinAttack();
       this.updateSlideTrail();
@@ -1669,6 +1670,21 @@ export default class Level1 extends Phaser.Scene {
   nightErrandsComplete() {
     if (this.features?.errands === false) return true;
     return this.gateErrandDone && this.nightRivalsSubdued >= 2;
+  }
+
+  updateCheckpoints() {
+    if (
+      !this.checkpointActive &&
+      Math.abs(this.dog.x - CHECKPOINT_X * S) < 20 * S
+    ) {
+      this.touchCheckpoint();
+    }
+    if (
+      !this.checkpoint2Active &&
+      Math.abs(this.dog.x - CHECKPOINT2_X * S) < 20 * S
+    ) {
+      this.touchCheckpoint2();
+    }
   }
 
   updateErrands() {
