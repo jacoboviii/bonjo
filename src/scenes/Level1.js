@@ -374,7 +374,8 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    if (this.alpha.y <= WORLD_H) return;
+    const floorLimit = ((this.levelData.enemySpawnY ?? 587) + 30) * S;
+    if (this.alpha.y <= floorLimit) return;
 
     const x = (this.levelData.bossSpawnX ?? this.dog.x / S) * S;
     const y = (this.levelData.enemySpawnY ?? 587) * S;
