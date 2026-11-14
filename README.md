@@ -73,7 +73,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **The porch:** Bonjo's house at the start of the street is a safe zone.
   An open **CASA gateway** and painted threshold mark the line. Normal rivals
   stop there; gate rushers try to chew the gate down. If it breaks, the porch is
-  open until dawn. Polo tosses a concha each day, the bell grants another,
+  open until dawn. Polo offers one concha per level, the bell grants another blessing,
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
   hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
@@ -156,9 +156,10 @@ burst it; **slide** a **rival dog** to make it drop a bone and flee. Landing on
 an enemy bounces Bonjo safely without damaging either of them. Eat **bones** to keep hunger up; grab **conchas** to recharge IMPULSE. Use taco carts, loot trash cans, knock
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
-bell to ring it. Both errands are required each day: the day timer waits at zero
-until Polo and the bell are done. Dialog cards pause the game until you close
-them. Press **E** (or tap the spin button) to make Bonjo plant his
+bell to ring it. Day errands are Polo’s concha and the bell; the day timer
+waits at zero until both are done. Night errands are checking the gate and
+subduing two rivals. Errand progress never resets, and the pause panel shows
+checkmarks for each one. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
 paws and whip his fluffy tail in a quick sweep that dazes, nudges back and
 damages nearby rivals, bone thieves and crows. The tail arc and its damage
 travel with Bonjo, even while moving or jumping; a sweep that connects from
@@ -242,7 +243,7 @@ there to make them permanent.
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
-- **Named NPC dialog cards** that pause the action; mandatory daily Polo + bell errands that hold off nightfall, and chihuahua warnings
+- **Named NPC dialog cards** that pause the action; persistent day/night errands with checkmarks in the pause panel, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**

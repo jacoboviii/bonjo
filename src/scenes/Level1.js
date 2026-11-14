@@ -27,6 +27,17 @@ const SPIN_COOLDOWN_MS = 420;
 const SPIN_DURATION_MS = 260;
 const SPIN_RING_MS = 220;
 
+// Words spoken by animals linger longer than combat/UI numbers.
+const ANIMAL_WORDS = new Set([
+  'WOOF!', '¡GUAU!',
+  'CAW!', '¡CAAW!',
+  'HOO!', '¡UUH!',
+  'HISS!', '¡FSSS!',
+  'CHIRP!', '¡PÍO!',
+  'COCK-A-DOODLE-DOO!', '¡KIKIRIKÍ!',
+  'HEY!', '¡OYE!',
+]);
+
 let WORLD_W;
 let WORLD_H;
 let PLATFORMS;
@@ -170,6 +181,9 @@ export default class Level1 extends Phaser.Scene {
     this.poloGift = true;
     this.bellRung = false;
     this.errandGateHintShown = false;
+    this.gateErrandDone = false;
+    this.nightRivalsSubdued = 0;
+    this.nightErrandGateHintShown = false;
     this.nextAlarm = 0;
     this.nextAllyBark = 0;
     this.nextChirp = 0;
@@ -312,6 +326,7 @@ export default class Level1 extends Phaser.Scene {
 
     if (!this.won && !this.gameOverFlag) {
       this.dog.update(delta);
+      this.updateErrands();
       this.updateSpinAttack();
       this.updateSlideTrail();
       if (this.spinBufferAt && this.time.now >= this.spinBufferAt) {
@@ -1650,6 +1665,30 @@ export default class Level1 extends Phaser.Scene {
     return !this.poloGift && this.bellRung;
   }
 
+  nightErrandsComplete() {
+    if (this.features?.errands === false) return true;
+    return this.gateErrandDone && this.nightRivalsSubdued >= 2;
+  }
+
+  updateErrands() {
+    if (
+      this.features?.errands === false ||
+      this.phase !== 'night' ||
+      this.gateErrandDone
+    ) {
+      return;
+    }
+
+    if (
+      Math.abs(this.dog.x - GATE_X * S) < 42 * S &&
+      Math.abs(this.dog.y - 600 * S) < 60 * S
+    ) {
+      this.gateErrandDone = true;
+      this.floatText(GATE_X * S, 560 * S, t('errands.gateDone'), '#6ec6a8');
+      this.updateGoalHud();
+    }
+  }
+
   ringBell() {
     this.bellRung = true;
     this.bellIcon.setVisible(false);
@@ -2492,6 +2531,13 @@ export default class Level1 extends Phaser.Scene {
     ) {
       text = t('goal.errands');
       color = '#ffd166';
+    } else if (
+      this.phase === 'night' &&
+      this.phaseTime <= 0 &&
+      !this.nightErrandsComplete()
+    ) {
+      text = t('goal.errandsNight');
+      color = '#ffd166';
     } else if (this.alphaActive && !this.alphaDefeated) {
       text = t(this.levelData.boss?.goalKey || 'goal.alpha', {
         hits: this.alpha?.health ?? 5,
@@ -2518,7 +2564,19 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesErrandsLine?.setVisible(hasErrands);
     this.objectivesErrandsDesc?.setVisible(hasErrands);
     if (hasErrands) {
-      this.objectivesErrandsLine.setText(t('objectives.errandsLine'));
+      const check = (done) => (done ? '✓' : '○');
+      const dayDone = !this.poloGift && this.bellRung;
+      const nightDone = this.nightErrandsComplete();
+      this.objectivesErrandsLine
+        .setText(
+          `${t('errands.day')} · ${check(!this.poloGift)} ${t('name.polo')}  ${check(this.bellRung)} ${t('name.bell')}`,
+        )
+        .setColor(dayDone ? '#2f7f78' : '#2b1b3d');
+      this.objectivesErrandsDesc
+        .setText(
+          `${t('errands.night')} · ${check(this.gateErrandDone)} ${t('hud.gate')}  ${check(this.nightRivalsSubdued >= 2)} ${t('errands.rivals')} ${this.nightRivalsSubdued}/2`,
+        )
+        .setColor(nightDone ? '#2f7f78' : '#2b1b3d');
     }
   }
 
@@ -2783,10 +2841,15 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar.fillStyle(this.hunger < 25 ? 0xf26b5e : 0xf0a03c, 1);
     this.hungerBar.fillRect(hungerX + 1 * S, hungerY + 1 * S, width, 4 * S);
 
-    const waitingErrands =
+    const waitingDayErrands =
       this.phase === 'day' &&
       this.phaseTime <= 0 &&
       !this.errandsComplete();
+    const waitingNightErrands =
+      this.phase === 'night' &&
+      this.phaseTime <= 0 &&
+      !this.nightErrandsComplete();
+    const waitingErrands = waitingDayErrands || waitingNightErrands;
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
     const phaseLabel = waitingErrands
@@ -2886,7 +2949,16 @@ export default class Level1 extends Phaser.Scene {
           this.phaseTime = 0;
           this.alphaActive = true;
         } else if (!this.alphaEnding) {
-          this.endNight();
+          if (!this.nightErrandsComplete()) {
+            this.phaseTime = 0;
+            if (!this.nightErrandGateHintShown) {
+              this.nightErrandGateHintShown = true;
+              this.showPhaseBanner(t('errands.nightRequired'), '#ffd166');
+              this.updateGoalHud();
+            }
+          } else {
+            this.endNight();
+          }
         }
       }
     }
@@ -2984,11 +3056,9 @@ export default class Level1 extends Phaser.Scene {
     this.porchGate?.clearTint().setAlpha(1);
     this.gateSign?.setVisible(true);
 
-    this.poloGift = true;
-    this.bellRung = false;
     this.errandGateHintShown = false;
-    this.poloIcon?.setVisible(true);
-    this.bellIcon?.setVisible(true);
+    this.poloIcon?.setVisible(this.poloGift);
+    this.bellIcon?.setVisible(!this.bellRung);
 
     this.tweens.killTweensOf([this.sun, this.moon]);
     this.tweens.add({
@@ -3404,6 +3474,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   floatText(x, y, message, color = '#ffd166') {
+    const duration = ANIMAL_WORDS.has(message) ? 1500 : 700;
     const label = this.add
       .text(x, y, message, {
         fontFamily: 'monospace',
@@ -3419,7 +3490,7 @@ export default class Level1 extends Phaser.Scene {
       targets: label,
       y: y - 12 * S,
       alpha: 0,
-      duration: 700,
+      duration,
       ease: 'Quad.out',
       onComplete: () => label.destroy(),
     });
@@ -3953,6 +4024,17 @@ export default class Level1 extends Phaser.Scene {
 
     this.bonesCount += reward;
     this.rivalsSubdued += 1;
+    if (
+      this.phase === 'night' &&
+      this.features?.errands !== false &&
+      this.nightRivalsSubdued < 2
+    ) {
+      this.nightRivalsSubdued += 1;
+      if (this.nightRivalsSubdued === 2) {
+        this.floatText(rival.x, rival.y - 28 * S, t('errands.rivalsDone'), '#6ec6a8');
+        this.updateGoalHud();
+      }
+    }
     this.maybeDropConcha(rival.x, rival.y - 8 * S);
     sfx.yelp();
     this.spawnPuff(rival.x, rival.y, rival.role === 'alpha' ? 1.5 : 1);
