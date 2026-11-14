@@ -1041,10 +1041,18 @@ export default class Level1 extends Phaser.Scene {
     this.foodGroup = this.physics.add.group({ allowGravity: false, immovable: true });
 
     for (const [x, y] of [...FOODS, ...LEDGE_FOODS]) {
-      this.spawnFoodAt(x * S, y * S);
+      const point = this.randomPickupPoint(x, y);
+      this.spawnFoodAt(point.x * S, point.y * S);
     }
 
     this.physics.add.overlap(this.dog, this.foodGroup, this.eatFood, null, this);
+  }
+
+  randomPickupPoint(x, y) {
+    return {
+      x: x + Phaser.Math.Between(-18, 18),
+      y: y - Phaser.Math.Between(4, 60),
+    };
   }
 
   spawnFoodAt(x, y) {
@@ -1706,7 +1714,12 @@ export default class Level1 extends Phaser.Scene {
     // bones
     this.boneGroup = this.physics.add.group({ allowGravity: false, immovable: true });
     for (const [x, y] of [...BONES, ...LEDGE_BONES]) {
-      const bone = this.boneGroup.create(x * S, y * S, 'boneIcon');
+      const point = this.randomPickupPoint(x, y);
+      const bone = this.boneGroup.create(
+        point.x * S,
+        point.y * S,
+        'boneIcon',
+      );
       bone.setDepth(7);
       bone.setScale(0.7);
       bone.body.setSize(8 * S, 6 * S);

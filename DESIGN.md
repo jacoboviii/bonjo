@@ -277,8 +277,10 @@ and adds a third pip to the HUD. It is deliberately off the survival path: a rea
 explore the full map, not a requirement to win.
 
 ### Bones and score
-Bones are score pickups and Bonjo's food: 35 placed across both blocks plus
-piñata drops, trash cans and rival rewards. Each bone restores 12 hunger and
+Bones are score pickups and Bonjo's food: 35 authored spots across both blocks
+plus piñata drops, trash cans and rival rewards. At level start, each authored
+bone and concha is jittered horizontally and lifted 4–60 design px, so pickups
+form varied heights instead of one ground line. Each bone restores 12 hunger and
 builds a short combo; the end screen combines bones, max combo, subdued rivals,
 health, no-hit and time into a score and an S–D rank.
 

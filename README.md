@@ -242,7 +242,7 @@ there to make them permanent.
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**
 - Wind rings that give a mid-air upward kick
-- Bones for hunger, conchas for stamina, two checkpoint balloons, a safe **porch**
+- Bones for hunger and conchas for stamina, each scattered at randomized x/heights every run; two checkpoint balloons, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
 - Atmospheric haze pushes the city back while keeping Bonjo and the hazards readable
 - Extended east blocks and field edges with extra bones, props, enemy turf and a second checkpoint
