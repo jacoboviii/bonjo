@@ -108,7 +108,7 @@ the conchas and piñatas you missed.
 | SPACE / W (press) | Jump | Flap |
 | SPACE / W (hold) | — | Glide while falling |
 | S / ↓ | Slide attack | Air slide attack |
-| E | Spin attack | Spin attack |
+| E | Tail-sweep attack | Tail-sweep attack |
 | F | Talk / ring / interact | Talk / ring / interact |
 | Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
 | Map: ESC / B | Back to title | Back to title |
@@ -179,10 +179,13 @@ jump and glide.
 ### Context action
 `E` / the touch action button does one of two things depending on proximity:
 talk or ring when an NPC/quest prompt is active, otherwise perform a short
-Bonjo spin. The spin is the everyday attack: one point of damage per spin,
-plus a short daze and a small slide-back. Its halo expands to the exact damage radius, sized to cover Bonjo plus
-an adjacent enemy sprite; it is not a second hitbox. The halo and damage check
-follow Bonjo for the full spin, even while moving or jumping. A spin that hits
+Bonjo tail sweep. Bonjo plants his paws and whips his fluffy tail through a
+quick circular sweep instead of doing a full-body spin. The everyday attack
+deals one point, plus a short daze and a small slide-back. Its halo expands to
+the exact damage radius, sized to cover Bonjo plus an adjacent enemy sprite; it
+is not a second hitbox. A gold tail arc, bright tip and fur-dust ring carry the
+sweep visually, and the damage check follows Bonjo for the full sweep, even
+while moving or jumping. A sweep that hits
 from above also bounces Bonjo off the target. The hit test
 measures to the nearest body edge so mismatched sprite origins cannot make a
 touching target miss. A deliberate down-input, on the ground or in the air,
@@ -190,7 +193,7 @@ starts the slide attack: two points of damage, strong knockback and a heavy
 impact, spending one
 IMPULSE pip from the same stamina pool as air flaps. A stretched gold aura follows
 Bonjo while a trail of warm afterimages and embers streams behind him. Bonjo is
-briefly damage-immune during each slide. Every connecting spin or slide throws a small impact ring,
+briefly damage-immune during each slide. Every connecting tail sweep or slide throws a small impact ring,
 dust burst and light camera kick; the slide's version is the heaviest. The spin
 starts immediately, snaps through one rotation in 260 ms and has a ~420 ms
 cooldown; one press during that recovery is buffered so it fires as soon as the
@@ -470,7 +473,7 @@ compressor keeps mobile speakers from clipping.
 | Rival bark | chest-noise transient + filtered canine woof |
 | Rival subdued | descending, vibrating yelp |
 | Goose honk | nasal sawtooth honk with a short square-wave tail |
-| Bonjo spin | quick cloth whoosh + bright two-note chime |
+| Bonjo tail sweep | quick cloth whoosh + bright two-note chime |
 | Attack connect | dry impact tick + low body thump |
 | Cat hiss | breathy band-passed noise |
 | Bird scatter / chirp | quick shimmering sine chirps |

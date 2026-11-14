@@ -279,7 +279,11 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
         0,
         1,
       );
-      this.setRotation(progress * Math.PI * 2 * this.spinDir);
+      // The attack is a tail sweep: Bonjo plants his paws and leans through
+      // the swing instead of doing a full-body cartoon spin.
+      this.setRotation(
+        Math.sin(progress * Math.PI) * Phaser.Math.DegToRad(11) * this.spinDir,
+      );
     } else if (this.gliding) {
       this.setRotation(Phaser.Math.DegToRad(-6 * this.facing));
     } else {

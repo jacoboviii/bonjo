@@ -1375,6 +1375,8 @@ export default class Level1 extends Phaser.Scene {
     this.spinRadius = radius;
     this.spinHitTargets = new Set();
     this.spinRing?.destroy();
+    this.spinTail?.destroy();
+    this.spinTail = this.add.graphics().setDepth(9);
     const ring = this.add
       .circle(this.dog.x, this.dog.y, ringBase, 0x000000, 0)
       .setStrokeStyle(3 * S, 0xffd166, 0.9)
@@ -1398,11 +1400,14 @@ export default class Level1 extends Phaser.Scene {
   updateSpinAttack() {
     if (this.dog.spinUntil <= this.time.now) {
       this.spinHitTargets = null;
+      this.spinTail?.destroy();
+      this.spinTail = null;
       return;
     }
 
     const radius = this.spinRadius || 18 * S;
     this.spinRing?.setPosition(this.dog.x, this.dog.y);
+    this.drawSpinTail();
     const hitTargets =
       this.spinHitTargets || (this.spinHitTargets = new Set());
 
@@ -1452,6 +1457,58 @@ export default class Level1 extends Phaser.Scene {
         this.hitPinata(this.dog, pinata);
       }
     }
+  }
+
+  drawSpinTail() {
+    if (!this.spinTail || !this.dog.spinUntil) return;
+
+    const progress = Phaser.Math.Clamp(
+      (this.time.now - this.dog.spinStart) /
+        (this.dog.spinUntil - this.dog.spinStart),
+      0,
+      1,
+    );
+    const direction = this.dog.spinDir || 1;
+    const end = -Math.PI / 2 + progress * Math.PI * 2 * direction;
+    const start = end - 1.35 * direction;
+    const tailRadius = 16 * S;
+    const tail = this.spinTail;
+
+    tail.clear();
+    tail.lineStyle(6 * S, 0xf0a03c, 0.28);
+    tail.beginPath();
+    tail.arc(
+      this.dog.x,
+      this.dog.y,
+      tailRadius,
+      start,
+      end,
+      direction < 0,
+    );
+    tail.strokePath();
+    tail.lineStyle(3.5 * S, 0xffd166, 0.95);
+    tail.beginPath();
+    tail.arc(
+      this.dog.x,
+      this.dog.y,
+      tailRadius,
+      start,
+      end,
+      direction < 0,
+    );
+    tail.strokePath();
+
+    // Fluffy tail tip at the leading edge of the sweep.
+    const tipX = this.dog.x + Math.cos(end) * tailRadius;
+    const tipY = this.dog.y + Math.sin(end) * tailRadius;
+    tail.fillStyle(0xfff4e0, 0.95);
+    tail.fillCircle(tipX, tipY, 4 * S);
+    tail.fillStyle(0xf0a03c, 0.75);
+    tail.fillCircle(
+      tipX - Math.cos(end) * 2 * S,
+      tipY - Math.sin(end) * 2 * S,
+      2.5 * S,
+    );
   }
 
   inSpinRange(target, radius = 18 * S) {
@@ -3885,6 +3942,8 @@ export default class Level1 extends Phaser.Scene {
     this.closeObjectives();
     this.slideAura?.destroy();
     this.slideAura = null;
+    this.spinTail?.destroy();
+    this.spinTail = null;
     this.pips.setVisible(false);
     this.staminaIcon?.setVisible(false);
     this.boneText.setVisible(false);
