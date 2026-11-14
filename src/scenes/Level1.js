@@ -1049,9 +1049,18 @@ export default class Level1 extends Phaser.Scene {
   }
 
   randomPickupPoint(x, y) {
+    // Spread pickups across three height bands so they do not read as a single
+    // ground row: low, mid-air and high-air.
+    const tier = Phaser.Math.Between(0, 2);
+    const lift =
+      tier === 0
+        ? Phaser.Math.Between(4, 18)
+        : tier === 1
+          ? Phaser.Math.Between(25, 50)
+          : Phaser.Math.Between(55, 90);
     return {
-      x: x + Phaser.Math.Between(-18, 18),
-      y: y - Phaser.Math.Between(4, 60),
+      x: x + Phaser.Math.Between(-30, 30),
+      y: y - lift,
     };
   }
 
