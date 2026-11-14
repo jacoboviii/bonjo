@@ -37,8 +37,8 @@ same route, the same corners, the same smells. He likes his walks.
 
 **La Cuadra** is the urban core: flat-roofed houses, a church tower, a tienda
 awning, strings of papel picado, dogs behind every gate. The street is the
-arena: one continuous run of pavement with raised adobe terraces, awnings and rings
-over the holes.
+arena: one continuous run of pavement with solid raised adobe terraces, awnings
+and rings above the street.
 
 At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
 agave, dust, geese, and farm dogs who have never seen a chow before. That's
@@ -267,7 +267,7 @@ heart instead. Every dropped pickup scatters and falls to the ground. Purely a
 reward; never a hazard.
 
 ### Market awnings
-Striped canvas canopies above the former gaps. Landing on one from above bounces Bonjo
+Striped canvas canopies above the street. Landing on one from above bounces Bonjo
 ~120 design px, restores one flap charge, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
@@ -348,7 +348,7 @@ is where you catch your breath.
 
 ### Checkpoints
 Balloons at the midpoint and on the east block; touch one to set the respawn
-point after a pit and restore one heart. There is no goal balloon: the win condition is surviving
+point after a fall or defeat and restore one heart. There is no goal balloon: the win condition is surviving
 Night 2 and repelling the top dog.
 
 ---
@@ -365,8 +365,11 @@ balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with
 non-blocking facades and one-way rooftop platforms; the pavement beneath them
-are filled. The town layers are anchored to the street's world Y so they sit on
-the sidewalk, and a light blue haze keeps the play lane readable.
+is continuous and solid. A few raised adobe terraces break the ground line into
+real steps that Bonjo jumps up and drops from safely; they are solid retaining
+blocks, not one-way ledges. The town layers are anchored to the street's world
+Y so they sit on the sidewalk, and a light blue haze keeps the play lane
+readable.
 
 **Ultimate objective:** hold CASA until dawn — keep the porch standing and drive
 the top dog off the block. The win screen is not a throne; it is home, still
@@ -378,7 +381,7 @@ Beat sheet:
 1. **The porch.** Bonjo starts outside his house. A concha is nearby; a piñata
    hangs over the corner; a rival dog patrols the near block. Learn jump → flap
    → slide, and eat a bone when the hunger bar dips.
-2. **The first terrace.** A market awning and a gold ring above the pavement. Bounce the
+2. **The first awning.** A market awning and a gold ring above the pavement. Bounce the
    awning, pass through the ring, keep moving.
 3. **The long block.** A squirrel drags a bone; a rival guards the turf. Day 1
    is for scavenging — clear what you can before dark.

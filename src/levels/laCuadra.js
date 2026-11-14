@@ -21,8 +21,8 @@ export const laCuadra = {
   winEpilogueKey: 'win.casaEpilogue',
 
   // One continuous pavement: every former pit is filled. Height changes are
-  // handled by one-way terraces below, so falling means dropping to the street,
-  // never losing a life in a pit.
+  // solid raised pavement, so stepping off a terrace simply drops Bonjo back to
+  // the street; there are no lethal floor gaps.
   platforms: [
     { x: 0, y: 600, w: 520, h: 300 }, // starting ground
     { x: 520, y: 600, w: 80, h: 300 }, // filled former west gap
@@ -45,6 +45,17 @@ export const laCuadra = {
     { x: 4020, y: 600, w: 180, h: 300 }, // far end
     { x: 4140, y: 600, w: 60, h: 300 }, // filled former east gap
     { x: 4200, y: 600, w: 800, h: 300 }, // east extension
+  ],
+
+  // Solid raised pavement. These are real steps in the ground, not one-way
+  // ledges: jump up or walk off and drop safely to the base street.
+  terraces: [
+    { x: 1600, y: 570, w: 50, h: 30 },
+    { x: 2200, y: 570, w: 80, h: 30 },
+    { x: 3080, y: 585, w: 30, h: 15 },
+    { x: 3110, y: 570, w: 90, h: 30 },
+    { x: 3430, y: 570, w: 50, h: 30 },
+    { x: 4200, y: 570, w: 80, h: 30 },
   ],
 
   bones: [
@@ -177,25 +188,6 @@ export const laCuadra = {
     { x: 4490, y: 340, w: 90, kind: 'fire' },
     { x: 4370, y: 260, w: 100, kind: 'laundry' },
     { x: 4490, y: 180, w: 90, kind: 'roof' },
-    // low one-way terraces: step up, drop down, never a lethal pit
-    { x: 300, y: 566, w: 90, kind: 'terrace' },
-    { x: 390, y: 546, w: 90, kind: 'terrace' },
-    { x: 820, y: 560, w: 100, kind: 'terrace' },
-    { x: 920, y: 540, w: 100, kind: 'terrace' },
-    { x: 1220, y: 568, w: 100, kind: 'terrace' },
-    { x: 1320, y: 548, w: 100, kind: 'terrace' },
-    { x: 1760, y: 562, w: 110, kind: 'terrace' },
-    { x: 1870, y: 542, w: 110, kind: 'terrace' },
-    { x: 2200, y: 568, w: 100, kind: 'terrace' },
-    { x: 2300, y: 548, w: 100, kind: 'terrace' },
-    { x: 2820, y: 560, w: 110, kind: 'terrace' },
-    { x: 2930, y: 540, w: 110, kind: 'terrace' },
-    { x: 3350, y: 566, w: 100, kind: 'terrace' },
-    { x: 3450, y: 546, w: 100, kind: 'terrace' },
-    { x: 3800, y: 560, w: 110, kind: 'terrace' },
-    { x: 3860, y: 540, w: 110, kind: 'terrace' },
-    { x: 4450, y: 566, w: 100, kind: 'terrace' },
-    { x: 4550, y: 546, w: 100, kind: 'terrace' },
   ],
 
   ledgeBones: [
