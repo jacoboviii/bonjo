@@ -1666,8 +1666,11 @@ function makeDog(scene, key, pose) {
     g.fillRect(2, 19, 10, 4);
     g.fillRect(14, 21, 4, 3);
   } else if (pose === 'glide') {
-    g.fillRect(6, 24, 5, 3);
-    g.fillRect(16, 24, 4, 3);
+    // Superdog glide: front paws reach forward, hind paws trail behind.
+    g.fillRect(1, 23, 7, 4); // near hind leg
+    g.fillRect(3, 18, 6, 3); // far hind leg
+    g.fillRect(20, 23, 10, 4); // near front leg
+    g.fillRect(21, 18, 7, 3); // far front leg
   } else if (pose === 'walkA') {
     g.fillRect(5, 23, 4, 8);
     g.fillRect(19, 23, 4, 8);
@@ -1693,8 +1696,10 @@ function makeDog(scene, key, pose) {
     g.fillRect(2, 22, 4, 1);
     g.fillRect(15, 23, 3, 1);
   } else if (pose === 'glide') {
-    g.fillRect(6, 26, 5, 1);
-    g.fillRect(16, 26, 4, 1);
+    g.fillRect(1, 26, 3, 1);
+    g.fillRect(29, 26, 2, 1);
+    g.fillRect(3, 20, 3, 1);
+    g.fillRect(26, 20, 2, 1);
   } else if (pose === 'walkA') {
     g.fillRect(5, 29, 4, 2);
     g.fillRect(19, 29, 4, 2);

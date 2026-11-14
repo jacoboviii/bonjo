@@ -336,7 +336,8 @@ files):
 
 | Key | Size | Notes |
 | --- | --- | --- |
-| `dog`, `dogSit`, `dogWalkA–D`, `dogGlide` | 60×60 | denser black chow with 4-frame walk; flipped in code |
+| `dog`, `dogSit`, `dogWalkA–D` | 60×60 | denser black chow with 4-frame walk; flipped in code |
+| `dogGlide` | 60×60 | front paws stretched forward, hind paws trailing |
 | `tongue` | 9×12 | panting overlay |
 | `rival`, `rivalRun` | 48×45 | tan neighborhood dog, red bandana |
 | `rivalFast`, `rivalFastRun` | 48×45 | blue-grey fast dog, teal bandana |

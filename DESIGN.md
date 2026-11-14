@@ -161,7 +161,9 @@ are design pixels (1 design px = 3 render px).
 | Camera look-ahead | 34 px | leads your facing direction |
 | Camera smoothing | 0.1 | soft follow |
 
-**State machine:** grounded → jump → flap ×2 → glide (hold, falling). A fresh
+**State machine:** grounded → jump → flap ×2 → glide (hold, falling). The glide
+pose stretches both front paws forward and trails the hind paws, like a small
+flying dog. A fresh
 S/↓ press starts the slide attack, on the ground or in the air. Air flaps and slides both spend
 IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned
 by collecting conchas, which enemies sometimes drop; it no longer refills on
