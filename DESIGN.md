@@ -206,8 +206,10 @@ future levels should continue the same step-up.
 Patrol a turf range and hop. When Bonjo is within ~220 design px and roughly the
 same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
 They stop at the edges of their turf rather than running into pits. Sliding
-into one, or landing on it from above, subsumes it: yelp, +1 bone and a 40%
-chance of a concha; it flees home. Any other contact costs a heart and knocks Bonjo back. No gore, no
+into one, or landing on it from above, subsumes it: yelp, +1 bone, a bounce
+clear and a 40% chance of a concha; it flees home. Any other contact costs a
+heart and knocks Bonjo back. The stomp bounce has a short grace window so the
+same overlapping body cannot hurt Bonjo on the way up. No gore, no
 defeat state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and

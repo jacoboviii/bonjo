@@ -3578,8 +3578,10 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
-    // A fall onto it stomps the rival.
+    // A fall onto it stomps the rival. Keep a short grace window while Bonjo
+    // bounces off so the same overlapping body cannot hurt him on the way up.
     if (this.isStomping(rival)) {
+      this.dog.stompGraceUntil = this.time.now + 320;
       this.damageRival(rival, 2, { source: 'stomp', bounce: true });
       return;
     }
@@ -3767,6 +3769,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.won || this.gameOverFlag || this.dog.dead) return;
     if (this.dog.invuln > 0) return;
     if (this.dog.dodgeUntil > this.time.now) return;
+    if (this.dog.stompGraceUntil > this.time.now) return;
 
     this.resetCombo();
     this.health -= 1;

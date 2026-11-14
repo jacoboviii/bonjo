@@ -60,6 +60,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.slideDir = 1;
     this.slideSpeed = 0;
     this.dodgeUntil = 0;
+    this.stompGraceUntil = 0;
     this.downWasHeld = false;
     this.nextSlidePuff = 0;
     this.stepTimer = 0;
