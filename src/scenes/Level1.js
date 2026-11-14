@@ -3028,19 +3028,35 @@ export default class Level1 extends Phaser.Scene {
     this.alphaActive = true;
     this.waveSpawned = this.waveTotal;
 
-    const designX = this.dog.x / S;
-    let platform = PLATFORMS.find(
-      (p) => designX >= p.x && designX <= p.x + p.w,
-    );
-    if (!platform) platform = PLATFORMS[PLATFORMS.length - 1];
+    let platform;
+    let sx;
+    if (this.levelData.bossSpawnX != null) {
+      // The first-level top dog waits on the lawn in front of Casa instead of
+      // teleporting to wherever Bonjo happens to be.
+      sx = this.levelData.bossSpawnX;
+      platform = PLATFORMS.find(
+        (p) => sx >= p.x && sx <= p.x + p.w,
+      );
+      if (!platform) platform = PLATFORMS[0];
+    } else {
+      const designX = this.dog.x / S;
+      platform = PLATFORMS.find(
+        (p) => designX >= p.x && designX <= p.x + p.w,
+      );
+      if (!platform) platform = PLATFORMS[PLATFORMS.length - 1];
 
-    const mid = platform.x + platform.w / 2;
-    let sx = this.dog.x / S + (this.dog.facing >= 0 ? 95 : -95);
-    sx = Phaser.Math.Clamp(sx, platform.x + 22, platform.x + platform.w - 22);
-    if (Math.abs(sx - this.dog.x / S) < 40) {
-      sx = this.dog.x / S < mid
-        ? platform.x + platform.w - 22
-        : platform.x + 22;
+      const mid = platform.x + platform.w / 2;
+      sx = this.dog.x / S + (this.dog.facing >= 0 ? 95 : -95);
+      sx = Phaser.Math.Clamp(
+        sx,
+        platform.x + 22,
+        platform.x + platform.w - 22,
+      );
+      if (Math.abs(sx - this.dog.x / S) < 40) {
+        sx = this.dog.x / S < mid
+          ? platform.x + platform.w - 22
+          : platform.x + 22;
+      }
     }
     const minX = this.safeMinX(platform);
     const maxX = (platform.x + platform.w - 12) * S;

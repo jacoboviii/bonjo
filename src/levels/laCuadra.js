@@ -14,6 +14,7 @@ export const laCuadra = {
     banner: 'banner',
   },
   porch: { x: 105, key: 'bonjoHouse', roofWidth: 130 },
+  bossSpawnX: 205, // the top dog appears on the lawn in front of Casa
   safeZone: 160,
   features: { porch: true, errands: true, gateDefense: true },
   storyIntroKey: 'story.casa',

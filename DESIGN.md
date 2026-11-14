@@ -237,8 +237,8 @@ Night waves vary by role, with distinct silhouettes and palettes:
 - **Brutes** are larger, scarred and spiked-collar brown dogs. They take two
   slides and lunge more slowly.
 - **Gate rushers** ignore Bonjo and run for the porch gate.
-- The **top dog** appears at the end of Night 2: gold-tinted, crowned, three
-  slides, and its own pressure lunge. The night cannot end until it is repelled.
+- The **top dog** appears at the end of Night 2 on the lawn in front of Casa:
+  gold-tinted, crowned, three slides, and its own pressure lunge. The night cannot end until it is repelled.
 
 ### Squirrels (bone thieves)
 Patrol platforms, hop, and grab a bone when Bonjo is within ~140 design px.
@@ -318,7 +318,7 @@ the same two icon textures are used by the course pickups. The HUD labels
 health/IMPULSE stamina/hunger. The **O / OBJETIVOS** panel pauses the
 game and explains the current goal, day errands and each HUD meter, including
 dawn warnings and the top-dog hit count. The final night adds gate rushers and, at
-roughly 12 s left, the top dog. Repel it to win; the timer will wait at zero
+roughly 12 s left, the top dog on the lawn in front of Casa. Repel it to win; the timer will wait at zero
 until it is down. The HUD always shows phase, timer, labeled hearts/IMPULSE/hunger
 and gate health; objectives and errands live in the O panel.
 
@@ -372,7 +372,7 @@ Beat sheet:
 5. **Night 1.** The street darkens; three rivals spawn near Bonjo. Slide them or
    retreat to the porch. Dawn heals a heart and drops a concha.
 6. **Day 2 / Night 2.** A shorter day, a harder night; thieves, brutes and a
-   gate rusher. The top dog arrives before dawn.
+   gate rusher. The top dog arrives at Casa before dawn.
 7. **The east block.** New gaps, awnings, high laundry/fire-escape routes, a
    second checkpoint and more scavenging.
 8. **Win.** Repel the top dog and survive Night 2: "CASA IS SAFE."
