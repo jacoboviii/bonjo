@@ -880,7 +880,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.poloIcon = this.add
       .image(POLO_X * S, 600 * S - 48 * S, 'conchaIcon')
-      .setScale(0.25)
+      .setScale(0.35)
       .setDepth(4)
       .setAlpha(0.9);
     this.bellIcon = this.add
@@ -1043,7 +1043,7 @@ export default class Level1 extends Phaser.Scene {
   spawnFoodAt(x, y) {
     const food = this.foodGroup.create(x, y, 'conchaIcon');
     food.setDepth(7);
-    food.setScale(0.4);
+    food.setScale(0.6);
     food.body.setSize(10 * S, 6 * S);
 
     this.tweens.add({
