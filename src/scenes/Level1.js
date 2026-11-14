@@ -1198,7 +1198,7 @@ export default class Level1 extends Phaser.Scene {
   spawnLifeAt(x, y) {
     const life = this.lifeGroup.create(x, y, 'lifeHeart');
     life.setDepth(7);
-    life.body.setSize(12 * S, 12 * S);
+    life.body.setSize(16 * S, 16 * S);
     life.setData('hintAt', 0);
 
     this.tweens.add({
@@ -1245,6 +1245,13 @@ export default class Level1 extends Phaser.Scene {
       t(gained === 'max' ? 'float.lifeMax' : 'float.life'),
       '#f26b5e',
     );
+  }
+
+  healHealth(amount = 1) {
+    const before = this.health;
+    this.health = Math.min(this.maxHealth, this.health + amount);
+    if (this.health !== before) this.updateSurvivalHud();
+    return this.health - before;
   }
 
   gainLife() {
@@ -2935,7 +2942,7 @@ export default class Level1 extends Phaser.Scene {
     this.closeDialog();
     this.setNightCreatures(false);
 
-    this.health = Math.min(this.maxHealth, this.health + 1);
+    this.healHealth(2);
     this.hunger = Math.min(this.maxHunger, this.hunger + 10);
 
     this.gateHealth = this.gateMaxHealth;
@@ -3565,6 +3572,9 @@ export default class Level1 extends Phaser.Scene {
     sfx.checkpoint();
     this.spawnPuff(this.checkpoint.x, this.checkpoint.y, 1.3);
     this.floatText(this.checkpoint.x, this.checkpoint.y - 16 * S, t('float.checkpoint'));
+    if (this.healHealth(1)) {
+      this.floatText(this.checkpoint.x, this.checkpoint.y - 26 * S, t('float.life'), '#f26b5e');
+    }
   }
 
   touchCheckpoint2() {
@@ -3581,6 +3591,14 @@ export default class Level1 extends Phaser.Scene {
       this.checkpoint2.y - 16 * S,
       t('float.checkpoint'),
     );
+    if (this.healHealth(1)) {
+      this.floatText(
+        this.checkpoint2.x,
+        this.checkpoint2.y - 26 * S,
+        t('float.life'),
+        '#f26b5e',
+      );
+    }
   }
 
   isStomping(target) {

@@ -105,8 +105,8 @@ export const lasOrillas = {
     [1850, 300],
   ],
 
-  // One placed life heart per level; the marked piñata hides another.
-  lives: [[1850, 590]],
+  // Two placed life hearts per level; the marked piñata hides another.
+  lives: [[1850, 590], [3300, 590]],
   endReward: { x: 4360, y: 570, type: 'flap' },
 
   awnings: [

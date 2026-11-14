@@ -305,11 +305,13 @@ Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart
 knocks him back and grants 1.7 s of invulnerability. Pits cost a heart and respawn
 him at the last checkpoint. Hunger drains at 0.8/s; bones restore 12 and taco
 carts restore 28. At zero hunger, Bonjo loses a heart every 8 s until he eats.
-Dawn restores one heart and 10 hunger.
+Dawn restores two hearts and 10 hunger. Checkpoint balloons restore one heart
+when first reached.
 
-Each level has one placed life heart and a marked piñata with another. A life
+Each level has two placed life hearts and a marked piñata with another. A life
 heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
-one missing heart. At full health it stays in the world for later.
+one missing heart. At full health it stays in the world for later. Their pickup
+body is wider than the visual, making them easier to catch.
 
 ### Day, night & waves
 Day 1 lasts 38 s, Night 1 is 31 s with 2 rival waves, Day 2 is 33 s, Night 2 is
@@ -338,7 +340,7 @@ is where you catch your breath.
 
 ### Checkpoints
 Balloons at the midpoint and on the east block; touch one to set the respawn
-point after a pit. There is no goal balloon: the win condition is surviving
+point after a pit and restore one heart. There is no goal balloon: the win condition is surviving
 Night 2 and repelling the top dog.
 
 ---

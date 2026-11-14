@@ -76,9 +76,10 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
   hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
-  used for air jumps and slides. Each level hides one **life heart**
-  and at least one marked piñata hides another. The first raises max health to
-  four; later hearts heal, and a full-health heart waits for you. In La Cuadra,
+  used for air jumps and slides. Each level has two placed **life hearts** and
+  at least one marked piñata hides another. The first raises max health to four;
+  later hearts heal, and a full-health heart waits for you. Checkpoints heal one
+  heart, and dawn restores two. In La Cuadra,
   hold CASA for two nights and drive off the top dog; in Las Orillas, survive
   three nights and drive the Chihuahua off the fields. Bones, combo, subdued
   rivals and no-hit play feed your final score and rank.
@@ -221,8 +222,8 @@ there to make them permanent.
 - Two flaps, glide and slide — each with its own animation pose
 - **IMPULSE stamina** pays for air flaps and slide attacks; refill it with conchas dropped by enemies, or with gold rings and awnings
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
-- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, dawn healing
-- **Life hearts** placed in every level and hidden in marked piñatas; the first raises max health, later hearts heal
+- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing
+- **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, geese and an aggressive Chihuahua boss
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map

@@ -87,8 +87,8 @@ export const laCuadra = {
     [1460, 300],
   ],
 
-  // One placed life heart per level; the marked piñata hides another.
-  lives: [[1380, 590]],
+  // Two placed life hearts per level; the marked piñata hides another.
+  lives: [[1380, 590], [3300, 590]],
   endReward: { x: 4910, y: 570, type: 'flap' },
 
   awnings: [
