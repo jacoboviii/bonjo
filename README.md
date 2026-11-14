@@ -346,9 +346,7 @@ files):
 | `pinata` | 36×45 | star piñata + streamers |
 | `rope` | 3×12 | tiling piñata rope |
 | `awning` | 120×36 | striped bounce canopy |
-| `bone` | 30×24 | hunger pickup / score |
-| `concha` | 18×12 | IMPULSE stamina charge |
-| `boneIcon`, `conchaIcon` | 42×30 / 48×30 | high-detail HUD icons |
+| `boneIcon`, `conchaIcon` | 42×30 / 48×30 | course pickups + HUD icons |
 | `sun` / `moon` | 144×144 | day sun and night moon |
 | `speechBubble` | 42×36 | floating touch interaction prompt |
 | `heart` | 15×15 | health HUD |

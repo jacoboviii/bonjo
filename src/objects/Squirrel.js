@@ -44,8 +44,8 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     this.hopTimer = 1.2 + Math.random() * 2;
 
     this.boneIcon = scene.add
-      .image(x, y, 'bone')
-      .setScale(0.45)
+      .image(x, y, 'boneIcon')
+      .setScale(0.32)
       .setDepth(11)
       .setVisible(false);
 

@@ -879,8 +879,8 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(3);
 
     this.poloIcon = this.add
-      .image(POLO_X * S, 600 * S - 48 * S, 'concha')
-      .setScale(0.6)
+      .image(POLO_X * S, 600 * S - 48 * S, 'conchaIcon')
+      .setScale(0.25)
       .setDepth(4)
       .setAlpha(0.9);
     this.bellIcon = this.add
@@ -1041,8 +1041,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   spawnFoodAt(x, y) {
-    const food = this.foodGroup.create(x, y, 'concha');
+    const food = this.foodGroup.create(x, y, 'conchaIcon');
     food.setDepth(7);
+    food.setScale(0.4);
     food.body.setSize(10 * S, 6 * S);
 
     this.tweens.add({
@@ -1629,8 +1630,9 @@ export default class Level1 extends Phaser.Scene {
     // bones
     this.boneGroup = this.physics.add.group({ allowGravity: false, immovable: true });
     for (const [x, y] of [...BONES, ...LEDGE_BONES]) {
-      const bone = this.boneGroup.create(x * S, y * S, 'bone');
+      const bone = this.boneGroup.create(x * S, y * S, 'boneIcon');
       bone.setDepth(7);
+      bone.setScale(0.7);
       bone.body.setSize(8 * S, 6 * S);
       this.tweens.add({
         targets: bone,
@@ -3704,8 +3706,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   spawnBoneAt(x, y) {
-    const bone = this.boneGroup.create(x, y, 'bone');
+    const bone = this.boneGroup.create(x, y, 'boneIcon');
     bone.setDepth(7);
+    bone.setScale(0.7);
     bone.body.setSize(8 * S, 6 * S);
 
     this.tweens.add({
