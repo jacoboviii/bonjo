@@ -3624,7 +3624,7 @@ export default class Level1 extends Phaser.Scene {
     const dir = Math.sign(rival.x - this.dog.x) || this.dog.facing || 1;
     rival.stun(550);
     rival.stunSlideUntil = this.time.now + 140;
-    rival.body.setVelocityX(dir * 60 * S);
+    rival.body.setVelocityX(dir * 80 * S);
     rival.body.setVelocityY(0);
     this.damageRival(rival, 1, { source: 'spin', bounce: false });
     if (wasReady) this.onAttackHit(rival, 'spin');
