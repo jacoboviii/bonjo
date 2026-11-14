@@ -3420,9 +3420,14 @@ export default class Level1 extends Phaser.Scene {
     if (now - ring.getData('last') < 500) return;
     ring.setData('last', now);
 
-    this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -140 * S);
+    const before = this.dog.flaps;
+    this.grantStamina(1);
+    this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -180 * S);
     sfx.ring();
     this.spawnPuff(ring.x, ring.y, 1.2);
+    if (this.dog.flaps > before) {
+      this.floatText(ring.x, ring.y - 10 * S, t('float.flap'), '#6ec6a8');
+    }
   }
 
   touchCheckpoint() {
@@ -3857,6 +3862,11 @@ export default class Level1 extends Phaser.Scene {
     dog.body.velocity.y = -620 * S;
     dog.jumpCutReady = false;
     dog.grounded = false;
+    const before = dog.flaps;
+    this.grantStamina(1);
+    if (dog.flaps > before) {
+      this.floatText(awning.x, awning.y - 14 * S, t('float.flap'), '#6ec6a8');
+    }
 
     this.tweens.add({
       targets: awning,

@@ -166,14 +166,16 @@ pose stretches both front paws forward and trails the hind paws, like a small
 flying dog. A fresh
 S/↓ press starts the slide attack, on the ground or in the air. Air flaps and slides both spend
 IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned
-by collecting conchas, which enemies sometimes drop; it no longer refills on
-landing, resting, awnings or rings. Jump cut only applies to ground jumps, after the 90 ms minimum.
+by collecting conchas, which enemies sometimes drop; landing and resting do not
+refill it, but gold rings and awnings restore one pip to support vertical routes. Jump cut only applies to ground jumps, after the 90 ms minimum.
 
 ### IMPULSE stamina
 The two IMPULSE pips are the shared stamina meter. A ground jump is free; an air
-flap or a slide attack spends one pip. There is no passive or landing refill.
+flap or a slide attack spends one pip. There is no passive or landing refill;
+rings and awnings are the traversal refills.
 Each defeated enemy has a 40% chance to drop a concha, and every collected
-concha restores one pip. The Golden Wing raises the maximum to three and fills the meter.
+concha restores one pip. Gold rings and awnings also restore one pip and give
+the climb back some momentum. The Golden Wing raises the maximum to three and fills the meter.
 At zero, air flaps and slides are unavailable, but Bonjo can still run, ground
 jump and glide.
 
@@ -258,7 +260,7 @@ heart instead. Purely a reward; never a hazard.
 
 ### Market awnings
 Striped canvas canopies over the gaps. Landing on one from above bounces Bonjo
-~120 design px, squashes the canvas and plays a boing. They are
+~120 design px, restores one IMPULSE pip, squashes the canvas and plays a boing. They are
 one-way (you pass through from below). Use them to reach rings, piñatas and
 street bones.
 

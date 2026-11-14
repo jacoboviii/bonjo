@@ -57,8 +57,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Piñatas:** hanging by ropes from street utility poles. Jump, flap or spin into one; each hit drops a
   bone, and the third hit bursts it into a shower of bones. Most leave a concha;
   piñatas with a small heart marker leave a **life heart** instead.
-- **Market awnings:** land on the striped canvas to bounce high. Gold rings give
-  a mid-air upward kick; stamina itself comes from conchas, which enemies sometimes drop.
+- **Market awnings:** land on the striped canvas to bounce high and restore one
+  IMPULSE pip. Gold rings give a stronger mid-air upward kick and also restore
+  one IMPULSE pip, keeping vertical routes viable.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry rings, bones and conchas; practice
   the flap-and-glide chain to reach them.
@@ -218,7 +219,7 @@ there to make them permanent.
 
 - Run, variable-height jump, coyote time, jump buffering
 - Two flaps, glide and slide — each with its own animation pose
-- **IMPULSE stamina** pays for air flaps and slide attacks; refill it with conchas, which enemies sometimes drop
+- **IMPULSE stamina** pays for air flaps and slide attacks; refill it with conchas dropped by enemies, or with gold rings and awnings
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, dawn healing
 - **Life hearts** placed in every level and hidden in marked piñatas; the first raises max health, later hearts heal
