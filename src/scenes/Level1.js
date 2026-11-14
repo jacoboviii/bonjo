@@ -333,6 +333,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.updateCamera(delta);
+    this.updateBossTracker();
     this.updateHud(delta);
     this.updateInteractions();
     this.updateCritters();
@@ -1890,6 +1891,25 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(100)
       .setAlpha(0.95);
 
+    this.bossTracker = this.add
+      .container(0, 0)
+      .setScrollFactor(0)
+      .setDepth(180)
+      .setVisible(false);
+    this.bossArrow = this.add
+      .triangle(0, 0, -7 * S, -7 * S, 9 * S, 0, -7 * S, 7 * S, 0xffd166)
+      .setStrokeStyle(1.5 * S, 0x1b1029, 1);
+    this.bossTrackerLabel = this.add
+      .text(0, 0, '', {
+        fontFamily: 'monospace',
+        fontSize: 4.2 * S,
+        color: '#fff4e0',
+        backgroundColor: '#1b1029',
+        padding: { x: 3 * S, y: 2 * S },
+      })
+      .setOrigin(0, 0.5);
+    this.bossTracker.add([this.bossArrow, this.bossTrackerLabel]);
+
     this.boneText = this.add
       .text(
         this.touchDevice ? 132 * S : W - 8 * S,
@@ -2593,6 +2613,64 @@ export default class Level1 extends Phaser.Scene {
     this.town.tilePositionX = cam.scrollX * 0.3;
     this.nearTown.tilePositionX = cam.scrollX * 0.55;
     this.banner.tilePositionX = cam.scrollX * 0.12;
+  }
+
+  updateBossTracker() {
+    if (!this.bossTracker) return;
+
+    const boss = this.alpha;
+    if (
+      !this.alphaActive ||
+      !boss?.active ||
+      this.alphaDefeated ||
+      this.won ||
+      this.gameOverFlag
+    ) {
+      this.bossTracker.setVisible(false);
+      return;
+    }
+
+    const cam = this.cameras.main;
+    const view = cam.worldView;
+    if (!view) {
+      this.bossTracker.setVisible(false);
+      return;
+    }
+
+    const screenX = ((boss.x - view.x) / view.width) * cam.width;
+    const screenY = ((boss.y - view.y) / view.height) * cam.height;
+    const marginX = 24 * S;
+    const marginTop = 18 * S;
+    const marginBottom = 24 * S;
+    const inside =
+      screenX > -4 * S &&
+      screenX < cam.width + 4 * S &&
+      screenY > -4 * S &&
+      screenY < cam.height + 4 * S;
+    if (inside) {
+      this.bossTracker.setVisible(false);
+      return;
+    }
+
+    const x = Phaser.Math.Clamp(screenX, marginX, cam.width - marginX);
+    const y = Phaser.Math.Clamp(
+      screenY,
+      marginTop,
+      cam.height - marginBottom,
+    );
+    const angle = Math.atan2(
+      boss.y - view.centerY,
+      boss.x - view.centerX,
+    );
+    const atCasa = this.levelData.bossSpawnX != null;
+    this.bossTrackerLabel.setText(
+      atCasa ? `${t('hud.boss')} · ${t('porch.sign')}` : t('hud.boss'),
+    );
+    this.bossArrow.setRotation(angle);
+    this.bossTrackerLabel
+      .setOrigin(x < cam.width / 2 ? 0 : 1, 0.5)
+      .setPosition(x < cam.width / 2 ? 11 * S : -11 * S, 0);
+    this.bossTracker.setPosition(x, y).setVisible(true);
   }
 
   updateHud(delta) {
@@ -3993,6 +4071,7 @@ export default class Level1 extends Phaser.Scene {
 
   hideEndHud() {
     this.closeObjectives();
+    this.bossTracker?.setVisible(false);
     this.slideAura?.destroy();
     this.slideAura = null;
     this.spinTail?.destroy();

@@ -316,7 +316,8 @@ chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
 The compact HUD uses the bone icon for hunger and the concha icon for IMPULSE;
 the same two icon textures are used by the course pickups. The HUD labels
-health/IMPULSE stamina/hunger. The **O / OBJETIVOS** panel pauses the
+health/IMPULSE stamina/hunger. An off-screen boss arrow points toward the top dog
+and labels its Casa location. The **O / OBJETIVOS** panel pauses the
 game and explains the current goal, day errands and each HUD meter, including
 dawn warnings and the top-dog hit count. The final night adds gate rushers and, at
 roughly 12 s left, the top dog on the lawn in front of Casa. Repel it to win; the timer will wait at zero
