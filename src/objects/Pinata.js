@@ -32,13 +32,32 @@ export default class Pinata extends Phaser.Physics.Arcade.Image {
     const groundY = (opts.groundY ?? scene.levelData?.platforms?.[0]?.y ?? 600) * S;
     this.groundY = groundY;
     const postX = x - 54 * S;
+    const postGroundY =
+      typeof scene.groundTopAt === 'function'
+        ? scene.groundTopAt(postX / S) * S
+        : groundY;
     const post = scene.add.graphics().setDepth(3);
     post.fillStyle(0x2b1b3d, 1);
-    post.fillRect(postX - 3 * S, ropeTop - 6 * S, 6 * S, groundY - ropeTop + 6 * S);
+    post.fillRect(
+      postX - 3 * S,
+      ropeTop - 6 * S,
+      6 * S,
+      postGroundY - ropeTop + 6 * S,
+    );
     post.fillStyle(0x7a4a2e, 1);
-    post.fillRect(postX - 2 * S, ropeTop - 4 * S, 4 * S, groundY - ropeTop + 4 * S);
+    post.fillRect(
+      postX - 2 * S,
+      ropeTop - 4 * S,
+      4 * S,
+      postGroundY - ropeTop + 4 * S,
+    );
     post.fillStyle(0xd9b26a, 1);
-    post.fillRect(postX - 1 * S, ropeTop - 2 * S, 1 * S, groundY - ropeTop - 2 * S);
+    post.fillRect(
+      postX - 1 * S,
+      ropeTop - 2 * S,
+      1 * S,
+      postGroundY - ropeTop - 2 * S,
+    );
     // crossarm, insulator and the short cable to the piñata rope
     post.fillStyle(0x2b1b3d, 1);
     post.fillRect(postX - 16 * S, ropeTop - 5 * S, 32 * S, 4 * S);

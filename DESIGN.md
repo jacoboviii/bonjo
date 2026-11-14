@@ -367,11 +367,11 @@ balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with
 non-blocking facades and one-way rooftop platforms; the pavement beneath them
-is continuous and solid. A few raised adobe terraces break the ground line into
-real steps that Bonjo jumps up and drops from safely; they are solid retaining
-blocks, not one-way ledges. The town layers are anchored to the street's world
-Y so they sit on the sidewalk, and a light blue haze keeps the play lane
-readable.
+is continuous and solid. Long raised adobe blocks carry whole stretches of the
+street at a higher level, with short solid steps at their edges; Bonjo jumps up
+onto them and drops from them safely. They are retaining blocks, not one-way
+ledges. The town layers are anchored to the street's world Y so they sit on the
+sidewalk, and a light blue haze keeps the play lane readable.
 
 **Ultimate objective:** hold CASA until dawn — keep the porch standing and drive
 the top dog off the block. The win screen is not a throne; it is home, still
