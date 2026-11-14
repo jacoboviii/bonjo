@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
+import { tuning } from '../tuning.js';
 
 const S = SCALE;
 
@@ -51,7 +52,7 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
 
     this.once('destroy', () => this.boneIcon?.destroy());
 
-    this.body.setVelocityX(-this.baseSpeed);
+    this.body.setVelocityX(-this.baseSpeed * tuning.enemySpeed);
   }
 
   setNightMode(night) {
@@ -82,7 +83,8 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     }
 
     const onGround = this.body.blocked.down;
-    const speed = this.carrying ? this.fleeSpeed : this.baseSpeed;
+    const speed =
+      (this.carrying ? this.fleeSpeed : this.baseSpeed) * tuning.enemySpeed;
 
     if (this.carrying) {
       // sprint to the patrol edge and get away with the bone

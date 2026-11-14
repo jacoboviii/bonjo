@@ -179,6 +179,7 @@ seconds, keep or revert.
 | Folder | Slider | What it changes |
 | --- | --- | --- |
 | Movement | run speed | top running speed |
+| | enemy speed | global multiplier for rival, critter and crow movement |
 | | ground / air accel | how quickly you reach top speed |
 | | ground friction | how quickly you stop |
 | Air | gravity | normal falling weight |

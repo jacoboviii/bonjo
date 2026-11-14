@@ -2441,6 +2441,7 @@ export default class Level1 extends Phaser.Scene {
 
     const move = gui.addFolder(t('tuning.movement'));
     move.add(tuning, 'runSpeed', 80, 500, 5).name(t('tuning.runSpeed'));
+    move.add(tuning, 'enemySpeed', 0.5, 1.5, 0.05).name(t('tuning.enemySpeed'));
     move.add(tuning, 'groundAccel', 400, 6000, 50).name(t('tuning.groundAccel'));
     move.add(tuning, 'airAccel', 200, 4000, 50).name(t('tuning.airAccel'));
     move.add(tuning, 'groundFriction', 400, 6000, 50).name(t('tuning.groundFriction'));

@@ -16,6 +16,9 @@ export const DEFAULTS = Object.freeze({
   glideMaxFall: 120, // slow, floaty descent
 
 
+  // --- enemies -----------------------------------------------------------
+  enemySpeed: 0.8, // global multiplier for patrol, chase, lunge, critters and crows
+
   // --- running -----------------------------------------------------------
   runSpeed: 200, // top horizontal speed
   groundAccel: 2400, // how fast you reach top speed on the ground

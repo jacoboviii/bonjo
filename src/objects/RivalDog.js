@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
+import { tuning } from '../tuning.js';
 import { sfx } from '../sfx.js';
 import { t } from '../i18n.js';
 
@@ -54,7 +55,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.stunSlideUntil = 0;
     this.stolenBones = 0;
 
-    this.body.setVelocityX(-this.baseSpeed);
+    this.body.setVelocityX(-this.baseSpeed * tuning.enemySpeed);
   }
 
   stun(ms = 1800) {
@@ -132,7 +133,9 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       const atEdge =
         (this.dir < 0 && this.x <= this.minX) ||
         (this.dir > 0 && this.x >= this.maxX);
-      this.body.setVelocityX(atEdge ? 0 : this.dir * this.lungeSpeed);
+      this.body.setVelocityX(
+        atEdge ? 0 : this.dir * this.lungeSpeed * tuning.enemySpeed,
+      );
       this.setFlipX(this.dir < 0);
       this.playPose(20);
       if (this.body.blocked.down && now > this.nextTrail) {
@@ -180,7 +183,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       this.dir = this.x < dog.x ? -1 : 1;
       if (this.x <= this.minX) this.dir = 1;
       else if (this.x >= this.maxX) this.dir = -1;
-      this.body.setVelocityX(this.dir * this.chaseSpeed);
+      this.body.setVelocityX(this.dir * this.chaseSpeed * tuning.enemySpeed);
       this.setFlipX(this.dir < 0);
       this.playPose(14);
       return;
@@ -197,7 +200,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       const dg = gateX - this.x;
       if (Math.abs(dg) > 8 * S) {
         this.dir = dg < 0 ? -1 : 1;
-        this.body.setVelocityX(this.dir * this.chaseSpeed);
+        this.body.setVelocityX(this.dir * this.chaseSpeed * tuning.enemySpeed);
         this.setFlipX(this.dir < 0);
         this.playPose(14);
       } else {
@@ -251,7 +254,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
       vx = this.dir * this.baseSpeed;
     }
 
-    this.body.setVelocityX(vx);
+    this.body.setVelocityX(vx * tuning.enemySpeed);
     this.setFlipX(this.dir < 0);
 
     this.playPose(near ? 14 : 9);

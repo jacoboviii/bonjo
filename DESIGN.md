@@ -142,6 +142,7 @@ are design pixels (1 design px = 3 render px).
 | Gravity | 1600 px/s² | snappy but readable fall |
 | Max fall | 700 | terminal velocity |
 | Run speed | 200 | ~1.0 screens/second |
+| Enemy speed | 0.8 | global patrol/chase/lunge/critter/crow multiplier |
 | Ground accel | 2400 | reaches top speed in ~0.11 s |
 | Air accel | 1500 | 70% air control |
 | Ground friction | 2600 | stops quickly, no ice |

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
+import { tuning } from '../tuning.js';
 import { sfx } from '../sfx.js';
 import { t } from '../i18n.js';
 
@@ -39,7 +40,7 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
     this.animT = Math.random();
     this.nextCaw = 600 + Math.random() * 1800;
 
-    this.body.setVelocity(42 * S, 0);
+    this.body.setVelocity(42 * S * tuning.enemySpeed, 0);
   }
 
   setNightMode(night) {
@@ -78,7 +79,10 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    this.body.setVelocity(this.dir * 42 * S, Math.cos(this.t) * 8 * S);
+    this.body.setVelocity(
+      this.dir * 42 * S * tuning.enemySpeed,
+      Math.cos(this.t) * 8 * S,
+    );
     this.setFlipX(this.dir < 0);
   }
 }
