@@ -15,7 +15,7 @@ function moveTowards(current, target, maxDelta) {
 // The dog. A small state machine on top of Arcade Physics:
 //
 //   ground jump  ->  flap (spends one ALAS pip)  ->  glide (hold, falling)
-//   grounded slide attack also spends one ALAS pip.
+//   slide attack works on the ground and in air; it also spends one ALAS pip.
 //
 // All the numbers come from tuning.js so they can be changed live.
 // ---------------------------------------------------------------------------
@@ -191,8 +191,8 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     }
     if (this.body.velocity.y >= 0) this.jumpCutReady = false;
 
-    // A deliberate down-input on the ground starts the slide attack.
-    if (onGround && downPressed) this.startSlide();
+    // A deliberate down-input starts the slide attack on the ground or in air.
+    if (downPressed) this.startSlide();
 
     // --- glide -------------------------------------------------------------
     const falling = this.body.velocity.y > 0;
@@ -211,10 +211,10 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     // --- horizontal --------------------------------------------------------
     const moveNow = this.scene.time.now;
     if (this.slideUntil > moveNow) {
-      // Grounded slide: keep the chosen facing direction and carry momentum.
+      // Slide: keep the chosen facing direction and carry momentum, in air too.
       this.facing = this.slideDir;
       this.body.velocity.x = this.slideDir * this.slideSpeed;
-      if (onGround && moveNow > this.nextSlidePuff) {
+      if (moveNow > this.nextSlidePuff) {
         this.nextSlidePuff = moveNow + 75;
         this.scene.onSlide?.(this);
       }

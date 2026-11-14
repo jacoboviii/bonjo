@@ -5,7 +5,7 @@
 //
 // Left/right are held and support dragging from one to the other without
 // lifting your finger. Jump is a tap for flap and a hold for glide. The down
-// button starts the slide on the ground. Multi-touch is enabled, so you can run
+// button starts the slide on the ground or in the air. Multi-touch is enabled, so you can run
 // and flap at the same time.
 import { SCALE } from '../scale.js';
 

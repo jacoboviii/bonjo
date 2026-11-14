@@ -3425,8 +3425,26 @@ export default class Level1 extends Phaser.Scene {
     if (above) this.bounceOffEnemy();
   }
 
+  slideHitCrow(crow) {
+    if (
+      crow.defeated ||
+      !crow.active ||
+      this.slideHitTargets?.has(crow)
+    ) {
+      return;
+    }
+    this.slideHitTargets?.add(crow);
+    this.subdueCrow(crow);
+    this.onAttackHit(crow, 'slide');
+  }
+
   hitCrow(dog, crow) {
     if (crow.defeated || !crow.active) return;
+
+    if (this.dog.slideUntil > this.time.now) {
+      this.slideHitCrow(crow);
+      return;
+    }
 
     if (this.isStomping(crow)) {
       this.bounceOffEnemy();

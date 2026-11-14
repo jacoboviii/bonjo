@@ -114,7 +114,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **A / D** or arrows | Run | Steer |
 | **SPACE** / **W** | Jump (hold for height) | Flap (spends 1 IMPULSE pip) |
 | **Hold SPACE** | — | Glide (slow fall) |
-| **S** / **↓** | Slide attack (grounded, spends 1 IMPULSE pip, heavy damage) | — |
+| **S** / **↓** | Slide attack (spends 1 IMPULSE pip, heavy damage) | Air slide attack (spends 1 IMPULSE pip) |
 | **E** / touch spin | Spin-attack nearby rivals | — |
 | **F** / touch talk | Talk to friendly NPCs, ring the bell | — |
 | **O** | Open/close objectives | Open/close objectives |
@@ -157,7 +157,7 @@ bell to ring it. Press **E** (or tap the spin button) to make Bonjo do a cute
 spin that dazes, nudges back and damages nearby rivals, bone thieves and crows.
 The spinning halo and its damage travel with Bonjo, even while moving or
 jumping; a spin that connects from above also bounces Bonjo off the target.
-Press down while grounded for the heavy slide finisher; it spends one IMPULSE pip,
+Press down on the ground or in midair for the heavy slide finisher; it spends one IMPULSE pip,
 deals two points with strong knockback and leaves a meteor-like trail of warm
 afterimages and embers. Every connecting spin or slide adds a small impact ring,
 dust burst and camera kick.
@@ -229,7 +229,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for health, IMPULSE stamina and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, nudges back and damages nearby rivals, bone thieves and crows; grounded down-input slides are the heavy finisher, deal two points and spend one IMPULSE pip each, sharing stamina with air flaps
+- **Context actions** — a separate talk button near NPCs and bells; the always-available spin button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each, sharing stamina with air flaps
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra IMPULSE pip (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

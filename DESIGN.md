@@ -107,7 +107,7 @@ the conchas and piñatas you missed.
 | A / D or ← / → | Run | Steer |
 | SPACE / W (press) | Jump | Flap |
 | SPACE / W (hold) | — | Glide while falling |
-| S / ↓ | Slide attack | — |
+| S / ↓ | Slide attack | Air slide attack |
 | E | Spin attack | Spin attack |
 | F | Talk / ring / interact | Talk / ring / interact |
 | Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
@@ -117,7 +117,7 @@ the conchas and piñatas you missed.
 | R | Restart | Restart |
 | Touch ◀ ▶ | Run (slide between) | Steer |
 | Touch ▲ (tap/hold) | Jump | Flap / glide |
-| Touch ▼ | Slide attack | — |
+| Touch ▼ | Slide attack | Air slide attack |
 | Touch 💬 | Talk / ring / interact | Talk / ring / interact |
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
@@ -159,7 +159,7 @@ are design pixels (1 design px = 3 render px).
 | Camera smoothing | 0.1 | soft follow |
 
 **State machine:** grounded → jump → flap ×2 → glide (hold, falling). A fresh
-S/↓ press on the ground starts the slide attack. Air flaps and slides both spend
+S/↓ press starts the slide attack, on the ground or in the air. Air flaps and slides both spend
 IMPULSE pips, so jumping and the slide share one stamina meter. IMPULSE is earned
 by collecting conchas, which enemies sometimes drop; it no longer refills on
 landing, resting, awnings or rings. Jump cut only applies to ground jumps, after the 90 ms minimum.
@@ -185,8 +185,9 @@ an adjacent enemy sprite; it is not a second hitbox. The halo and damage check
 follow Bonjo for the full spin, even while moving or jumping. A spin that hits
 from above also bounces Bonjo off the target. The hit test
 measures to the nearest body edge so mismatched sprite origins cannot make a
-touching target miss. A deliberate down-input on the ground starts the slide
-attack: two points of damage, strong knockback and a heavy impact, spending one
+touching target miss. A deliberate down-input, on the ground or in the air,
+starts the slide attack: two points of damage, strong knockback and a heavy
+impact, spending one
 IMPULSE pip from the same stamina pool as air flaps. A stretched gold aura follows
 Bonjo while a trail of warm afterimages and embers streams behind him. Bonjo is
 briefly damage-immune during each slide. Every connecting spin or slide throws a small impact ring,
@@ -461,7 +462,7 @@ compressor keeps mobile speakers from clipping.
 | --- | --- |
 | Jump / flap | cloth-noise whoosh + body accent / two feathery air bursts |
 | Footstep / landing | quiet surface tap / low body thump and grit |
-| Ground slide | short gritty whoosh + low body slide |
+| Slide attack | short gritty whoosh + low body slide |
 | Bone | wooden clack + bright chime |
 | Ring | filtered strike + metallic partials |
 | Squirrel steal | two-note chatter |
