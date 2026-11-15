@@ -38,6 +38,7 @@ const ANIMAL_WORDS = new Set([
   'HEY!', '¡OYE!',
 ]);
 
+const ROOSTER_SCALE = 0.82;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
@@ -734,6 +735,7 @@ export default class Level1 extends Phaser.Scene {
     this.rooster = this.add
       .image(ROOSTER_X * S, 600 * S, 'rooster')
       .setOrigin(0.5, 1)
+      .setScale(ROOSTER_SCALE)
       .setDepth(3);
   }
 
@@ -881,7 +883,7 @@ export default class Level1 extends Phaser.Scene {
         );
         this.tweens.add({
           targets: this.rooster,
-          scaleY: 1.12,
+          scaleY: ROOSTER_SCALE * 1.12,
           duration: 120,
           yoyo: true,
         });

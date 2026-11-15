@@ -195,9 +195,9 @@ export const laCuadra = {
   bellX: 2450,
 
   cats: [
-    { x: 850, key: 'catGray', s: 1, flip: false },
-    { x: 1850, key: 'cat', s: 0.85, flip: false },
-    { x: 4620, key: 'catGray', s: 0.9, flip: true },
+    { x: 850, key: 'catGray', s: 0.82, flip: false },
+    { x: 1850, key: 'cat', s: 0.7, flip: false },
+    { x: 4620, key: 'catGray', s: 0.74, flip: true },
   ],
   birds: [
     { x: 1120, s: 1 },

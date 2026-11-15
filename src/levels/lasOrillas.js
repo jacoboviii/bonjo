@@ -182,9 +182,9 @@ export const lasOrillas = {
   bellX: 2450,
 
   cats: [
-    { x: 900, key: 'cat', s: 0.9, flip: false },
-    { x: 2700, key: 'catGray', s: 0.85, flip: true },
-    { x: 4100, key: 'cat', s: 0.9, flip: true },
+    { x: 900, key: 'cat', s: 0.74, flip: false },
+    { x: 2700, key: 'catGray', s: 0.7, flip: true },
+    { x: 4100, key: 'cat', s: 0.74, flip: true },
   ],
   birds: [
     { x: 1500, s: 0.9 },
