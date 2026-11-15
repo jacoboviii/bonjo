@@ -431,6 +431,27 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
+    const platform = PLATFORMS.find(
+      (p) =>
+        this.alpha.x / S >= p.x &&
+        this.alpha.x / S <= p.x + p.w,
+    );
+    if (platform?.y != null) {
+      const floorTop = platform.y * S;
+      const bottom = this.alpha.body.bottom;
+      if (bottom > floorTop + 2 * S) {
+        // Stunned bosses can lose their platform collision for a frame. Put
+        // the body back on the pavement before it visibly sinks through it.
+        const correction = bottom - floorTop;
+        this.alpha.y -= correction;
+        this.alpha.body.y -= correction;
+        if (this.alpha.body.velocity.y > 0) {
+          this.alpha.body.setVelocityY(0);
+        }
+      }
+      return;
+    }
+
     const floorLimit = ((this.levelData.enemySpawnY ?? 587) + 30) * S;
     if (this.alpha.y <= floorLimit) return;
 
@@ -3545,6 +3566,9 @@ export default class Level1 extends Phaser.Scene {
       chaseSpeed: boss.chaseSpeed ?? 142,
     });
     this.rivalGroup.add(this.alpha);
+    // Keep the finale boss anchored to the pavement even if its group collider
+    // is temporarily bypassed during stun/knockback.
+    this.physics.add.collider(this.alpha, this.platforms);
 
     if (boss.crown !== false) {
       this.alphaCrown = this.add
