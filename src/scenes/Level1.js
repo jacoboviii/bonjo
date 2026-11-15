@@ -40,7 +40,7 @@ const ANIMAL_WORDS = new Set([
 ]);
 
 const ROOSTER_SCALE = 0.82;
-const VERTICAL_CAMERA_LERP = 0.035;
+const VERTICAL_CAMERA_LERP = 0.08;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
@@ -3026,6 +3026,19 @@ export default class Level1 extends Phaser.Scene {
         this.cameraBaseScrollY,
         VERTICAL_CAMERA_LERP,
       );
+      cam.midPoint.y = cam.scrollY + cam.height / 2;
+    }
+
+    // Safety net: if a fast fall ever outruns the smoothed follow, nudge the
+    // camera just enough to keep Bonjo inside the frame rather than losing him.
+    const screenY = this.dog.y - cam.scrollY;
+    const topMargin = 18 * S;
+    const bottomMargin = 18 * S;
+    if (screenY > cam.height - bottomMargin) {
+      cam.scrollY = this.dog.y - (cam.height - bottomMargin);
+      cam.midPoint.y = cam.scrollY + cam.height / 2;
+    } else if (screenY < topMargin) {
+      cam.scrollY = this.dog.y - topMargin;
       cam.midPoint.y = cam.scrollY + cam.height / 2;
     }
 
