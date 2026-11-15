@@ -447,6 +447,17 @@ export const sfx = {
     thump(95, 0.03, 0.18);
     osc({ type: 'sawtooth', f0: 330, f1: 140, dur: 0.2, vol: 0.018, delay: 0.04 });
   },
+  zap: () => {
+    noise({ dur: 0.12, vol: 0.024, type: 'highpass', f0: 2600, f1: 900, q: 1.2 });
+    osc({
+      type: 'sawtooth',
+      f0: 1300,
+      f1: 180,
+      dur: 0.14,
+      vol: 0.016,
+      filter: { type: 'bandpass', f0: 2200, f1: 900, q: 1.4 },
+    });
+  },
   stomp: () => {
     thump(70, 0.05, 0.16);
     noise({ dur: 0.07, vol: 0.025, type: 'lowpass', f0: 750, f1: 150, q: 0.8 });

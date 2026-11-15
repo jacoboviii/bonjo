@@ -38,6 +38,10 @@ const ANIMAL_WORDS = new Set([
   'HEY!', '¡OYE!',
 ]);
 
+const SPARK_WARN_SECONDS = 1.2;
+const SPARK_LIVE_SECONDS = 0.7;
+const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
+
 let WORLD_W;
 let WORLD_H;
 let PLATFORMS;
@@ -62,6 +66,7 @@ let LEDGE_BONES;
 let LEDGE_FOODS;
 let TACO_CARTS;
 let TRASH_SPOTS;
+let SPARK_POLES;
 let GATE_X;
 let POLO_X;
 let CHIHUAHUA_X;
@@ -99,6 +104,7 @@ function applyLevelData(level) {
   LEDGE_FOODS = level.ledgeFoods;
   TACO_CARTS = level.tacoCarts;
   TRASH_SPOTS = level.trashSpots;
+  SPARK_POLES = level.sparkPoles || [];
   GATE_X = level.gateX;
   POLO_X = level.poloX;
   CHIHUAHUA_X = level.chihuahuaX;
@@ -210,6 +216,7 @@ export default class Level1 extends Phaser.Scene {
     this.createForegroundHouses();
     this.createLedges();
     this.createInteractiveProps();
+    this.createSparkPoles();
     if (this.features.porch !== false) this.createPorch();
     if (this.features.gateDefense !== false) this.createPorchGate();
     if (this.features.errands !== false) this.createAllyNpcs();
@@ -326,6 +333,7 @@ export default class Level1 extends Phaser.Scene {
       this.dog.update(delta);
       this.updateCheckpoints();
       this.updateErrands();
+      this.updateSparkPoles();
       this.updateSpinAttack();
       this.updateSlideTrail();
       if (this.spinBufferAt && this.time.now >= this.spinBufferAt) {
@@ -887,6 +895,86 @@ export default class Level1 extends Phaser.Scene {
         .setFlipX(!!bike.flip);
       img.body.setSize(18 * S, 14 * S);
       img.setData('knocked', false);
+    }
+  }
+
+  createSparkPoles() {
+    this.sparkPoles = SPARK_POLES.map((x, i) => {
+      const worldX = x * S;
+      const pole = this.add
+        .image(worldX, 600 * S, 'sparkPole')
+        .setOrigin(0.5, 1)
+        .setDepth(2.4);
+      const arc = this.add
+        .image(worldX, 600 * S, 'sparkArc')
+        .setOrigin(0.5, 1)
+        .setDepth(2.6)
+        .setVisible(false);
+      return {
+        designX: x,
+        x: worldX,
+        y: 600 * S,
+        pole,
+        arc,
+        offset: i * 1.65,
+        live: false,
+        wasLive: false,
+      };
+    });
+  }
+
+  updateSparkPoles() {
+    if (this.won || this.gameOverFlag || !this.sparkPoles?.length) return;
+    if (!this.dog?.body || this.dog.dead) return;
+
+    const seconds = this.time.now / 1000;
+    for (const spark of this.sparkPoles) {
+      const t = (seconds + spark.offset) % SPARK_CYCLE_SECONDS;
+      const warning = t < SPARK_WARN_SECONDS;
+      const warningSparks =
+        warning && t > SPARK_WARN_SECONDS - 0.42;
+      const live =
+        t >= SPARK_WARN_SECONDS &&
+        t < SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS;
+
+      if (live !== spark.wasLive) {
+        spark.wasLive = live;
+        if (live && Math.abs(this.dog.x - spark.x) < 180 * S) sfx.zap();
+      }
+      spark.live = live;
+
+      spark.pole.setAlpha(
+        warning && Math.sin(seconds * 52) > 0 ? 1 : warning ? 0.62 : 1,
+      );
+      spark.pole.setTint(
+        live ? 0xc8efff : warningSparks ? 0xfff4e0 : 0xffffff,
+      );
+      spark.arc
+        .setVisible(live || warningSparks)
+        .setAlpha(
+          live
+            ? 0.78 + 0.22 * Math.abs(Math.sin(seconds * 45))
+            : 0.18,
+        )
+        .setScale(live ? 1 : 0.82);
+
+      if (!live || this.dog.invuln > 0) continue;
+
+      const body = this.dog.body;
+      const left = body.x;
+      const right = body.x + body.width;
+      const top = body.y;
+      const bottom = body.y + body.height;
+      const reach = 22 * S;
+      const arcTop = (600 - 20) * S;
+      if (
+        right > spark.x - reach &&
+        left < spark.x + reach &&
+        bottom > arcTop &&
+        top < 600 * S
+      ) {
+        this.hurt(spark);
+      }
     }
   }
 

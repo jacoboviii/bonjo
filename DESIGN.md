@@ -303,6 +303,13 @@ over; the marked parked car's alarm stuns nearby rivals. During the day Polo
 tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
+### Sparking streetlamp
+A damaged utility lamp sits between the market and the east block. Its cycle is
+1.2 s of warning flicker, 0.7 s of live ground arc, then 1.4 s of cooldown. The
+arc is only ~20 design px tall, so a normal jump clears it; waiting also works.
+Contact costs one heart and knocks Bonjo away, using the normal invulnerability
+window. Enemies ignore the arc, and the pole itself is decorative.
+
 ### Wind rings
 Gold rings float above the pavement. Passing through restores one flap charge
 and gives a stronger upward kick (-180 px/s). 0.5 s re-trigger cooldown.

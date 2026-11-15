@@ -74,6 +74,8 @@ export function buildTextures(scene) {
   makeForegroundHouse(scene, 'foregroundHouseC', 0xd99a63, 0xb5533a, 0x2f7f78);
   makeBanner(scene);
   makeStreetProps(scene);
+  makeSparkPole(scene);
+  makeSparkArc(scene);
   makeCar(scene, 'carA', 0xf26b5e, 0xfff4e0, 'sedan');
   makeCar(scene, 'carB', 0x6ec6a8, 0xfff4e0, 'hatch');
   makeCar(scene, 'carC', 0xffd166, 0x2b1b3d, 'pickup');
@@ -835,6 +837,101 @@ function makeStreetProps(scene) {
     g.generateTexture('streetlamp', 12, 58);
     g.destroy();
   }
+}
+
+// A damaged utility lamp with a live wire. The intermittent ground arc is a
+// separate texture so the scene can flicker it on and off.
+function makeSparkPole(scene) {
+  const g = gfx(scene);
+  const W = 16;
+  const H = 62;
+
+  // concrete base, slightly cracked
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(3, 57, 10, 5);
+  g.fillStyle(0x6a5a70, 1);
+  g.fillRect(4, 56, 8, 3);
+  g.fillStyle(0x1b1029, 0.65);
+  g.fillRect(6, 59, 4, 1);
+  g.fillRect(5, 48, 1, 8);
+
+  // bent metal pole with exposed copper wire
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(6, 9, 4, 48);
+  g.fillStyle(0x6a5a70, 1);
+  g.fillRect(7, 9, 2, 48);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(8, 12, 1, 42);
+  g.fillStyle(0x8be9ff, 0.55);
+  g.fillRect(5, 29, 1, 12);
+
+  // warning chevrons on the pole
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(4, 22, 8, 7);
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(5, 23, 6, 2);
+
+  // cracked lamp head, tilted by the damaged pole
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(3, 4, 10, 7);
+  g.fillStyle(0xffd166, 0.9);
+  g.fillRect(4, 6, 8, 3);
+  g.fillStyle(0xfff4e0, 0.8);
+  g.fillRect(5, 6, 3, 1);
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(2, 2, 12, 3);
+  g.fillStyle(0x8be9ff, 0.5);
+  g.fillRect(11, 4, 2, 2);
+
+  // loose cable hanging from the lamp
+  g.lineStyle(0.8, 0x1b1029, 1);
+  g.lineBetween(13, 8, 15, 15);
+  g.lineStyle(0.6, 0x8be9ff, 0.75);
+  g.lineBetween(14, 10, 15, 15);
+
+  g.generateTexture('sparkPole', W, H);
+  g.destroy();
+}
+
+function makeSparkArc(scene) {
+  const g = gfx(scene);
+  const W = 52;
+  const H = 26;
+
+  // blue glow under the live wire
+  g.fillStyle(0x8be9ff, 0.12);
+  g.fillRect(2, 12, W - 4, 12);
+  g.fillStyle(0x8be9ff, 0.2);
+  g.fillRect(7, 16, W - 14, 5);
+
+  // jagged main arc
+  g.lineStyle(2.2, 0x8be9ff, 0.9);
+  g.lineBetween(3, 20, 10, 10);
+  g.lineBetween(10, 10, 16, 18);
+  g.lineBetween(16, 18, 22, 8);
+  g.lineBetween(22, 8, 28, 20);
+  g.lineBetween(28, 20, 34, 11);
+  g.lineBetween(34, 11, 40, 19);
+  g.lineBetween(40, 19, 49, 9);
+
+  // hot white core
+  g.lineStyle(0.9, 0xfff4e0, 1);
+  g.lineBetween(4, 19, 10, 11);
+  g.lineBetween(10, 11, 16, 17);
+  g.lineBetween(16, 17, 22, 9);
+  g.lineBetween(22, 9, 28, 19);
+  g.lineBetween(28, 19, 34, 12);
+  g.lineBetween(34, 12, 40, 18);
+  g.lineBetween(40, 18, 48, 10);
+
+  // little sparks
+  g.fillStyle(0x8be9ff, 0.9);
+  g.fillRect(6, 4, 1, 2);
+  g.fillRect(24, 2, 1, 2);
+  g.fillRect(43, 3, 1, 2);
+
+  g.generateTexture('sparkArc', W, H);
+  g.destroy();
 }
 
 

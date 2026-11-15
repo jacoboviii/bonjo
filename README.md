@@ -62,6 +62,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   Land on one to bounce high and restore one FLAP charge. Gold rings give a
   stronger mid-air upward kick and also restore one FLAP charge, keeping
   vertical routes viable.
+- **Sparking streetlamp:** a damaged utility lamp near the market warns with a
+  flicker, then sends a low electric arc across the pavement. Wait for the safe
+  window or jump over it; contact costs one heart and knocks Bonjo back.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry rings, bones and conchas; practice
   the flap-and-glide chain to reach them.
