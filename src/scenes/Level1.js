@@ -2180,8 +2180,15 @@ export default class Level1 extends Phaser.Scene {
   createAwnings() {
     this.awningGroup = this.physics.add.staticGroup();
     const hasShopfront = this.levelData.awningFacade === 'shopfront';
+    const hasStall = this.levelData.awningFacade === 'stall';
 
     for (const [x, y] of AWNINGS) {
+      if (hasStall) {
+        this.add
+          .image(x * S, 600 * S, 'awningStall')
+          .setOrigin(0.5, 1)
+          .setDepth(-0.2);
+      }
       // Mount the canvas on a real storefront instead of leaving it floating
       // above the pavement.
       if (hasShopfront) {

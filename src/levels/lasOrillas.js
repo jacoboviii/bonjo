@@ -97,6 +97,7 @@ export const lasOrillas = {
   lives: [[1850, 590], [3300, 590]],
   endReward: { x: 4360, y: 570, type: 'flap' },
 
+  awningFacade: 'stall',
   awnings: [
     [560, 578],
     [1620, 578],

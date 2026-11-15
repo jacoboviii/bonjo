@@ -132,6 +132,7 @@ export function buildTextures(scene) {
   makeShopfront(scene);
   makeShopfrontWindows(scene);
   makeAwning(scene);
+  makeAwningStall(scene);
   makeControlButtons(scene);
   makePauseIcon(scene);
 
@@ -2647,6 +2648,47 @@ function makeRope(scene) {
   g.fillStyle(0xa97a45, 1);
   g.fillRect(0, 2, 1, 3);
   g.generateTexture('rope', 2, 8);
+  g.destroy();
+}
+
+// Freestanding market-stall frame for Las Orillas. The striped canvas is a
+// separate sprite; this just keeps the canopy planted in the fields.
+function makeAwningStall(scene) {
+  const g = gfx(scene);
+  const W = 56;
+  const H = 30;
+
+  // upright posts, with a darker outline and warm wood highlight
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(5, 0, 4, H);
+  g.fillRect(W - 9, 0, 4, H);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(6, 0, 2, H - 2);
+  g.fillRect(W - 8, 0, 2, H - 2);
+  g.fillStyle(0xd9b26a, 1);
+  g.fillRect(7, 2, 1, H - 6);
+  g.fillRect(W - 7, 2, 1, H - 6);
+
+  // top rail
+  g.fillStyle(0x5a3328, 1);
+  g.fillRect(4, 0, W - 8, 3);
+  g.fillStyle(0x1b1029, 0.5);
+  g.fillRect(4, 3, W - 8, 1);
+
+  // little diagonal braces under the canvas
+  g.lineStyle(1, 0x8a4f3a, 1);
+  g.lineBetween(8, 7, 15, 16);
+  g.lineBetween(W - 8, 7, W - 15, 16);
+
+  // feet
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(2, H - 4, 11, 4);
+  g.fillRect(W - 13, H - 4, 11, 4);
+  g.fillStyle(0x6a3d2e, 1);
+  g.fillRect(4, H - 4, 8, 2);
+  g.fillRect(W - 12, H - 4, 8, 2);
+
+  g.generateTexture('awningStall', W, H);
   g.destroy();
 }
 
