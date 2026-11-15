@@ -13,7 +13,7 @@ import TouchControls from '../ui/TouchControls.js';
 import { drawFolkCard } from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
 import { markLevelComplete } from '../progress.js';
-import { getLevelData } from '../levels/index.js';
+import { getLevelData, getNextLevel } from '../levels/index.js';
 import { laCuadra } from '../levels/laCuadra.js';
 
 const S = SCALE;
@@ -1974,6 +1974,10 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.input.keyboard.on('keydown-R', () => {
+      if (this.won) {
+        this.advanceAfterWin();
+        return;
+      }
       this.closeObjectives();
       this.scene.restart();
     });
@@ -4603,7 +4607,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(200);
 
-    this.enableReplay(overlay);
+    this.enableReplay(overlay, () => this.scene.restart());
 
     const card = this.add
       .graphics()
@@ -4719,7 +4723,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(200);
 
-    this.enableReplay(overlay);
+    this.enableReplay(overlay, () => this.advanceAfterWin());
 
     const card = this.add
       .graphics()
@@ -4776,15 +4780,13 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
+    const nextLevel = getNextLevel(this.levelId);
+    const promptText = nextLevel
+      ? t('win.next', { level: t(nextLevel.nameKey) })
+      : t('win.returnMap');
     const promptY = this.compactLayout ? 96 * S : 100 * S;
-    const box = this.add
-      .rectangle(W / 2, promptY, 170 * S, 18 * S, 0xc94f3d, 1)
-      .setStrokeStyle(2 * S, 0x1d1326, 1)
-      .setScrollFactor(0)
-      .setDepth(202);
-
     const prompt = this.add
-      .text(W / 2, promptY, t('win.again'), {
+      .text(W / 2, promptY, promptText, {
         fontFamily: 'monospace',
         fontSize: 8 * S,
         color: '#fff4e0',
@@ -4792,6 +4794,18 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(203);
+    const box = this.add
+      .rectangle(
+        W / 2,
+        promptY,
+        Math.max(170 * S, prompt.width + 24 * S),
+        18 * S,
+        0xc94f3d,
+        1,
+      )
+      .setStrokeStyle(2 * S, 0x1d1326, 1)
+      .setScrollFactor(0)
+      .setDepth(202);
 
     const mapButton = this.addEndMapButton(W);
     this.endLayout = { overlay, card, title, epilogue, stats, rank, box, prompt, mapButton };
@@ -4830,13 +4844,27 @@ export default class Level1 extends Phaser.Scene {
     return mapButton;
   }
 
-  enableReplay(overlay) {
+  advanceAfterWin() {
+    if (this.endTransition) return;
+    this.endTransition = true;
+    const next = getNextLevel(this.levelId);
+    if (!next) {
+      this.scene.start('Map');
+      return;
+    }
+    this.cameras.main.fadeOut(180, 27, 16, 41);
+    this.time.delayedCall(190, () => {
+      this.scene.start(next.scene, { levelId: next.id });
+    });
+  }
+
+  enableReplay(overlay, onActivate = () => this.scene.restart()) {
     // Give the end screen a beat before accepting a tap, so a stray touch
     // during the death/win transition doesn't instantly restart.
     this.time.delayedCall(500, () => {
       if (!overlay.active) return;
       overlay.setInteractive({ useHandCursor: true });
-      overlay.once('pointerdown', () => this.scene.restart());
+      overlay.once('pointerdown', onActivate);
     });
   }
 }

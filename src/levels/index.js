@@ -62,6 +62,12 @@ export function getLevel(id) {
   return LEVELS.find((level) => level.id === id) || null;
 }
 
+export function getNextLevel(id) {
+  const playable = LEVELS.filter((level) => level.scene && level.unlocked);
+  const index = playable.findIndex((level) => level.id === id);
+  return index >= 0 ? playable[index + 1] || null : null;
+}
+
 const LEVEL_DATA = {
   laCuadra,
   orillas: lasOrillas,

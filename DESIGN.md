@@ -114,7 +114,7 @@ the conchas and piñatas you missed.
 | Map: ESC / B | Back to title | Back to title |
 | O | Objectives panel (pauses) | Objectives panel (pauses) |
 | T | Tuning panel | Tuning panel |
-| R | Restart | Restart |
+| R | Restart / next level after win | Restart / next level after win |
 | Touch ◀ ▶ | Run (slide between) | Steer |
 | Touch ▲ (tap/hold) | Jump | Flap / glide |
 | Touch ▼ | Slide attack | Air slide attack |
@@ -384,7 +384,8 @@ blue haze keeps the play lane readable.
 **Ultimate objective:** hold CASA until dawn — keep the porch standing and drive
 the top dog off the block. The win screen is not a throne; it is home, still
 standing. Two layered rooftop climbs rise from the west block and east
-extension.
+extension. On a win, the end screen continues to the next playable level (or the
+map after the last one); a loss retries the current level.
 
 Beat sheet:
 

@@ -144,9 +144,9 @@ On a touch device the on-screen controls appear automatically:
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
 - **top bar:** flap charges, IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the objectives panel and pauses play
-- The title and map switch to larger touch targets: a tappable play button, bigger EN/ES language pills, a larger map play button and a roomier back button.
+- The title, map, HUD and end screens use the same mobile-first layout on desktop and touch devices; a mouse or keyboard still works everywhere.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
-- On the end screen, **tap anywhere** to replay; the **MAPA / MAP** button returns to the hub.
+- On the end screen, **tap anywhere / press R** to move to the next playable level after a win, or retry the current level after a loss. The **MAPA / MAP** button returns to the hub.
 - Multi-touch works, so you can run and flap at the same time.
 - In portrait, the game pauses behind a **rotate your phone** screen with a
   "play anyway" escape.
