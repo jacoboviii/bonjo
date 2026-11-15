@@ -372,7 +372,7 @@ render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town under a clear blue day sky:
 blue mountains, fields/agave, low houses whose windows light up at night, a church tower and
-cross, papel picado. A closer, faster parallax storefront row adds awnings,
+cross, papel picado. A closer parallax storefront row adds awnings,
 balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with

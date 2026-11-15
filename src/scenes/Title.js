@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
 import { t, getLang, setLang, toggleLang } from '../i18n.js';
 import { drawFolkCard } from '../ui/FolkCard.js';
+import { parallaxScale } from '../motion.js';
 
 const S = SCALE;
 // Small UI offsets were authored in the old 2x render space.
@@ -266,7 +267,7 @@ export default class Title extends Phaser.Scene {
   }
 
   update(time, delta) {
-    this.far.tilePositionX += delta * 0.006;
-    this.near.tilePositionX += delta * 0.014;
+    this.far.tilePositionX += delta * 0.006 * parallaxScale;
+    this.near.tilePositionX += delta * 0.014 * parallaxScale;
   }
 }

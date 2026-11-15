@@ -14,6 +14,7 @@ import { drawFolkCard } from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
 import { markLevelComplete } from '../progress.js';
 import { getLevelData, getNextLevel } from '../levels/index.js';
+import { parallaxScale } from '../motion.js';
 import { laCuadra } from '../levels/laCuadra.js';
 
 const S = SCALE;
@@ -2996,12 +2997,13 @@ export default class Level1 extends Phaser.Scene {
     cam.followOffset.x = Phaser.Math.Linear(cam.followOffset.x, targetX, 0.08);
     cam.followOffset.y = Phaser.Math.Linear(cam.followOffset.y, 18 * S, 0.08);
 
-    // parallax layers are fixed to the screen; scroll their texture instead
-    this.cloudsFar.tilePositionX = cam.scrollX * 0.05;
-    this.cloudsNear.tilePositionX = cam.scrollX * 0.13;
-    this.town.tilePositionX = cam.scrollX * 0.3;
-    this.nearTown.tilePositionX = cam.scrollX * 0.55;
-    this.banner.tilePositionX = cam.scrollX * 0.12;
+    // Parallax is deliberately subtle; near-layer motion is a common
+    // motion-sickness trigger. Reduced-motion players get a static backdrop.
+    this.cloudsFar.tilePositionX = cam.scrollX * 0.05 * parallaxScale;
+    this.cloudsNear.tilePositionX = cam.scrollX * 0.13 * parallaxScale;
+    this.town.tilePositionX = cam.scrollX * 0.3 * parallaxScale;
+    this.nearTown.tilePositionX = cam.scrollX * 0.55 * parallaxScale;
+    this.banner.tilePositionX = cam.scrollX * 0.12 * parallaxScale;
   }
 
   updateBossTracker() {

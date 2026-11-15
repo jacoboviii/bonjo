@@ -156,6 +156,8 @@ On a touch device the on-screen controls appear automatically:
 
 On a desktop you can press **V** to show the touch buttons for testing.
 
+Background parallax is reduced for comfort; devices with the OS **Reduce Motion** setting enabled get a static backdrop.
+
 ### Interactions in one sentence
 
 Land on a rainbow-striped **awning** to bounce; hit a **piñata** three times to
