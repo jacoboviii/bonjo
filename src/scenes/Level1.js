@@ -547,7 +547,7 @@ export default class Level1 extends Phaser.Scene {
     this.nightOverlay = this.add
       .rectangle(W / 2, 72 * S, W, 144 * S, 0x0b0614, 1)
       .setScrollFactor(0)
-      .setDepth(60)
+      .setDepth(9.5)
       .setAlpha(0);
 
     // Push the city back visually. This sits above the background and the
@@ -661,7 +661,7 @@ export default class Level1 extends Phaser.Scene {
         this.add
           .image(h.x * S, 520 * S, 'foregroundWindows')
           .setOrigin(0.5, 0)
-          .setDepth(9)
+          .setDepth(9.8)
           .setVisible(false),
       );
 
@@ -1001,7 +1001,7 @@ export default class Level1 extends Phaser.Scene {
       const arc = this.add
         .image(worldX, 600 * S, 'sparkArc')
         .setOrigin(0.5, 1)
-        .setDepth(2.6)
+        .setDepth(9.9)
         .setVisible(false);
       const glow = this.add
         .image(worldX, (600 - 51) * S, 'lampGlow')
@@ -1304,7 +1304,7 @@ export default class Level1 extends Phaser.Scene {
       this.add
         .image(porch.x * S, 600 * S, 'bonjoHouseWindows')
         .setOrigin(0.5, 1)
-        .setDepth(2.2)
+        .setDepth(9.8)
         .setVisible(false),
     );
 
@@ -2193,7 +2193,7 @@ export default class Level1 extends Phaser.Scene {
           this.add
             .image(x * S, 600 * S, 'shopfrontWindows')
             .setOrigin(0.5, 1)
-            .setDepth(1.8)
+            .setDepth(9.8)
             .setVisible(false),
         );
       }
@@ -2228,19 +2228,9 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(61)
       .setShadow(0, 0, sign.color, 6 * S, true, true)
       .setVisible(false);
-    const plaque = this.add
-      .rectangle(
-        x,
-        y,
-        text.width + 10 * S,
-        text.height + 5 * S,
-        0x1b1029,
-        0.88,
-      )
-      .setStrokeStyle(1.2 * S, sign.glow, 0.9)
-      .setDepth(60.9)
-      .setVisible(false);
-    this.nightGlows.push(plaque, text);
+    // Let the glowing lettering sit directly on the shop's sign band; a dark
+    // plaque reads as a floating mask against the night sky.
+    this.nightGlows.push(text);
   }
 
   createCamera() {
