@@ -2252,7 +2252,7 @@ export default class Level1 extends Phaser.Scene {
     cam.setFollowOffset(0, 18 * S);
     // Keep normal jumps from bobbing the whole backdrop. High routes still
     // pull the camera once Bonjo leaves this vertical band.
-    cam.setDeadzone(1, 100 * S);
+    cam.setDeadzone(1, 40 * S);
     cam.fadeIn(350, 27, 16, 41);
   }
 
