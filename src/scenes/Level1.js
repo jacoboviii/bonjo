@@ -511,6 +511,7 @@ export default class Level1 extends Phaser.Scene {
 
   createStreetDressing() {
     const groundY = 600 * S;
+    this.streetLightCones = [];
 
     for (const car of PARKED_CARS) {
       const img = this.add
@@ -547,6 +548,17 @@ export default class Level1 extends Phaser.Scene {
         .image(prop.x * S, groundY, prop.key)
         .setOrigin(0.5, 1)
         .setDepth(0);
+
+      if (prop.key === 'streetlamp') {
+        this.streetLightCones.push(
+          this.add
+            .image(prop.x * S, groundY, 'lightCone')
+            .setOrigin(0.5, 1)
+            .setDepth(61)
+            .setBlendMode(Phaser.BlendModes.ADD)
+            .setVisible(false),
+        );
+      }
     }
   }
 
@@ -897,28 +909,43 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createSparkPoles() {
+    this.streetLightCones = this.streetLightCones || [];
     this.sparkPoles = SPARK_POLES.map((x, i) => {
       const worldX = x * S;
       const pole = this.add
-        .image(worldX, 600 * S, 'sparkPole')
+        .image(worldX, 600 * S, 'streetlamp')
         .setOrigin(0.5, 1)
         .setDepth(2.4);
+      const cone = this.add
+        .image(worldX, 600 * S, 'lightCone')
+        .setOrigin(0.5, 1)
+        .setDepth(61)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setVisible(false);
       const arc = this.add
         .image(worldX, 600 * S, 'sparkArc')
         .setOrigin(0.5, 1)
         .setDepth(2.6)
         .setVisible(false);
+      this.streetLightCones.push(cone);
       return {
         designX: x,
         x: worldX,
         y: 600 * S,
         pole,
+        cone,
         arc,
         offset: i * 1.65,
         live: false,
         wasLive: false,
       };
     });
+  }
+
+  setStreetLights(night) {
+    for (const cone of this.streetLightCones || []) {
+      cone.setVisible(night).setAlpha(night ? 0.8 : 0);
+    }
   }
 
   updateSparkPoles() {
@@ -955,6 +982,10 @@ export default class Level1 extends Phaser.Scene {
             : 0.18,
         )
         .setScale(live ? 1 : 0.82);
+
+      if (spark.cone.visible) {
+        spark.cone.setAlpha(live ? 0.18 : warning ? 0.58 : 0.8);
+      }
 
       if (!live || this.dog.invuln > 0) continue;
 
@@ -3037,6 +3068,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateRusherSpawned = false;
     this.closeDialog();
     this.setNightCreatures(true);
+    this.setStreetLights(true);
 
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
@@ -3109,6 +3141,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateRusherSpawned = false;
     this.closeDialog();
     this.setNightCreatures(false);
+    this.setStreetLights(false);
 
     this.healHealth(2);
     this.hunger = Math.min(this.maxHunger, this.hunger + 10);

@@ -186,7 +186,7 @@ export const laCuadra = {
 
   tacoCarts: [640, 3500, 4600],
   trashSpots: [960, 3820, 4880],
-  sparkPoles: [2800],
+  sparkPoles: [1500, 2800, 4200],
   gateX: 160,
   enemySpawnY: 587,
   dawnFood: [70, 590],

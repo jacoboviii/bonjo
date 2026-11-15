@@ -61,9 +61,11 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Market awnings:** striped canvas canopies project from storefront facades.
   Land on one to bounce high and use it as a jump aid; it does not restore flap
   charges.
-- **Sparking streetlamp:** a damaged utility lamp near the market warns with a
-  flicker, then sends a low electric arc across the pavement. Wait for the safe
-  window or jump over it; contact costs one heart and knocks Bonjo back.
+- **Street lighting:** streetlamps are dark during the day and switch on at
+  night, casting warm light cones onto the pavement. Three damaged lamps use the
+  same post art but warn with a flicker, then send a low electric arc across the
+  ground. Wait for the safe window or jump over it; contact costs one heart and
+  knocks Bonjo back.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry bones, conchas and high piñatas;
   practice the flap-and-glide chain to reach them.
