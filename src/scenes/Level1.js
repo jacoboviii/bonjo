@@ -42,6 +42,37 @@ const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
 
+const CAT_LINES = [
+  'dialog.cat',
+  'dialog.cat.2',
+  'dialog.cat.3',
+  'dialog.cat.4',
+  'dialog.cat.5',
+  'dialog.cat.6',
+];
+const CHIHUAHUA_DAY_LINES = [
+  'dialog.chihuahua.day',
+  'dialog.chihuahua.day.2',
+  'dialog.chihuahua.day.3',
+  'dialog.chihuahua.day.4',
+  'dialog.chihuahua.day.5',
+];
+const CHIHUAHUA_NIGHT_LINES = [
+  'dialog.chihuahua.night',
+  'dialog.chihuahua.night.2',
+  'dialog.chihuahua.night.3',
+  'dialog.chihuahua.night.4',
+  'dialog.chihuahua.night.5',
+];
+const ROOSTER_LINES = [
+  'dialog.rooster',
+  'dialog.rooster.2',
+  'dialog.rooster.3',
+  'dialog.rooster.4',
+  'dialog.rooster.5',
+  'dialog.rooster.6',
+];
+
 let WORLD_W;
 let WORLD_H;
 let PLATFORMS;
@@ -147,6 +178,7 @@ export default class Level1 extends Phaser.Scene {
       y: this.levelData.spawn.y * S,
     };
     this.startedAt = this.time.now;
+    this.dialogLineIndex = {};
 
     // survival state
     this.maxHealth = 3;
@@ -1143,23 +1175,39 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
+  nextDialogLine(key, lines) {
+    if (!lines?.length) return null;
+    this.dialogLineIndex = this.dialogLineIndex || {};
+    const previous = this.dialogLineIndex[key];
+    const index =
+      previous == null
+        ? Phaser.Math.Between(0, lines.length - 1)
+        : (previous + 1) % lines.length;
+    this.dialogLineIndex[key] = index;
+    return lines[index];
+  }
+
   talkToChihuahua() {
     this.alertChihuahua();
+    const lines =
+      this.phase === 'day' ? CHIHUAHUA_DAY_LINES : CHIHUAHUA_NIGHT_LINES;
     this.showDialog(
       'name.chihuahua',
-      this.phase === 'day'
-        ? 'dialog.chihuahua.day'
-        : 'dialog.chihuahua.night',
+      this.nextDialogLine(`chihuahua-${this.phase}`, lines),
     );
   }
 
-  talkToCat() {
-    this.showDialog('name.cat', 'dialog.cat');
+  talkToCat(cat) {
+    const key = cat ? `cat-${cat.x}` : 'cat';
+    this.showDialog('name.cat', this.nextDialogLine(key, CAT_LINES));
   }
 
   talkToRooster() {
     sfx.rooster();
-    this.showDialog('name.rooster', 'dialog.rooster');
+    this.showDialog(
+      'name.rooster',
+      this.nextDialogLine('rooster', ROOSTER_LINES),
+    );
   }
 
   talkToBell() {

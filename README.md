@@ -250,7 +250,7 @@ there to make them permanent.
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
-- **Named NPC dialog cards** that pause the action; persistent optional day/night errands with checkmarks in the pause panel, and chihuahua warnings
+- **Named NPC dialog cards** that pause the action; the cat, chihuahua and rooster cycle through several lines, and optional day/night errands keep checkmarks in the pause panel
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**

@@ -122,7 +122,8 @@ the conchas and piñatas you missed.
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
 bubble starts the interaction. Polo, the chihuahua, cats and the daytime
-rooster use a named lotería-paper dialog card; the bell rings directly. An
+rooster use a named lotería-paper dialog card; the cat, chihuahua and rooster
+rotate through several lines so repeated talks stay fresh. The bell rings directly. An
 open dialog card pauses gameplay, hunger, phase timers and enemy movement until
 it closes.
 Environmental

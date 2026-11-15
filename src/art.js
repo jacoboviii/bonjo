@@ -1402,36 +1402,88 @@ function makeAgaveField(scene) {
 // Alley cats and birds for the quieter parts of the block.
 function makeCat(scene, key, body, eye) {
   const g = gfx(scene);
-  const W = 18;
-  const H = 16;
+  const W = 20;
+  const H = 18;
+  const ink = 0x1b1029;
 
-  // body and curled tail
-  g.fillStyle(body, 1);
-  g.fillRect(4, 7, 10, 7);
-  g.fillRect(6, 4, 6, 5);
-  g.fillTriangle(6, 4, 7, 1, 9, 4);
-  g.fillTriangle(9, 4, 11, 1, 12, 4);
-  g.fillStyle(0x1b1029, 0.35);
-  g.fillRect(5, 13, 9, 1);
-  g.fillRect(2, 10, 2, 1);
-  g.fillRect(1, 9, 1, 2);
-  g.fillStyle(body, 1);
-  g.fillRect(2, 8, 3, 2);
-  g.fillRect(1, 7, 2, 2);
+  // long curling tail, drawn first so the haunch overlaps it
+  g.lineStyle(2.4, ink, 0.95);
+  g.lineBetween(4, 15, 1.5, 11);
+  g.lineBetween(1.5, 11, 2.5, 6);
+  g.lineBetween(2.5, 6, 6.5, 3.5);
+  g.lineStyle(1.4, body, 1);
+  g.lineBetween(4, 14.5, 2, 10.8);
+  g.lineBetween(2, 10.8, 3, 6.3);
+  g.lineBetween(3, 6.3, 6.2, 4.2);
 
-  // pale chest, eyes and nose
-  g.fillStyle(0xfff4e0, 0.55);
-  g.fillRect(7, 9, 4, 4);
+  // sitting body and haunch
+  g.fillStyle(ink, 1);
+  g.fillCircle(10, 12.3, 6.2);
+  g.fillRect(6, 10, 8, 7.5);
+  g.fillStyle(body, 1);
+  g.fillCircle(10, 12.3, 5.6);
+  g.fillRect(6.5, 10.5, 7, 6.8);
+  g.fillStyle(0xffffff, 0.16);
+  g.fillRect(7.5, 11, 3, 4);
+
+  // head outline and ears
+  g.fillStyle(ink, 1);
+  g.fillTriangle(5, 5, 3.5, 0.5, 9, 3.5);
+  g.fillTriangle(11, 3.5, 16.5, 0.5, 15, 5);
+  g.fillCircle(10, 6.2, 5);
+  g.fillStyle(body, 1);
+  g.fillTriangle(5.5, 4.5, 4.5, 1.5, 8.5, 3.5);
+  g.fillTriangle(11.5, 3.5, 15.5, 1.5, 14.5, 4.5);
+  g.fillStyle(0xf2a6a0, 0.8);
+  g.fillTriangle(5.7, 3.9, 5.2, 2.3, 7.2, 3.6);
+  g.fillTriangle(12.8, 3.6, 14.8, 2.3, 14.3, 3.9);
+  g.fillStyle(body, 1);
+  g.fillCircle(10, 6.2, 4.5);
+
+  // face stripes and cheek fur
+  g.fillStyle(ink, 0.2);
+  g.fillRect(8, 2.2, 1, 2);
+  g.fillRect(11, 2.2, 1, 2);
+  g.fillStyle(0xfff4e0, 0.9);
+  g.fillCircle(10, 8.1, 2.5);
+  g.fillStyle(ink, 0.25);
+  g.fillRect(6.2, 7.2, 1, 2);
+  g.fillRect(12.8, 7.2, 1, 2);
+
+  // almond eyes with vertical pupils
   g.fillStyle(eye, 1);
-  g.fillRect(7, 6, 1, 1);
-  g.fillRect(10, 6, 1, 1);
-  g.fillStyle(0xf26b5e, 1);
-  g.fillRect(9, 8, 1, 1);
+  g.fillRect(7.4, 5.9, 2.2, 1.4);
+  g.fillRect(10.4, 5.9, 2.2, 1.4);
+  g.fillStyle(ink, 1);
+  g.fillRect(8.2, 5.7, 0.7, 1.8);
+  g.fillRect(11.2, 5.7, 0.7, 1.8);
 
-  // paws
+  // nose, mouth and whiskers
+  g.fillStyle(0xf26b5e, 1);
+  g.fillTriangle(9.5, 7.4, 10.5, 7.4, 10, 8.1);
+  g.lineStyle(0.35, 0xfff4e0, 0.75);
+  g.lineBetween(8, 8, 3.5, 7);
+  g.lineBetween(8, 8.5, 3.5, 9.2);
+  g.lineBetween(12, 8, 16.5, 7);
+  g.lineBetween(12, 8.5, 16.5, 9.2);
+
+  // front legs and paws
+  g.fillStyle(ink, 1);
+  g.fillRect(6.5, 14.5, 3, 3.5);
+  g.fillRect(10.5, 14.5, 3, 3.5);
   g.fillStyle(body, 1);
-  g.fillRect(4, 14, 4, 2);
-  g.fillRect(10, 14, 4, 2);
+  g.fillRect(7, 14.5, 2, 2.8);
+  g.fillRect(11, 14.5, 2, 2.8);
+  g.fillStyle(0xfff4e0, 0.75);
+  g.fillRect(7, 16.8, 2.5, 1.2);
+  g.fillRect(11, 16.8, 2.5, 1.2);
+
+  // tail tip and a couple of soft back stripes
+  g.fillStyle(ink, 0.18);
+  g.fillRect(9, 10.5, 3, 1);
+  g.fillRect(8, 12.5, 4, 1);
+  g.fillStyle(0xfff4e0, 0.35);
+  g.fillRect(6, 3.2, 1.5, 1);
 
   g.generateTexture(key, W, H);
   g.destroy();
