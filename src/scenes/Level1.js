@@ -3067,7 +3067,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     const staminaX = this.compactLayout
-      ? this.scale.width - 58 * S
+      ? 142 * S
       : (pipStartX + maxFlaps * pipGap + 2) * S;
     this.staminaIcon
       .setPosition(staminaX, 10 * S)
