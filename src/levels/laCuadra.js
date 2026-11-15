@@ -4,7 +4,7 @@ export const laCuadra = {
   id: 'laCuadra',
   nameKey: 'map.casa',
   world: { width: 5000, height: 900 },
-  spawn: { x: 64, y: 548 },
+  spawn: { x: 64, y: 580 },
   theme: {
     sky: 'sky',
     cloudsFar: 'cloudsFar',

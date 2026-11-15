@@ -8,7 +8,7 @@ export const lasOrillas = {
   storyIntroKey: 'story.orillas',
   winEpilogueKey: 'win.orillasEpilogue',
   world: { width: 4600, height: 900 },
-  spawn: { x: 64, y: 548 },
+  spawn: { x: 64, y: 580 },
   theme: {
     sky: 'orillasSky',
     cloudsFar: 'cloudsFar',
