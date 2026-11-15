@@ -3020,10 +3020,11 @@ export default class Level1 extends Phaser.Scene {
     // After dropping back to street level, ease the camera back to its
     // original vertical framing instead of leaving it parked up high.
     if (this.dog.grounded && this.dog.y >= 555 * S) {
+      const recenter = 1 - Math.exp(-2.2 * Math.min(delta, 50) / 1000);
       cam.scrollY = Phaser.Math.Linear(
         cam.scrollY,
         this.cameraBaseScrollY,
-        0.14,
+        recenter,
       );
       cam.midPoint.y = cam.scrollY + cam.height / 2;
     }
