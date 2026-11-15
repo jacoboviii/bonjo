@@ -2257,6 +2257,10 @@ export default class Level1 extends Phaser.Scene {
     // Keep normal jumps from bobbing the whole backdrop. High routes still
     // pull the camera once Bonjo leaves this vertical band.
     cam.setDeadzone(1, 100 * S);
+    // The deadzone stops jump bob but can leave the camera high after a
+    // high-route descent. Remember the resting frame and return to it on the
+    // street.
+    this.cameraBaseScrollY = cam.scrollY;
     cam.fadeIn(350, 27, 16, 41);
   }
 
@@ -3013,6 +3017,17 @@ export default class Level1 extends Phaser.Scene {
 
     // Parallax is deliberately subtle; near-layer motion is a common
     // motion-sickness trigger. Reduced-motion players get a static backdrop.
+    // After dropping back to street level, ease the camera back to its
+    // original vertical framing instead of leaving it parked up high.
+    if (this.dog.grounded && this.dog.y >= 555 * S) {
+      cam.scrollY = Phaser.Math.Linear(
+        cam.scrollY,
+        this.cameraBaseScrollY,
+        0.14,
+      );
+      cam.midPoint.y = cam.scrollY + cam.height / 2;
+    }
+
     this.cloudsFar.tilePositionX = cam.scrollX * 0.05 * parallaxScale;
     this.cloudsNear.tilePositionX = cam.scrollX * 0.13 * parallaxScale;
     this.town.tilePositionX = cam.scrollX * 0.3 * parallaxScale;
