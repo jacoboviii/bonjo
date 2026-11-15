@@ -242,7 +242,7 @@ there to make them permanent.
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, optional Polo/bell errands and a description of each HUD meter
-- **Compact labeled status HUD** for flap charges, IMPULSE stamina, health and hunger; phase, countdown and gate remain on-screen
+- **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
 - **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high bones, conchas, piñatas and aerial hazards

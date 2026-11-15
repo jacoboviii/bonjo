@@ -138,6 +138,9 @@ export default class Title extends Phaser.Scene {
 
     const isTouch =
       this.sys.game.device.input.touch || navigator.maxTouchPoints > 0;
+    // Copy can follow the actual input, but the visual menu uses the compact
+    // mobile layout everywhere.
+    const compactLayout = true;
 
     const prompt = this.add
       .text(
@@ -147,20 +150,20 @@ export default class Title extends Phaser.Scene {
         {
           fontFamily: 'monospace',
           fontSize: 20 * U,
-          color: isTouch ? '#fff4e0' : '#c94f3d',
+          color: compactLayout ? '#fff4e0' : '#c94f3d',
           stroke: '#1d1326',
           strokeThickness: 5 * U,
         },
       )
       .setOrigin(0.5);
-    if (isTouch) {
+    if (compactLayout) {
       prompt.setBackgroundColor('#c94f3d');
       prompt.setPadding(7 * U, 4 * U, 7 * U, 4 * U);
       prompt.setDepth(8);
     }
     this.tweens.add({
       targets: prompt,
-      alpha: isTouch ? 0.8 : 0.35,
+      alpha: compactLayout ? 0.8 : 0.35,
       duration: 620,
       yoyo: true,
       repeat: -1,
@@ -177,7 +180,7 @@ export default class Title extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setAlpha(0.9);
-    controls.setVisible(!isTouch);
+    controls.setVisible(!compactLayout);
 
     this.add
       .text(6 * S, 6 * S, t('title.version'), {
@@ -195,18 +198,18 @@ export default class Title extends Phaser.Scene {
       const button = this.add
         .text(x, y, code.toUpperCase(), {
           fontFamily: 'monospace',
-          fontSize: isTouch ? 6 * S : 14 * U,
+          fontSize: compactLayout ? 6 * S : 14 * U,
           color: active ? '#c94f3d' : '#2f7f78',
-          backgroundColor: isTouch ? '#f4dfb0' : undefined,
-          stroke: isTouch ? '#1d1326' : '#f4dfb0',
-          strokeThickness: isTouch ? 1.5 * U : 1 * U,
+          backgroundColor: compactLayout ? '#f4dfb0' : undefined,
+          stroke: compactLayout ? '#1d1326' : '#f4dfb0',
+          strokeThickness: compactLayout ? 1.5 * U : 1 * U,
         })
         .setOrigin(0.5, 0)
         .setDepth(20)
         .setAlpha(active ? 1 : 0.78)
         .setInteractive({ useHandCursor: true });
 
-      if (isTouch) button.setPadding(7 * U, 6 * U, 7 * U, 6 * U);
+      if (compactLayout) button.setPadding(7 * U, 6 * U, 7 * U, 6 * U);
 
       button.on('pointerdown', (pointer, localX, localY, event) => {
         event?.stopPropagation?.();
@@ -218,7 +221,7 @@ export default class Title extends Phaser.Scene {
       return button;
     };
 
-    if (isTouch) {
+    if (compactLayout) {
       makeLangButton(W - 92 * U, 'en', 6 * S);
       makeLangButton(W - 36 * U, 'es', 6 * S);
     } else {

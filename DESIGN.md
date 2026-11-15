@@ -331,8 +331,10 @@ Day 1 lasts 38 s, Night 1 is 31 s with 2 rival waves, Day 2 is 33 s, Night 2 is
 chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
 skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
 The compact HUD uses the bone icon for hunger and the concha icon for IMPULSE;
-the same two icon textures are used by the course pickups. The HUD labels
-health, flap charges, IMPULSE stamina and hunger. An off-screen boss arrow points toward the top dog
+the same two icon textures are used by the course pickups. Icons and pips show
+health, flap charges, IMPULSE stamina and hunger. The title, map, HUD and end
+screens use the same mobile-first layout on desktop and touch devices. An
+off-screen boss arrow points toward the top dog
 and labels its Casa location. The **O / OBJETIVOS** panel pauses the
 game and explains the current goal, optional day/night errands and each HUD
 meter, including dawn warnings and the top-dog hit count. Errands no longer gate
@@ -341,7 +343,7 @@ Polo, the bell, the gate check or the two-rival night goal were skipped. Errand
 progress never resets, and the pause panel lists day and night checks as bonus
 objectives. The final night adds gate
 rushers and, at roughly 12 s left, the top dog on the lawn in front of Casa. Repel it to win; the timer will wait at zero
-until it is down. The HUD always shows phase, timer, labeled hearts/flaps/IMPULSE/hunger
+until it is down. The HUD always shows phase, timer, hearts/flaps/IMPULSE/hunger
 and gate health; objectives and errands live in the O panel.
 
 ### The porch

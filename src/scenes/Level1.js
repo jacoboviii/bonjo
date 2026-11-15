@@ -165,8 +165,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
-    this.touchDevice =
-      !!(this.sys.game.device.input.touch || navigator.maxTouchPoints > 0);
+    // One compact mobile-style presentation for every device. Input mode is
+    // still handled separately by TouchControls.
+    this.compactLayout = true;
     this.bonesCount = 0;
     this.won = false;
     this.gameOverFlag = false;
@@ -309,7 +310,7 @@ export default class Level1 extends Phaser.Scene {
 
     const hudRight = W - 8 * S;
     if (this.boneText) {
-      this.boneText.x = this.touchDevice ? 132 * S : hudRight;
+      this.boneText.x = this.compactLayout ? 132 * S : hudRight;
     }
     if (this.storyLabel?.active) this.storyLabel.x = W / 2;
     if (this.comboText) this.comboText.x = hudRight;
@@ -341,7 +342,7 @@ export default class Level1 extends Phaser.Scene {
     e.box.x = W / 2;
     e.prompt.x = W / 2;
     if (e.mapButton) {
-      const touch = this.touchDevice;
+      const touch = this.compactLayout;
       const cardW = Math.min(W - 64 * U, 440 * U);
       e.mapButton.setPosition(
         touch ? W / 2 : W / 2 + cardW / 2 - 20 * U,
@@ -2233,12 +2234,12 @@ export default class Level1 extends Phaser.Scene {
 
     this.boneText = this.add
       .text(
-        this.touchDevice ? 132 * S : W - 8 * S,
-        this.touchDevice ? 17 * S : 5 * S,
+        this.compactLayout ? 132 * S : W - 8 * S,
+        this.compactLayout ? 17 * S : 5 * S,
         `${t('hud.bones')} 0`,
         {
           fontFamily: 'monospace',
-          fontSize: this.touchDevice ? 6.5 * S : 8 * S,
+          fontSize: this.compactLayout ? 6.5 * S : 8 * S,
           color: '#fff4e0',
           stroke: '#2b1b3d',
           strokeThickness: 2 * S,
@@ -2275,10 +2276,10 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0.85);
 
     const hasGate = this.features.gateDefense !== false;
-    const statusH = this.touchDevice ? 30 : hasGate ? 68 : 60;
-    const statusW = this.touchDevice ? 132 : 84;
+    const statusH = this.compactLayout ? 30 : hasGate ? 68 : 60;
+    const statusW = this.compactLayout ? 132 : 84;
     this.statusPanel = this.add.graphics().setScrollFactor(0).setDepth(99);
-    if (!this.touchDevice) {
+    if (!this.compactLayout) {
       this.statusPanel.fillStyle(0x1b1029, 0.42);
       this.statusPanel.fillRect(4 * S, 4 * S, statusW * S, statusH * S);
       this.statusPanel.lineStyle(1 * S, 0xfff4e0, 0.18);
@@ -2300,21 +2301,21 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(100)
       .setAlpha(0.9)
-      .setVisible(!this.touchDevice);
+      .setVisible(!this.compactLayout);
     this.statusHealthLabel = this.add
       .text(8 * S, 22 * S, t('hud.health'), statusStyle)
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(100)
       .setAlpha(0.9)
-      .setVisible(!this.touchDevice);
+      .setVisible(!this.compactLayout);
     this.statusHungerLabel = this.add
       .text(8 * S, 34 * S, t('hud.hunger'), statusStyle)
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(100)
       .setAlpha(0.9)
-      .setVisible(!this.touchDevice);
+      .setVisible(!this.compactLayout);
 
     // hearts
     this.hearts = [];
@@ -2331,14 +2332,14 @@ export default class Level1 extends Phaser.Scene {
       .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(100)
-      .setVisible(!this.touchDevice);
+      .setVisible(!this.compactLayout);
     this.layoutHealthText();
 
     // hunger: bone icon + bar
     this.hungerIcon = this.add
       .image(
-        (this.touchDevice ? 122 : 75) * S,
-        (this.touchDevice ? 10 : 34) * S,
+        (this.compactLayout ? 122 : 75) * S,
+        (this.compactLayout ? 10 : 34) * S,
         'boneIcon',
       )
       .setOrigin(0, 0.5)
@@ -2349,9 +2350,9 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.phaseText = this.add
-      .text(8 * S, this.touchDevice ? 19 * S : 48 * S, '', {
+      .text(8 * S, this.compactLayout ? 19 * S : 48 * S, '', {
         fontFamily: 'monospace',
-        fontSize: this.touchDevice ? 5.4 * S : 8 * S,
+        fontSize: this.compactLayout ? 5.4 * S : 8 * S,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
@@ -2370,7 +2371,7 @@ export default class Level1 extends Phaser.Scene {
         })
         .setScrollFactor(0)
         .setDepth(100)
-        .setVisible(!this.touchDevice);
+        .setVisible(!this.compactLayout);
     } else {
       this.gateText = null;
     }
@@ -2386,12 +2387,12 @@ export default class Level1 extends Phaser.Scene {
   addHudHeart(index) {
     const heart = this.add
       .image(
-        (this.touchDevice ? 36 + index * 10 : 30 + index * 12) * S,
-        (this.touchDevice ? 10 : 22) * S,
+        (this.compactLayout ? 36 + index * 10 : 30 + index * 12) * S,
+        (this.compactLayout ? 10 : 22) * S,
         'heart',
       )
       .setOrigin(0, 0.5)
-      .setScale(this.touchDevice ? 1.35 : 1.1)
+      .setScale(this.compactLayout ? 1.35 : 1.1)
       .setScrollFactor(0)
       .setDepth(100);
     this.hearts.push(heart);
@@ -2400,7 +2401,7 @@ export default class Level1 extends Phaser.Scene {
 
   layoutHealthText() {
     if (this.healthText) {
-      this.healthText.x = this.touchDevice
+      this.healthText.x = this.compactLayout
         ? 50 * S
         : (this.maxHealth >= 4 ? 76 : 70) * S;
     }
@@ -2581,13 +2582,13 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesButton = this.add
       .image(
         W - 8 * S,
-        this.touchDevice ? 8 * S : 17 * S,
+        this.compactLayout ? 8 * S : 17 * S,
         'pauseIcon',
       )
       .setOrigin(1, 0)
       .setScrollFactor(0)
       .setDepth(160)
-      .setScale(this.touchDevice ? 0.9 : 0.7)
+      .setScale(this.compactLayout ? 0.9 : 0.7)
       .setInteractive({ useHandCursor: true });
     this.objectivesButton.on('pointerdown', () => this.toggleObjectives());
 
@@ -2658,21 +2659,21 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesClose = this.add
       .text(0, 0, t('objectives.close'), {
         fontFamily: 'monospace',
-        fontSize: this.touchDevice ? 5 * S : 4 * S,
-        color: this.touchDevice ? '#fff4e0' : '#2b1b3d',
-        backgroundColor: this.touchDevice ? '#1b1029' : undefined,
+        fontSize: this.compactLayout ? 5 * S : 4 * S,
+        color: this.compactLayout ? '#fff4e0' : '#2b1b3d',
+        backgroundColor: this.compactLayout ? '#1b1029' : undefined,
       })
       .setOrigin(1, 0)
-      .setAlpha(this.touchDevice ? 1 : 0.6)
+      .setAlpha(this.compactLayout ? 1 : 0.6)
       .setScrollFactor(0)
       .setDepth(160)
       .setVisible(false)
       .setInteractive({ useHandCursor: true });
     this.objectivesClose.setPadding(
-      this.touchDevice ? 6 * U : 2 * S,
-      this.touchDevice ? 8 * U : 1 * S,
-      this.touchDevice ? 6 * U : 2 * S,
-      this.touchDevice ? 8 * U : 1 * S,
+      this.compactLayout ? 6 * U : 2 * S,
+      this.compactLayout ? 8 * U : 1 * S,
+      this.compactLayout ? 6 * U : 2 * S,
+      this.compactLayout ? 8 * U : 1 * S,
     );
     this.objectivesClose.on('pointerdown', () => this.closeObjectives());
 
@@ -2701,8 +2702,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesH = h;
 
     this.objectivesButton
-      .setPosition(W - 8 * S, this.touchDevice ? 8 * S : 17 * S)
-      .setScale(this.touchDevice ? 0.9 : 0.7);
+      .setPosition(W - 8 * S, this.compactLayout ? 8 * S : 17 * S)
+      .setScale(this.compactLayout ? 0.9 : 0.7);
     this.objectivesScrim.setPosition(0, 0).setSize(W, this.scale.height);
     this.objectivesRoot.setPosition(W / 2, this.scale.height / 2);
     drawFolkCard(this.objectivesCard, 0, 0, w, h);
@@ -3011,25 +3012,25 @@ export default class Level1 extends Phaser.Scene {
     // flap pips, top-left
     this.pips.clear();
     const maxFlaps = this.dog?.maxFlaps ?? tuning.maxFlaps;
-    const pipStartX = this.touchDevice ? 8 : 36;
-    const pipGap = this.touchDevice ? 9 : 10;
+    const pipStartX = this.compactLayout ? 8 : 36;
+    const pipGap = this.compactLayout ? 9 : 10;
     for (let i = 0; i < maxFlaps; i++) {
       const x = (pipStartX + i * pipGap) * S;
       if (i < this.dog.flaps) {
         this.pips.fillStyle(0xffd166, 1);
-        this.pips.fillCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
+        this.pips.fillCircle(x, 10 * S, (this.compactLayout ? 4.8 : 3.8) * S);
         this.pips.lineStyle(1 * S, 0x2b1b3d, 0.5);
-        this.pips.strokeCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
+        this.pips.strokeCircle(x, 10 * S, (this.compactLayout ? 4.8 : 3.8) * S);
       } else {
         this.pips.lineStyle(1 * S, 0xfff4e0, 0.45);
-        this.pips.strokeCircle(x, 10 * S, (this.touchDevice ? 4.8 : 3.8) * S);
+        this.pips.strokeCircle(x, 10 * S, (this.compactLayout ? 4.8 : 3.8) * S);
       }
     }
 
     const staminaX = (pipStartX + maxFlaps * pipGap + 2) * S;
     this.staminaIcon
       .setPosition(staminaX, 10 * S)
-      .setScale(this.touchDevice ? 0.65 : 0.6);
+      .setScale(this.compactLayout ? 0.65 : 0.6);
     this.staminaText
       .setPosition(staminaX + 10 * S, 10 * S)
       .setText(`${this.dog?.stamina ?? 0}`);
@@ -3067,8 +3068,8 @@ export default class Level1 extends Phaser.Scene {
 
     this.hungerBar.clear();
     this.hungerBar.fillStyle(0x2b1b3d, 0.8);
-    const hungerX = this.touchDevice ? 76 * S : 30 * S;
-    const hungerY = this.touchDevice ? 7 * S : 31 * S;
+    const hungerX = this.compactLayout ? 76 * S : 30 * S;
+    const hungerY = this.compactLayout ? 7 * S : 31 * S;
     this.hungerBar.fillRect(hungerX, hungerY, 44 * S, 6 * S);
     this.hungerBar.lineStyle(1 * S, 0xfff4e0, 0.55);
     this.hungerBar.strokeRect(hungerX, hungerY, 44 * S, 6 * S);
@@ -3091,7 +3092,7 @@ export default class Level1 extends Phaser.Scene {
       );
     }
     this.phaseText.setText(
-      this.touchDevice && gateLabel ? `${phaseLabel} · ${gateLabel}` : phaseLabel,
+      this.compactLayout && gateLabel ? `${phaseLabel} · ${gateLabel}` : phaseLabel,
     );
     this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
 
@@ -4609,7 +4610,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
-    const promptY = this.touchDevice ? 96 * S : 100 * S;
+    const promptY = this.compactLayout ? 96 * S : 100 * S;
     const box = this.add
       .rectangle(W / 2, promptY, 170 * S, 18 * S, 0xc94f3d, 1)
       .setStrokeStyle(2 * S, 0x1d1326, 1)
@@ -4734,7 +4735,7 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
-    const promptY = this.touchDevice ? 96 * S : 100 * S;
+    const promptY = this.compactLayout ? 96 * S : 100 * S;
     const box = this.add
       .rectangle(W / 2, promptY, 170 * S, 18 * S, 0xc94f3d, 1)
       .setStrokeStyle(2 * S, 0x1d1326, 1)
@@ -4756,7 +4757,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   addEndMapButton(W) {
-    const touch = this.touchDevice;
+    const touch = this.compactLayout;
     const cardW = Math.min(W - 64 * U, 440 * U);
     const mapButton = this.add
       .text(
