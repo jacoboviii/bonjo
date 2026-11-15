@@ -491,13 +491,13 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(-30);
     this.sun = this.add
       .image(W - 51 * S, 56 * S, 'sun')
-      .setScrollFactor(0.04)
+      .setScrollFactor(0.04, 0)
       .setDepth(-28)
       .setAlpha(0.95);
 
     this.moon = this.add
       .image(W * 0.74, 48 * S, 'moon')
-      .setScrollFactor(0.04)
+      .setScrollFactor(0.04, 0)
       // Sky layer: behind clouds, town, gameplay and the HUD.
       .setDepth(-27)
       .setAlpha(0)
@@ -528,13 +528,13 @@ export default class Level1 extends Phaser.Scene {
     this.town = this.add
       .tileSprite(0, 500 * S, W, 100 * S, theme.town || 'town')
       .setOrigin(0, 0)
-      .setScrollFactor(0, 1)
+      .setScrollFactor(0, 0)
       .setDepth(-20);
 
     this.nearTown = this.add
       .tileSprite(0, 500 * S, W, 100 * S, theme.nearTown || 'nearTown')
       .setOrigin(0, 0)
-      .setScrollFactor(0, 1)
+      .setScrollFactor(0, 0)
       .setDepth(-19);
 
     this.banner = this.add
