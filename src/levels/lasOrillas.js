@@ -15,7 +15,6 @@ export const lasOrillas = {
     cloudsNear: 'cloudsNear',
     town: 'orillasTown',
     nearTown: 'orillasNearTown',
-    banner: 'banner',
     haze: 0x79643f,
     hazeAlpha: 0.13,
   },

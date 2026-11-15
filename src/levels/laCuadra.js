@@ -11,7 +11,6 @@ export const laCuadra = {
     cloudsNear: 'cloudsNear',
     town: 'town',
     nearTown: 'nearTown',
-    banner: 'banner',
   },
   porch: { x: 105, key: 'bonjoHouse', roofWidth: 130 },
   bossSpawnX: 205, // the top dog appears on the lawn in front of Casa

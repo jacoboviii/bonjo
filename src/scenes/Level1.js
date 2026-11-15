@@ -306,7 +306,6 @@ export default class Level1 extends Phaser.Scene {
     this.cloudsNear?.setSize(W, 64 * S);
     this.town?.setSize(W, 100 * S);
     this.nearTown?.setSize(W, 100 * S);
-    this.banner?.setSize(W, 14 * S);
     this.skyNight?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     this.envHaze?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     this.nightOverlay?.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
@@ -537,13 +536,6 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0, 1)
       .setDepth(-19);
 
-    this.banner = this.add
-      .tileSprite(0, 32 * S, W, 14 * S, theme.banner || 'banner')
-      .setOrigin(0, 0)
-      .setScrollFactor(0)
-      .setDepth(-18)
-      .setAlpha(0.95);
-
     // Night falls over La Cuadra.
     this.nightOverlay = this.add
       .rectangle(W / 2, 72 * S, W, 144 * S, 0x0b0614, 1)
@@ -665,6 +657,12 @@ export default class Level1 extends Phaser.Scene {
           .setDepth(9.8)
           .setVisible(false),
       );
+
+      // Papel picado strung along the house front rather than across the sky.
+      this.add
+        .tileSprite(h.x * S, 522 * S, 110 * S, 14 * S, 'banner')
+        .setOrigin(0.5, 0)
+        .setDepth(4.5);
 
       // Invisible one-way rooftop platform.
       const roof = this.add.zone(
@@ -1308,6 +1306,12 @@ export default class Level1 extends Phaser.Scene {
         .setDepth(9.8)
         .setVisible(false),
     );
+
+    // A papel picado string along the front of Casa.
+    this.add
+      .tileSprite(porch.x * S, 522 * S, (porch.roofWidth + 20) * S, 14 * S, 'banner')
+      .setOrigin(0.5, 0)
+      .setDepth(4.5);
 
     // Bonjo's existing roofline is a one-way standable platform.
     const roof = this.add.zone(
@@ -3013,7 +3017,6 @@ export default class Level1 extends Phaser.Scene {
     this.cloudsNear.tilePositionX = cam.scrollX * 0.13 * parallaxScale;
     this.town.tilePositionX = cam.scrollX * 0.3 * parallaxScale;
     this.nearTown.tilePositionX = cam.scrollX * 0.55 * parallaxScale;
-    this.banner.tilePositionX = cam.scrollX * 0.12 * parallaxScale;
   }
 
   updateBossTracker() {
