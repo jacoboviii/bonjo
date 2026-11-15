@@ -37,8 +37,8 @@ same route, the same corners, the same smells. He likes his walks.
 
 **La Cuadra** is the urban core: flat-roofed houses, a church tower, a tienda
 awning, strings of papel picado, dogs behind every gate. The street is the
-arena: one continuous run of pavement with solid raised adobe terraces, awnings
-and rings above the street.
+arena: one continuous run of flat pavement, with awnings and rings above the
+street.
 
 At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
 agave, dust, geese, and farm dogs who have never seen a chow before. That's
@@ -368,11 +368,10 @@ balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with
 non-blocking facades and one-way rooftop platforms; the pavement beneath them
-is continuous and solid. Long raised adobe blocks carry whole stretches of the
-street at a higher level, with short solid steps at their edges; Bonjo jumps up
-onto them and drops from them safely. They are retaining blocks, not one-way
-ledges. The town layers are anchored to the street's world Y so they sit on the
-sidewalk, and a light blue haze keeps the play lane readable.
+is one continuous, flat street. Verticality comes from the awning/ring routes
+and the stacked fire escapes rather than raised pavement levels. The town layers
+are anchored to the street's world Y so they sit on the sidewalk, and a light
+blue haze keeps the play lane readable.
 
 **Ultimate objective:** hold CASA until dawn — keep the porch standing and drive
 the top dog off the block. The win screen is not a throne; it is home, still
@@ -395,8 +394,8 @@ Beat sheet:
    gate rusher. Polo and the bell are optional day errands; checking the gate and
    subduing two rivals are optional night goals. Then the top dog arrives at Casa
    before dawn.
-7. **The east block.** Terraces, awnings, high laundry/fire-escape routes, a
-   second checkpoint and more scavenging.
+7. **The east block.** Awnings, high laundry/fire-escape routes, a second
+   checkpoint and more scavenging.
 8. **Win.** Repel the top dog and survive Night 2: "CASA IS SAFE."
 
 Losing all hearts ends the run: "THE BLOCK WINS."

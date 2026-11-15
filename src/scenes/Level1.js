@@ -41,7 +41,6 @@ const ANIMAL_WORDS = new Set([
 let WORLD_W;
 let WORLD_H;
 let PLATFORMS;
-let TERRACES;
 let BONES;
 let RINGS;
 let SQUIRRELS;
@@ -79,7 +78,6 @@ function applyLevelData(level) {
   WORLD_W = level.world.width * S;
   WORLD_H = level.world.height * S;
   PLATFORMS = level.platforms;
-  TERRACES = level.terraces || [];
   BONES = level.bones;
   RINGS = level.rings;
   SQUIRRELS = level.squirrels;
@@ -506,8 +504,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createStreetDressing() {
+    const groundY = 600 * S;
+
     for (const car of PARKED_CARS) {
-      const groundY = this.groundTopAt(car.x) * S;
       const img = this.add
         .image(car.x * S, groundY, car.key)
         .setOrigin(0.5, 1)
@@ -539,7 +538,7 @@ export default class Level1 extends Phaser.Scene {
 
     for (const prop of STREET_PROPS) {
       this.add
-        .image(prop.x * S, this.groundTopAt(prop.x) * S, prop.key)
+        .image(prop.x * S, groundY, prop.key)
         .setOrigin(0.5, 1)
         .setDepth(0);
     }
@@ -561,20 +560,6 @@ export default class Level1 extends Phaser.Scene {
       img.setDepth(1);
     }
 
-    // Solid stepped ground: real retaining blocks with walkable tops.
-    for (const t of TERRACES) {
-      const key = `terrace_${t.x}_${t.y}_${t.w}_${t.h}`;
-      const seed = (t.x * 73856093) ^ (t.y * 19349663) ^ (t.w * 83492791);
-      makePlatformTexture(this, key, t.w, t.h, seed);
-      const img = this.platforms.create(
-        (t.x + t.w / 2) * S,
-        (t.y + t.h / 2) * S,
-        key,
-      );
-      if (this.levelData.platformTint) img.setTint(this.levelData.platformTint);
-      img.setDepth(1);
-    }
-
     this.platforms.refresh();
   }
 
@@ -582,17 +567,16 @@ export default class Level1 extends Phaser.Scene {
     this.foregroundHouseGroup = this.physics.add.staticGroup();
 
     for (const h of FOREGROUND_HOUSES) {
-      const groundY = this.groundTopAt(h.x) * S;
       // Decorative facade: no wall body, so Bonjo walks in front of it.
       this.add
-        .image(h.x * S, groundY - 80 * S, h.key)
+        .image(h.x * S, 520 * S, h.key)
         .setOrigin(0.5, 0)
         .setDepth(4);
 
       // Invisible one-way rooftop platform.
       const roof = this.add.zone(
         h.x * S,
-        groundY - 77 * S,
+        (520 + 3) * S,
         70 * S,
         6 * S,
       );
@@ -629,14 +613,14 @@ export default class Level1 extends Phaser.Scene {
   createAgave() {
     for (const x of AGAVE_FIELDS) {
       this.add
-        .image(x * S, this.groundTopAt(x) * S, 'agaveField')
+        .image(x * S, 600 * S, 'agaveField')
         .setOrigin(0.5, 1)
         .setDepth(-1);
     }
 
     for (const plant of AGAVES) {
       this.add
-        .image(plant.x * S, this.groundTopAt(plant.x) * S, plant.key)
+        .image(plant.x * S, 600 * S, plant.key)
         .setOrigin(0.5, 1)
         .setScale(plant.s)
         .setFlipX(!!plant.flip)
@@ -658,7 +642,7 @@ export default class Level1 extends Phaser.Scene {
   createCritters() {
     this.cats = CATS.map((c) => {
       const cat = this.add
-        .image(c.x * S, this.groundTopAt(c.x) * S, c.key)
+        .image(c.x * S, 600 * S, c.key)
         .setOrigin(0.5, 1)
         .setScale(c.s)
         .setFlipX(!!c.flip)
@@ -668,14 +652,12 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.birds = BIRDS.map((b) => {
-      const groundY = this.groundTopAt(b.x) * S;
       const bird = this.add
-        .image(b.x * S, groundY, 'bird')
+        .image(b.x * S, 600 * S, 'bird')
         .setOrigin(0.5, 1)
         .setScale(b.s)
         .setDepth(3);
       bird.setData('homeX', b.x * S);
-      bird.setData('homeY', groundY);
       bird.setData('homeScale', b.s);
       bird.setData('scattered', false);
       bird.setData('nextChirp', 0);
@@ -683,7 +665,7 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.rooster = this.add
-      .image(ROOSTER_X * S, this.groundTopAt(ROOSTER_X) * S, 'rooster')
+      .image(ROOSTER_X * S, 600 * S, 'rooster')
       .setOrigin(0.5, 1)
       .setDepth(3);
   }
@@ -738,10 +720,7 @@ export default class Level1 extends Phaser.Scene {
         bird.setData('scattered', false);
       } else {
         bird
-          .setPosition(
-            bird.getData('homeX'),
-            bird.getData('homeY') ?? 600 * S,
-          )
+          .setPosition(bird.getData('homeX'), 600 * S)
           .setAlpha(1)
           .setAngle(0)
           .setScale(bird.getData('homeScale') || 1);
@@ -885,7 +864,7 @@ export default class Level1 extends Phaser.Scene {
     this.tacoGroup = this.physics.add.staticGroup();
     for (const x of TACO_CARTS) {
       const cart = this.tacoGroup
-        .create(x * S, this.groundTopAt(x) * S - 15 * S, 'tacocart')
+        .create(x * S, 600 * S - 15 * S, 'tacocart')
         .setDepth(3);
       cart.body.setSize(38 * S, 26 * S);
       cart.setData('next', 0);
@@ -894,7 +873,7 @@ export default class Level1 extends Phaser.Scene {
     this.trashGroup = this.physics.add.staticGroup();
     for (const x of TRASH_SPOTS) {
       const can = this.trashGroup
-        .create(x * S, this.groundTopAt(x) * S - 8 * S, 'trashcan')
+        .create(x * S, 600 * S - 8 * S, 'trashcan')
         .setDepth(0);
       can.body.setSize(10 * S, 14 * S);
       can.setData('looted', false);
@@ -903,7 +882,7 @@ export default class Level1 extends Phaser.Scene {
     this.bikeGroup = this.physics.add.staticGroup();
     for (const bike of BIKES) {
       const img = this.bikeGroup
-        .create(bike.x * S, this.groundTopAt(bike.x) * S - 9 * S, bike.key)
+        .create(bike.x * S, 600 * S - 9 * S, bike.key)
         .setDepth(0)
         .setFlipX(!!bike.flip);
       img.body.setSize(18 * S, 14 * S);
@@ -1097,24 +1076,10 @@ export default class Level1 extends Phaser.Scene {
     this.foregroundHouseGroup.add(roof);
   }
 
-  groundTopAt(x, fallback = 600) {
-    let top = fallback;
-    for (const terrace of TERRACES) {
-      if (x >= terrace.x && x <= terrace.x + terrace.w) {
-        top = Math.min(top, terrace.y);
-      }
-    }
-    return top;
-  }
-
   createFood() {
     this.foodGroup = this.physics.add.group({ allowGravity: false, immovable: true });
 
-    for (const [x, y] of FOODS) {
-      const point = this.randomPickupPoint(x, y, true);
-      this.spawnFoodAt(point.x * S, point.y * S);
-    }
-    for (const [x, y] of LEDGE_FOODS) {
+    for (const [x, y] of [...FOODS, ...LEDGE_FOODS]) {
       const point = this.randomPickupPoint(x, y);
       this.spawnFoodAt(point.x * S, point.y * S);
     }
@@ -1122,7 +1087,7 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.overlap(this.dog, this.foodGroup, this.eatFood, null, this);
   }
 
-  randomPickupPoint(x, y, groundBased = false) {
+  randomPickupPoint(x, y) {
     // Spread pickups across three height bands so they do not read as a single
     // ground row: low, mid-air and high-air.
     const tier = Phaser.Math.Between(0, 2);
@@ -1132,11 +1097,9 @@ export default class Level1 extends Phaser.Scene {
         : tier === 1
           ? Phaser.Math.Between(25, 50)
           : Phaser.Math.Between(55, 90);
-    const px = x + Phaser.Math.Between(-30, 30);
-    const baseY = groundBased ? this.groundTopAt(px) - 10 : y;
     return {
-      x: px,
-      y: baseY - lift,
+      x: x + Phaser.Math.Between(-30, 30),
+      y: y - lift,
     };
   }
 
@@ -1178,9 +1141,7 @@ export default class Level1 extends Phaser.Scene {
       immovable: true,
     });
 
-    for (const [x] of LIVES) {
-      this.spawnLifeAt(x * S, (this.groundTopAt(x) - 10) * S);
-    }
+    for (const [x, y] of LIVES) this.spawnLifeAt(x * S, y * S);
 
     this.physics.add.overlap(
       this.dog,
@@ -1853,26 +1814,7 @@ export default class Level1 extends Phaser.Scene {
   createPickups() {
     // bones
     this.boneGroup = this.physics.add.group({ allowGravity: false, immovable: true });
-    for (const [x, y] of BONES) {
-      const point = this.randomPickupPoint(x, y, true);
-      const bone = this.boneGroup.create(
-        point.x * S,
-        point.y * S,
-        'boneIcon',
-      );
-      bone.setDepth(7);
-      bone.setScale(0.7);
-      bone.body.setSize(8 * S, 6 * S);
-      this.tweens.add({
-        targets: bone,
-        alpha: 0.5,
-        duration: 650 + Math.random() * 500,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.inOut',
-      });
-    }
-    for (const [x, y] of LEDGE_BONES) {
+    for (const [x, y] of [...BONES, ...LEDGE_BONES]) {
       const point = this.randomPickupPoint(x, y);
       const bone = this.boneGroup.create(
         point.x * S,
@@ -1952,7 +1894,7 @@ export default class Level1 extends Phaser.Scene {
         new Squirrel(
           this,
           s.x * S,
-          (this.groundTopAt(s.x) - 12) * S,
+          s.y * S,
           s.min * S,
           s.max * S,
           this.levelData.critters,
@@ -1976,13 +1918,7 @@ export default class Level1 extends Phaser.Scene {
 
     for (const r of RIVALS) {
       this.rivalGroup.add(
-        new RivalDog(
-          this,
-          r.x * S,
-          (this.groundTopAt(r.x) - 13) * S,
-          r.min * S,
-          r.max * S,
-        ),
+        new RivalDog(this, r.x * S, r.y * S, r.min * S, r.max * S),
       );
     }
 
@@ -2000,7 +1936,7 @@ export default class Level1 extends Phaser.Scene {
       this.pinataGroup.add(
         new Pinata(this, x * S, y * S, {
           life: hasLife,
-          groundY: this.groundTopAt(x),
+          groundY: PLATFORMS[0].y,
         }),
       );
     }
@@ -3248,7 +3184,7 @@ export default class Level1 extends Phaser.Scene {
 
     const minX = this.safeMinX(platform);
     const maxX = (platform.x + platform.w - 12) * S;
-    const enemyY = this.groundTopAt(sx) * S - 13 * S;
+    const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
 
     const role = this.pickWaveRole();
     const rival = new RivalDog(
@@ -3338,7 +3274,7 @@ export default class Level1 extends Phaser.Scene {
     }
     const minX = this.safeMinX(platform);
     const maxX = (platform.x + platform.w - 12) * S;
-    const enemyY = this.groundTopAt(sx) * S - 13 * S;
+    const enemyY = (this.levelData.enemySpawnY ?? 587) * S;
     const boss = this.levelData.boss || {};
 
     this.alpha = new RivalDog(this, sx * S, enemyY, minX, maxX, {

@@ -20,9 +20,8 @@ export const laCuadra = {
   storyIntroKey: 'story.casa',
   winEpilogueKey: 'win.casaEpilogue',
 
-  // One continuous pavement: every former pit is filled. Height changes are
-  // solid raised pavement, so stepping off a terrace simply drops Bonjo back to
-  // the street; there are no lethal floor gaps.
+  // One continuous, flat pavement: every former pit is filled, with no raised
+  // pavement levels and no lethal floor gaps.
   platforms: [
     { x: 0, y: 600, w: 520, h: 300 }, // starting ground
     { x: 520, y: 600, w: 80, h: 300 }, // filled former west gap
@@ -45,26 +44,6 @@ export const laCuadra = {
     { x: 4020, y: 600, w: 180, h: 300 }, // far end
     { x: 4140, y: 600, w: 60, h: 300 }, // filled former east gap
     { x: 4200, y: 600, w: 800, h: 300 }, // east extension
-  ],
-
-  // Solid raised pavement. These are real steps in the ground, not one-way
-  // ledges: jump up or walk off and drop safely to the base street.
-  terraces: [
-    // Long raised blocks with short steps at the edges. These are continuous
-    // stretches of higher pavement, not isolated stepping stones.
-    { x: 1120, y: 585, w: 20, h: 15 }, // west step
-    { x: 1140, y: 570, w: 330, h: 30 }, // west rise: 1140-1470
-    { x: 1600, y: 585, w: 60, h: 15 }, // step into the centre
-    { x: 1660, y: 570, w: 540, h: 30 }, // centre rise: 1660-2200
-    { x: 2200, y: 585, w: 80, h: 15 }, // step down to the checkpoint
-    { x: 2640, y: 585, w: 20, h: 15 }, // step up to the market
-    { x: 2660, y: 570, w: 300, h: 30 }, // market rise: 2660-2960
-    { x: 2960, y: 585, w: 120, h: 15 }, // shallow dip
-    { x: 3080, y: 570, w: 120, h: 30 }, // east rise: 3080-3200
-    { x: 3300, y: 585, w: 60, h: 15 }, // step to the far-east rise
-    { x: 3360, y: 570, w: 120, h: 30 }, // far-east rise: 3360-3480
-    { x: 4200, y: 585, w: 30, h: 15 }, // last curb step
-    { x: 4230, y: 570, w: 50, h: 30 }, // last raised block: 4230-4280
   ],
 
   bones: [
