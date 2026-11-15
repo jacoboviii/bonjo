@@ -98,6 +98,7 @@ let LEDGE_FOODS;
 let TACO_CARTS;
 let TRASH_SPOTS;
 let SPARK_POLES;
+let SHOP_SIGNS;
 let GATE_X;
 let POLO_X;
 let CHIHUAHUA_X;
@@ -135,6 +136,7 @@ function applyLevelData(level) {
   TACO_CARTS = level.tacoCarts;
   TRASH_SPOTS = level.trashSpots;
   SPARK_POLES = level.sparkPoles || [];
+  SHOP_SIGNS = level.shopSigns || [];
   GATE_X = level.gateX;
   POLO_X = level.poloX;
   CHIHUAHUA_X = level.chihuahuaX;
@@ -1011,6 +1013,9 @@ export default class Level1 extends Phaser.Scene {
     }
     for (const glow of this.windowGlows || []) {
       glow.setVisible(night).setAlpha(night ? 0.95 : 0);
+    }
+    for (const glow of this.nightGlows || []) {
+      glow.setVisible(night).setAlpha(night ? 1 : 0);
     }
     const theme = this.levelData.theme || {};
     if ((theme.town || 'town') === 'town') {
@@ -2177,6 +2182,40 @@ export default class Level1 extends Phaser.Scene {
       this.canLandOnAwning,
       this,
     );
+
+    this.nightGlows = this.nightGlows || [];
+    for (const sign of SHOP_SIGNS) this.createNightSign(sign);
+  }
+
+  createNightSign(sign) {
+    const x = sign.x * S;
+    const y = sign.y * S;
+    const text = this.add
+      .text(x, y, sign.text, {
+        fontFamily: 'monospace',
+        fontStyle: 'bold',
+        fontSize: 4.5 * S,
+        color: sign.color,
+        stroke: '#1b1029',
+        strokeThickness: 1.8 * S,
+      })
+      .setOrigin(0.5)
+      .setDepth(61)
+      .setShadow(0, 0, sign.color, 6 * S, true, true)
+      .setVisible(false);
+    const plaque = this.add
+      .rectangle(
+        x,
+        y,
+        text.width + 10 * S,
+        text.height + 5 * S,
+        0x1b1029,
+        0.88,
+      )
+      .setStrokeStyle(1.2 * S, sign.glow, 0.9)
+      .setDepth(60.9)
+      .setVisible(false);
+    this.nightGlows.push(plaque, text);
   }
 
   createCamera() {

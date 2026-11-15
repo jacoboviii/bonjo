@@ -303,9 +303,10 @@ tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
 ### Street lighting and sparking lamps
-Streetlamps and house/shop windows are dark during the day. At night they fade
-in warm light: lamps cast a conical beam from the bulb to the pavement, and the
-foreground house windows glow. Three defective lamps use the same lamp post art
+Streetlamps, house/shop windows and storefront signs are dark during the day.
+At night they fade in: lamps cast a conical beam from the bulb to the pavement,
+foreground house windows glow, and colored neon shop signs (PAN, TIENDA, TACOS,
+FLORES...) float above the awnings. Three defective lamps use the same lamp post art
 as the normal ones, but their cone dims and their cycle runs 1.2 s of warning
 flicker, 0.7 s of live ground arc, then 1.4 s of cooldown. The arc is only ~20
 design px tall, so a normal jump clears it; waiting also works. Contact costs one

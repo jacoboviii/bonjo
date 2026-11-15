@@ -89,6 +89,14 @@ export const laCuadra = {
   endReward: { x: 4910, y: 570, type: 'flap' },
 
   awningFacade: 'shopfront',
+  shopSigns: [
+    { x: 560, y: 540, text: 'PAN', color: '#ffd166', glow: 0xffd166 },
+    { x: 1560, y: 540, text: 'TIENDA', color: '#6ec6a8', glow: 0x6ec6a8 },
+    { x: 2560, y: 540, text: 'SODA', color: '#f26b5e', glow: 0xf26b5e },
+    { x: 3240, y: 540, text: 'TACOS', color: '#ffd166', glow: 0xffd166 },
+    { x: 3980, y: 540, text: 'FLORES', color: '#d6a8ff', glow: 0xb45cd6 },
+    { x: 4400, y: 540, text: 'MERCADO', color: '#6ec6a8', glow: 0x6ec6a8 },
+  ],
   awnings: [
     [560, 578],
     [1560, 578],
