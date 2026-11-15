@@ -19,9 +19,9 @@ The working one-pager lives in [`PILLARS.md`](PILLARS.md). The short version:
    the pavement; the barrio is specific, not generic.
 2. **Subdue, don't destroy.** Rivals are territorial, not evil. Bonjo wins by
    out-jumping them; they yelp and run home.
-3. **The street is a toy.** Piñatas, awnings, rings and rivals answer the verbs
-   Bonjo already has. Friendly NPCs use a single context interact button for
-   dialog and errands.
+3. **The street is a toy.** Piñatas, awnings and rivals answer the verbs Bonjo
+   already has. Friendly NPCs use a single context interact button for dialog
+   and errands.
 4. **Strength in service of peace.** Bonjo is the heaviest dog on the block, but
    his strength is protective, not conquering. He holds gates, clears roads,
    carries what others cannot, breaks up fights and then steps back. The old
@@ -37,7 +37,7 @@ same route, the same corners, the same smells. He likes his walks.
 
 **La Cuadra** is the urban core: flat-roofed houses, a church tower, a tienda
 awning, strings of papel picado, dogs behind every gate. The street is the
-arena: one continuous run of flat pavement, with awnings and rings above the
+arena: one continuous run of flat pavement, with market awnings above the
 street.
 
 At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
@@ -166,15 +166,14 @@ are design pixels (1 design px = 3 render px).
 pose stretches both front paws forward and trails the hind paws, like a small
 flying dog. A fresh
 S/↓ press starts the slide attack, on the ground or in the air. Double jumps use
-their own flap charges, which refill on landing and can be topped up by rings and
-awnings. IMPULSE is a separate slide-only stamina meter, earned by collecting
-conchas that enemies sometimes drop. Jump cut only applies to ground jumps,
-after the 90 ms minimum.
+their own flap charges, which refill only on landing. IMPULSE is a separate
+slide-only stamina meter, earned by collecting conchas that enemies sometimes
+drop. Jump cut only applies to ground jumps, after the 90 ms minimum.
 
 ### Flaps & IMPULSE
 Flap charges are the double-jump resource: Bonjo starts with two, spends one per
-air flap, and refills all of them on landing. Rings and awnings restore one flap
-charge each. The Golden Wing raises the maximum to three.
+air flap, and refills all of them on landing. Awnings bounce him higher but do
+not restore flaps. The Golden Wing raises the maximum to three.
 
 IMPULSE is separate and gates only the slide attack. Bonjo starts with two slide
 charges; each slide spends one. IMPULSE does not refill passively or on landing.
@@ -269,18 +268,17 @@ reward; never a hazard.
 ### Market awnings
 Striped canvas canopies project from the little storefront facades along the
 street, so they read as mounted awnings rather than floating slabs. Landing on
-one from above bounces Bonjo
-~120 design px, restores one flap charge, squashes the canvas and plays a boing. They are
-one-way (you pass through from below). Use them to reach rings, piñatas and
-street bones.
+one from above bounces Bonjo ~120 design px, squashes the canvas and plays a
+boing. They are one-way (you pass through from below) and do not restore flap
+charges. Use them as jump-aid platforms to reach piñatas and street bones.
 
 ### Vertical routes
 Both levels have two high climbs that stack fire escapes, laundry lines and
 terracotta roof ledges above the street. Each tier is spaced for a jump plus a
-flap, with high rings that give a mid-air kick. High routes carry extra bones,
-conchas, a vaulted piñata and an aerial crow/owl; the reward is both score and a
-cleaner view of the barrio. Missing a tier drops Bonjo back to the street, so
-the route is optional pressure rather than a hard gate.
+flap. High routes carry extra bones, conchas, a vaulted piñata and an aerial
+crow/owl; the reward is both score and a cleaner view of the barrio. Missing a
+tier drops Bonjo back to the street, so the route is optional pressure rather
+than a hard gate.
 
 ### End-of-level reward
 The far end of each level holds a floating **Golden Wing** token. Reaching it
@@ -309,10 +307,6 @@ A damaged utility lamp sits between the market and the east block. Its cycle is
 arc is only ~20 design px tall, so a normal jump clears it; waiting also works.
 Contact costs one heart and knocks Bonjo away, using the normal invulnerability
 window. Enemies ignore the arc, and the pole itself is decorative.
-
-### Wind rings
-Gold rings float above the pavement. Passing through restores one flap charge
-and gives a stronger upward kick (-180 px/s). 0.5 s re-trigger cooldown.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
@@ -375,8 +369,8 @@ balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with
 non-blocking facades and one-way rooftop platforms; the pavement beneath them
-is one continuous, flat street. Verticality comes from the awning/ring routes
-and the stacked fire escapes rather than raised pavement levels. The town layers
+is one continuous, flat street. Verticality comes from the awning routes and
+the stacked fire escapes rather than raised pavement levels. The town layers
 are anchored to the street's world Y so they sit on the sidewalk, and a light
 blue haze keeps the play lane readable.
 
@@ -390,8 +384,8 @@ Beat sheet:
 1. **The porch.** Bonjo starts outside his house. A concha is nearby; a piñata
    hangs over the corner; a rival dog patrols the near block. Learn jump → flap
    → slide, and eat a bone when the hunger bar dips.
-2. **The first awning.** A market awning and a gold ring above the pavement. Bounce the
-   awning, pass through the ring, keep moving.
+2. **The first awning.** A market awning above the pavement. Bounce the awning,
+   keep moving, and use the height to reach the next route.
 3. **The long block.** A squirrel drags a bone; a rival guards the turf. Day 1
    is for scavenging — clear what you can before dark.
 4. **The checkpoint.** Second awning/piñata; the midpoint balloon; a safe beat.
@@ -425,7 +419,7 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 - The field now runs to 4600 design px, with an eastern extension of new bones,
   ledges, rival turf and a farmhouse edge.
 - Two high field climbs rise over the west fields and east edge, using roof,
-  fire-escape and laundry tiers with high rings and aerial hazards.
+  fire-escape and laundry tiers with high pickups and aerial hazards.
 - Pacing: 35 s day, 31 s first night with +5 s per night, 31 s between nights;
   the third night lasts 41 s before the Chihuahua pressure.
 - Future: windmill/water-pump traversal, crop hazards, harvest escort and
@@ -479,7 +473,7 @@ Rules:
 - Background town is darker, cooler and lower contrast than gameplay objects.
 - Roof/wall tops are terracotta + teal trim; the player reads "stand here."
 - Every interactive object gets a warm accent: piñata pink/gold, awning
-  coral/cream, ring gold, concha pink.
+  coral/cream, concha pink.
 - Black chow always carries a lavender rim light so he reads against dark walls.
 - At night the sky goes near-black while the windows stay lit; the sun sets,
   a pale cratered moon rises above the darkness, and the HUD stays bright.
@@ -505,7 +499,6 @@ compressor keeps mobile speakers from clipping.
 | Footstep / landing | quiet surface tap / low body thump and grit |
 | Slide attack | short gritty whoosh + low body slide |
 | Bone | wooden clack + bright chime |
-| Ring | filtered strike + metallic partials |
 | Squirrel steal | two-note chatter |
 | Rival growl | low filtered saw + breath noise before a lunge |
 | Rival bark | chest-noise transient + filtered canine woof |
@@ -548,7 +541,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; geese in Las Orillas; two crows/owls; Chihuahua boss
 - Ambient day birds/rooster; night skunks/geese, owls, bats and cats; fenced level ends
 - Piñatas with concha or life-heart drops, bouncing awnings
-- Bones, rings, checkpoints
+- Bones, checkpoints
 - Walk cycle, sit/pant idle
 - Title + top-dog + win + game-over, keyboard + touch, portrait guard
 - **Spanish default, English toggle**

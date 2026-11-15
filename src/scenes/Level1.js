@@ -46,7 +46,6 @@ let WORLD_W;
 let WORLD_H;
 let PLATFORMS;
 let BONES;
-let RINGS;
 let SQUIRRELS;
 let RIVALS;
 let PINATAS;
@@ -84,7 +83,6 @@ function applyLevelData(level) {
   WORLD_H = level.world.height * S;
   PLATFORMS = level.platforms;
   BONES = level.bones;
-  RINGS = level.rings;
   SQUIRRELS = level.squirrels;
   RIVALS = level.rivals;
   PINATAS = level.pinatas;
@@ -1924,24 +1922,6 @@ export default class Level1 extends Phaser.Scene {
 
     this.physics.add.overlap(this.dog, this.boneGroup, this.collectBone, null, this);
 
-    // wind rings
-    this.ringGroup = this.physics.add.group({ allowGravity: false, immovable: true });
-    for (const [x, y] of RINGS) {
-      const ring = this.ringGroup.create(x * S, y * S, 'ring');
-      ring.setDepth(7);
-      ring.body.setCircle(7 * S, 1 * S, 1 * S);
-      ring.setData('last', -9999);
-      this.tweens.add({
-        targets: ring,
-        alpha: 0.55,
-        duration: 900,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.inOut',
-      });
-    }
-    this.physics.add.overlap(this.dog, this.ringGroup, this.touchRing, null, this);
-
     // checkpoint balloon
     this.checkpoint = this.physics.add
       .staticImage(CHECKPOINT_X * S, CHECKPOINT_Y * S, 'balloon')
@@ -3716,11 +3696,6 @@ export default class Level1 extends Phaser.Scene {
     );
   }
 
-  grantFlap(amount = 1) {
-    if (!this.dog) return;
-    this.dog.flaps = Math.min(this.dog.maxFlaps, this.dog.flaps + amount);
-  }
-
   maybeDropConcha(x, y, chance = 0.4) {
     if (Math.random() >= chance) return null;
     return this.spawnFoodAt(x, y);
@@ -3740,21 +3715,6 @@ export default class Level1 extends Phaser.Scene {
     sfx.bone();
     this.spawnPuff(bone.x, bone.y, 0.7);
     this.floatText(bone.x, bone.y - 6 * S, '+1');
-  }
-
-  touchRing(dog, ring) {
-    const now = this.time.now;
-    if (now - ring.getData('last') < 500) return;
-    ring.setData('last', now);
-
-    const before = this.dog.flaps;
-    this.grantFlap(1);
-    this.dog.body.velocity.y = Math.min(this.dog.body.velocity.y, -180 * S);
-    sfx.ring();
-    this.spawnPuff(ring.x, ring.y, 1.2);
-    if (this.dog.flaps > before) {
-      this.floatText(ring.x, ring.y - 10 * S, t('float.flap'), '#6ec6a8');
-    }
   }
 
   touchCheckpoint() {
@@ -4229,11 +4189,6 @@ export default class Level1 extends Phaser.Scene {
     dog.body.velocity.y = -620 * S;
     dog.jumpCutReady = false;
     dog.grounded = false;
-    const before = dog.flaps;
-    this.grantFlap(1);
-    if (dog.flaps > before) {
-      this.floatText(awning.x, awning.y - 14 * S, t('float.flap'), '#6ec6a8');
-    }
 
     this.tweens.add({
       targets: awning,

@@ -136,7 +136,6 @@ export function buildTextures(scene) {
   makeBone(scene);
   makeBalloon(scene, 'balloon', CORAL, false);
   makeBalloon(scene, 'goalBalloon', GOLD, true);
-  makeRing(scene);
   makePuff(scene);
 }
 
@@ -3158,16 +3157,6 @@ function makeBalloon(scene, key, color, big) {
   g.fillRect(cx - 2, basketY, 4, big ? 5 : 3);
 
   g.generateTexture(key, w, h);
-  g.destroy();
-}
-
-function makeRing(scene) {
-  const g = gfx(scene);
-  g.lineStyle(2, GOLD, 1);
-  g.strokeCircle(8, 8, 6);
-  g.lineStyle(1, CREAM, 1);
-  g.strokeCircle(8, 8, 4);
-  g.generateTexture('ring', 16, 16);
   g.destroy();
 }
 

@@ -59,15 +59,14 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   to the ground. Most leave a concha; piñatas with a small heart marker leave a
   **life heart** instead.
 - **Market awnings:** striped canvas canopies project from storefront facades.
-  Land on one to bounce high and restore one FLAP charge. Gold rings give a
-  stronger mid-air upward kick and also restore one FLAP charge, keeping
-  vertical routes viable.
+  Land on one to bounce high and use it as a jump aid; it does not restore flap
+  charges.
 - **Sparking streetlamp:** a damaged utility lamp near the market warns with a
   flicker, then sends a low electric arc across the pavement. Wait for the safe
   window or jump over it; contact costs one heart and knocks Bonjo back.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
-  climb above the street. Higher tiers carry rings, bones and conchas; practice
-  the flap-and-glide chain to reach them.
+  climb above the street. Higher tiers carry bones, conchas and high piñatas;
+  practice the flap-and-glide chain to reach them.
 - **Foreground houses:** three foreground homes sit on the sidewalk; their
   facades do not block movement, and their rooftops are one-way platforms.
 - **Bonjo's roof:** the house roof is a standable one-way platform above the porch.
@@ -235,7 +234,7 @@ there to make them permanent.
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, geese and an aggressive Chihuahua boss
-- **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings, rings and the high rooftop routes
+- **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
@@ -244,7 +243,7 @@ there to make them permanent.
 - **Compact labeled status HUD** for flap charges, IMPULSE stamina, health and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
 - **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges
-- **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high rings, bones, conchas and aerial hazards
+- **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high bones, conchas, piñatas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
@@ -253,7 +252,6 @@ there to make them permanent.
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**
-- Wind rings that give a mid-air upward kick
 - Bones for hunger and conchas for stamina, each scattered across randomized x positions and three height bands every run; two checkpoint balloons, a safe **porch**
 - La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
 - Atmospheric haze pushes the city back while keeping Bonjo and the hazards readable
@@ -370,7 +368,6 @@ files):
 | `lifeHeart` | 24×24 | world life pickup and piñata life marker |
 | `wingToken` | 24×24 | end-of-level extra-flap power-up |
 | `bonjoHouse` | 390×240 | two-storey home behind the CASA gateway |
-| `ring` | 48×48 | |
 | `balloon` | 36×60 | checkpoint |
 | `puff` | 24×24 | dust particle |
 | `nearTown` | 960×300 | tiling foreground storefronts |

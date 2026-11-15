@@ -437,11 +437,6 @@ export const sfx = {
     osc({ type: 'sawtooth', f0: 220, f1: 65, dur: 0.55, vol: 0.028, filter: { type: 'lowpass', f0: 800, f1: 220, q: 0.8 } });
     osc({ type: 'sine', f0: 98, f1: 45, dur: 0.65, vol: 0.018, delay: 0.1 });
   },
-  ring: () => {
-    noise({ dur: 0.03, vol: 0.01, type: 'highpass', f0: 2000, q: 0.8 });
-    osc({ type: 'sine', f0: 620, f1: 640, dur: 0.65, vol: 0.025 });
-    osc({ type: 'sine', f0: 930, f1: 950, dur: 0.45, vol: 0.012, delay: 0.03 });
-  },
   hurt: () => {
     noise({ dur: 0.08, vol: 0.035, type: 'lowpass', f0: 900, f1: 160, q: 0.7 });
     thump(95, 0.03, 0.18);
