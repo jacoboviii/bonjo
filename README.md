@@ -156,7 +156,7 @@ On a touch device the on-screen controls appear automatically:
 
 On a desktop you can press **V** to show the touch buttons for testing.
 
-Horizontal background parallax is reduced for comfort and vertical parallax is disabled; devices with the OS **Reduce Motion** setting enabled get a fully static backdrop.
+Horizontal background parallax is reduced for comfort, and a vertical camera deadzone keeps normal jumps from bobbing the backdrop; devices with the OS **Reduce Motion** setting enabled get a fully static backdrop.
 
 ### Interactions in one sentence
 

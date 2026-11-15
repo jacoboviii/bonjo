@@ -528,13 +528,13 @@ export default class Level1 extends Phaser.Scene {
     this.town = this.add
       .tileSprite(0, 500 * S, W, 100 * S, theme.town || 'town')
       .setOrigin(0, 0)
-      .setScrollFactor(0, 0)
+      .setScrollFactor(0, 1)
       .setDepth(-20);
 
     this.nearTown = this.add
       .tileSprite(0, 500 * S, W, 100 * S, theme.nearTown || 'nearTown')
       .setOrigin(0, 0)
-      .setScrollFactor(0, 0)
+      .setScrollFactor(0, 1)
       .setDepth(-19);
 
     this.banner = this.add
@@ -2250,6 +2250,9 @@ export default class Level1 extends Phaser.Scene {
     // The renderer still snaps the world art to whole pixels.
     cam.startFollow(this.dog, false, tuning.cameraLerp, tuning.cameraLerp);
     cam.setFollowOffset(0, 18 * S);
+    // Keep normal jumps from bobbing the whole backdrop. High routes still
+    // pull the camera once Bonjo leaves this vertical band.
+    cam.setDeadzone(1, 100 * S);
     cam.fadeIn(350, 27, 16, 41);
   }
 
