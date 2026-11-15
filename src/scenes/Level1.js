@@ -40,6 +40,7 @@ const ANIMAL_WORDS = new Set([
 ]);
 
 const ROOSTER_SCALE = 0.82;
+const VERTICAL_CAMERA_LERP = 0.035;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
@@ -3009,7 +3010,7 @@ export default class Level1 extends Phaser.Scene {
     const k = Phaser.Math.Clamp(tuning.cameraLerp, 0.01, 0.5);
 
     cam.lerp.x = k;
-    cam.lerp.y = k;
+    cam.lerp.y = VERTICAL_CAMERA_LERP;
 
     const targetX = -this.dog.facing * tuning.lookAhead * S;
     cam.followOffset.x = Phaser.Math.Linear(cam.followOffset.x, targetX, 0.08);
@@ -3020,11 +3021,10 @@ export default class Level1 extends Phaser.Scene {
     // After dropping back to street level, ease the camera back to its
     // original vertical framing instead of leaving it parked up high.
     if (this.dog.grounded && this.dog.y >= 555 * S) {
-      const recenter = 1 - Math.exp(-2.2 * Math.min(delta, 50) / 1000);
       cam.scrollY = Phaser.Math.Linear(
         cam.scrollY,
         this.cameraBaseScrollY,
-        recenter,
+        VERTICAL_CAMERA_LERP,
       );
       cam.midPoint.y = cam.scrollY + cam.height / 2;
     }
