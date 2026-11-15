@@ -303,9 +303,10 @@ tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
 ### Street lighting and sparking lamps
-Streetlamps are dark during the day. At night they fade in a warm conical light
-beam from the bulb to the pavement. Three defective lamps use the same lamp post
-art as the normal ones, but their cone dims and their cycle runs 1.2 s of warning
+Streetlamps and house/shop windows are dark during the day. At night they fade
+in warm light: lamps cast a conical beam from the bulb to the pavement, and the
+foreground house windows glow. Three defective lamps use the same lamp post art
+as the normal ones, but their cone dims and their cycle runs 1.2 s of warning
 flicker, 0.7 s of live ground arc, then 1.4 s of cooldown. The arc is only ~20
 design px tall, so a normal jump clears it; waiting also works. Contact costs one
 heart and knocks Bonjo away, using the normal invulnerability window. Enemies
@@ -366,7 +367,7 @@ World 5000×900 design px. The camera shows 144 design units vertically (432px
 render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town under a clear blue day sky:
-blue mountains, fields/agave, low houses with lit windows, a church tower and
+blue mountains, fields/agave, low houses whose windows light up at night, a church tower and
 cross, papel picado. A closer, faster parallax storefront row adds awnings,
 balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
@@ -470,7 +471,7 @@ values, and readable foreground/background separation.
 | Health | heart red `#d94f4f` |
 | Hunger | bone cream `#f4dcc0`, bar orange `#f0a03c` |
 | IMPULSE | concha pink `#f2a6b8`, gold pip `#ffd166` |
-| Night | sky tint `#05030d` at 68%; full-scene overlay 45% |
+| Night | sky tint `#05030d` at 82%; full-scene overlay 62% |
 
 Rules:
 - Background town is darker, cooler and lower contrast than gameplay objects.

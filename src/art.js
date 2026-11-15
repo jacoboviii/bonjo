@@ -56,10 +56,13 @@ export function buildTextures(scene) {
   makeMoon(scene);
   makeCloudBand(scene, 'cloudsFar', 5, 1, 1337);
   makeCloudBand(scene, 'cloudsNear', 3, 2, 4242);
-  makeTown(scene);
-  makeNearTown(scene);
+  makeTown(scene, 'town', false);
+  makeTown(scene, 'townNight', true);
+  makeNearTown(scene, 'nearTown', false);
+  makeNearTown(scene, 'nearTownNight', true);
   makeOrillasSky(scene);
-  makeOrillasTown(scene);
+  makeOrillasTown(scene, 'orillasTown', false);
+  makeOrillasTown(scene, 'orillasTownNight', true);
   makeOrillasNearTown(scene);
   makeAgave(scene, 'agave', false);
   makeAgave(scene, 'agaveBloom', true);
@@ -72,10 +75,12 @@ export function buildTextures(scene) {
   makeForegroundHouse(scene, 'foregroundHouseA', 0xc46b4a, 0x8a4f3a, 0xffd166);
   makeForegroundHouse(scene, 'foregroundHouseB', 0x2f7f78, 0x1d4a47, 0xf2b544);
   makeForegroundHouse(scene, 'foregroundHouseC', 0xd99a63, 0xb5533a, 0x2f7f78);
+  makeForegroundWindows(scene);
   makeBanner(scene);
   makeStreetProps(scene);
   makeSparkArc(scene);
   makeLightCone(scene);
+  makeLampGlow(scene);
   makeCar(scene, 'carA', 0xf26b5e, 0xfff4e0, 'sedan');
   makeCar(scene, 'carB', 0x6ec6a8, 0xfff4e0, 'hatch');
   makeCar(scene, 'carC', 0xffd166, 0x2b1b3d, 'pickup');
@@ -121,9 +126,11 @@ export function buildTextures(scene) {
   makeBoneIcon(scene);
   makeConchaIcon(scene);
   makeBonjoHouse(scene);
+  makeBonjoHouseWindows(scene);
   makePinata(scene);
   makeRope(scene);
   makeShopfront(scene);
+  makeShopfrontWindows(scene);
   makeAwning(scene);
   makeControlButtons(scene);
   makePauseIcon(scene);
@@ -197,7 +204,7 @@ function makeOrillasSky(scene) {
   g.destroy();
 }
 
-function makeOrillasTown(scene) {
+function makeOrillasTown(scene, key = 'orillasTown', night = false) {
   const g = gfx(scene);
   const W = 320;
   const H = 100;
@@ -228,7 +235,7 @@ function makeOrillasTown(scene) {
     g.fillRect(x, y, w, h);
     g.fillStyle(roof, 1);
     g.fillTriangle(x - 3, y, x + w + 3, y, x + w / 2, y - 8);
-    g.fillStyle(0xffcf6a, 0.8);
+    g.fillStyle(night ? 0xffcf6a : 0x3a2d43, 0.9);
     g.fillRect(x + 5, y + 6, 4, 4);
     g.fillRect(x + w - 9, y + 6, 4, 4);
   }
@@ -246,7 +253,7 @@ function makeOrillasTown(scene) {
   g.lineBetween(275, 38, 286, 28);
   g.lineBetween(275, 38, 275, 24);
 
-  g.generateTexture('orillasTown', W, H);
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 
@@ -374,7 +381,7 @@ function makeCloudBand(scene, key, count, scale, seed) {
   g.destroy();
 }
 
-function makeTown(scene) {
+function makeTown(scene, key = 'town', night = false) {
   const g = gfx(scene);
   const W = 320;
   const H = 100;
@@ -435,7 +442,7 @@ function makeTown(scene) {
     g.fillRect(x + b.w - 2, top - 3, 2, 6);
 
     // windows
-    g.fillStyle(0xffcf6a, 1);
+    g.fillStyle(night ? 0xffcf6a : 0x3a2d43, 1);
     for (let row = 0; row < b.win; row++) {
       for (let wx = x + 5; wx < x + b.w - 5; wx += 11) {
         g.fillRect(wx, top + 6 + row * 10, 3, 4);
@@ -482,14 +489,14 @@ function makeTown(scene) {
     g.fillRect(106 + off, 42, 1, 8);
   }
 
-  g.generateTexture('town', W, H);
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 
 // Closer storefronts that sit in front of the tiled town. This layer is mostly
 // transparent above the rooflines, so the church tower and distant hills still
 // show through; the ground floor is hidden behind the sidewalk/platform art.
-function makeNearTown(scene) {
+function makeNearTown(scene, key = 'nearTown', night = false) {
   const g = gfx(scene);
   const W = 320;
   const H = 100;
@@ -565,7 +572,7 @@ function makeNearTown(scene) {
       for (let c = 0; c < cols; c++) {
         const wx = x + 6 + c * 10;
         if (wx + 6 > x + w - 4) continue;
-        const lit = (c + row + b.x) % 3 !== 0;
+        const lit = night && (c + row + b.x) % 3 !== 0;
         g.fillStyle(0x1b1029, 0.85);
         g.fillRect(wx - 1, wy - 1, 7, 7);
         g.fillStyle(lit ? 0xffcf6a : 0x3a2d43, 1);
@@ -602,7 +609,7 @@ function makeNearTown(scene) {
     // storefront glass and door
     g.fillStyle(0x1b1029, 0.9);
     g.fillRect(x + 5, 78, w - 16, 15);
-    g.fillStyle(0xffcf6a, 0.9);
+    g.fillStyle(night ? 0xffcf6a : 0x3a2d43, 0.9);
     g.fillRect(x + 6, 79, w - 18, 13);
     g.fillStyle(0x1b1029, 0.75);
     g.fillRect(x + 6 + Math.floor((w - 18) / 2), 79, 1, 13);
@@ -650,7 +657,7 @@ function makeNearTown(scene) {
     g.fillRect(x, y, w, h);
   }
 
-  g.generateTexture('nearTown', W, H);
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 
@@ -825,13 +832,11 @@ function makeStreetProps(scene) {
     g.fillRect(2, 54, 6, 3);
     g.fillRect(4, 8, 2, 47);
     g.fillRect(3, 8, 4, 2);
-    g.fillStyle(0xffd166, 0.13);
-    g.fillCircle(5, 8, 6);
     g.fillStyle(0x2b1b3d, 1);
     g.fillRect(2, 5, 6, 4);
-    g.fillStyle(GOLD, 1);
+    g.fillStyle(0x6a5a70, 1);
     g.fillRect(3, 6, 4, 2);
-    g.fillStyle(0xfff4e0, 0.7);
+    g.fillStyle(0xfff4e0, 0.28);
     g.fillRect(4, 6, 2, 1);
     g.generateTexture('streetlamp', 12, 58);
     g.destroy();
@@ -1489,6 +1494,61 @@ function makeCat(scene, key, body, eye) {
   g.destroy();
 }
 
+// Warm bulb glow shown only at night, above the night overlay.
+function makeLampGlow(scene) {
+  const g = gfx(scene);
+  g.fillStyle(0xffd166, 0.08);
+  g.fillCircle(12, 12, 12);
+  g.fillStyle(0xffd166, 0.16);
+  g.fillCircle(12, 12, 7);
+  g.fillStyle(0xfff4e0, 0.85);
+  g.fillCircle(12, 12, 2.2);
+  g.generateTexture('lampGlow', 24, 24);
+  g.destroy();
+}
+
+// Lit window layer for foreground houses. The house texture itself now has
+// unlit glass so daylight does not read as electric light.
+function makeForegroundWindows(scene) {
+  const g = gfx(scene);
+  const W = 70;
+  const H = 80;
+  for (let row = 0; row < 2; row++) {
+    const wy = 22 + row * 20;
+    for (let wx = 9; wx < W - 10; wx += 19) {
+      g.fillStyle(0xffd166, 0.12);
+      g.fillRect(wx - 2, wy - 2, 14, 15);
+      g.fillStyle(0xffcf6a, 0.95);
+      g.fillRect(wx, wy, 10, 11);
+      g.fillStyle(0x1b1029, 0.7);
+      g.fillRect(wx + 4, wy, 1, 11);
+      g.fillRect(wx, wy + 5, 10, 1);
+      g.fillStyle(0xfff4e0, 0.35);
+      g.fillRect(wx + 1, wy + 1, 3, 4);
+    }
+  }
+  g.generateTexture('foregroundWindows', W, H);
+  g.destroy();
+}
+
+// Lit window layer for shopfronts.
+function makeShopfrontWindows(scene) {
+  const g = gfx(scene);
+  const W = 56;
+  const H = 66;
+  g.fillStyle(0xffd166, 0.12);
+  g.fillRect(5, 21, 23, 20);
+  g.fillStyle(0xffcf6a, 0.95);
+  g.fillRect(8, 24, 17, 14);
+  g.fillStyle(0x1b1029, 0.75);
+  g.fillRect(16, 24, 1, 14);
+  g.fillRect(8, 31, 17, 1);
+  g.fillStyle(0xfff4e0, 0.35);
+  g.fillRect(9, 25, 3, 4);
+  g.generateTexture('shopfrontWindows', W, H);
+  g.destroy();
+}
+
 function makeBird(scene) {
   const g = gfx(scene);
   const W = 12;
@@ -1622,8 +1682,10 @@ function makeForegroundHouse(scene, key, body, roof, trim) {
     for (let wx = 9; wx < W - 10; wx += 19) {
       g.fillStyle(0x1b1029, 0.85);
       g.fillRect(wx - 1, wy - 1, 12, 13);
-      g.fillStyle(0xffcf6a, 0.85);
+      g.fillStyle(0x3a2d43, 1);
       g.fillRect(wx, wy, 10, 11);
+      g.fillStyle(0x6a5a70, 0.35);
+      g.fillRect(wx + 1, wy + 1, 3, 4);
       g.fillStyle(0x1b1029, 0.7);
       g.fillRect(wx + 4, wy, 1, 11);
       g.fillRect(wx, wy + 5, 10, 1);
@@ -2516,6 +2578,31 @@ function makeRivalDog(scene, key, pose, variant = 'normal') {
 
 // --- piñata, rope, market awning --------------------------------------------
 
+// Lit windows for Bonjo's house, shown only after dark.
+function makeBonjoHouseWindows(scene) {
+  const g = gfx(scene);
+  const W = 130;
+  const H = 80;
+  const window = (x, y) => {
+    g.fillStyle(0xffd166, 0.12);
+    g.fillRect(x - 2, y - 2, 17, 16);
+    g.fillStyle(0xffcf6a, 0.96);
+    g.fillRect(x, y, 13, 12);
+    g.fillStyle(0x1b1029, 0.7);
+    g.fillRect(x + 6, y, 1, 12);
+    g.fillRect(x, y + 5, 13, 1);
+    g.fillStyle(0xfff4e0, 0.38);
+    g.fillRect(x + 1, y + 1, 4, 5);
+  };
+  window(14, 16);
+  window(42, 16);
+  window(78, 16);
+  window(14, 36);
+  window(42, 36);
+  g.generateTexture('bonjoHouseWindows', W, H);
+  g.destroy();
+}
+
 function makePinata(scene) {
   const g = rawGfx(scene);
 
@@ -2597,15 +2684,15 @@ function makeShopfront(scene) {
   g.fillStyle(0x1b1029, 0.8);
   for (let x = 8; x < W - 8; x += 6) g.fillRect(x, 14, 3, 1);
 
-  // shop window with warm panes
+  // unlit shop window during the day; the lit layer is a night overlay
   g.fillStyle(0x1b1029, 0.9);
   g.fillRect(7, 23, 19, 16);
-  g.fillStyle(0xffcf6a, 0.9);
+  g.fillStyle(0x3a2d43, 1);
   g.fillRect(8, 24, 17, 14);
   g.fillStyle(0x1b1029, 0.75);
   g.fillRect(16, 24, 1, 14);
   g.fillRect(8, 31, 17, 1);
-  g.fillStyle(0xfff4e0, 0.45);
+  g.fillStyle(0x6a5a70, 0.35);
   g.fillRect(9, 25, 3, 4);
 
   // doorway beneath the awning
@@ -2859,8 +2946,10 @@ function makeBonjoHouse(scene) {
   const window = (x, y) => {
     g.fillStyle(0x1b1029, 0.9);
     g.fillRect(x - 1, y - 1, 15, 14);
-    g.fillStyle(0xffcf6a, 0.85);
+    g.fillStyle(0x3a2d43, 1);
     g.fillRect(x, y, 13, 12);
+    g.fillStyle(0x6a5a70, 0.35);
+    g.fillRect(x + 1, y + 1, 4, 5);
     g.fillStyle(0x1b1029, 0.7);
     g.fillRect(x + 6, y, 1, 12);
     g.fillRect(x, y + 5, 13, 1);

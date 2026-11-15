@@ -544,6 +544,7 @@ export default class Level1 extends Phaser.Scene {
   createStreetDressing() {
     const groundY = 600 * S;
     this.streetLightCones = [];
+    this.lampGlows = [];
 
     for (const car of PARKED_CARS) {
       const img = this.add
@@ -590,6 +591,13 @@ export default class Level1 extends Phaser.Scene {
             .setBlendMode(Phaser.BlendModes.ADD)
             .setVisible(false),
         );
+        this.lampGlows.push(
+          this.add
+            .image(prop.x * S, (600 - 51) * S, 'lampGlow')
+            .setDepth(61)
+            .setBlendMode(Phaser.BlendModes.ADD)
+            .setVisible(false),
+        );
       }
     }
   }
@@ -615,6 +623,7 @@ export default class Level1 extends Phaser.Scene {
 
   createForegroundHouses() {
     this.foregroundHouseGroup = this.physics.add.staticGroup();
+    this.windowGlows = [];
 
     for (const h of FOREGROUND_HOUSES) {
       // Decorative facade: no wall body, so Bonjo walks in front of it.
@@ -622,6 +631,14 @@ export default class Level1 extends Phaser.Scene {
         .image(h.x * S, 520 * S, h.key)
         .setOrigin(0.5, 0)
         .setDepth(4);
+
+      this.windowGlows.push(
+        this.add
+          .image(h.x * S, 520 * S, 'foregroundWindows')
+          .setOrigin(0.5, 0)
+          .setDepth(9)
+          .setVisible(false),
+      );
 
       // Invisible one-way rooftop platform.
       const roof = this.add.zone(
@@ -942,6 +959,7 @@ export default class Level1 extends Phaser.Scene {
 
   createSparkPoles() {
     this.streetLightCones = this.streetLightCones || [];
+    this.lampGlows = this.lampGlows || [];
     this.sparkPoles = SPARK_POLES.map((x, i) => {
       const worldX = x * S;
       const pole = this.add
@@ -959,13 +977,20 @@ export default class Level1 extends Phaser.Scene {
         .setOrigin(0.5, 1)
         .setDepth(2.6)
         .setVisible(false);
+      const glow = this.add
+        .image(worldX, (600 - 51) * S, 'lampGlow')
+        .setDepth(61)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setVisible(false);
       this.streetLightCones.push(cone);
+      this.lampGlows.push(glow);
       return {
         designX: x,
         x: worldX,
         y: 600 * S,
         pole,
         cone,
+        glow,
         arc,
         offset: i * 1.65,
         live: false,
@@ -977,6 +1002,21 @@ export default class Level1 extends Phaser.Scene {
   setStreetLights(night) {
     for (const cone of this.streetLightCones || []) {
       cone.setVisible(night).setAlpha(night ? 0.8 : 0);
+    }
+    for (const glow of this.lampGlows || []) {
+      glow.setVisible(night).setAlpha(night ? 0.9 : 0);
+    }
+    for (const glow of this.windowGlows || []) {
+      glow.setVisible(night).setAlpha(night ? 0.95 : 0);
+    }
+    const theme = this.levelData.theme || {};
+    if ((theme.town || 'town') === 'town') {
+      this.town?.setTexture(night ? 'townNight' : 'town');
+    } else if (theme.town === 'orillasTown') {
+      this.town?.setTexture(night ? 'orillasTownNight' : 'orillasTown');
+    }
+    if ((theme.nearTown || 'nearTown') === 'nearTown') {
+      this.nearTown?.setTexture(night ? 'nearTownNight' : 'nearTown');
     }
   }
 
@@ -1017,6 +1057,9 @@ export default class Level1 extends Phaser.Scene {
 
       if (spark.cone.visible) {
         spark.cone.setAlpha(live ? 0.18 : warning ? 0.58 : 0.8);
+      }
+      if (spark.glow.visible) {
+        spark.glow.setAlpha(live ? 0.16 : warning ? 0.55 : 0.9);
       }
 
       if (!live || this.dog.invuln > 0) continue;
@@ -1226,6 +1269,15 @@ export default class Level1 extends Phaser.Scene {
       .image(porch.x * S, 600 * S, porch.key)
       .setOrigin(0.5, 1)
       .setDepth(2);
+
+    this.windowGlows = this.windowGlows || [];
+    this.windowGlows.push(
+      this.add
+        .image(porch.x * S, 600 * S, 'bonjoHouseWindows')
+        .setOrigin(0.5, 1)
+        .setDepth(2.2)
+        .setVisible(false),
+    );
 
     // Bonjo's existing roofline is a one-way standable platform.
     const roof = this.add.zone(
@@ -2103,6 +2155,14 @@ export default class Level1 extends Phaser.Scene {
           .image(x * S, 600 * S, 'shopfront')
           .setOrigin(0.5, 1)
           .setDepth(1.5);
+        this.windowGlows = this.windowGlows || [];
+        this.windowGlows.push(
+          this.add
+            .image(x * S, 600 * S, 'shopfrontWindows')
+            .setOrigin(0.5, 1)
+            .setDepth(1.8)
+            .setVisible(false),
+        );
       }
       this.awningGroup.create(x * S, y * S, 'awning').setDepth(2);
     }
@@ -3137,22 +3197,22 @@ export default class Level1 extends Phaser.Scene {
 
     this.tweens.add({
       targets: this.nightOverlay,
-      alpha: 0.45,
+      alpha: 0.62,
       duration: 900,
     });
     this.tweens.add({
       targets: this.skyNight,
-      alpha: 0.68,
+      alpha: 0.82,
       duration: 900,
     });
     this.tweens.add({
       targets: this.cloudsFar,
-      alpha: 0.28,
+      alpha: 0.2,
       duration: 900,
     });
     this.tweens.add({
       targets: this.cloudsNear,
-      alpha: 0.42,
+      alpha: 0.32,
       duration: 900,
     });
 
