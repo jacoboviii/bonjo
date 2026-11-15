@@ -2253,7 +2253,7 @@ export default class Level1 extends Phaser.Scene {
     // 10px short of its target and then creep there in visible 1px steps.
     // The renderer still snaps the world art to whole pixels.
     cam.startFollow(this.dog, false, tuning.cameraLerp, tuning.cameraLerp);
-    cam.setFollowOffset(0, 18 * S);
+    cam.setFollowOffset(0, 30 * S);
     // Keep normal jumps from bobbing the whole backdrop. High routes still
     // pull the camera once Bonjo leaves this vertical band.
     cam.setDeadzone(1, 100 * S);
@@ -3009,7 +3009,7 @@ export default class Level1 extends Phaser.Scene {
 
     const targetX = -this.dog.facing * tuning.lookAhead * S;
     cam.followOffset.x = Phaser.Math.Linear(cam.followOffset.x, targetX, 0.08);
-    cam.followOffset.y = Phaser.Math.Linear(cam.followOffset.y, 18 * S, 0.08);
+    cam.followOffset.y = Phaser.Math.Linear(cam.followOffset.y, 30 * S, 0.08);
 
     // Parallax is deliberately subtle; near-layer motion is a common
     // motion-sickness trigger. Reduced-motion players get a static backdrop.
