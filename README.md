@@ -158,10 +158,10 @@ burst it; **slide** a **rival dog** to make it drop a bone and flee. Landing on
 an enemy bounces Bonjo safely without damaging either of them. Eat **bones** to keep hunger up; grab **conchas** to recharge IMPULSE. Use taco carts, loot trash cans, knock
 over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
-bell to ring it. Day errands are Polo’s concha and the bell; the day timer
-waits at zero until both are done. Night errands are checking the gate and
-subduing two rivals. Errand progress never resets, and the pause panel shows
-checkmarks for each one. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
+bell to ring it. Day errands are Polo’s concha and the bell; night errands are
+checking the gate and subduing two rivals. Errands are optional side goals now:
+Polo and the bell pay conchas, while the night goals fill in pause-panel
+checkmarks. None of them stops the day/night timer or gates dawn. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
 paws and whip his fluffy tail in a quick sweep that dazes, nudges back and
 damages nearby rivals, bone thieves and crows. The tail arc and its damage
 travel with Bonjo, even while moving or jumping; a sweep that connects from
@@ -237,7 +237,7 @@ there to make them permanent.
 - **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
-- **Objectives panel (O)** for the current goal, Polo/bell errands and a description of each HUD meter
+- **Objectives panel (O)** for the current goal, optional Polo/bell errands and a description of each HUD meter
 - **Compact labeled status HUD** for flap charges, IMPULSE stamina, health and hunger; phase, countdown and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
 - **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges
@@ -246,7 +246,7 @@ there to make them permanent.
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
 - **Porch gate defense** with gate health and a compromised safe zone if it breaks
-- **Named NPC dialog cards** that pause the action; persistent day/night errands with checkmarks in the pause panel, and chihuahua warnings
+- **Named NPC dialog cards** that pause the action; persistent optional day/night errands with checkmarks in the pause panel, and chihuahua warnings
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**

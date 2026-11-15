@@ -329,11 +329,12 @@ The compact HUD uses the bone icon for hunger and the concha icon for IMPULSE;
 the same two icon textures are used by the course pickups. The HUD labels
 health, flap charges, IMPULSE stamina and hunger. An off-screen boss arrow points toward the top dog
 and labels its Casa location. The **O / OBJETIVOS** panel pauses the
-game and explains the current goal, day errands and each HUD meter, including
-dawn warnings and the top-dog hit count. Dayfall is gated on the day errands: Polo's gift and the bell ring. Nightfall
-then waits at the zero timer until both are done. Dawn is gated on the night
-errands: check the gate at night and subdue two rivals. Errand progress never
-resets, and the pause panel lists day and night checks. The final night adds gate
+game and explains the current goal, optional day/night errands and each HUD
+meter, including dawn warnings and the top-dog hit count. Errands no longer gate
+the clock: the day timer rolls into night on its own, and dawn arrives even if
+Polo, the bell, the gate check or the two-rival night goal were skipped. Errand
+progress never resets, and the pause panel lists day and night checks as bonus
+objectives. The final night adds gate
 rushers and, at roughly 12 s left, the top dog on the lawn in front of Casa. Repel it to win; the timer will wait at zero
 until it is down. The HUD always shows phase, timer, labeled hearts/flaps/IMPULSE/hunger
 and gate health; objectives and errands live in the O panel.
@@ -391,8 +392,9 @@ Beat sheet:
 5. **Night 1.** The street darkens; three rivals spawn near Bonjo. Slide them or
    retreat to the porch. Dawn heals a heart and drops a concha.
 6. **Day 2 / Night 2.** A shorter day, a harder night; thieves, brutes and a
-   gate rusher. Polo and the bell must be visited before nightfall; at night,
-   check the gate and subdue two rivals. Then the top dog arrives at Casa before dawn.
+   gate rusher. Polo and the bell are optional day errands; checking the gate and
+   subduing two rivals are optional night goals. Then the top dog arrives at Casa
+   before dawn.
 7. **The east block.** Terraces, awnings, high laundry/fire-escape routes, a
    second checkpoint and more scavenging.
 8. **Win.** Repel the top dog and survive Night 2: "CASA IS SAFE."

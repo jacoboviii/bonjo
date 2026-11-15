@@ -182,10 +182,8 @@ export default class Level1 extends Phaser.Scene {
     this.rank = 'D';
     this.poloGift = true;
     this.bellRung = false;
-    this.errandGateHintShown = false;
     this.gateErrandDone = false;
     this.nightRivalsSubdued = 0;
-    this.nightErrandGateHintShown = false;
     this.nextAlarm = 0;
     this.nextAllyBark = 0;
     this.nextChirp = 0;
@@ -2627,21 +2625,7 @@ export default class Level1 extends Phaser.Scene {
 
     let text = t(this.levelData.goalKey || 'goal.survive');
     let color = '#6ec6a8';
-    if (
-      this.phase === 'day' &&
-      this.phaseTime <= 0 &&
-      !this.errandsComplete()
-    ) {
-      text = t('goal.errands');
-      color = '#ffd166';
-    } else if (
-      this.phase === 'night' &&
-      this.phaseTime <= 0 &&
-      !this.nightErrandsComplete()
-    ) {
-      text = t('goal.errandsNight');
-      color = '#ffd166';
-    } else if (this.alphaActive && !this.alphaDefeated) {
+    if (this.alphaActive && !this.alphaDefeated) {
       text = t(this.levelData.boss?.goalKey || 'goal.alpha', {
         hits: this.alpha?.health ?? 5,
         max: this.alpha?.maxHealth ?? 5,
@@ -2668,7 +2652,7 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesErrandsDesc?.setVisible(hasErrands);
     if (hasErrands) {
       const check = (done) => (done ? '✓' : '○');
-      const dayDone = !this.poloGift && this.bellRung;
+      const dayDone = this.errandsComplete();
       const nightDone = this.nightErrandsComplete();
       this.objectivesErrandsLine
         .setText(
@@ -2948,20 +2932,9 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar.fillStyle(this.hunger < 25 ? 0xf26b5e : 0xf0a03c, 1);
     this.hungerBar.fillRect(hungerX + 1 * S, hungerY + 1 * S, width, 4 * S);
 
-    const waitingDayErrands =
-      this.phase === 'day' &&
-      this.phaseTime <= 0 &&
-      !this.errandsComplete();
-    const waitingNightErrands =
-      this.phase === 'night' &&
-      this.phaseTime <= 0 &&
-      !this.nightErrandsComplete();
-    const waitingErrands = waitingDayErrands || waitingNightErrands;
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
-    const phaseLabel = waitingErrands
-      ? t('hud.errandsPending')
-      : `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`;
+    const phaseLabel = `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`;
     let gateLabel = '';
     if (this.gateText) {
       gateLabel = this.gateBroken
@@ -2975,9 +2948,7 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText.setText(
       this.touchDevice && gateLabel ? `${phaseLabel} · ${gateLabel}` : phaseLabel,
     );
-    this.phaseText.setColor(
-      waitingErrands || this.phase === 'night' ? '#ffd166' : '#fff4e0',
-    );
+    this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
 
     this.updateGoalHud();
   }
@@ -3008,18 +2979,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.won || this.gameOverFlag) return;
 
     if (this.phase === 'day') {
-      if (this.phaseTime <= 0) {
-        if (!this.errandsComplete()) {
-          this.phaseTime = 0;
-          if (!this.errandGateHintShown) {
-            this.errandGateHintShown = true;
-            this.showPhaseBanner(t('errands.required'), '#ffd166');
-            this.updateGoalHud();
-          }
-        } else {
-          this.startNight();
-        }
-      }
+      if (this.phaseTime <= 0) this.startNight();
     } else {
       if (this.waveSpawned < this.waveTotal) {
         this.nextWave -= dt;
@@ -3056,16 +3016,7 @@ export default class Level1 extends Phaser.Scene {
           this.phaseTime = 0;
           this.alphaActive = true;
         } else if (!this.alphaEnding) {
-          if (!this.nightErrandsComplete()) {
-            this.phaseTime = 0;
-            if (!this.nightErrandGateHintShown) {
-              this.nightErrandGateHintShown = true;
-              this.showPhaseBanner(t('errands.nightRequired'), '#ffd166');
-              this.updateGoalHud();
-            }
-          } else {
-            this.endNight();
-          }
+          this.endNight();
         }
       }
     }
@@ -3163,7 +3114,6 @@ export default class Level1 extends Phaser.Scene {
     this.porchGate?.clearTint().setAlpha(1);
     this.gateSign?.setVisible(true);
 
-    this.errandGateHintShown = false;
     this.poloIcon?.setVisible(this.poloGift);
     this.bellIcon?.setVisible(!this.bellRung);
 
