@@ -2377,7 +2377,7 @@ export default class Level1 extends Phaser.Scene {
     // hunger: bone icon + bar
     this.hungerIcon = this.add
       .image(
-        (this.compactLayout ? 122 : 75) * S,
+        (this.compactLayout ? 130 : 75) * S,
         (this.compactLayout ? 10 : 34) * S,
         'boneIcon',
       )
@@ -3066,7 +3066,9 @@ export default class Level1 extends Phaser.Scene {
       }
     }
 
-    const staminaX = (pipStartX + maxFlaps * pipGap + 2) * S;
+    const staminaX = this.compactLayout
+      ? this.scale.width - 58 * S
+      : (pipStartX + maxFlaps * pipGap + 2) * S;
     this.staminaIcon
       .setPosition(staminaX, 10 * S)
       .setScale(this.compactLayout ? 0.65 : 0.6);
@@ -3107,7 +3109,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.hungerBar.clear();
     this.hungerBar.fillStyle(0x2b1b3d, 0.8);
-    const hungerX = this.compactLayout ? 76 * S : 30 * S;
+    const hungerX = this.compactLayout ? 84 * S : 30 * S;
     const hungerY = this.compactLayout ? 7 * S : 31 * S;
     this.hungerBar.fillRect(hungerX, hungerY, 44 * S, 6 * S);
     this.hungerBar.lineStyle(1 * S, 0xfff4e0, 0.55);
