@@ -48,6 +48,13 @@ export const FOLK_CSS = {
 export const FONT =
   '"Trebuchet MS", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
 
+// Menu type is deliberately limited to two sizes. Hierarchy comes from weight,
+// color and spacing rather than another font size.
+export const MENU_TEXT = {
+  heading: 14 * SCALE,
+  body: 5.5 * SCALE,
+};
+
 const BUTTON_STYLES = {
   primary: {
     fill: FOLK.coral,
@@ -78,7 +85,7 @@ export function addMenuButton(
     y = 0,
     label = '',
     variant = 'primary',
-    fontSize = 6 * SCALE,
+    fontSize = MENU_TEXT.body,
     minWidth = 0,
     height = 0,
     paddingX = 12 * U,

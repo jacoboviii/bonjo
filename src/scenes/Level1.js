@@ -16,6 +16,7 @@ import {
   FOLK,
   FOLK_CSS,
   FONT,
+  MENU_TEXT,
 } from '../ui/FolkCard.js';
 import LampLightingPipeline from '../ui/LightingPostFX.js';
 import { t } from '../i18n.js';
@@ -3066,7 +3067,8 @@ export default class Level1 extends Phaser.Scene {
     this.dialogName = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 6 * S,
+        fontStyle: 'bold',
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.gold,
         backgroundColor: FOLK_CSS.ink,
       })
@@ -3075,14 +3077,14 @@ export default class Level1 extends Phaser.Scene {
 
     this.dialogBody = this.add.text(0, 0, '', {
       fontFamily: FONT,
-      fontSize: 6 * S,
+      fontSize: MENU_TEXT.body,
       color: FOLK_CSS.ink,
       lineSpacing: 2 * S,
     });
     this.dialogHint = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.ink,
       })
       .setOrigin(1, 1)
@@ -3233,18 +3235,20 @@ export default class Level1 extends Phaser.Scene {
 
     const headingStyle = {
       fontFamily: FONT,
-      fontSize: 5.5 * S,
+      fontStyle: 'bold',
+      fontSize: MENU_TEXT.body,
       color: FOLK_CSS.teal,
     };
     const bodyStyle = {
       fontFamily: FONT,
-      fontSize: 5 * S,
+      fontSize: MENU_TEXT.body,
       color: FOLK_CSS.ink,
       lineSpacing: 2 * S,
     };
     const goalStyle = {
       fontFamily: FONT,
-      fontSize: 7 * S,
+      fontStyle: 'bold',
+      fontSize: MENU_TEXT.body,
       color: FOLK_CSS.mint,
       stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
@@ -3293,7 +3297,7 @@ export default class Level1 extends Phaser.Scene {
       objectives: addMenuButton(this, {
         label: t('objectives.title'),
         variant: 'primary',
-        fontSize: 5 * S,
+        fontSize: MENU_TEXT.body,
         height: 24 * U,
         paddingX: 8 * U,
         paddingY: 2 * U,
@@ -3304,7 +3308,7 @@ export default class Level1 extends Phaser.Scene {
       instructions: addMenuButton(this, {
         label: t('instructions.title'),
         variant: 'secondary',
-        fontSize: 5 * S,
+        fontSize: MENU_TEXT.body,
         height: 24 * U,
         paddingX: 8 * U,
         paddingY: 2 * U,
@@ -3316,7 +3320,7 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesMenuButton = addMenuButton(this, {
       label: t('objectives.menu'),
       variant: 'dark',
-      fontSize: 5 * S,
+      fontSize: MENU_TEXT.body,
       paddingX: 8 * U,
       paddingY: 6 * U,
       depth: 160,
@@ -3328,7 +3332,7 @@ export default class Level1 extends Phaser.Scene {
         ? t('objectives.closeTouch')
         : t('objectives.close'),
       variant: 'dark',
-      fontSize: this.compactLayout ? 5 * S : 4 * S,
+      fontSize: MENU_TEXT.body,
       paddingX: this.compactLayout ? 6 * U : 2 * S,
       paddingY: this.compactLayout ? 8 * U : 1 * S,
       depth: 160,
@@ -5448,7 +5452,8 @@ export default class Level1 extends Phaser.Scene {
     const title = this.add
       .text(0, -10 * U, t('respawn.title'), {
         fontFamily: FONT,
-        fontSize: 6.2 * S,
+        fontStyle: 'bold',
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.mint,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
@@ -5458,7 +5463,7 @@ export default class Level1 extends Phaser.Scene {
     const body = this.add
       .text(0, 12 * U, t('respawn.body'), {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.cream,
         align: 'center',
         wordWrap: { width: w - 24 * U },
@@ -5529,10 +5534,6 @@ export default class Level1 extends Phaser.Scene {
   }) {
     const W = this.scale.width;
     const cardW = Math.min(W - 64 * U, 440 * U);
-    const titleSize = Math.min(
-      18 * S,
-      Math.max(10 * S, Math.floor((cardW - 48 * U) / (titleText.length * 0.62))),
-    );
 
     const overlay = this.add
       .rectangle(W / 2, 72 * S, W, 144 * S, FOLK.ink, 0.82)
@@ -5548,7 +5549,7 @@ export default class Level1 extends Phaser.Scene {
       .text(W / 2, 40 * S, titleText, {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: titleSize,
+        fontSize: MENU_TEXT.heading,
         color: titleColor,
       })
       .setOrigin(0.5)
@@ -5560,7 +5561,7 @@ export default class Level1 extends Phaser.Scene {
       epilogue = this.add
         .text(W / 2, 53 * S, epilogueText, {
           fontFamily: FONT,
-          fontSize: 5 * S,
+          fontSize: MENU_TEXT.body,
           color: FOLK_CSS.ink,
           align: 'center',
           wordWrap: { width: cardW - 24 * U },
@@ -5573,7 +5574,7 @@ export default class Level1 extends Phaser.Scene {
     const stats = this.add
       .text(W / 2, epilogueText ? 72 * S : 64 * S, statsText, {
         fontFamily: FONT,
-        fontSize: 9 * S,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.ink,
       })
       .setOrigin(0.5)
@@ -5583,7 +5584,7 @@ export default class Level1 extends Phaser.Scene {
     const rank = this.add
       .text(W / 2, epilogueText ? 86 * S : 82 * S, rankText, {
         fontFamily: FONT,
-        fontSize: 8 * S,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.teal,
       })
       .setOrigin(0.5)
@@ -5600,7 +5601,7 @@ export default class Level1 extends Phaser.Scene {
       y: promptY,
       label: promptText,
       variant: 'primary',
-      fontSize: 8 * S,
+      fontSize: MENU_TEXT.body,
       minWidth: 160 * S,
       height: 18 * S,
       depth: 202,
@@ -5682,7 +5683,7 @@ export default class Level1 extends Phaser.Scene {
     const mapButton = addMenuButton(this, {
       label: t(touch ? 'map.shortcutTouch' : 'map.shortcut'),
       variant: 'secondary',
-      fontSize: touch ? 6 * S : 5 * S,
+      fontSize: MENU_TEXT.body,
       paddingX: touch ? 8 * U : 3 * U,
       paddingY: touch ? 6 * U : 2 * U,
       depth: 204,

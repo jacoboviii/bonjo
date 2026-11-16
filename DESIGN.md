@@ -579,9 +579,9 @@ Rules:
 - Black chow always carries a lavender rim light so he reads against dark walls.
 - At night the sky goes near-black while the windows stay lit; the sun sets,
   a pale cratered moon rises above the darkness, and the HUD stays bright.
-- The night wash dims the town and street dressing, but gameplay entities
-  (bones, conchas, enemies, checkpoints, piñatas and time shards) render above
-  it so they stay fully readable.
+- The night wash dims the town and street dressing, while gameplay entities
+  render above the flat overlay. On WebGL the lighting pass also darkens the
+  entity layer, with lamp pools and Bonjo's cool halo preserving readability.
 - Title/end screens use rounded paper cards with thin ink rules, soft shadows
   and a single guardian paw badge.
 - Friendly NPC dialog uses the same paper card, pauses gameplay while open and
@@ -592,8 +592,12 @@ Rules:
   buttons and paper-tinted secondary buttons. The title, map, objectives,
   dialog, respawn and end screens should not introduce one-off button fills or
   near-matching colors.
-  Menu metadata stays at least `5 × SCALE` (15 px at the 3× render scale);
-  in-world building signs can remain `4.5 × SCALE` because they are framed by
+  Menus use exactly two type sizes from `MENU_TEXT` in `ui/FolkCard.js`:
+  `heading` (`14 × SCALE`, 42 px at the 3× render scale) for the title
+  wordmark, map header and end-screen titles, and `body` (`5.5 × SCALE`,
+  16.5 px) for every other menu label, card line and button. Hierarchy inside
+  the body size comes from weight, color and spacing, not another font size.
+  In-world building signs can remain `4.5 × SCALE` because they are framed by
   the street art rather than read as a paragraph.
 - Input hints are conditional: `E · CLOSE` / `O · CLOSE` / `R · RETRY` on
   keyboard, `TAP · CLOSE` / `TAP · RETRY` on touch. The map shortcuts use

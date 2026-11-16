@@ -6,6 +6,7 @@ import {
   addMenuButton,
   FOLK_CSS,
   FONT,
+  MENU_TEXT,
 } from '../ui/FolkCard.js';
 import { parallaxScale } from '../motion.js';
 
@@ -116,7 +117,7 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 28 * S, 'BONJO', {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: 64 * U,
+        fontSize: MENU_TEXT.heading,
         color: FOLK_CSS.coral,
       })
       .setOrigin(0.5);
@@ -125,7 +126,7 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 48 * S, t('title.subtitle'), {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: 16 * U,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.ink,
       })
       .setOrigin(0.5);
@@ -134,7 +135,7 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 64 * S, t('title.place'), {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: 10 * U,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.teal,
         letterSpacing: 1.5 * U,
       })
@@ -151,7 +152,7 @@ export default class Title extends Phaser.Scene {
       y: 114 * S,
       label: t(isTouch ? 'title.startTouch' : 'title.startKeyboard'),
       variant: 'primary',
-      fontSize: 20 * U,
+      fontSize: MENU_TEXT.body,
       minWidth: 230 * U,
       height: 34 * U,
       depth: 8,
@@ -168,7 +169,7 @@ export default class Title extends Phaser.Scene {
     const controls = this.add
       .text(W / 2, 133 * S, t('title.controls'), {
         fontFamily: FONT,
-        fontSize: 12 * U,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 4 * U,
@@ -180,7 +181,7 @@ export default class Title extends Phaser.Scene {
     this.add
       .text(6 * S, 6 * S, t('title.version'), {
         fontFamily: FONT,
-        fontSize: 12 * U,
+        fontSize: MENU_TEXT.body,
         color: FOLK_CSS.cream,
       })
       .setAlpha(0.45);
@@ -195,7 +196,7 @@ export default class Title extends Phaser.Scene {
         y: 5 * S,
         label: code.toUpperCase(),
         variant: active ? 'primary' : 'secondary',
-        fontSize: 6 * S,
+        fontSize: MENU_TEXT.body,
         minWidth: 40 * U,
         height: 18 * U,
         paddingX: 5 * U,
