@@ -214,6 +214,15 @@ export const lasOrillas = {
     { x: 4200, y: 508, amp: 8, speed: 26, dir: 1 },
   ],
 
+  // Clear of the foreground facades (x: 1100, 2800, 4200) and above the field.
+  timeShards: [
+    [220, 520], [500, 500], [800, 480],
+    [1320, 520], [1500, 500], [1900, 480],
+    [2200, 520], [2500, 500], [2700, 480],
+    [3120, 520], [3300, 500], [3600, 480],
+    [3900, 520], [4450, 500],
+  ],
+
   foregroundHouses: [
     { x: 1100, key: 'foregroundHouseB' },
     { x: 2800, key: 'foregroundHouseC' },

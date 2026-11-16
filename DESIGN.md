@@ -309,11 +309,12 @@ night. These are all optional, but they reward learning the block.
 
 ### Time shards
 The phase clock is **shard-driven**. Each day/night phase spawns a fresh pool of
-14 shards: rayed gold suns by day, pale crescent moons by night. They are spread
-from the porch to the far end of the level across four height bands. Touching
-one removes four seconds from the phase clock and shows a `+4s` pickup; the
-clock does not tick on its own, so standing still freezes time. The clock only
-advances when Bonjo explores.
+14 shards: rayed gold suns by day, pale crescent moons by night. They are
+hand-placed from the porch to the far end of the level, always above street
+level and clear of the foreground house facades (and their piñata lanes).
+Touching one removes four seconds from the phase clock and shows a `+4s`
+pickup; the clock does not tick on its own, so standing still freezes time. The
+clock only advances when Bonjo explores.
 
 The HUD clock maps each phase to half a day: day runs 06:00 → 18:00 and night
 runs 18:00 → 06:00. Collecting a shard moves both the analog hands and the

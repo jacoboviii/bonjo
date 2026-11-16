@@ -225,6 +225,16 @@ export const laCuadra = {
     { x: 4700, y: 506, amp: 8, speed: 24, dir: 1 },
   ],
 
+  // Hand-placed so shards hang above the pavement and stay clear of the
+  // foreground facades (x: 1040, 2040, 3040, 4550).
+  timeShards: [
+    [360, 520], [520, 500], [820, 480],
+    [1220, 520], [1560, 500], [1820, 480],
+    [2220, 520], [2500, 500], [2750, 480],
+    [3230, 520], [3500, 500], [3820, 480],
+    [4200, 520], [4820, 500],
+  ],
+
   foregroundHouses: [
     { x: 1040, key: 'foregroundHouseA' },
     { x: 2040, key: 'foregroundHouseB' },

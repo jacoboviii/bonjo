@@ -116,6 +116,7 @@ let LEDGE_FOODS;
 let TACO_CARTS;
 let TRASH_SPOTS;
 let SPARK_POLES;
+let TIME_SHARDS;
 let SHOP_SIGNS;
 let GATE_X;
 let POLO_X;
@@ -155,6 +156,7 @@ function applyLevelData(level) {
   TACO_CARTS = level.tacoCarts;
   TRASH_SPOTS = level.trashSpots;
   SPARK_POLES = level.sparkPoles || [];
+  TIME_SHARDS = level.timeShards || [];
   SHOP_SIGNS = level.shopSigns || [];
   GATE_X = level.gateX;
   POLO_X = level.poloX;
@@ -2202,9 +2204,14 @@ export default class Level1 extends Phaser.Scene {
 
     const key = this.phase === 'day' ? 'sunShard' : 'moonShard';
     const worldWidth = WORLD_W / S;
-    for (let i = 0; i < TIME_SHARD_COUNT; i++) {
-      const x = 180 + i * ((worldWidth - 360) / (TIME_SHARD_COUNT - 1));
-      const y = 585 - (i % 4) * 20;
+    // Authored positions keep shards airborne and out of the foreground
+    // facades. Fall back to a safe high band for future level data.
+    const fallback = Array.from({ length: TIME_SHARD_COUNT }, (_, i) => [
+      180 + i * ((worldWidth - 360) / (TIME_SHARD_COUNT - 1)),
+      520 - (i % 3) * 20,
+    ]);
+    const positions = TIME_SHARDS.length ? TIME_SHARDS : fallback;
+    positions.forEach(([x, y], i) => {
       const shard = this.timeShardGroup.create(x * S, y * S, key);
       // Time shards glow through the night overlay, so keep them above it.
       shard.setDepth(ENTITY_DEPTH).setScale(0.9);
@@ -2219,7 +2226,7 @@ export default class Level1 extends Phaser.Scene {
         repeat: -1,
         ease: 'Sine.inOut',
       });
-    }
+    });
   }
 
   collectTimeShard(dog, shard) {
