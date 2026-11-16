@@ -4879,6 +4879,11 @@ export default class Level1 extends Phaser.Scene {
     this.gateText?.setVisible(false);
     this.clockGraphics?.setVisible(false);
     this.clockText?.setVisible(false);
+    if (this.respawnNotice) {
+      this.tweens.killTweensOf(this.respawnNotice);
+      this.respawnNotice.destroy();
+      this.respawnNotice = null;
+    }
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
     this.alphaCrown?.setVisible(false);
@@ -4959,16 +4964,76 @@ export default class Level1 extends Phaser.Scene {
     this.dog.setRotation(0);
     this.dog.setAlpha(1);
     this.dog.clearTint();
-    this.dog.invuln = 2;
+    this.dog.invuln = 2.4;
     this.dog.flaps = this.dog.maxFlaps;
     this.dog.stamina = this.dog.maxStamina;
     this.touch?.reset();
     this.resetCombo();
     this.updateSurvivalHud();
     this.cameras.main.flash(180, 110, 198, 168);
-    this.showPhaseBanner(t('float.checkpoint'), '#6ec6a8');
-    this.floatText(this.dog.x, this.dog.y - 24 * S, t('float.checkpoint'), '#6ec6a8');
+    this.spawnImpactBurst(this.dog.x, this.dog.y, {
+      color: 0x6ec6a8,
+      radius: 22 * S,
+      width: 2.5 * S,
+      duration: 320,
+      puffs: 4,
+    });
+    this.showRespawnNotice();
+    sfx.checkpoint();
     return true;
+  }
+
+  showRespawnNotice() {
+    if (this.respawnNotice) {
+      this.tweens.killTweensOf(this.respawnNotice);
+      this.respawnNotice.destroy();
+    }
+
+    const W = this.scale.width;
+    const w = Math.min(W - 32 * U, 360 * U);
+    const h = 46 * U;
+    const root = this.add
+      .container(W / 2, 52 * S)
+      .setScrollFactor(0)
+      .setDepth(220)
+      .setAlpha(0);
+
+    const panel = this.add
+      .rectangle(0, 0, w, h, 0x1b1029, 0.9)
+      .setStrokeStyle(1.5 * U, 0x6ec6a8, 0.95);
+    const title = this.add
+      .text(0, -9 * U, t('respawn.title'), {
+        fontFamily: 'monospace',
+        fontSize: 6.2 * S,
+        color: '#6ec6a8',
+        stroke: '#1b1029',
+        strokeThickness: 2 * S,
+        align: 'center',
+      })
+      .setOrigin(0.5);
+    const body = this.add
+      .text(0, 8 * U, t('respawn.body'), {
+        fontFamily: 'monospace',
+        fontSize: 3.8 * S,
+        color: '#fff4e0',
+        align: 'center',
+        wordWrap: { width: w - 24 * U },
+      })
+      .setOrigin(0.5);
+
+    root.add([panel, title, body]);
+    this.respawnNotice = root;
+    this.tweens.add({
+      targets: root,
+      alpha: 1,
+      duration: 180,
+      hold: 1500,
+      yoyo: true,
+      onComplete: () => {
+        root.destroy();
+        if (this.respawnNotice === root) this.respawnNotice = null;
+      },
+    });
   }
 
   gameOver() {

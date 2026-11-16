@@ -391,9 +391,10 @@ arena; the porch is where you catch your breath.
 ### Checkpoints
 Balloons at the midpoint and on the east block; touch one to restore one heart
 and arm a single retry at that balloon. If Bonjo loses all hearts, he revives
-there once with full health and IMPULSE; the retry is consumed. After the retry
-is used, the next defeat ends the run normally. There is no goal balloon: the win
-condition is surviving Night 2 and repelling the top dog.
+there once with full health and IMPULSE; a mint-framed respawn card confirms
+where he is and warns that the next defeat ends the run. The retry is consumed.
+After the retry is used, the next defeat ends the run normally. There is no goal
+balloon: the win condition is surviving Night 2 and repelling the top dog.
 
 ---
 
