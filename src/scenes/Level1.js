@@ -286,7 +286,7 @@ export default class Level1 extends Phaser.Scene {
     this.createDialogUi();
     this.createTuningPanel();
     this.showIntro();
-    this.queueClockHint(3200);
+    this.queueClockHint(4300);
     this.updateHud(0);
 
     // Dev-only handle so automated playtests can read the dog's state.
