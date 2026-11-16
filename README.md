@@ -259,7 +259,7 @@ there to make them permanent.
 - **Time-of-day clock**: an analog clock with a digital `06:00 → 18:00 → 06:00` readout tracks the shard-driven day and turns from gold to moonlit blue at night
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
-- **Two-tab pause panel (O)**: Objectives for the current goal and optional Polo/bell errands; Instructions for controls and each HUD meter
+- **Two-tab pause panel (O)**: Objectives for the current goal and optional Polo/bell errands; Instructions for controls and each HUD meter; **MENU** returns to the title with a leave-run confirmation
 - **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase clock and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
 - **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges; starting an attack while rising preserves the jump

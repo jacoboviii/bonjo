@@ -3099,6 +3099,16 @@ export default class Level1 extends Phaser.Scene {
         onClick: () => this.setObjectivesTab('instructions'),
       }).setVisible(false),
     };
+    this.objectivesMenuButton = addMenuButton(this, {
+      label: t('objectives.menu'),
+      variant: 'dark',
+      fontSize: 5 * S,
+      paddingX: 8 * U,
+      paddingY: 6 * U,
+      depth: 160,
+      scrollFactor: 0,
+      onClick: () => this.returnToMenu(),
+    }).setVisible(false);
     this.objectivesClose = addMenuButton(this, {
       label: this.touch?.visible
         ? t('objectives.closeTouch')
@@ -3185,11 +3195,39 @@ export default class Level1 extends Phaser.Scene {
       W / 2 + w / 2 - 16 * U - this.objectivesClose.w / 2,
       this.scale.height / 2 - h / 2 + 13 * U + this.objectivesClose.h / 2,
     );
+    this.objectivesMenuButton.setPosition(
+      W / 2 - w / 2 + 30 * U + this.objectivesMenuButton.w / 2,
+      this.scale.height / 2 + h / 2 - 10 * U - this.objectivesMenuButton.h / 2,
+    );
+  }
+
+  resetMenuConfirm() {
+    if (!this.objectivesMenuButton) return;
+    this.menuConfirmPending = false;
+    this.objectivesMenuButton
+      .setLabel(t('objectives.menu'))
+      .setVariant('dark');
+  }
+
+  returnToMenu() {
+    if (!this.menuConfirmPending) {
+      this.menuConfirmPending = true;
+      this.objectivesMenuButton
+        .setLabel(t('objectives.menuConfirm'))
+        .setVariant('primary');
+      return;
+    }
+
+    this.resetMenuConfirm();
+    this.closeObjectives();
+    this.cameras.main.fadeOut(180, 27, 16, 41);
+    this.time.delayedCall(190, () => this.scene.start('Title'));
   }
 
   setObjectivesTab(tab) {
     if (!this.objectivesTabButtons) return;
     this.objectivesTab = tab === 'instructions' ? 'instructions' : 'objectives';
+    this.resetMenuConfirm();
     const showObjectives = this.objectivesTab === 'objectives';
     this.objectivesTabObjects?.forEach((item) => item.setVisible(showObjectives));
     this.instructionsTabObjects?.forEach((item) =>
@@ -3218,6 +3256,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesButton.setVisible(false);
     this.objectivesTabButtons.objectives.setVisible(true);
     this.objectivesTabButtons.instructions.setVisible(true);
+    this.objectivesMenuButton.setVisible(true);
+    this.resetMenuConfirm();
     this.objectivesClose
       .setLabel(
         this.objectivesWasTouch
@@ -3246,6 +3286,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesRoot.setVisible(false);
     this.objectivesTabButtons.objectives.setVisible(false);
     this.objectivesTabButtons.instructions.setVisible(false);
+    this.objectivesMenuButton.setVisible(false);
+    this.resetMenuConfirm();
     this.objectivesClose.setVisible(false);
     this.objectivesButton.setVisible(true);
     if (this.objectivesWasTouch) this.touch?.show(true);
@@ -5026,6 +5068,7 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesRoot?.setVisible(false);
     this.objectivesTabButtons?.objectives.setVisible(false);
     this.objectivesTabButtons?.instructions.setVisible(false);
+    this.objectivesMenuButton?.setVisible(false);
     this.objectivesClose?.setVisible(false);
     this.interactBubble?.setVisible(false);
     this.hearts.forEach((heart) => heart.setVisible(false));

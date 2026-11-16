@@ -374,7 +374,8 @@ An off-screen boss arrow points toward the top dog and labels its Casa location.
 The **O / OBJETIVOS** pause panel pauses the game and splits into two tabs:
 **Objectives** for the current goal and optional day/night errands, and
 **Instructions** for controls and each HUD meter, including dawn warnings and
-the top-dog hit count. Errands do not gate the clock: the phase advances only when
+the top-dog hit count. A **MENU** button in the lower-left confirms before
+abandoning the run and returning to the title. Errands do not gate the clock: the phase advances only when
 sun or moon shards are collected, so waiting freezes it. Dawn still arrives even
 if Polo, the bell, the gate check or the two-rival night goal were skipped.
 Errand progress never resets, and the pause panel lists day and night checks as
