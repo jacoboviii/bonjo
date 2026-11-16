@@ -247,7 +247,7 @@ there to make them permanent.
 - Two flaps, glide and slide — each with its own animation pose
 - **Flap charges** are the double-jump resource and refill on landing; **IMPULSE stamina** only gates the slide and refills with conchas dropped by enemies
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
-- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing
+- **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing; at one heart the screen edges pulse red and a **LAST HEART** warning appears
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
 - **Unified folk-paper interface**: title, map, objectives, dialog, respawn and end screens share the same ink/paper/coral palette, button hierarchy and monospace type; keyboard and touch prompts switch with the active input mode

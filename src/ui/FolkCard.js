@@ -20,6 +20,7 @@ export const FOLK = {
   cobalt: 0x244a7a,
   cream: 0xfff4e0,
   muted: 0x6a5a70,
+  danger: 0xf26b5e,
 };
 
 // CSS-string and type tokens for Phaser Text styles. Keep menu copy in this

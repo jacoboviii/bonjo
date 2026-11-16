@@ -200,6 +200,8 @@ export default class Level1 extends Phaser.Scene {
     // Scene instances and their old display groups survive scene.start();
     // clear cached references before rebuilding them for a fresh run.
     this.timeShardGroup = null;
+    this.lowHealthActive = false;
+    this.lowHealthTween = null;
     this.respawnNotice = null;
     this.endLayout = null;
     this.endTransition = false;
@@ -354,6 +356,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
     this.layoutClockHud(W);
+    this.layoutLowHealthWarning(W);
 
     this.touch?.relayout(W);
     this.layoutDialog(W);
@@ -2632,6 +2635,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.createClockHud();
+    this.createLowHealthWarning();
 
     this.createObjectivesUi();
     this.updateSurvivalHud();
@@ -2796,6 +2800,70 @@ export default class Level1 extends Phaser.Scene {
       yoyo: true,
       ease: 'Quad.out',
     });
+  }
+
+  createLowHealthWarning() {
+    const makeEdge = () =>
+      this.add
+        .rectangle(0, 0, 1, 1, FOLK.danger, 0)
+        .setScrollFactor(0)
+        .setDepth(90)
+        .setVisible(false);
+    this.lowHealthEdges = {
+      top: makeEdge(),
+      bottom: makeEdge(),
+      left: makeEdge(),
+      right: makeEdge(),
+    };
+    this.layoutLowHealthWarning(this.scale.width);
+  }
+
+  layoutLowHealthWarning(W = this.scale.width) {
+    if (!this.lowHealthEdges) return;
+    const H = this.scale.height;
+    const edge = 5 * S;
+    this.lowHealthEdges.top
+      .setPosition(W / 2, edge / 2)
+      .setSize(W, edge);
+    this.lowHealthEdges.bottom
+      .setPosition(W / 2, H - edge / 2)
+      .setSize(W, edge);
+    this.lowHealthEdges.left
+      .setPosition(edge / 2, H / 2)
+      .setSize(edge, H);
+    this.lowHealthEdges.right
+      .setPosition(W - edge / 2, H / 2)
+      .setSize(edge, H);
+  }
+
+  setLowHealthWarning(active) {
+    if (!this.lowHealthEdges) return;
+    const targets = Object.values(this.lowHealthEdges);
+    if (this.lowHealthActive === active) return;
+    this.lowHealthActive = active;
+    this.tweens.killTweensOf(targets);
+    if (!active) {
+      targets.forEach((edge) => edge.setAlpha(0).setVisible(false));
+      return;
+    }
+    targets.forEach((edge) => edge.setAlpha(0.12).setVisible(true));
+    this.lowHealthTween = this.tweens.add({
+      targets,
+      alpha: 0.32,
+      duration: 620,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+  }
+
+  announceLowHealth(previousHealth) {
+    if (previousHealth > 1 && this.health === 1) {
+      this.showPhaseBanner(t('warning.lastHeart'), FOLK_CSS.danger, {
+        duration: 250,
+        hold: 1400,
+      });
+    }
   }
 
   addHudHeart(index) {
@@ -3674,6 +3742,7 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText.setText(phaseLabel);
     this.phaseText.setColor(this.phase === 'night' ? FOLK_CSS.gold : FOLK_CSS.cream);
     this.updateClockHud();
+    this.setLowHealthWarning(this.health <= 1 && !this.won && !this.gameOverFlag);
 
     this.updateGoalHud();
   }
@@ -4981,6 +5050,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.dog.dodgeUntil > this.time.now) return;
     if (this.dog.stompGraceUntil > this.time.now) return;
 
+    const previousHealth = this.health;
     this.resetCombo();
     this.health -= 1;
     this.runStats.damage += 1;
@@ -4991,6 +5061,7 @@ export default class Level1 extends Phaser.Scene {
       this.gameOver();
       return;
     }
+    this.announceLowHealth(previousHealth);
 
     if (
       source?.role === 'thief' &&
@@ -5026,6 +5097,7 @@ export default class Level1 extends Phaser.Scene {
   fall() {
     if (this.won || this.gameOverFlag) return;
 
+    const previousHealth = this.health;
     this.resetCombo();
     this.health -= 1;
     this.runStats.falls += 1;
@@ -5036,6 +5108,7 @@ export default class Level1 extends Phaser.Scene {
       this.gameOver();
       return;
     }
+    this.announceLowHealth(previousHealth);
 
     this.dog.body.reset(this.spawnPoint.x, this.spawnPoint.y);
     this.dog.setVelocity(0, 0);
@@ -5052,13 +5125,18 @@ export default class Level1 extends Phaser.Scene {
   starve() {
     if (this.won || this.gameOverFlag) return;
 
+    const previousHealth = this.health;
     this.resetCombo();
     this.health -= 1;
     this.runStats.starved += 1;
     this.updateSurvivalHud();
     this.cameras.main.flash(100, 242, 107, 94);
 
-    if (this.health <= 0 && !this.tryCheckpointRetry()) this.gameOver();
+    if (this.health <= 0 && !this.tryCheckpointRetry()) {
+      this.gameOver();
+      return;
+    }
+    this.announceLowHealth(previousHealth);
   }
 
   hideEndHud() {
@@ -5098,6 +5176,7 @@ export default class Level1 extends Phaser.Scene {
     this.clockGraphics?.setVisible(false);
     this.clockText?.setVisible(false);
     this.clockGlow?.setVisible(false);
+    this.setLowHealthWarning(false);
     if (this.respawnNotice) {
       this.tweens.killTweensOf(this.respawnNotice);
       this.respawnNotice.destroy();
