@@ -3124,8 +3124,8 @@ export default class Level1 extends Phaser.Scene {
 
     const stamina = this.dog?.stamina ?? 0;
     this.staminaIcons.forEach((icon, i) => {
-      icon.setTexture(i < stamina ? 'conchaIcon' : 'conchaEmpty');
-      icon.setAlpha(i < stamina ? 0.95 : 0.72);
+      icon.setTexture('conchaIcon');
+      icon.setAlpha(i < stamina ? 0.95 : 0.22);
     });
 
     this.boneText.setText(`${t('hud.bones')} ${this.bonesCount}`);
