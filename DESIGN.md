@@ -592,11 +592,12 @@ Rules:
   buttons and paper-tinted secondary buttons. The title, map, objectives,
   dialog, respawn and end screens should not introduce one-off button fills or
   near-matching colors.
-  Menus use exactly two type sizes from `MENU_TEXT` in `ui/FolkCard.js`:
-  `heading` (`14 × SCALE`, 42 px at the 3× render scale) for the title
-  wordmark, map header and end-screen titles, and `body` (`5.5 × SCALE`,
-  16.5 px) for every other menu label, card line and button. Hierarchy inside
-  the body size comes from weight, color and spacing, not another font size.
+  Menus use three role-based sizes from `MENU_TEXT` in `ui/FolkCard.js`:
+  `display` (`14 × SCALE`, 42 px), `heading` (`8 × SCALE`, 24 px) and
+  `body` (`6 × SCALE`, 18 px). The body size is the mobile floor: at a
+  390 px-tall landscape phone it resolves to about 16 CSS px, matching the
+  common mobile minimum. Hierarchy comes from weight, color and spacing, not
+  additional one-off sizes.
   In-world building signs can remain `4.5 × SCALE` because they are framed by
   the street art rather than read as a paragraph.
 - Input hints are conditional: `E · CLOSE` / `O · CLOSE` / `R · RETRY` on

@@ -117,7 +117,7 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 28 * S, 'BONJO', {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: MENU_TEXT.heading,
+        fontSize: MENU_TEXT.display,
         color: FOLK_CSS.coral,
       })
       .setOrigin(0.5);
@@ -126,7 +126,7 @@ export default class Title extends Phaser.Scene {
       .text(W / 2, 48 * S, t('title.subtitle'), {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: MENU_TEXT.body,
+        fontSize: MENU_TEXT.heading,
         color: FOLK_CSS.ink,
       })
       .setOrigin(0.5);

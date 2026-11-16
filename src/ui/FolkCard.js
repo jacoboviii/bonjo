@@ -48,11 +48,13 @@ export const FOLK_CSS = {
 export const FONT =
   '"Trebuchet MS", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
 
-// Menu type is deliberately limited to two sizes. Hierarchy comes from weight,
-// color and spacing rather than another font size.
+// Menu type uses a compact three-step role scale: display, heading and body.
+// The mobile body floor is 18 px internally, which lands at roughly 16 CSS px
+// on a 390 px-tall landscape phone.
 export const MENU_TEXT = {
-  heading: 14 * SCALE,
-  body: 5.5 * SCALE,
+  display: 14 * SCALE,
+  heading: 8 * SCALE,
+  body: 6 * SCALE,
 };
 
 const BUTTON_STYLES = {

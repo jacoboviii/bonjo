@@ -3068,7 +3068,7 @@ export default class Level1 extends Phaser.Scene {
       .text(0, 0, '', {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: MENU_TEXT.body,
+        fontSize: MENU_TEXT.heading,
         color: FOLK_CSS.gold,
         backgroundColor: FOLK_CSS.ink,
       })
@@ -3236,19 +3236,19 @@ export default class Level1 extends Phaser.Scene {
     const headingStyle = {
       fontFamily: FONT,
       fontStyle: 'bold',
-      fontSize: MENU_TEXT.body,
+      fontSize: MENU_TEXT.heading,
       color: FOLK_CSS.teal,
     };
     const bodyStyle = {
       fontFamily: FONT,
       fontSize: MENU_TEXT.body,
       color: FOLK_CSS.ink,
-      lineSpacing: 2 * S,
+      lineSpacing: 1 * U,
     };
     const goalStyle = {
       fontFamily: FONT,
       fontStyle: 'bold',
-      fontSize: MENU_TEXT.body,
+      fontSize: MENU_TEXT.heading,
       color: FOLK_CSS.mint,
       stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
@@ -3383,20 +3383,20 @@ export default class Level1 extends Phaser.Scene {
     const top = -h / 2;
     const left = -w / 2 + 30 * U;
     const wrap = w - 60 * U;
-    this.objectivesNowHead.setPosition(left, top + 48 * U);
-    this.objectivesNowGoal.setPosition(left, top + 64 * U);
-    this.objectivesNowDesc.setPosition(left, top + 84 * U).setWordWrapWidth(wrap);
-    this.objectivesErrandsHead.setPosition(left, top + 112 * U);
-    this.objectivesErrandsLine.setPosition(left, top + 128 * U);
-    this.objectivesErrandsDesc.setPosition(left, top + 146 * U).setWordWrapWidth(wrap);
+    this.objectivesNowHead.setPosition(left, top + 42 * U);
+    this.objectivesNowGoal.setPosition(left, top + 72 * U);
+    this.objectivesNowDesc.setPosition(left, top + 100 * U).setWordWrapWidth(wrap);
+    this.objectivesErrandsHead.setPosition(left, top + 134 * U);
+    this.objectivesErrandsLine.setPosition(left, top + 166 * U);
+    this.objectivesErrandsDesc.setPosition(left, top + 192 * U).setWordWrapWidth(wrap);
 
-    this.instructionsControlsHead.setPosition(left, top + 48 * U);
+    this.instructionsControlsHead.setPosition(left, top + 42 * U);
     this.instructionsControls
-      .setPosition(left, top + 64 * U)
+      .setPosition(left, top + 76 * U)
       .setWordWrapWidth(wrap);
-    this.objectivesPowersHead.setPosition(left, top + 112 * U);
+    this.objectivesPowersHead.setPosition(left, top + 126 * U);
     this.objectivesPowers
-      .setPosition(left, top + 128 * U)
+      .setPosition(left, top + 160 * U)
       .setWordWrapWidth(wrap);
 
     const tabY = this.scale.height / 2 + top + 26 * U;
@@ -5453,7 +5453,7 @@ export default class Level1 extends Phaser.Scene {
       .text(0, -10 * U, t('respawn.title'), {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: MENU_TEXT.body,
+        fontSize: MENU_TEXT.heading,
         color: FOLK_CSS.mint,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
@@ -5549,7 +5549,7 @@ export default class Level1 extends Phaser.Scene {
       .text(W / 2, 40 * S, titleText, {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: MENU_TEXT.heading,
+        fontSize: MENU_TEXT.display,
         color: titleColor,
       })
       .setOrigin(0.5)
@@ -5584,7 +5584,8 @@ export default class Level1 extends Phaser.Scene {
     const rank = this.add
       .text(W / 2, epilogueText ? 86 * S : 82 * S, rankText, {
         fontFamily: FONT,
-        fontSize: MENU_TEXT.body,
+        fontStyle: 'bold',
+        fontSize: MENU_TEXT.heading,
         color: FOLK_CSS.teal,
       })
       .setOrigin(0.5)
