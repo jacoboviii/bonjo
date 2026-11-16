@@ -52,6 +52,8 @@ const WASP_ACTIVE_SECONDS = 0.7;
 const WASP_CYCLE_SECONDS = WASP_WARN_SECONDS + WASP_ACTIVE_SECONDS + 1.4;
 const TIME_SHARD_SECONDS = 4;
 const TIME_SHARD_COUNT = 14;
+// Gameplay pickups and enemies sit above the night wash.
+const ENTITY_DEPTH = 9.7;
 const DAY_START_MINUTES = 6 * 60;
 const NIGHT_START_MINUTES = 18 * 60;
 const HALF_DAY_MINUTES = 12 * 60;
@@ -1399,7 +1401,7 @@ export default class Level1 extends Phaser.Scene {
 
   spawnFoodAt(x, y, opts = {}) {
     const food = this.foodGroup.create(x, y, 'conchaIcon');
-    food.setDepth(7);
+    food.setDepth(ENTITY_DEPTH);
     food.setScale(0.6);
     food.body.setSize(10 * S, 6 * S);
 
@@ -1458,7 +1460,7 @@ export default class Level1 extends Phaser.Scene {
       END_REWARD.y * S,
       'wingToken',
     );
-    this.endReward.setDepth(7);
+    this.endReward.setDepth(ENTITY_DEPTH);
     this.endReward.body.setSize(12 * S, 12 * S);
 
     this.tweens.add({
@@ -1508,7 +1510,7 @@ export default class Level1 extends Phaser.Scene {
 
   spawnLifeAt(x, y, opts = {}) {
     const life = this.lifeGroup.create(x, y, 'lifeHeart');
-    life.setDepth(7);
+    life.setDepth(ENTITY_DEPTH);
     life.body.setSize(16 * S, 16 * S);
     life.setData('hintAt', 0);
 
@@ -2205,7 +2207,7 @@ export default class Level1 extends Phaser.Scene {
       const y = 585 - (i % 4) * 20;
       const shard = this.timeShardGroup.create(x * S, y * S, key);
       // Time shards glow through the night overlay, so keep them above it.
-      shard.setDepth(9.7).setScale(0.9);
+      shard.setDepth(ENTITY_DEPTH).setScale(0.9);
       shard.body.setSize(10 * S, 10 * S);
       this.tweens.add({
         targets: shard,
@@ -2247,7 +2249,7 @@ export default class Level1 extends Phaser.Scene {
         point.y * S,
         'boneIcon',
       );
-      bone.setDepth(7);
+      bone.setDepth(ENTITY_DEPTH);
       bone.setScale(0.7);
       bone.body.setSize(8 * S, 6 * S);
       this.tweens.add({
@@ -2265,14 +2267,14 @@ export default class Level1 extends Phaser.Scene {
     // checkpoint balloon
     this.checkpoint = this.physics.add
       .staticImage(CHECKPOINT_X * S, CHECKPOINT_Y * S, 'balloon')
-      .setDepth(7)
+      .setDepth(ENTITY_DEPTH)
       .setTint(0x6a5a76);
     this.checkpoint.body.setSize(12 * S, 18 * S);
     this.physics.add.overlap(this.dog, this.checkpoint, this.touchCheckpoint, null, this);
 
     this.checkpoint2 = this.physics.add
       .staticImage(CHECKPOINT2_X * S, CHECKPOINT_Y * S, 'balloon')
-      .setDepth(7)
+      .setDepth(ENTITY_DEPTH)
       .setTint(0x6ec6a8);
     this.checkpoint2.body.setSize(12 * S, 18 * S);
     this.physics.add.overlap(
@@ -4779,7 +4781,7 @@ export default class Level1 extends Phaser.Scene {
 
   spawnBoneAt(x, y, opts = {}) {
     const bone = this.boneGroup.create(x, y, 'boneIcon');
-    bone.setDepth(7);
+    bone.setDepth(ENTITY_DEPTH);
     bone.setScale(0.7);
     bone.body.setSize(8 * S, 6 * S);
 

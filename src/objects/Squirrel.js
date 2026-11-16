@@ -18,7 +18,7 @@ export default class Squirrel extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setDepth(9);
+    this.setDepth(9.7);
     this.body.setSize(10 * S, 10 * S).setOffset(3 * S, 3 * S);
     this.body.setGravityY(1600 * S);
     this.body.setMaxVelocity(110 * S, 450 * S);

@@ -522,6 +522,9 @@ Rules:
 - Black chow always carries a lavender rim light so he reads against dark walls.
 - At night the sky goes near-black while the windows stay lit; the sun sets,
   a pale cratered moon rises above the darkness, and the HUD stays bright.
+- The night wash dims the town and street dressing, but gameplay entities
+  (bones, conchas, enemies, checkpoints, piñatas and time shards) render above
+  it so they stay fully readable.
 - Title/end screens use paper lotería cards with ink borders, corner stamps and
   papel-picado strings.
 - Friendly NPC dialog uses the same paper card, pauses gameplay while open and

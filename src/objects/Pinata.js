@@ -15,7 +15,7 @@ export default class Pinata extends Phaser.Physics.Arcade.Image {
     scene.add.existing(this);
     scene.physics.add.existing(this, true);
     this.body.setSize(24 * S, 24 * S);
-    this.setDepth(8);
+    this.setDepth(9.7);
 
     this.hits = 0;
     this.lastHit = -9999;
@@ -54,7 +54,7 @@ export default class Pinata extends Phaser.Physics.Arcade.Image {
     if (this.hasLife) {
       this.lifeBadge = scene.add
         .image(x, y - 21 * S, 'lifeHeart')
-        .setDepth(9)
+        .setDepth(9.7)
         .setScale(0.8);
       scene.tweens.add({
         targets: this.lifeBadge,

@@ -19,7 +19,7 @@ export default class Crow extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setDepth(9);
+    this.setDepth(9.7);
     this.body.setAllowGravity(false);
     this.body.setSize(10 * S, 7 * S).setOffset(2 * S, 1 * S);
     this.body.setMaxVelocity(120 * S, 60 * S);
