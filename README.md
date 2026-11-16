@@ -61,6 +61,11 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 - **Market awnings:** striped canvas canopies project from storefront facades.
   Land on one to bounce high and use it as a jump aid; it does not restore flap
   charges.
+- **Time shards:** glowing sun shards during the day and moon shards at night
+  are scattered along the whole route. Each shard advances the phase clock by
+  four seconds; the clock stays frozen while Bonjo stands still. Fourteen shards
+  appear in every phase, so there is always enough time to reach the next phase
+  even if a few are missed.
 - **Street lighting:** streetlamps and house windows are dark during the day,
   then switch on at night. Lamps cast warm light cones onto the pavement, and
   storefronts light up with colored neon signs (PAN, TIENDA, TACOS, FLORES...).
@@ -171,7 +176,8 @@ near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Day errands are Polo’s concha and the bell; night errands are
 checking the gate and subduing two rivals. Errands are optional side goals now:
 Polo and the bell pay conchas, while the night goals fill in pause-panel
-checkmarks. None of them stops the day/night timer or gates dawn. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
+checkmarks. None of them gates the phase clock; time advances only when Bonjo
+collects sun or moon shards, so waiting freezes it. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
 paws and whip his fluffy tail in a quick sweep that dazes, nudges back and
 damages nearby rivals, bone thieves and crows. The tail arc and its damage
 travel with Bonjo, even while moving or jumping; a sweep that connects from
@@ -244,11 +250,12 @@ there to make them permanent.
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, field trees with jumpable branches and wasp nests, geese and an aggressive Chihuahua boss
 - **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
-- **Day/night cycle**: scavenge under the sun, survive waves of rival dogs under the moon
+- **Day/night cycle driven by time shards**: collect sun shards to bring night, then moon shards to reach dawn while surviving the rival waves
+- **Time-shard exploration**: 14 sun or moon shards span each phase and each adds four seconds; standing still no longer advances the clock
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, optional Polo/bell errands and a description of each HUD meter
-- **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase, countdown and gate remain on-screen
+- **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase clock and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
 - **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high bones, conchas, piñatas and aerial hazards
@@ -370,6 +377,7 @@ files):
 | `awning` | 120×36 | striped bounce canopy |
 | `boneIcon`, `conchaIcon` | 42×30 / 48×30 | course pickups + HUD icons |
 | `sun` / `moon` | 144×144 | day sun and night moon |
+| `sunShard` / `moonShard` | 16×16 | collectible time shards that advance the phase clock |
 | `speechBubble` | 42×36 | floating touch interaction prompt |
 | `btn-slide`, `pauseIcon` | 96×96 / 42×42 | charge-action and pause button icons |
 | `heart` | 15×15 | health HUD |

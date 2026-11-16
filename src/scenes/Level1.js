@@ -44,6 +44,8 @@ const VERTICAL_CAMERA_LERP = 0.12;
 const WASP_WARN_SECONDS = 1.2;
 const WASP_ACTIVE_SECONDS = 0.7;
 const WASP_CYCLE_SECONDS = WASP_WARN_SECONDS + WASP_ACTIVE_SECONDS + 1.4;
+const TIME_SHARD_SECONDS = 4;
+const TIME_SHARD_COUNT = 14;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
@@ -268,6 +270,7 @@ export default class Level1 extends Phaser.Scene {
     this.createInput();
     this.createDog();
     this.createWaspNests();
+    this.createTimeShards();
     this.createPickups();
     this.createFood();
     this.createLives();
@@ -283,6 +286,7 @@ export default class Level1 extends Phaser.Scene {
     this.createDialogUi();
     this.createTuningPanel();
     this.showIntro();
+    this.queueClockHint(3200);
     this.updateHud(0);
 
     // Dev-only handle so automated playtests can read the dog's state.
@@ -2156,6 +2160,60 @@ export default class Level1 extends Phaser.Scene {
     sfx.hiss();
   }
 
+  createTimeShards() {
+    if (!this.timeShardGroup) {
+      this.timeShardGroup = this.physics.add.group({
+        allowGravity: false,
+        immovable: true,
+      });
+      this.physics.add.overlap(
+        this.dog,
+        this.timeShardGroup,
+        this.collectTimeShard,
+        null,
+        this,
+      );
+    } else {
+      this.timeShardGroup.clear(true, true);
+    }
+
+    const key = this.phase === 'day' ? 'sunShard' : 'moonShard';
+    const worldWidth = WORLD_W / S;
+    for (let i = 0; i < TIME_SHARD_COUNT; i++) {
+      const x = 180 + i * ((worldWidth - 360) / (TIME_SHARD_COUNT - 1));
+      const y = 585 - (i % 4) * 20;
+      const shard = this.timeShardGroup.create(x * S, y * S, key);
+      shard.setDepth(7).setScale(0.9);
+      shard.body.setSize(10 * S, 10 * S);
+      this.tweens.add({
+        targets: shard,
+        alpha: 0.55,
+        scaleX: 1.05,
+        scaleY: 1.05,
+        duration: 650 + (i % 3) * 80,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.inOut',
+      });
+    }
+  }
+
+  collectTimeShard(dog, shard) {
+    if (!shard.active || this.phaseTime <= 0) return;
+    this.tweens.killTweensOf(shard);
+    shard.disableBody(true, true);
+    this.phaseTime = Math.max(0, this.phaseTime - TIME_SHARD_SECONDS);
+    this.updateSurvivalHud();
+    this.spawnPuff(shard.x, shard.y, 0.6);
+    this.floatText(
+      shard.x,
+      shard.y - 10 * S,
+      `+${TIME_SHARD_SECONDS}s`,
+      this.phase === 'day' ? '#ffd166' : '#9fd8ff',
+    );
+    sfx.checkpoint();
+  }
+
   createPickups() {
     // bones
     this.boneGroup = this.physics.add.group({ allowGravity: false, immovable: true });
@@ -3288,6 +3346,16 @@ export default class Level1 extends Phaser.Scene {
     this.updateGoalHud();
   }
 
+  queueClockHint(delay) {
+    this.time.delayedCall(delay, () => {
+      if (this.won || this.gameOverFlag) return;
+      this.showPhaseBanner(
+        t(this.phase === 'day' ? 'hint.timeDay' : 'hint.timeNight'),
+        this.phase === 'day' ? '#ffd166' : '#9fd8ff',
+      );
+    });
+  }
+
   updateGoalHud() {
     if (this.won || this.gameOverFlag) return;
     this.updateObjectivesPanel();
@@ -3298,7 +3366,6 @@ export default class Level1 extends Phaser.Scene {
   updateSurvival(dt) {
     if (this.won || this.gameOverFlag) return;
 
-    this.phaseTime -= dt;
     this.hunger = Math.max(0, this.hunger - dt * 0.8);
 
     if (this.hunger <= 0) {
@@ -3366,6 +3433,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveSpawned = 0;
     this.nextWave = 2;
     this.gateRusherSpawned = false;
+    this.createTimeShards();
     this.gateAlert = false;
     this.closeDialog();
     this.setNightCreatures(true);
@@ -3410,6 +3478,7 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.showPhaseBanner(`${t('hud.night')} ${this.nightsSurvived + 1}`, '#ffd166');
+    this.queueClockHint(1400);
     sfx.bell();
     sfx.night();
   }
@@ -3438,6 +3507,7 @@ export default class Level1 extends Phaser.Scene {
     this.phase = 'day';
     this.dayNumber += 1;
     this.phaseTime = this.levelData.timings.day2;
+    this.createTimeShards();
     this.waveSpawned = 0;
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
@@ -3494,6 +3564,7 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.showPhaseBanner(`${t('hud.day')} ${this.dayNumber}`, '#6ec6a8');
+    this.queueClockHint(gateWasBroken ? 3000 : 1400);
     sfx.bell();
     sfx.day();
     this.time.delayedCall(420, () => {
@@ -3785,6 +3856,11 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showPhaseBanner(text, color) {
+    if (this.phaseBanner?.active) {
+      this.tweens.killTweensOf(this.phaseBanner);
+      this.phaseBanner.destroy();
+    }
+
     const fontSize = Math.min(
       22 * S,
       Math.max(10 * S, Math.floor((this.scale.width - 48) / (text.length * 0.62))),
@@ -4649,6 +4725,7 @@ export default class Level1 extends Phaser.Scene {
     for (const wasp of this.waspNests || []) {
       if (wasp.nest?.body) wasp.nest.body.enable = false;
     }
+    this.timeShardGroup?.clear(true, true);
     this.bossTracker?.setVisible(false);
     this.slideAura?.destroy();
     this.slideAura = null;

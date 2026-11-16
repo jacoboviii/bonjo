@@ -84,16 +84,18 @@ become data configurations instead of copied scenes.
 
 ## 3. Core loop
 
-**30 seconds (day):** Walk the block → spot a rival → it barks and charges →
-jump/flap over it → slide to subdue → collect the dropped bone → bounce an awning
-→ hit a piñata → eat a bone before the hunger bar empties.
+**Day shard run:** Walk the block → collect glowing sun shards to move the
+clock → spot a rival → it barks and charges → jump/flap over it → slide to
+subdue → collect the dropped bone → bounce an awning → hit a piñata → eat a
+bone before the hunger bar empties.
 
-**30 seconds (night):** Hold the pavement → a rival spawns from a doorway →
-slide it before it reaches you → keep one eye on the heart bar → survive until
-dawn.
+**Night shard run:** Hold the pavement → fight the incoming rival wave → collect
+moon shards to push toward dawn → keep one eye on the heart bar and the porch
+gate.
 
-**3 minutes:** Day 1 scavenge (38 s) → Night 1 (31 s, 3 waves) → Day 2 (33 s)
-→ Night 2 (36 s, 3 waves) → hold CASA until dawn.
+**3 minutes:** Day 1 (38 s of sun shards) → Night 1 (31 s of moon shards, 2
+waves) → Day 2 (33 s of sun shards) → Night 2 (36 s of moon shards, 3 waves) →
+hold CASA until dawn.
 
 **Session:** Survive two nights with more bones / a faster time; replay to find
 the conchas and piñatas you missed.
@@ -124,7 +126,7 @@ Friendly NPCs and quest objects show a context prompt; **E** or the touch
 bubble starts the interaction. Polo, the chihuahua, cats and the daytime
 rooster use a named lotería-paper dialog card; the cat, chihuahua and rooster
 rotate through several lines so repeated talks stay fresh. The bell rings directly. An
-open dialog card pauses gameplay, hunger, phase timers and enemy movement until
+open dialog card pauses gameplay, hunger, wave timers and enemy movement until
 it closes.
 Environmental
 interactions still use the verbs Bonjo already has: jump into it, land on it,
@@ -303,6 +305,21 @@ over; the marked parked car's alarm stuns nearby rivals. During the day Polo
 tosses a concha, the bell grants another, and the chihuahua barks warnings at
 night. These are all optional, but they reward learning the block.
 
+### Time shards
+The phase clock is **shard-driven**. Each day/night phase spawns a fresh pool of
+14 shards: gold sun shards by day, pale moon shards by night. They are spread
+from the porch to the far end of the level across four height bands. Touching
+one removes four seconds from the phase clock and shows a `+4s` pickup; the
+clock does not tick on its own, so standing still freezes time. The clock only
+advances when Bonjo explores.
+
+Fourteen shards provide 56 seconds of phase time, which is more than the longest
+phase (41 s). The extra shards are a safety margin: a missed or awkwardly placed
+shard cannot soft-lock the run, and the player can always backtrack. Shards are
+cleared when the phase changes and respawn in the new phase's sun/moon style.
+Night waves still arrive on a real-time six-second cadence, while gate-rusher
+and top-dog thresholds use shard-driven phase time.
+
 ### Street lighting and sparking lamps
 Streetlamps, house/shop windows and storefront signs are dark during the day.
 At night they fade in: lamps cast a conical beam from the bulb to the pavement,
@@ -330,25 +347,27 @@ one missing heart. At full health it stays in the world for later. Their pickup
 body is wider than the visual, making them easier to catch.
 
 ### Day, night & waves
-Day 1 lasts 38 s, Night 1 is 31 s with 2 rival waves, Day 2 is 33 s, Night 2 is
-36 s with 3 waves. Night darkens the street (lit windows pop), sends Polo, the
-chihuahua, the rooster and the day birds inside, and swaps squirrels/crows for
-skunks/owls while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s.
-The compact HUD uses the bone icon for hunger and the concha icon for IMPULSE;
-the same two icon textures are used by the course pickups. Icons and pips show
-health, flap charges, IMPULSE stamina and hunger. The title, map, HUD and end
-screens use the same mobile-first layout on desktop and touch devices. An
-off-screen boss arrow points toward the top dog
-and labels its Casa location. The **O / OBJETIVOS** panel pauses the
-game and explains the current goal, optional day/night errands and each HUD
-meter, including dawn warnings and the top-dog hit count. Errands no longer gate
-the clock: the day timer rolls into night on its own, and dawn arrives even if
-Polo, the bell, the gate check or the two-rival night goal were skipped. Errand
-progress never resets, and the pause panel lists day and night checks as bonus
-objectives. The final night adds gate
-rushers and, at roughly 12 s left, the top dog on the lawn in front of Casa. Repel it to win; the timer will wait at zero
-until it is down. The HUD always shows phase, timer, hearts/flaps/IMPULSE/hunger
-and gate health; objectives and errands live in the O panel.
+Day 1 needs 38 s of collected sun-shard time, Night 1 needs 31 s of moon-shard
+time with 2 rival waves, Day 2 needs 33 s, and Night 2 needs 36 s with 3 waves.
+Night darkens the street (lit windows pop), sends Polo, the chihuahua, the
+rooster and the day birds inside, and swaps squirrels/crows for skunks/owls
+while bats cross the sky. Rivals spawn near Bonjo's block every ~6 s of real
+time. The compact HUD uses the bone icon for hunger and the concha icon for
+IMPULSE; the same two icon textures are used by the course pickups. Icons and
+pips show health, flap charges, IMPULSE stamina and hunger. The title, map, HUD
+and end screens use the same mobile-first layout on desktop and touch devices.
+An off-screen boss arrow points toward the top dog and labels its Casa location.
+The **O / OBJETIVOS** panel pauses the game and explains the current goal,
+optional day/night errands and each HUD meter, including dawn warnings and the
+top-dog hit count. Errands do not gate the clock: the phase advances only when
+sun or moon shards are collected, so waiting freezes it. Dawn still arrives even
+if Polo, the bell, the gate check or the two-rival night goal were skipped.
+Errand progress never resets, and the pause panel lists day and night checks as
+bonus objectives. The final night adds gate rushers and, at roughly 12 s of
+shard-time left, the top dog on the lawn in front of Casa. Repel it to win; the
+clock will wait at zero until it is down. The HUD always shows phase, shard
+clock, hearts/flaps/IMPULSE/hunger and gate health; objectives and errands live
+in the O panel.
 
 ### The porch
 Bonjo's house at the start of the street is a proper two-storey adobe home
@@ -435,8 +454,9 @@ Losing all hearts ends the run: "THE BLOCK WINS."
   ledges, rival turf and a farmhouse edge.
 - Two high field climbs rise over the west fields and east edge, using roof,
   fire-escape and laundry tiers with high pickups and aerial hazards.
-- Pacing: 35 s day, 31 s first night with +5 s per night, 31 s between nights;
-  the third night lasts 41 s before the Chihuahua pressure.
+- Pacing: 35 s of sun shards, 31 s of moon shards on the first night with +5 s
+  per night, 31 s between nights; the third night needs 41 s of shard time
+  before the Chihuahua pressure.
 - Future: windmill/water-pump traversal, crop hazards, harvest escort and
   goose-specific attacks.
 
@@ -546,7 +566,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - Movement: run, jump, variable height, coyote, buffer, flap-charge double jumps, slide-only IMPULSE stamina, glide, spin
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data
-- **Survival:** 3 hearts (expandable to 4 with life hearts), bone-fed hunger bar, concha-charged stamina, day/night, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
+- **Survival:** 3 hearts (expandable to 4 with life hearts), bone-fed hunger bar, concha-charged stamina, shard-driven day/night clock, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog, Chihuahua boss
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone

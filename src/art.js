@@ -71,6 +71,8 @@ export function buildTextures(scene) {
   makeFieldTree(scene, 'treeLarge', true);
   makeWaspNest(scene);
   makeWaspSwarm(scene);
+  makeTimeShard(scene, 'sunShard', false);
+  makeTimeShard(scene, 'moonShard', true);
   makeCat(scene, 'cat', 0xd98a4f, 0xffd166);
   makeCat(scene, 'catGray', 0x6a5a70, 0xffd166);
   makeBird(scene);
@@ -1534,6 +1536,32 @@ function makeWaspSwarm(scene) {
   wasp(24, 16, 1);
   wasp(13, 4, -1);
   g.generateTexture('waspSwarm', W, H);
+  g.destroy();
+}
+
+// Collectible clock shards. Sun shards advance the day; moon shards advance
+// the night.
+function makeTimeShard(scene, key, night) {
+  const g = gfx(scene);
+  const W = 16;
+  const H = 16;
+  const glow = night ? 0x9fd8ff : 0xffd166;
+  const bright = night ? 0xd8f4ff : 0xfff4e0;
+
+  g.fillStyle(glow, 0.18);
+  g.fillCircle(8, 8, 7);
+  g.fillStyle(glow, 0.45);
+  g.fillCircle(8, 8, 4.5);
+  g.fillStyle(bright, 1);
+  g.fillTriangle(8, 1, 12, 8, 8, 15);
+  g.fillTriangle(8, 1, 4, 8, 8, 15);
+  g.fillStyle(glow, 1);
+  g.fillTriangle(8, 4, 11, 8, 8, 12);
+  g.fillTriangle(8, 4, 5, 8, 8, 12);
+  g.fillStyle(0xffffff, 0.8);
+  g.fillRect(7, 5, 2, 1);
+
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 
