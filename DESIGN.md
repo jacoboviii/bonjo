@@ -153,7 +153,7 @@ are design pixels (1 design px = 3 render px).
 | Jump impulse | 420 | ~55 px (3.4 tiles) |
 | Flap impulse | 380 | ~45 px per flap |
 | Flap charges | 2 | double jumps; refill on landing |
-| IMPULSE stamina | 2 | slide charges; earned from conchas and enemies |
+| IMPULSE stamina | 3 | slide charges; earned from conchas and enemies |
 | Glide gravity | 400 | 25% of normal |
 | Glide max fall | 120 | slow, steerable descent |
 | Jump cut | 0.45 | tap = short hop, hold = full jump |
@@ -176,8 +176,8 @@ Flap charges are the double-jump resource: Bonjo starts with two, spends one per
 air flap, and refills all of them on landing. Awnings bounce him higher but do
 not restore flaps. The Golden Wing raises the maximum to three.
 
-IMPULSE is separate and gates only the slide attack. Bonjo starts with two slide
-charges; each slide spends one. IMPULSE does not refill passively or on landing.
+IMPULSE is separate and gates only the slide attack. Bonjo starts with three
+slide charges; each slide spends one, and conchas refill them up to three. IMPULSE does not refill passively or on landing.
 Each defeated enemy has a 40% chance to drop a concha, and every collected concha
 restores one IMPULSE pip. At zero, slides are unavailable, but jumping, flapping
 and gliding remain available.
@@ -319,8 +319,9 @@ Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart
 knocks him back and grants 1.7 s of invulnerability. Pits cost a heart and respawn
 him at the last checkpoint. Hunger drains at 0.8/s; bones restore 12 and taco
 carts restore 28. At zero hunger, Bonjo loses a heart every 8 s until he eats.
-Dawn restores two hearts and 10 hunger. Checkpoint balloons restore one heart
-when first reached.
+Dawn restores two hearts and 10 hunger, unless the porch gate broke overnight;
+repairing it costs that morning's heal and dawn concha. Checkpoint balloons
+restore one heart when first reached.
 
 Each level has two placed life hearts and a marked piñata with another. A life
 heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
@@ -354,9 +355,10 @@ behind an open CASA gateway with a standable roof platform. Rivals won't enter
 the first 160 design px of the block, so the porch is a safe corner. The gateway
 and painted threshold mark that line: Bonjo walks through the open leaves,
 normal rivals stop at the threshold, and gate rushers chew the gate down. If it
-breaks the safe zone is open until dawn repairs it. Polo and the chihuahua
-live here. Dawn drops a concha by the door. The street is the arena; the porch
-is where you catch your breath.
+breaks the safe zone is open until dawn, and the morning repair costs the dawn
+heal and dawn concha. A compact gate meter appears in the night HUD and pulses
+when a rusher is on the way. Polo and the chihuahua live here. The street is the
+arena; the porch is where you catch your breath.
 
 ### Checkpoints
 Balloons at the midpoint and on the east block; touch one to set the respawn

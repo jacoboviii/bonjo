@@ -78,16 +78,18 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   nearby rivals.
 - **The porch:** Bonjo's house at the start of the street is a safe zone.
   An open **CASA gateway** and painted threshold mark the line. Normal rivals
-  stop there; gate rushers try to chew the gate down. If it breaks, the porch is
-  open until dawn. Polo offers one concha per level, the bell grants another blessing,
-  and the chihuahua barks warnings.
+  stop there; gate rushers try to chew the gate down. Subdue the rusher before it
+  lands three bites. If the gate breaks, the porch is open until dawn and the
+  morning repair costs Bonjo that day's dawn heal and dawn concha. Polo offers
+  one concha per level, the bell grants another blessing, and the chihuahua barks
+  warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
   hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
   used only for the slide attack; flap charges for double jumps are separate and
   refill on landing. Each level has two placed **life hearts** and
   at least one marked piñata hides another. The first raises max health to four;
   later hearts heal, and a full-health heart waits for you. Checkpoints heal one
-  heart, and dawn restores two. In La Cuadra,
+  heart, and dawn restores two unless the gate broke overnight. In La Cuadra,
   hold CASA for two nights and drive off the top dog; in Las Orillas, survive
   three nights and drive the Chihuahua off the fields. Bones, combo, subdued
   rivals and no-hit play feed your final score and rank.

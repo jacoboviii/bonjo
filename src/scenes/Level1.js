@@ -213,6 +213,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateMaxHealth = 3;
     this.gateBroken = false;
     this.gateRusherSpawned = false;
+    this.gateAlert = false;
     this.combo = 0;
     this.comboTimer = 0;
     this.maxCombo = 0;
@@ -2436,7 +2437,7 @@ export default class Level1 extends Phaser.Scene {
 
     if (this.features.gateDefense !== false) {
       this.gateText = this.add
-        .text(8 * S, 58 * S, '', {
+        .text(8 * S, this.compactLayout ? 29 * S : 58 * S, '', {
           fontFamily: 'monospace',
           fontSize: 6 * S,
           color: '#6ec6a8',
@@ -2445,7 +2446,7 @@ export default class Level1 extends Phaser.Scene {
         })
         .setScrollFactor(0)
         .setDepth(100)
-        .setVisible(!this.compactLayout);
+        .setVisible(false);
     } else {
       this.gateText = null;
     }
@@ -3181,19 +3182,27 @@ export default class Level1 extends Phaser.Scene {
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
     const phaseLabel = `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`;
-    let gateLabel = '';
     if (this.gateText) {
-      gateLabel = this.gateBroken
+      const gateLabel = this.gateBroken
         ? `${t('hud.gate')} 0/${this.gateMaxHealth}`
         : `${t('hud.gate')} ${this.gateHealth}/${this.gateMaxHealth}`;
-      this.gateText.setText(gateLabel);
-      this.gateText.setColor(
-        this.gateBroken || this.gateHealth <= 1 ? '#f26b5e' : '#6ec6a8',
-      );
+      const showGate =
+        this.phase === 'night' ||
+        this.gateBroken ||
+        this.gateHealth < this.gateMaxHealth;
+      const critical = this.gateBroken || this.gateHealth <= 1 || this.gateAlert;
+      const warning = this.gateAlert || this.gateHealth < this.gateMaxHealth;
+      this.gateText
+        .setText(gateLabel)
+        .setVisible(showGate)
+        .setColor(critical ? '#f26b5e' : warning ? '#ffd166' : '#6ec6a8')
+        .setAlpha(
+          this.gateAlert
+            ? 0.62 + 0.38 * Math.abs(Math.sin(this.time.now / 150))
+            : 1,
+        );
     }
-    this.phaseText.setText(
-      this.compactLayout && gateLabel ? `${phaseLabel} · ${gateLabel}` : phaseLabel,
-    );
+    this.phaseText.setText(phaseLabel);
     this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
 
     this.updateGoalHud();
@@ -3277,6 +3286,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveSpawned = 0;
     this.nextWave = 2;
     this.gateRusherSpawned = false;
+    this.gateAlert = false;
     this.closeDialog();
     this.setNightCreatures(true);
     this.setStreetLights(true);
@@ -3344,17 +3354,20 @@ export default class Level1 extends Phaser.Scene {
   }
 
   startDay() {
+    const gateWasBroken = this.gateBroken;
     this.phase = 'day';
     this.dayNumber += 1;
     this.phaseTime = this.levelData.timings.day2;
     this.waveSpawned = 0;
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
+    this.gateAlert = false;
     this.closeDialog();
     this.setNightCreatures(false);
     this.setStreetLights(false);
 
-    this.healHealth(2);
+    // A broken gate takes the morning to repair: no dawn heal or dawn concha.
+    if (!gateWasBroken) this.healHealth(2);
     this.hunger = Math.min(this.maxHunger, this.hunger + 10);
 
     this.gateHealth = this.gateMaxHealth;
@@ -3407,8 +3420,16 @@ export default class Level1 extends Phaser.Scene {
       if (!this.won && !this.gameOverFlag) sfx.rooster();
     });
 
-    const dawnFood = this.levelData.dawnFood || [70, 590];
-    this.spawnFoodAt(dawnFood[0] * S, dawnFood[1] * S);
+    if (!gateWasBroken) {
+      const dawnFood = this.levelData.dawnFood || [70, 590];
+      this.spawnFoodAt(dawnFood[0] * S, dawnFood[1] * S);
+    } else {
+      this.time.delayedCall(1050, () => {
+        if (!this.won && !this.gameOverFlag) {
+          this.showPhaseBanner(t('gate.repair'), '#f26b5e');
+        }
+      });
+    }
     this.updateSurvivalHud();
   }
 
@@ -3545,6 +3566,8 @@ export default class Level1 extends Phaser.Scene {
     );
     this.rivalGroup.add(rival);
     this.floatText(500 * S, 558 * S, t('bark'), '#ffd166');
+    this.gateAlert = true;
+    this.showPhaseBanner(t('gate.alert'), '#f26b5e');
     this.alertChihuahua();
   }
 
@@ -4309,6 +4332,8 @@ export default class Level1 extends Phaser.Scene {
     if (rival.role === 'alpha') {
       reward = 3;
       this.onAlphaDefeated();
+    } else if (rival.role === 'rusher') {
+      this.gateAlert = false;
     } else if (rival.role === 'brute') {
       reward = 2;
     }
