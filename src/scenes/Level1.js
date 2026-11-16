@@ -2212,6 +2212,7 @@ export default class Level1 extends Phaser.Scene {
     shard.disableBody(true, true);
     this.phaseTime = Math.max(0, this.phaseTime - TIME_SHARD_SECONDS);
     this.updateSurvivalHud();
+    this.flashClock();
     this.spawnPuff(shard.x, shard.y, 0.6);
     this.floatText(
       shard.x,
@@ -2612,6 +2613,11 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createClockHud() {
+    this.clockGlow = this.add
+      .circle(0, 0, 7 * S, 0xffd166, 0)
+      .setScrollFactor(0)
+      .setDepth(99)
+      .setVisible(false);
     this.clockGraphics = this.add.graphics().setScrollFactor(0).setDepth(100);
     this.clockText = this.add
       .text(0, 0, '', {
@@ -2630,6 +2636,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   layoutClockHud(W = this.scale.width) {
+    if (this.clockGlow) {
+      this.clockGlow.setPosition(W - 64 * S, 13 * S);
+    }
     if (this.clockGraphics) {
       this.clockGraphics.setPosition(W - 64 * S, 13 * S);
     }
@@ -2715,6 +2724,49 @@ export default class Level1 extends Phaser.Scene {
     this.clockText
       .setText(`${hh}:${mm}`)
       .setColor(night ? '#9fd8ff' : '#fff4e0');
+  }
+
+  flashClock() {
+    if (!this.clockGlow || !this.clockGraphics || !this.clockText) return;
+
+    const color = this.phase === 'night' ? 0x9fd8ff : 0xffd166;
+
+    this.tweens.killTweensOf(this.clockGlow);
+    this.clockGlow
+      .setPosition(this.clockGraphics.x, this.clockGraphics.y)
+      .setFillStyle(color, 0.42)
+      .setStrokeStyle(1.5 * S, color, 0.9)
+      .setScale(1)
+      .setAlpha(1)
+      .setVisible(true);
+    this.tweens.add({
+      targets: this.clockGlow,
+      scale: 2.1,
+      alpha: 0,
+      duration: 420,
+      ease: 'Quad.out',
+      onComplete: () => this.clockGlow?.setVisible(false),
+    });
+
+    this.tweens.killTweensOf(this.clockGraphics);
+    this.clockGraphics.setScale(1).setAlpha(1);
+    this.tweens.add({
+      targets: this.clockGraphics,
+      scale: 1.16,
+      duration: 120,
+      yoyo: true,
+      ease: 'Quad.out',
+    });
+
+    this.tweens.killTweensOf(this.clockText);
+    this.clockText.setScale(1).setAlpha(1);
+    this.tweens.add({
+      targets: this.clockText,
+      scale: 1.16,
+      duration: 120,
+      yoyo: true,
+      ease: 'Quad.out',
+    });
   }
 
   addHudHeart(index) {
@@ -4879,6 +4931,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateText?.setVisible(false);
     this.clockGraphics?.setVisible(false);
     this.clockText?.setVisible(false);
+    this.clockGlow?.setVisible(false);
     if (this.respawnNotice) {
       this.tweens.killTweensOf(this.respawnNotice);
       this.respawnNotice.destroy();

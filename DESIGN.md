@@ -317,7 +317,8 @@ advances when Bonjo explores.
 
 The HUD clock maps each phase to half a day: day runs 06:00 → 18:00 and night
 runs 18:00 → 06:00. Collecting a shard moves both the analog hands and the
-digital readout forward. The face is gold in daylight and moonlit blue at night.
+digital readout forward and pulses the clock in the phase color: gold by day,
+moonlit blue at night. The face is gold in daylight and moonlit blue at night.
 Shards render above the night wash so moon shards stay bright and readable.
 
 Fourteen shards provide 56 seconds of phase time, which is more than the longest

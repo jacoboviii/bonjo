@@ -65,9 +65,9 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   are scattered along the whole route. Each shard advances the phase clock by
   four seconds; the clock stays frozen while Bonjo stands still. The small HUD
   clock moves from 06:00 to 18:00 during the day and from 18:00 back to 06:00
-  at night. Fourteen shards appear in every phase, so there is always enough
-  time to reach the next phase even if a few are missed. Remaining shards
-  disappear when the final boss arrives.
+  at night, and it pulses when a shard is collected. Fourteen shards appear in
+  every phase, so there is always enough time to reach the next phase even if a
+  few are missed. Remaining shards disappear when the final boss arrives.
 - **Street lighting:** streetlamps and house windows are dark during the day,
   then switch on at night. Lamps cast warm light cones onto the pavement, and
   storefronts light up with colored neon signs (PAN, TIENDA, TACOS, FLORES...).
