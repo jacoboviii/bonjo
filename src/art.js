@@ -1951,10 +1951,10 @@ function makeStringLights(scene) {
   const g = gfx(scene);
   const W = 320;
   const H = 14;
-  const colors = [0xffd166, 0xffd166, 0xffd166, 0x9fd8ff];
+  const colors = [0xf0c65a, 0xf0c65a, 0xf0c65a, 0xa6d9f5];
 
   // A shallow wire with a small repeating sag.
-  g.lineStyle(0.8, 0x1b1029, 0.9);
+  g.lineStyle(0.8, 0x1e2b32, 0.9);
   for (let x = 0; x < W; x += 8) {
     const y1 = 2.4 + Math.sin((x / W) * Math.PI * 10) * 0.55;
     const y2 = 2.4 + Math.sin(((x + 8) / W) * Math.PI * 10) * 0.55;
@@ -1970,7 +1970,7 @@ function makeStringLights(scene) {
     g.fillCircle(x, y, 3.1);
     g.fillStyle(color, 1);
     g.fillCircle(x, y, 1.3);
-    g.fillStyle(0xfff4e0, 0.95);
+    g.fillStyle(0xfff9ef, 0.95);
     g.fillCircle(x - 0.45, y - 0.45, 0.55);
   }
 

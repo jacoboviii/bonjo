@@ -115,30 +115,28 @@ export default class Title extends Phaser.Scene {
     this.add
       .text(W / 2, 28 * S, 'BONJO', {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize: 64 * U,
         color: FOLK_CSS.coral,
-        stroke: FOLK_CSS.ink,
-        strokeThickness: 12 * U,
       })
       .setOrigin(0.5);
 
     this.add
       .text(W / 2, 48 * S, t('title.subtitle'), {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize: 16 * U,
         color: FOLK_CSS.ink,
-        stroke: FOLK_CSS.paper,
-        strokeThickness: 2 * U,
       })
       .setOrigin(0.5);
 
     this.add
       .text(W / 2, 64 * S, t('title.place'), {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize: 10 * U,
         color: FOLK_CSS.teal,
-        stroke: FOLK_CSS.paper,
-        strokeThickness: 2 * U,
+        letterSpacing: 1.5 * U,
       })
       .setOrigin(0.5);
 
@@ -194,12 +192,12 @@ export default class Title extends Phaser.Scene {
       const active = lang === code;
       const button = addMenuButton(this, {
         x,
-        y: 13 * S,
+        y: 5 * S,
         label: code.toUpperCase(),
         variant: active ? 'primary' : 'secondary',
         fontSize: 6 * S,
         minWidth: 40 * U,
-        height: 24 * U,
+        height: 18 * U,
         paddingX: 5 * U,
         paddingY: 2 * U,
         onClick: () => {

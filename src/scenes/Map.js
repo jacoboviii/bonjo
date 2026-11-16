@@ -75,10 +75,10 @@ export default class Map extends Phaser.Scene {
     this.add
       .text(W / 2, this.boardTop + 12 * U, t('map.title'), {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize: 8 * S,
         color: FOLK_CSS.coral,
-        stroke: FOLK_CSS.ink,
-        strokeThickness: 1.5 * S,
+        letterSpacing: 1 * U,
       })
       .setOrigin(0.5, 0)
       .setDepth(4);
@@ -88,6 +88,7 @@ export default class Map extends Phaser.Scene {
         fontFamily: FONT,
         fontSize: this.compactLayout ? 5.5 * S : 4.5 * S,
         color: FOLK_CSS.teal,
+        letterSpacing: 0.8 * U,
       })
       .setOrigin(0.5, 0)
       .setDepth(4);
@@ -114,12 +115,12 @@ export default class Map extends Phaser.Scene {
       const active = lang === code;
       const button = addMenuButton(this, {
         x,
-        y: 13 * S,
+        y: 5 * S,
         label: code.toUpperCase(),
         variant: active ? 'primary' : 'secondary',
         fontSize: 6 * S,
         minWidth: 40 * U,
-        height: 24 * U,
+        height: 18 * U,
         paddingX: 5 * U,
         paddingY: 2 * U,
         onClick: () => {
@@ -144,7 +145,7 @@ export default class Map extends Phaser.Scene {
     this.mapBottom = this.mapY + this.mapHeight;
 
     this.paper = this.add.graphics().setDepth(2);
-    this.paper.fillStyle(0xf3dfb8, 1);
+    this.paper.fillStyle(FOLK.paper, 1);
     this.paper.fillRect(this.mapX, this.mapY, this.mapWidth, this.mapHeight);
     this.paper.lineStyle(2 * U, FOLK.ink, 0.75);
     this.paper.strokeRect(this.mapX, this.mapY, this.mapWidth, this.mapHeight);
@@ -178,7 +179,7 @@ export default class Map extends Phaser.Scene {
     const road = (x1, y1, x2, y2) => {
       g.lineStyle(9 * U, FOLK.ink, 0.22);
       g.lineBetween(x1, y1, x2, y2);
-      g.lineStyle(6 * U, 0xf8e9c6, 1);
+      g.lineStyle(6 * U, FOLK.paperLight, 1);
       g.lineBetween(x1, y1, x2, y2);
     };
     road(xAt(0.01), yAt(0.28), xAt(0.99), yAt(0.28));
@@ -237,10 +238,11 @@ export default class Map extends Phaser.Scene {
       const label = this.add
         .text(x, y + 16 * U, t(level.nameKey), {
           fontFamily: FONT,
+          fontStyle: 'bold',
           fontSize: this.compactLayout ? 5.2 * S : 4.5 * S,
           color: locked ? FOLK_CSS.muted : FOLK_CSS.ink,
           stroke: FOLK_CSS.paper,
-          strokeThickness: 1.5 * S,
+          strokeThickness: 1 * S,
         })
         .setOrigin(0.5, 0)
         .setDepth(12)
@@ -384,17 +386,23 @@ export default class Map extends Phaser.Scene {
     this.detailW = this.boardRight - 18 * U - this.detailX;
     this.detailH = this.mapHeight;
 
-    this.add
-      .rectangle(
-        this.detailX + this.detailW / 2,
-        this.detailY + this.detailH / 2,
-        this.detailW,
-        this.detailH,
-        0xf8e9c6,
-        0.5,
-      )
-      .setStrokeStyle(1.5 * U, FOLK.ink, 0.35)
-      .setDepth(3);
+    this.detailPanel = this.add.graphics().setDepth(3);
+    this.detailPanel.fillStyle(FOLK.paperLight, 0.5);
+    this.detailPanel.fillRoundedRect(
+      this.detailX,
+      this.detailY,
+      this.detailW,
+      this.detailH,
+      8 * U,
+    );
+    this.detailPanel.lineStyle(1 * U, FOLK.ink, 0.22);
+    this.detailPanel.strokeRoundedRect(
+      this.detailX,
+      this.detailY,
+      this.detailW,
+      this.detailH,
+      8 * U,
+    );
 
     this.detailKicker = this.add
       .text(this.detailX + 8 * U, this.detailY + 9 * U, t('map.landmark'), {
@@ -407,10 +415,9 @@ export default class Map extends Phaser.Scene {
     this.detailTitle = this.add
       .text(this.detailX + 8 * U, this.detailY + 22 * U, '', {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize: this.compactLayout ? 7.5 * S : 7 * S,
         color: FOLK_CSS.coral,
-        stroke: FOLK_CSS.ink,
-        strokeThickness: 1.2 * S,
       })
       .setDepth(6);
 

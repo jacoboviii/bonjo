@@ -5296,9 +5296,11 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(220)
       .setAlpha(0);
 
-    const panel = this.add
-      .rectangle(0, 0, w, h, FOLK.ink, 0.9)
-      .setStrokeStyle(1.5 * U, FOLK.mint, 0.95);
+    const panel = this.add.graphics();
+    panel.fillStyle(FOLK.ink, 0.9);
+    panel.fillRoundedRect(-w / 2, -h / 2, w, h, 8 * U);
+    panel.lineStyle(1 * U, FOLK.mint, 0.95);
+    panel.strokeRoundedRect(-w / 2, -h / 2, w, h, 8 * U);
     const title = this.add
       .text(0, -10 * U, t('respawn.title'), {
         fontFamily: FONT,
@@ -5401,10 +5403,9 @@ export default class Level1 extends Phaser.Scene {
     const title = this.add
       .text(W / 2, 40 * S, titleText, {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize: titleSize,
         color: titleColor,
-        stroke: FOLK_CSS.ink,
-        strokeThickness: 3 * S,
       })
       .setOrigin(0.5)
       .setScrollFactor(0)

@@ -503,9 +503,10 @@ strongest dog finally getting to be unnecessary.
 A limited folk-print palette (ink, cream paper, terracotta, coral, marigold,
 teal, magenta, cobalt) with cool, low-contrast backgrounds and warm, saturated
 gameplay layers. Day is clear cobalt-blue; night is deep indigo with warm
-windows. Title, win and game-over screens are framed as hand-painted cards
-with clock-seal corners, string-light trim and ink borders. Agave, milpa rows and agricultural lots
-are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
+windows. Menus use rounded cream cards, soft shadows, thin ink rules, bold
+sans-serif type and a single guardian paw badge. String lights belong to the
+world and night lighting, not to card trim. Agave, milpa rows and agricultural
+lots are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
 values, and readable foreground/background separation.
 
 ### Identity: guardian first, Lumbral second
@@ -523,8 +524,8 @@ The game's identity is built in two layers:
    a costume.
 
 Visual translation:
-- **Paw seals** at the top corners of paper cards; **clock seals** at the bottom.
-- **Warm string lights** are the standing trim in the world and on card edges.
+- **One paw badge** on each card; the time-of-day clock lives in the HUD.
+- **Warm string lights** are the standing trim in the world and night lighting.
 - **Parroquia, Jardín Hidalgo and Las Orillas** carry the town's real landmarks
   and agricultural character.
 - Menu voice should say what Bonjo guards before it describes the town. The
@@ -545,18 +546,18 @@ not a one-to-one map of any single town.
 **Lumbral palette**
 | Role | Hex |
 | --- | --- |
-| Ink / outlines | `#1d1326` |
-| Paper / hand-painted card | `#f4dfb0`, light `#f8e9c6` |
+| Ink / outlines | `#1e2b32` |
+| Paper / card surfaces | `#f3ecde`, light `#fbf6ec` |
 | Sky top → horizon | `#2b5b96` → `#82b6df` → `#f7d5a8` |
 | Adobe | `#c98a5e`, shadow `#a96a45` |
-| Terracotta | `#c46b4a`, highlight `#d9775a` |
-| Painted teal | `#2f7f78` |
-| Marigold | `#f2b544` |
-| String lights | warm gold `#ffd166`, mint `#7fc7a3`, moon blue `#9fd8ff`, coral `#e85a4f` |
+| Terracotta | `#c26a4e`, highlight `#d9775a` |
+| Painted teal | `#2a7f78` |
+| Marigold | `#e9b44c` |
+| String lights | warm gold `#f0c65a`, mint `#7fb8a4`, moon blue `#a6d9f5`, coral `#e76f51` |
 | Bonjo fur | `#2a2135` (black chow), rim `#6f5c86`, tongue `#b45cd6` |
 | Rival dog | tan `#c98a4f`, red bandana `#d94f4f` |
 | Fast / thief / brute | blue-grey `#a7c7d6`, masked purple `#8a6d9a`, scarred brown `#b07a4f` |
-| Health | heart red `#d94f4f` |
+| Health / danger | heart red `#e05858` |
 | Hunger | bone cream `#f4dcc0`, bar orange `#f0a03c` |
 | IMPULSE | concha pink `#f2a6b8`, gold pip `#ffd166` |
 | Night | sky tint `#05030d` at 82%; full-scene overlay 62% |
@@ -572,15 +573,16 @@ Rules:
 - The night wash dims the town and street dressing, but gameplay entities
   (bones, conchas, enemies, checkpoints, piñatas and time shards) render above
   it so they stay fully readable.
-- Title/end screens use paper cards with ink borders, clock-seal corners and
-  warm string-light trim.
+- Title/end screens use rounded paper cards with thin ink rules, soft shadows
+  and a single guardian paw badge.
 - Friendly NPC dialog uses the same paper card, pauses gameplay while open and
   excludes its duration from the run timer, with the speaker's name in an
   ink nameplate inside the window instead of a floating world label.
 - Menu surfaces share the `FOLK` / `FOLK_CSS` tokens in `ui/FolkCard.js`:
-  monospace type, ink borders, paper fill, coral primary buttons and paper
-  secondary buttons. The title, map, objectives, dialog, respawn and end
-  screens should not introduce one-off button fills or near-matching colors.
+  bold sans-serif type, soft cream surfaces, thin ink rules, coral primary
+  buttons and paper-tinted secondary buttons. The title, map, objectives,
+  dialog, respawn and end screens should not introduce one-off button fills or
+  near-matching colors.
   Menu metadata stays at least `5 × SCALE` (15 px at the 3× render scale);
   in-world building signs can remain `4.5 × SCALE` because they are framed by
   the street art rather than read as a paragraph.

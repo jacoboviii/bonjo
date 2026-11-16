@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
-// Blue-Hour La Cuadra UI:
-// a limited palette, ink borders, hand-painted card frames, clock seals and
-// string-light trim.
+// Blue-Hour Lumbral UI:
+// a limited palette, rounded paper cards, soft shadows, guardian paw badges
+// and bold sans-serif type.
 // ---------------------------------------------------------------------------
 
 import { SCALE } from '../scale.js';
@@ -9,60 +9,60 @@ import { SCALE } from '../scale.js';
 const U = SCALE / 2;
 
 export const FOLK = {
-  ink: 0x1d1326,
-  paper: 0xf4dfb0,
-  paperLight: 0xf8e9c6,
-  coral: 0xe85a4f,
-  terracotta: 0xc46b4a,
-  marigold: 0xf2b544,
-  teal: 0x2f7f78,
-  mint: 0x7fc7a3,
-  magenta: 0xb54a78,
-  cobalt: 0x244a7a,
-  cream: 0xfff4e0,
-  muted: 0x6a5a70,
-  danger: 0xf26b5e,
+  ink: 0x1e2b32,
+  paper: 0xf3ecde,
+  paperLight: 0xfbf6ec,
+  coral: 0xe76f51,
+  terracotta: 0xc26a4e,
+  marigold: 0xe9b44c,
+  teal: 0x2a7f78,
+  mint: 0x7fb8a4,
+  magenta: 0xb65a7a,
+  cobalt: 0x2c4f7c,
+  cream: 0xfff9ef,
+  muted: 0x6f6a63,
+  danger: 0xe05858,
 };
 
 // CSS-string and type tokens for Phaser Text styles. Keep menu copy in this
 // palette instead of giving each screen its own near-matching color.
 export const FOLK_CSS = {
-  ink: '#1d1326',
-  paper: '#f4dfb0',
-  paperLight: '#f8e9c6',
-  coral: '#e85a4f',
-  terracotta: '#c46b4a',
-  marigold: '#f2b544',
-  teal: '#2f7f78',
-  mint: '#7fc7a3',
-  magenta: '#b54a78',
-  cobalt: '#244a7a',
-  cream: '#fff4e0',
-  muted: '#6a5a70',
-  gold: '#ffd166',
-  night: '#9fd8ff',
-  danger: '#f26b5e',
-  dawn: '#b5533a',
+  ink: '#1e2b32',
+  paper: '#f3ecde',
+  paperLight: '#fbf6ec',
+  coral: '#e76f51',
+  terracotta: '#c26a4e',
+  marigold: '#e9b44c',
+  teal: '#2a7f78',
+  mint: '#7fb8a4',
+  magenta: '#b65a7a',
+  cobalt: '#2c4f7c',
+  cream: '#fff9ef',
+  muted: '#6f6a63',
+  gold: '#f0c65a',
+  night: '#a6d9f5',
+  danger: '#e05858',
+  dawn: '#b65f45',
 };
 
-export const FONT = 'monospace';
+export const FONT =
+  '"Trebuchet MS", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
 
 const BUTTON_STYLES = {
   primary: {
     fill: FOLK.coral,
     text: FOLK_CSS.cream,
-    textStroke: FOLK_CSS.ink,
-    border: FOLK.ink,
+    border: FOLK.coral,
   },
   secondary: {
-    fill: FOLK.paper,
+    fill: FOLK.paperLight,
     text: FOLK_CSS.ink,
     border: FOLK.ink,
   },
   dark: {
     fill: FOLK.ink,
     text: FOLK_CSS.cream,
-    border: FOLK.coral,
+    border: FOLK.ink,
   },
 };
 
@@ -91,6 +91,7 @@ export function addMenuButton(
   const style = BUTTON_STYLES[variant] || BUTTON_STYLES.primary;
   const textStyle = {
     fontFamily: FONT,
+    fontStyle: 'bold',
     fontSize,
     color: style.text,
     align: 'center',
@@ -110,7 +111,7 @@ export function addMenuButton(
   const h = height || Math.ceil(text.height + paddingY * 2);
   const bg = scene.add
     .rectangle(x, y, w, h, style.fill, 1)
-    .setStrokeStyle(1.5 * U, style.border, 1)
+    .setStrokeStyle(1 * U, style.border, 0.9)
     .setScrollFactor(scrollFactor)
     .setDepth(depth);
 
@@ -158,7 +159,7 @@ export function addMenuButton(
   button.setVariant = (nextVariant) => {
     const nextStyle = BUTTON_STYLES[nextVariant] || BUTTON_STYLES.primary;
     bg.setFillStyle(nextStyle.fill, 1);
-    bg.setStrokeStyle(1.5 * U, nextStyle.border, 1);
+    bg.setStrokeStyle(1 * U, nextStyle.border, 0.9);
     text.setColor(nextStyle.text);
     text.setStroke(
       nextStyle.textStroke || '',
@@ -191,53 +192,10 @@ function drawPawSeal(g, x, y, color) {
   }
 }
 
-function drawClockSeal(g, x, y, color) {
-  const r = 4.5 * U;
-  g.fillStyle(FOLK.paperLight, 1);
-  g.fillCircle(x, y, r);
-  g.lineStyle(1.1 * U, FOLK.ink, 1);
-  g.strokeCircle(x, y, r);
-
-  // four cardinal ticks
-  g.lineStyle(0.7 * U, FOLK.ink, 0.65);
-  for (let i = 0; i < 4; i++) {
-    const a = (i * Math.PI) / 2;
-    g.lineBetween(
-      x + Math.cos(a) * r * 0.72,
-      y + Math.sin(a) * r * 0.72,
-      x + Math.cos(a) * r * 0.9,
-      y + Math.sin(a) * r * 0.9,
-    );
-  }
-
-  // hands and center pin
-  g.lineStyle(1.1 * U, color, 1);
-  g.lineBetween(x, y, x, y - r * 0.52);
-  g.lineBetween(x, y, x + r * 0.4, y + r * 0.22);
-  g.fillStyle(color, 1);
-  g.fillCircle(x, y, 1.1 * U);
-}
-
-function drawStringLights(g, y, left, right) {
-  g.lineStyle(0.9 * U, FOLK.ink, 0.9);
-  g.lineBetween(left + 10 * U, y, right - 10 * U, y);
-
-  let i = 0;
-  for (let x = left + 18 * U; x < right - 16 * U; x += 18 * U, i++) {
-    const color = i % 4 === 0 ? FOLK.mint : FOLK.marigold;
-    const bulbY = y + 3.2 * U;
-    g.fillStyle(color, 0.2);
-    g.fillCircle(x, bulbY, 3.4 * U);
-    g.fillStyle(color, 1);
-    g.fillCircle(x, bulbY, 1.35 * U);
-    g.fillStyle(FOLK.cream, 0.95);
-    g.fillCircle(x - 0.45 * U, bulbY - 0.45 * U, 0.55 * U);
-  }
-}
-
 /**
- * Draw a hand-painted Blue-Hour card with an ink frame, clock-seal corners and
- * string-light trim. All coordinates are in game pixels.
+ * Draw a hand-painted Blue-Hour card: a soft rounded paper surface, a thin ink
+ * rule, one guardian paw and one time-of-day clock. All coordinates are in game
+ * pixels.
  */
 export function drawFolkCard(graphics, cx, cy, w, h) {
   const g = graphics;
@@ -246,41 +204,30 @@ export function drawFolkCard(graphics, cx, cy, w, h) {
   const left = cx - w / 2;
   const top = cy - h / 2;
   const right = cx + w / 2;
-  const bottom = cy + h / 2;
+  const radius = 10 * U;
 
-  // offset ink shadow
-  g.fillStyle(FOLK.ink, 0.32);
-  g.fillRect(left + 6 * U, top + 6 * U, w, h);
+  // Soft layered shadow instead of a hard offset block.
+  g.fillStyle(FOLK.ink, 0.08);
+  g.fillRoundedRect(left + 2 * U, top + 4 * U, w, h, radius);
+  g.fillStyle(FOLK.ink, 0.14);
+  g.fillRoundedRect(left + 5 * U, top + 7 * U, w, h, radius);
 
-  // paper + lighter inset
+  // Paper surface and hairline rule.
   g.fillStyle(FOLK.paper, 1);
-  g.fillRect(left, top, w, h);
-  g.fillStyle(FOLK.paperLight, 1);
-  g.fillRect(left + 4 * U, top + 4 * U, w - 8 * U, h - 8 * U);
+  g.fillRoundedRect(left, top, w, h, radius);
+  g.lineStyle(1.2 * U, FOLK.ink, 0.9);
+  g.strokeRoundedRect(left, top, w, h, radius);
+  g.lineStyle(1 * U, FOLK.ink, 0.1);
+  g.strokeRoundedRect(
+    left + 6 * U,
+    top + 6 * U,
+    w - 12 * U,
+    h - 12 * U,
+    Math.max(2 * U, radius - 4 * U),
+  );
 
-  // double ink/coral frame
-  g.lineStyle(6 * U, FOLK.ink, 1);
-  g.strokeRect(left, top, w, h);
-  g.lineStyle(2 * U, FOLK.coral, 1);
-  g.strokeRect(left + 8 * U, top + 8 * U, w - 16 * U, h - 16 * U);
-  g.lineStyle(1 * U, FOLK.ink, 0.35);
-  g.strokeRect(left + 13 * U, top + 13 * U, w - 26 * U, h - 26 * U);
-
-  // Guardian paws first, time-of-day seals second.
-  const cornerSeals = [
-    [left + 8 * U, top + 8 * U, FOLK.coral, 'paw'],
-    [right - 8 * U, top + 8 * U, FOLK.marigold, 'paw'],
-    [left + 8 * U, bottom - 8 * U, FOLK.teal, 'clock'],
-    [right - 8 * U, bottom - 8 * U, FOLK.marigold, 'clock'],
-  ];
-  for (const [x, y, color, kind] of cornerSeals) {
-    if (kind === 'paw') drawPawSeal(g, x, y, color);
-    else drawClockSeal(g, x, y, color);
-  }
-
-  // Warm string-light trim.
-  drawStringLights(g, top - 8 * U, left, right);
-  drawStringLights(g, bottom + 8 * U, left, right);
+  // One guardian badge keeps the card calm and puts Bonjo first.
+  drawPawSeal(g, left + 12 * U, top + 12 * U, FOLK.coral);
 
   return g;
 }
