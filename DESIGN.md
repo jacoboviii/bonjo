@@ -32,10 +32,12 @@ The working one-pager lives in [`PILLARS.md`](PILLARS.md). The short version:
 
 ## 2. Story & setting
 
-**Bonjo** is a black chow — the guardian chow of Romita. He has a routine: the
-same route, the same corners, the same smells. He likes his walks.
+**Bonjo** is a black chow — the guardian chow of Lumbral. He has a routine: the
+same route, the same corners, the same smells. He likes his walks. The town name
+blends *lumbre* (hearth-light) and *umbral* (threshold): the warm light Bonjo
+keeps burning at the edge of home.
 
-**Romita, Guanajuato** is the town at the center of the game: a low, warm Bajío
+**Lumbral, Guanajuato** is the town at the center of the game: a low, warm Bajío
 settlement of rectilinear streets, adobe and cantera, a single unfinished bell
 tower, agricultural fields and strings of warm lights. Bonjo's **La Cuadra** is
 its home block: flat-roofed houses, a tienda awning, dogs behind every gate.
@@ -72,7 +74,7 @@ place and the next line of dialogue, not in a cutscene.
 **Tone:** warm, funny, non-lethal. Spanish is used naturally for place and
 flavor (`la cuadra`, `¡guau!`, `¡échale!`, `la hora azul`), not as a punchline.
 
-**Map hub:** the title opens a hand-painted street map of Romita. CASA and Las
+**Map hub:** the title opens a hand-painted street map of Lumbral. CASA and Las
 Orillas are playable; Parroquia, Mercado and Jardín Hidalgo are visible future
 landmarks.
 Selecting a landmark shows its description; completed levels receive an ink
@@ -496,7 +498,7 @@ strongest dog finally getting to be unnecessary.
 
 ---
 
-## 9. Art direction — Blue-Hour Romita
+## 9. Art direction — Blue-Hour Lumbral
 
 A limited folk-print palette (ink, cream paper, terracotta, coral, marigold,
 teal, magenta, cobalt) with cool, low-contrast backgrounds and warm, saturated
@@ -506,7 +508,7 @@ with clock-seal corners, string-light trim and ink borders. Agave, milpa rows an
 are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
 values, and readable foreground/background separation.
 
-### Identity: guardian first, Romita second
+### Identity: guardian first, Lumbral second
 
 The game's identity is built in two layers:
 
@@ -514,7 +516,7 @@ The game's identity is built in two layers:
    black chow with a lavender rim light; his verbs are holding, carrying,
    clearing a path and ending a fight without hurting anyone. The time-of-day
    clock, concha shells and bones are his personal iconography.
-2. **Romita, the place he protects.** The town layer is quieter than the hero:
+2. **Lumbral, the place he protects.** The town layer is quieter than the hero:
    warm adobe and cantera, a rectilinear street grid, one unfinished bell tower,
    hacienda arches, garbanzo and agave fields, afternoon light and string lights
    rather than decorative paper banners. The town is specific without becoming
@@ -528,22 +530,19 @@ Visual translation:
 - Menu voice should say what Bonjo guards before it describes the town. The
   HUD/clock and the warm porch remain the emotional center.
 
-Research anchors (Romita, Guanajuato):
-- Rectilinear, chessboard street plan around the Jardín Principal Hidalgo.
-- Parroquia de Santa María de Guadalupe and its single unfinished bell tower.
+Research anchors (Bajío inspiration):
+- Rectilinear, chessboard street plans around a central garden.
+- A parish with a single unfinished bell tower.
 - Agricultural Bajío economy: garbanzo, maize, sorghum, wheat, agave.
-- Ex-haciendas such as San Clemente and La Laja; arcaded patios and agricultural
-  history.
-- Fiestas Guadalupanas organized through eight cuarteles, with afternoon bands,
-  rockets and the Entrada de la Cera.
+- Ex-haciendas with arcaded patios and agricultural history.
+- Patronal festivals organized through eight cuarteles, with afternoon bands,
+  rockets and candle processions.
 - Local food culture: gorditas de horno, garbanzo, birria and mole.
 
-Sources: [Romita tourism history](https://turismo.romita.gob.mx/index.php/historia-y-cultura/),
-[Guanajuato.mx Romita](https://guanajuato.mx/en/romita/),
-[municipal overview](https://municipios.com.mx/guanajuato/romita),
-[cultural monograph](https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/Romita.pdf).
+These details are fictionalized for Lumbral; its geography, names and events are
+not a one-to-one map of any single town.
 
-**Romita palette**
+**Lumbral palette**
 | Role | Hex |
 | --- | --- |
 | Ink / outlines | `#1d1326` |

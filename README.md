@@ -1,7 +1,7 @@
 # Bonjo 🐕
 
-**Bonjo is the guardian chow of Romita.** A proud, fluffy black chow who likes
-his walks through the Bajío town of Romita, Guanajuato — and does not appreciate
+**Bonjo is the guardian chow of Lumbral.** A proud, fluffy black chow who likes
+his walks through the Bajío town of Lumbral, Guanajuato — and does not appreciate
 the neighbor dogs from other houses trying to take his turf.
 
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
@@ -25,7 +25,7 @@ landmarks plotted for expansion.
 Individual 1280×720 screenshots are in [`screenshots/`](screenshots/).
 The contact sheet shows the English UI; the game itself now starts in Spanish.
 
-![Romita landmark map](screenshots/00-map.png)
+![Lumbral landmark map](screenshots/00-map.png)
 
 ![Las Orillas fields](screenshots/24-orillas.png)
 
@@ -35,7 +35,7 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 
 ## The world
 
-- **Setting:** **Romita, Guanajuato**, in the Bajío. Level 1, **La Cuadra**,
+- **Setting:** **Lumbral, Guanajuato**, in the Bajío. Level 1, **La Cuadra**,
   is Bonjo's home block: flat-roofed houses, the unfinished single bell tower of
   Santa María de Guadalupe, warm string lights, adobe walls and terracotta roofs
   under a clear blue day sky. The garbanzo and blue-green agave fields at the
@@ -251,7 +251,7 @@ there to make them permanent.
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing; at one heart the screen edges pulse red and a **LAST HEART** warning appears
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
-- **Map hub**: a hand-painted street map of Romita with CASA and Las Orillas playable, and Parroquia, Mercado and Jardín Hidalgo marked as future routes
+- **Map hub**: a hand-painted street map of Lumbral with CASA and Las Orillas playable, and Parroquia, Mercado and Jardín Hidalgo marked as future routes
 - **Unified folk-paper interface**: title, map, objectives, dialog, respawn and end screens share the same ink/paper/coral palette, button hierarchy and monospace type; keyboard and touch prompts switch with the active input mode
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, field trees with jumpable branches and wasp nests, geese and an aggressive Chihuahua boss
 - **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
@@ -259,7 +259,7 @@ there to make them permanent.
 - **Day/night cycle driven by time shards**: collect sun shards to bring night, then moon shards to reach dawn while surviving the rival waves
 - **Time-shard exploration**: 14 sun or moon shards span each phase and each adds four seconds; standing still no longer advances the clock
 - **Time-of-day clock**: an analog clock with a digital `06:00 → 18:00 → 06:00` readout tracks the shard-driven day and turns from gold to moonlit blue at night
-- **Blue-Hour Romita art direction**: limited folk-print palette, guardian paw seals, clock-seal corners, hand-painted cards and string-light trim
+- **Blue-Hour Lumbral art direction**: limited folk-print palette, guardian paw seals, clock-seal corners, hand-painted cards and string-light trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Two-tab pause panel (O)**: Objectives for the current goal and optional Polo/bell errands; Instructions for controls and each HUD meter; **MENU** returns to the title with a leave-run confirmation
 - **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase clock and gate remain on-screen
@@ -284,7 +284,7 @@ there to make them permanent.
 - **3× internal render resolution** for crisper pixel art without changing the screen layout
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
-- **Spanish by default** (Romita, Guanajuato); toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
+- **Spanish by default** (Lumbral, Guanajuato); toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
 - Title, top-dog finale, win and game-over screens
 
 **Not in this build:** full menu systems, save slots, gamepad, base upgrades,
@@ -322,8 +322,8 @@ bonjo/
 │   └── scenes/
 │       ├── Boot.js         builds textures, starts title
 │       ├── Title.js        BONJO title screen
-│       ├── Map.js          illustrated Romita landmark/level-select hub
-│       └── Level1.js       shared level runtime; reads Romita's level configs
+│       ├── Map.js          illustrated Lumbral landmark/level-select hub
+│       └── Level1.js       shared level runtime; reads Lumbral's level configs
 └── dist/                   production build (after `npm run build`)
 ```
 
