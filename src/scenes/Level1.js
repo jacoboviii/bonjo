@@ -3073,7 +3073,8 @@ export default class Level1 extends Phaser.Scene {
 
     const screenX = ((boss.x - view.x) / view.width) * cam.width;
     const screenY = ((boss.y - view.y) / view.height) * cam.height;
-    const marginX = 24 * S;
+    // Keep the locator clear of the enlarged touch button clusters.
+    const marginX = this.touch?.visible ? 48 * S : 24 * S;
     const marginTop = 18 * S;
     const marginBottom = 24 * S;
     const inside =
