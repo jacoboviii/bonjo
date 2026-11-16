@@ -576,6 +576,7 @@ compressor keeps mobile speakers from clipping.
 | Crow caw | filtered squawk with a second throaty pulse |
 | Owl hoot | two soft, close sine hoots with breath |
 | Rooster | three filtered, vibrating dawn calls |
+| Car alarm | alternating electronic two-tone whoops |
 | Piñata hit / burst | wooden thock / crack + short arpeggio |
 | Awning | springy pitch-bend with vibrato |
 | Concha | bright shell clink over a short crunch |

@@ -253,13 +253,33 @@ export const sfx = {
     thump(90, 0.018, 0.08);
   },
   alarm: () => {
-    // Two-tone car horn, with a little noise bite at the front.
-    noise({ dur: 0.04, vol: 0.012, type: 'bandpass', f0: 1800, f1: 900, q: 0.8 });
-    [0, 0.2, 0.4].forEach((delay, i) => {
-      const f = i % 2 ? 520 : 430;
-      osc({ type: 'square', f0: f, f1: f * 1.02, dur: 0.18, vol: 0.026, delay, filter: { type: 'lowpass', f0: 1500, q: 0.6 } });
-      osc({ type: 'sawtooth', f0: f * 1.5, f1: f * 1.52, dur: 0.14, vol: 0.008, delay });
+    // Alternating electronic whoops: a car siren, not an animal call.
+    const sweeps = [
+      [1180, 860],
+      [860, 1180],
+      [1180, 860],
+    ];
+    sweeps.forEach(([f0, f1], i) => {
+      const delay = i * 0.26;
+      osc({
+        type: 'square',
+        f0,
+        f1,
+        dur: 0.22,
+        vol: 0.022,
+        delay,
+        filter: { type: 'lowpass', f0: 2200, q: 0.8 },
+      });
+      osc({
+        type: 'triangle',
+        f0: f0 * 0.45,
+        f1: f1 * 0.45,
+        dur: 0.22,
+        vol: 0.012,
+        delay,
+      });
     });
+    noise({ dur: 0.03, vol: 0.006, type: 'highpass', f0: 3000 });
   },
   crash: () => {
     noise({ dur: 0.1, vol: 0.038, type: 'lowpass', f0: 2400, f1: 300, q: 0.7 });
