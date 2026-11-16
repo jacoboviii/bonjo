@@ -41,6 +41,9 @@ const ANIMAL_WORDS = new Set([
 
 const ROOSTER_SCALE = 0.82;
 const VERTICAL_CAMERA_LERP = 0.12;
+const WASP_WARN_SECONDS = 1.2;
+const WASP_ACTIVE_SECONDS = 0.7;
+const WASP_CYCLE_SECONDS = WASP_WARN_SECONDS + WASP_ACTIVE_SECONDS + 1.4;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
@@ -374,6 +377,7 @@ export default class Level1 extends Phaser.Scene {
       this.updateCheckpoints();
       this.updateErrands();
       this.updateSparkPoles();
+      this.updateWaspNests();
       this.updateSpinAttack();
       this.updateSlideTrail();
       if (this.spinBufferAt && this.time.now >= this.spinBufferAt) {
@@ -2087,12 +2091,19 @@ export default class Level1 extends Phaser.Scene {
     if (!nestingTrees.length) return;
 
     this.waspNestGroup = this.physics.add.staticGroup();
-    for (const tree of nestingTrees) {
+    this.waspNests = [];
+    nestingTrees.forEach((tree, i) => {
       const nest = this.waspNestGroup
         .create((tree.x + 12) * S, 572 * S, 'waspNest')
         .setDepth(3);
       nest.body.setSize(12 * S, 12 * S);
-    }
+      nest.body.enable = false;
+      const swarm = this.add
+        .image(nest.x, nest.y, 'waspSwarm')
+        .setDepth(3.1)
+        .setVisible(false);
+      this.waspNests.push({ nest, swarm, offset: i * 1.65 });
+    });
     this.physics.add.overlap(
       this.dog,
       this.waspNestGroup,
@@ -2102,8 +2113,31 @@ export default class Level1 extends Phaser.Scene {
     );
   }
 
+  updateWaspNests() {
+    if (this.won || this.gameOverFlag || !this.waspNests?.length) return;
+    const seconds = this.time.now / 1000;
+    for (const wasp of this.waspNests) {
+      const t = (seconds + wasp.offset) % WASP_CYCLE_SECONDS;
+      const warning = t < WASP_WARN_SECONDS;
+      const warningSwarms = warning && t > WASP_WARN_SECONDS - 0.4;
+      const active =
+        t >= WASP_WARN_SECONDS &&
+        t < WASP_WARN_SECONDS + WASP_ACTIVE_SECONDS;
+
+      wasp.nest.body.enable = active;
+      wasp.nest
+        .setAngle(warning ? Math.sin(seconds * 50) * 3 : 0)
+        .setAlpha(warning ? 0.78 : 1)
+        .setTint(active ? 0xffd166 : 0xffffff);
+      wasp.swarm
+        .setVisible(active || warningSwarms)
+        .setAlpha(active ? 0.95 : 0.25)
+        .setScale(active ? 1 : 0.8);
+    }
+  }
+
   hitWaspNest(dog, nest) {
-    if (!nest.active || dog.invuln > 0) return;
+    if (!nest.active || dog.invuln > 0 || !nest.body.enable) return;
     this.hurt(nest);
     this.spawnPuff(nest.x, nest.y, 0.7);
     sfx.hiss();

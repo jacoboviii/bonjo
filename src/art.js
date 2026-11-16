@@ -70,6 +70,7 @@ export function buildTextures(scene) {
   makeFieldTree(scene, 'treeSmall', false);
   makeFieldTree(scene, 'treeLarge', true);
   makeWaspNest(scene);
+  makeWaspSwarm(scene);
   makeCat(scene, 'cat', 0xd98a4f, 0xffd166);
   makeCat(scene, 'catGray', 0x6a5a70, 0xffd166);
   makeBird(scene);
@@ -1509,6 +1510,30 @@ function makeWaspNest(scene) {
   g.fillRect(15, 8, 1, 1);
 
   g.generateTexture('waspNest', W, H);
+  g.destroy();
+}
+
+// A few wasps leaving the nest during its active warning/attack window.
+function makeWaspSwarm(scene) {
+  const g = gfx(scene);
+  const W = 30;
+  const H = 22;
+  const wasp = (x, y, dir) => {
+    g.fillStyle(0xffd166, 1);
+    g.fillCircle(x, y, 1.8);
+    g.fillStyle(0x1b1029, 1);
+    g.fillRect(x - 0.5, y - 1, 1, 2.5);
+    g.fillStyle(0xfff4e0, 0.8);
+    g.fillRect(x - 3, y - 3, 3, 1);
+    g.fillRect(x + 1, y - 3, 3, 1);
+    g.fillStyle(0x1b1029, 0.8);
+    g.fillRect(x + dir * 3, y, 1, 1);
+  };
+  wasp(7, 14, -1);
+  wasp(19, 7, 1);
+  wasp(24, 16, 1);
+  wasp(13, 4, -1);
+  g.generateTexture('waspSwarm', W, H);
   g.destroy();
 }
 
