@@ -16,7 +16,7 @@ const S = SCALE;
 const U = S / 2;
 
 /**
- * Stylized lotería-paper map of La Cuadra. It doubles as the level-select hub:
+ * Stylized hand-painted street map of La Cuadra. It doubles as the level-select hub:
  * CASA is playable now, the other landmarks are visible future destinations.
  */
 export default class Map extends Phaser.Scene {
@@ -447,7 +447,7 @@ export default class Map extends Phaser.Scene {
 
     const playHeight = this.compactLayout ? 34 * U : 16 * U;
     const playCenterY =
-      this.detailY + this.detailH - (this.compactLayout ? 30 * U : 25 * U);
+      this.detailY + this.detailH - (this.compactLayout ? 24 * U : 25 * U);
     this.playButton = addMenuButton(this, {
       x: this.detailX + this.detailW / 2,
       y: playCenterY,

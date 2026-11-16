@@ -68,7 +68,7 @@ export default class Title extends Phaser.Scene {
     // atmosphere: city recedes, sitting dog and title copy stay clear
     this.add.rectangle(W / 2, H / 2, W, H, 0x2b5a86, 0.14);
 
-    // Lotería-style paper card framing the hero
+    // Hand-painted street card framing the hero
     this.titleCard = this.add.graphics();
     drawFolkCard(
       this.titleCard,

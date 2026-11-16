@@ -82,7 +82,7 @@ export function buildTextures(scene) {
   makeForegroundHouse(scene, 'foregroundHouseB', 0x2f7f78, 0x1d4a47, 0xf2b544);
   makeForegroundHouse(scene, 'foregroundHouseC', 0xd99a63, 0xb5533a, 0x2f7f78);
   makeForegroundWindows(scene);
-  makeBanner(scene);
+  makeStringLights(scene);
   makeStreetProps(scene);
   makeSparkArc(scene);
   makeLightCone(scene);
@@ -1946,29 +1946,35 @@ function makeForegroundHouse(scene, key, body, roof, trim) {
   g.destroy();
 }
 
-// Strings of papel picado across the street.
-function makeBanner(scene) {  const g = gfx(scene);
+// Warm string lights across porches and storefronts.
+function makeStringLights(scene) {
+  const g = gfx(scene);
   const W = 320;
   const H = 14;
-  const colors = [0xf26b5e, 0x6ec6a8, 0xffd166, 0xb45cd6];
+  const colors = [0xffd166, 0xffd166, 0xffd166, 0x9fd8ff];
 
-  g.fillStyle(0xd9b26a, 1);
-  for (let x = 0; x < W; x += 4) {
-    g.fillRect(x, 2 + (x % 40 < 20 ? 1 : 0), 4, 1);
+  // A shallow wire with a small repeating sag.
+  g.lineStyle(0.8, 0x1b1029, 0.9);
+  for (let x = 0; x < W; x += 8) {
+    const y1 = 2.4 + Math.sin((x / W) * Math.PI * 10) * 0.55;
+    const y2 = 2.4 + Math.sin(((x + 8) / W) * Math.PI * 10) * 0.55;
+    g.lineBetween(x, y1, x + 8, y2);
   }
 
-  for (let i = 0; i < 16; i++) {
-    const x = i * 20 + 5;
-    const c = colors[i % 4];
-    g.fillStyle(c, 1);
-    g.fillRect(x, 4, 10, 7);
-    g.fillRect(x + 2, 11, 2, 2);
-    g.fillRect(x + 6, 11, 2, 2);
-    g.fillStyle(0x1b1029, 1);
-    g.fillRect(x + 4, 6, 2, 2);
+  for (let i = 0; i < 20; i++) {
+    const x = i * 16 + 7;
+    const y = 4.9 + (i % 2 ? 0.5 : 0);
+    const color = colors[i % colors.length];
+
+    g.fillStyle(color, 0.18);
+    g.fillCircle(x, y, 3.1);
+    g.fillStyle(color, 1);
+    g.fillCircle(x, y, 1.3);
+    g.fillStyle(0xfff4e0, 0.95);
+    g.fillCircle(x - 0.45, y - 0.45, 0.55);
   }
 
-  g.generateTexture('banner', W, H);
+  g.generateTexture('stringLights', W, H);
   g.destroy();
 }
 

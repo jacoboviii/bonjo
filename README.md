@@ -1,8 +1,8 @@
 # Bonjo 🐕
 
-**Bonjo is the only chow on the block.** A proud, fluffy black chow who likes
-his walks through a small Mexican city — and does not appreciate the neighbor
-dogs from other houses trying to take his turf.
+**Bonjo is the guardian chow of Romita.** A proud, fluffy black chow who likes
+his walks through the Bajío town of Romita, Guanajuato — and does not appreciate
+the neighbor dogs from other houses trying to take his turf.
 
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
 and conchas; by night, hold the block against waves of rival dogs. Jump, flap,
@@ -17,14 +17,15 @@ holding gates, clearing roads, carrying what others cannot and ending fights
 without hurting anyone. Each level asks him to save a place, not conquer it.
 
 This is a **playable prototype**, not a finished game. The map hub already has
-La Cuadra and Las Orillas playable, with future landmarks plotted for expansion.
+Bonjo's La Cuadra block and the Las Orillas fields playable, with future
+landmarks plotted for expansion.
 
 ![Bonjo contact sheet](screenshots/contact-sheet.png)
 
 Individual 1280×720 screenshots are in [`screenshots/`](screenshots/).
 The contact sheet shows the English UI; the game itself now starts in Spanish.
 
-![La Cuadra landmark map](screenshots/00-map.png)
+![Romita landmark map](screenshots/00-map.png)
 
 ![Las Orillas fields](screenshots/24-orillas.png)
 
@@ -34,11 +35,12 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
 
 ## The world
 
-- **Setting:** a small city in México. Level 1, **La Cuadra**, is the urban
-  core: flat-roofed houses, a parish church, papel picado, adobe walls and
-  terracotta roofs under a clear blue day sky. The fields and blue-green agave
-  at the horizon and along the lots are the agricultural edges — **Las
-  Orillas** — now playable from the map as a second, field-focused level.
+- **Setting:** **Romita, Guanajuato**, in the Bajío. Level 1, **La Cuadra**,
+  is Bonjo's home block: flat-roofed houses, the unfinished single bell tower of
+  Santa María de Guadalupe, warm string lights, adobe walls and terracotta roofs
+  under a clear blue day sky. The garbanzo and blue-green agave fields at the
+  horizon are the agricultural edge — **Las Orillas** — playable from the map as
+  a second, field-focused level.
 - **Bonjo:** the only chow on the block. Not a killer — he **subdues** his
   rivals by out-jumping them. When beaten, a rival yelps and runs home.
 - **Bonjo's strength:** weight, momentum and grip are his gifts. He holds gates,
@@ -249,7 +251,7 @@ there to make them permanent.
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing; at one heart the screen edges pulse red and a **LAST HEART** warning appears
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
-- **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
+- **Map hub**: a hand-painted street map of Romita with CASA and Las Orillas playable, and Parroquia, Mercado and Jardín Hidalgo marked as future routes
 - **Unified folk-paper interface**: title, map, objectives, dialog, respawn and end screens share the same ink/paper/coral palette, button hierarchy and monospace type; keyboard and touch prompts switch with the active input mode
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, field trees with jumpable branches and wasp nests, geese and an aggressive Chihuahua boss
 - **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
@@ -257,7 +259,7 @@ there to make them permanent.
 - **Day/night cycle driven by time shards**: collect sun shards to bring night, then moon shards to reach dawn while surviving the rival waves
 - **Time-shard exploration**: 14 sun or moon shards span each phase and each adds four seconds; standing still no longer advances the clock
 - **Time-of-day clock**: an analog clock with a digital `06:00 → 18:00 → 06:00` readout tracks the shard-driven day and turns from gold to moonlit blue at night
-- **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
+- **Blue-Hour Romita art direction**: limited folk-print palette, guardian paw seals, clock-seal corners, hand-painted cards and string-light trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Two-tab pause panel (O)**: Objectives for the current goal and optional Polo/bell errands; Instructions for controls and each HUD meter; **MENU** returns to the title with a leave-run confirmation
 - **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase clock and gate remain on-screen
@@ -273,7 +275,7 @@ there to make them permanent.
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
 - **Piñatas** (3 hits → bones, plus a concha or life heart) and **bouncing market awnings**
 - Bones for hunger and conchas for stamina, each scattered across randomized x positions and three height bands every run; two checkpoint balloons, a safe **porch**
-- La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, papel picado, fields and agave
+- La Cuadra: adobe/terracotta town, church, closer storefronts, parked cars, bicycles, warm string lights, fields and agave
 - Atmospheric haze pushes the city back while keeping Bonjo and the hazards readable
 - Extended east blocks and field edges with extra bones, props, enemy turf and a second checkpoint
 - Fenced level boundaries so Bonjo cannot run off the last platform
@@ -282,7 +284,7 @@ there to make them permanent.
 - **3× internal render resolution** for crisper pixel art without changing the screen layout
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
-- **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
+- **Spanish by default** (Romita, Guanajuato); toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
 - Title, top-dog finale, win and game-over screens
 
 **Not in this build:** full menu systems, save slots, gamepad, base upgrades,
@@ -320,8 +322,8 @@ bonjo/
 │   └── scenes/
 │       ├── Boot.js         builds textures, starts title
 │       ├── Title.js        BONJO title screen
-│       ├── Map.js          illustrated La Cuadra landmark/level-select hub
-│       └── Level1.js       shared level runtime; reads La Cuadra's config
+│       ├── Map.js          illustrated Romita landmark/level-select hub
+│       └── Level1.js       shared level runtime; reads Romita's level configs
 └── dist/                   production build (after `npm run build`)
 ```
 

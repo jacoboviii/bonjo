@@ -32,16 +32,18 @@ The working one-pager lives in [`PILLARS.md`](PILLARS.md). The short version:
 
 ## 2. Story & setting
 
-**Bonjo** is a black chow — the only chow on the block. He has a routine: the
+**Bonjo** is a black chow — the guardian chow of Romita. He has a routine: the
 same route, the same corners, the same smells. He likes his walks.
 
-**La Cuadra** is the urban core: flat-roofed houses, a church tower, a tienda
-awning, strings of papel picado, dogs behind every gate. The street is the
-arena: one continuous run of flat pavement, with market awnings above the
-street.
+**Romita, Guanajuato** is the town at the center of the game: a low, warm Bajío
+settlement of rectilinear streets, adobe and cantera, a single unfinished bell
+tower, agricultural fields and strings of warm lights. Bonjo's **La Cuadra** is
+its home block: flat-roofed houses, a tienda awning, dogs behind every gate.
+The street is the arena: one continuous run of flat pavement, with market
+awnings above the street.
 
-At the edge of town are **Las Orillas**: a continuous field floor, crop rows,
-agave, dust, geese, and farm dogs who have never seen a chow before. That's
+At the edge of town are **Las Orillas**: a continuous field floor, garbanzo and
+agave rows, dust, geese, and farm dogs who have never seen a chow before. That's
 level 2: three nights and an aggressive Chihuahua boss.
 
 **The survival loop:** Day 1 is for scavenging — bones, conchas, piñatas, and
@@ -68,10 +70,11 @@ banners say they step aside, not fall. The story lives in the change of the
 place and the next line of dialogue, not in a cutscene.
 
 **Tone:** warm, funny, non-lethal. Spanish is used naturally for place and
-flavor (`la cuadra`, `¡guau!`, `¡échale!`, `papel picado`), not as a punchline.
+flavor (`la cuadra`, `¡guau!`, `¡échale!`, `la hora azul`), not as a punchline.
 
-**Map hub:** the title opens a papel-lotería map of La Cuadra. CASA and Las
-Orillas are playable; Iglesia, Mercado and Parque are visible future landmarks.
+**Map hub:** the title opens a hand-painted street map of Romita. CASA and Las
+Orillas are playable; Parroquia, Mercado and Jardín Hidalgo are visible future
+landmarks.
 Selecting a landmark shows its description; completed levels receive an ink
 stamp and saved best score.
 
@@ -125,7 +128,7 @@ the conchas and piñatas you missed.
 
 Friendly NPCs and quest objects show a context prompt; **E** or the touch
 bubble starts the interaction. Polo, the chihuahua, cats and the daytime
-rooster use a named lotería-paper dialog card; the cat, chihuahua and rooster
+rooster use a named hand-painted dialog card; the cat, chihuahua and rooster
 rotate through several lines so repeated talks stay fresh. The bell rings directly. An
 open dialog card pauses gameplay, hunger, wave timers and enemy movement until
 it closes.
@@ -414,7 +417,7 @@ render); visible width follows the internal canvas width (256 units at 16:9,
 wider on phones).
 Ground line y=600. The background is a tiled town under a clear blue day sky:
 blue mountains, fields/agave, low houses whose windows light up at night, a church tower and
-cross, papel picado. A closer parallax storefront row adds awnings,
+cross, warm string lights. A closer parallax storefront row adds awnings,
 balconies and signs; parked cars, bicycles, hydrants, planters and street lamps
 line the far curb (background only, no collision). Agave clumps and agricultural
 edges surround the street. A few foreground houses sit on the sidewalk with
@@ -493,27 +496,64 @@ strongest dog finally getting to be unnecessary.
 
 ---
 
-## 9. Art direction — Blue-Hour La Cuadra
+## 9. Art direction — Blue-Hour Romita
 
 A limited folk-print palette (ink, cream paper, terracotta, coral, marigold,
 teal, magenta, cobalt) with cool, low-contrast backgrounds and warm, saturated
 gameplay layers. Day is clear cobalt-blue; night is deep indigo with warm
-windows. Title, win and game-over screens are framed as lotería cards with
-papel-picado strings and ink borders. Agave, milpa rows and agricultural lots
+windows. Title, win and game-over screens are framed as hand-painted cards
+with clock-seal corners, string-light trim and ink borders. Agave, milpa rows and agricultural lots
 are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
 values, and readable foreground/background separation.
 
-**La Cuadra palette**
+### Identity: guardian first, Romita second
+
+The game's identity is built in two layers:
+
+1. **Bonjo, the guardian chow.** The paw seal comes first in menus. He is a
+   black chow with a lavender rim light; his verbs are holding, carrying,
+   clearing a path and ending a fight without hurting anyone. The time-of-day
+   clock, concha shells and bones are his personal iconography.
+2. **Romita, the place he protects.** The town layer is quieter than the hero:
+   warm adobe and cantera, a rectilinear street grid, one unfinished bell tower,
+   hacienda arches, garbanzo and agave fields, afternoon light and string lights
+   rather than decorative paper banners. The town is specific without becoming
+   a costume.
+
+Visual translation:
+- **Paw seals** at the top corners of paper cards; **clock seals** at the bottom.
+- **Warm string lights** are the standing trim in the world and on card edges.
+- **Parroquia, Jardín Hidalgo and Las Orillas** carry the town's real landmarks
+  and agricultural character.
+- Menu voice should say what Bonjo guards before it describes the town. The
+  HUD/clock and the warm porch remain the emotional center.
+
+Research anchors (Romita, Guanajuato):
+- Rectilinear, chessboard street plan around the Jardín Principal Hidalgo.
+- Parroquia de Santa María de Guadalupe and its single unfinished bell tower.
+- Agricultural Bajío economy: garbanzo, maize, sorghum, wheat, agave.
+- Ex-haciendas such as San Clemente and La Laja; arcaded patios and agricultural
+  history.
+- Fiestas Guadalupanas organized through eight cuarteles, with afternoon bands,
+  rockets and the Entrada de la Cera.
+- Local food culture: gorditas de horno, garbanzo, birria and mole.
+
+Sources: [Romita tourism history](https://turismo.romita.gob.mx/index.php/historia-y-cultura/),
+[Guanajuato.mx Romita](https://guanajuato.mx/en/romita/),
+[municipal overview](https://municipios.com.mx/guanajuato/romita),
+[cultural monograph](https://cultura.guanajuato.gob.mx/wp-content/uploads/2017/06/Romita.pdf).
+
+**Romita palette**
 | Role | Hex |
 | --- | --- |
 | Ink / outlines | `#1d1326` |
-| Paper / lotería card | `#f4dfb0`, light `#f8e9c6` |
+| Paper / hand-painted card | `#f4dfb0`, light `#f8e9c6` |
 | Sky top → horizon | `#2b5b96` → `#82b6df` → `#f7d5a8` |
 | Adobe | `#c98a5e`, shadow `#a96a45` |
 | Terracotta | `#c46b4a`, highlight `#d9775a` |
 | Painted teal | `#2f7f78` |
 | Marigold | `#f2b544` |
-| Papel picado | coral `#e85a4f`, mint `#7fc7a3`, marigold `#f2b544`, magenta `#b54a78` |
+| String lights | warm gold `#ffd166`, mint `#7fc7a3`, moon blue `#9fd8ff`, coral `#e85a4f` |
 | Bonjo fur | `#2a2135` (black chow), rim `#6f5c86`, tongue `#b45cd6` |
 | Rival dog | tan `#c98a4f`, red bandana `#d94f4f` |
 | Fast / thief / brute | blue-grey `#a7c7d6`, masked purple `#8a6d9a`, scarred brown `#b07a4f` |
@@ -533,8 +573,8 @@ Rules:
 - The night wash dims the town and street dressing, but gameplay entities
   (bones, conchas, enemies, checkpoints, piñatas and time shards) render above
   it so they stay fully readable.
-- Title/end screens use paper lotería cards with ink borders, corner stamps and
-  papel-picado strings.
+- Title/end screens use paper cards with ink borders, clock-seal corners and
+  warm string-light trim.
 - Friendly NPC dialog uses the same paper card, pauses gameplay while open and
   excludes its duration from the run timer, with the speaker's name in an
   ink nameplate inside the window instead of a floating world label.
@@ -548,7 +588,7 @@ Rules:
 - Input hints are conditional: `E · CLOSE` / `O · CLOSE` / `R · RETRY` on
   keyboard, `TAP · CLOSE` / `TAP · RETRY` on touch. The map shortcuts use
   `MAP · M` on desktop and `MAP` on touch.
-- Avoid sombrero/serape clichés; the specificity is architecture, papel picado,
+- Avoid sombrero/serape clichés; the specificity is architecture, street light,
   church, fields and language.
 
 ---
@@ -594,7 +634,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 ## 11. Scope
 
 ### In this slice
-- La Cuadra: town background, flat adobe street, papel picado, porch
+- La Cuadra: town background, flat adobe street, string lights, porch
 - Movement: run, jump, variable height, coyote, buffer, flap-charge double jumps, slide-only IMPULSE stamina, glide, spin
 - **Map hub:** La Cuadra landmark map, saved completion stamps and best scores, locked future routes
 - **Two playable configs:** La Cuadra and the agricultural Las Orillas, driven by level data

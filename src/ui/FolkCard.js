@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------------------
-// Blue-Hour La Cuadra folk-print UI:
-// a limited palette, ink borders, lotería-card frames and papel picado trim.
+// Blue-Hour La Cuadra UI:
+// a limited palette, ink borders, hand-painted card frames, clock seals and
+// string-light trim.
 // ---------------------------------------------------------------------------
 
 import { SCALE } from '../scale.js';
@@ -170,13 +171,73 @@ export function addMenuButton(
   return button;
 }
 
-const FLAG_COLORS = [FOLK.coral, FOLK.mint, FOLK.marigold, FOLK.magenta];
+function drawPawSeal(g, x, y, color) {
+  const r = 4.5 * U;
+  g.fillStyle(FOLK.paperLight, 1);
+  g.fillCircle(x, y, r);
+  g.lineStyle(1.1 * U, FOLK.ink, 1);
+  g.strokeCircle(x, y, r);
+
+  // A small guardian paw: one pad and four toes.
+  g.fillStyle(color, 1);
+  g.fillCircle(x, y + 1.1 * U, 1.7 * U);
+  for (const [dx, dy] of [
+    [-2.1, -0.5],
+    [-0.7, -1.8],
+    [0.7, -1.8],
+    [2.1, -0.5],
+  ]) {
+    g.fillCircle(x + dx * U, y + dy * U, 0.82 * U);
+  }
+}
+
+function drawClockSeal(g, x, y, color) {
+  const r = 4.5 * U;
+  g.fillStyle(FOLK.paperLight, 1);
+  g.fillCircle(x, y, r);
+  g.lineStyle(1.1 * U, FOLK.ink, 1);
+  g.strokeCircle(x, y, r);
+
+  // four cardinal ticks
+  g.lineStyle(0.7 * U, FOLK.ink, 0.65);
+  for (let i = 0; i < 4; i++) {
+    const a = (i * Math.PI) / 2;
+    g.lineBetween(
+      x + Math.cos(a) * r * 0.72,
+      y + Math.sin(a) * r * 0.72,
+      x + Math.cos(a) * r * 0.9,
+      y + Math.sin(a) * r * 0.9,
+    );
+  }
+
+  // hands and center pin
+  g.lineStyle(1.1 * U, color, 1);
+  g.lineBetween(x, y, x, y - r * 0.52);
+  g.lineBetween(x, y, x + r * 0.4, y + r * 0.22);
+  g.fillStyle(color, 1);
+  g.fillCircle(x, y, 1.1 * U);
+}
+
+function drawStringLights(g, y, left, right) {
+  g.lineStyle(0.9 * U, FOLK.ink, 0.9);
+  g.lineBetween(left + 10 * U, y, right - 10 * U, y);
+
+  let i = 0;
+  for (let x = left + 18 * U; x < right - 16 * U; x += 18 * U, i++) {
+    const color = i % 4 === 0 ? FOLK.mint : FOLK.marigold;
+    const bulbY = y + 3.2 * U;
+    g.fillStyle(color, 0.2);
+    g.fillCircle(x, bulbY, 3.4 * U);
+    g.fillStyle(color, 1);
+    g.fillCircle(x, bulbY, 1.35 * U);
+    g.fillStyle(FOLK.cream, 0.95);
+    g.fillCircle(x - 0.45 * U, bulbY - 0.45 * U, 0.55 * U);
+  }
+}
 
 /**
- * Draw a lotería-style paper card with an ink frame and papel-picado strings
- * hanging just outside its top and bottom edges.
- *
- * All coordinates are in game pixels.
+ * Draw a hand-painted Blue-Hour card with an ink frame, clock-seal corners and
+ * string-light trim. All coordinates are in game pixels.
  */
 export function drawFolkCard(graphics, cx, cy, w, h) {
   const g = graphics;
@@ -205,57 +266,21 @@ export function drawFolkCard(graphics, cx, cy, w, h) {
   g.lineStyle(1 * U, FOLK.ink, 0.35);
   g.strokeRect(left + 13 * U, top + 13 * U, w - 26 * U, h - 26 * U);
 
-  // corner stamps
-  for (const [x, y] of [
-    [left + 8 * U, top + 8 * U],
-    [right - 8 * U, top + 8 * U],
-    [left + 8 * U, bottom - 8 * U],
-    [right - 8 * U, bottom - 8 * U],
-  ]) {
-    g.fillStyle(FOLK.ink, 1);
-    g.fillRect(x - 4 * U, y - 4 * U, 8 * U, 8 * U);
-    g.fillStyle(FOLK.marigold, 1);
-    g.fillRect(x - 2 * U, y - 2 * U, 4 * U, 4 * U);
+  // Guardian paws first, time-of-day seals second.
+  const cornerSeals = [
+    [left + 8 * U, top + 8 * U, FOLK.coral, 'paw'],
+    [right - 8 * U, top + 8 * U, FOLK.marigold, 'paw'],
+    [left + 8 * U, bottom - 8 * U, FOLK.teal, 'clock'],
+    [right - 8 * U, bottom - 8 * U, FOLK.marigold, 'clock'],
+  ];
+  for (const [x, y, color, kind] of cornerSeals) {
+    if (kind === 'paw') drawPawSeal(g, x, y, color);
+    else drawClockSeal(g, x, y, color);
   }
 
-  // papel picado strings, outside the paper edge
-  const stringTop = top - 11 * U;
-  const stringBottom = bottom + 11 * U;
-
-  g.lineStyle(1 * U, FOLK.ink, 1);
-  g.lineBetween(left + 10 * U, stringTop, right - 10 * U, stringTop);
-  g.lineBetween(left + 10 * U, stringBottom, right - 10 * U, stringBottom);
-
-  let i = 0;
-  for (let x = left + 14 * U; x < right - 12 * U; x += 19 * U, i++) {
-    const color = FLAG_COLORS[i % FLAG_COLORS.length];
-
-    // top flags hang down
-    g.fillStyle(color, 1);
-    g.fillTriangle(
-      x,
-      stringTop + 1 * U,
-      x + 10 * U,
-      stringTop + 1 * U,
-      x + 5 * U,
-      stringTop + 10 * U,
-    );
-    g.fillStyle(FOLK.ink, 0.35);
-    g.fillRect(x + 4 * U, stringTop + 3 * U, 1 * U, 3 * U);
-
-    // bottom flags point up
-    g.fillStyle(color, 1);
-    g.fillTriangle(
-      x,
-      stringBottom - 1 * U,
-      x + 10 * U,
-      stringBottom - 1 * U,
-      x + 5 * U,
-      stringBottom - 10 * U,
-    );
-    g.fillStyle(FOLK.ink, 0.35);
-    g.fillRect(x + 4 * U, stringBottom - 6 * U, 1 * U, 3 * U);
-  }
+  // Warm string-light trim.
+  drawStringLights(g, top - 8 * U, left, right);
+  drawStringLights(g, bottom + 8 * U, left, right);
 
   return g;
 }

@@ -703,9 +703,9 @@ export default class Level1 extends Phaser.Scene {
           .setVisible(false),
       );
 
-      // Papel picado strung along the house front rather than across the sky.
+      // Warm string lights along the house front.
       this.add
-        .tileSprite(h.x * S, 522 * S, 110 * S, 14 * S, 'banner')
+        .tileSprite(h.x * S, 522 * S, 110 * S, 14 * S, 'stringLights')
         .setOrigin(0.5, 0)
         .setDepth(4.5);
 
@@ -1362,9 +1362,9 @@ export default class Level1 extends Phaser.Scene {
         .setVisible(false),
     );
 
-    // A papel picado string along the front of Casa.
+    // Warm string lights along the front of Casa.
     this.add
-      .tileSprite(porch.x * S, 522 * S, (porch.roofWidth + 20) * S, 14 * S, 'banner')
+      .tileSprite(porch.x * S, 522 * S, (porch.roofWidth + 20) * S, 14 * S, 'stringLights')
       .setOrigin(0.5, 0)
       .setDepth(4.5);
 
@@ -3145,7 +3145,6 @@ export default class Level1 extends Phaser.Scene {
           t('objectives.flapsDesc'),
           t('objectives.staminaDesc'),
           t('objectives.hungerDesc'),
-          t('objectives.timeDesc'),
         ].join('\n'),
         bodyStyle,
       );
