@@ -89,7 +89,8 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   refill on landing. Each level has two placed **life hearts** and
   at least one marked piñata hides another. The first raises max health to four;
   later hearts heal, and a full-health heart waits for you. Checkpoints heal one
-  heart, and dawn restores two unless the gate broke overnight. In La Cuadra,
+  heart and give one retry at that balloon if Bonjo is defeated; dawn restores
+  two unless the gate broke overnight. In La Cuadra,
   hold CASA for two nights and drive off the top dog; in Las Orillas, survive
   three nights and drive the Chihuahua off the fields. Bones, combo, subdued
   rivals and no-hit play feed your final score and rank.

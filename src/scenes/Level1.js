@@ -184,6 +184,7 @@ export default class Level1 extends Phaser.Scene {
     this.hintTimer = 16;
     this.checkpointActive = false;
     this.checkpoint2Active = false;
+    this.checkpointRespawnReady = false;
     this.spawnPoint = {
       x: this.levelData.spawn.x * S,
       y: this.levelData.spawn.y * S,
@@ -4071,7 +4072,8 @@ export default class Level1 extends Phaser.Scene {
     this.checkpointActive = true;
 
     this.checkpoint.clearTint();
-    this.spawnPoint = { x: CHECKPOINT_X * S, y: 548 * S };
+    this.spawnPoint = { x: CHECKPOINT_X * S, y: 580 * S };
+    this.checkpointRespawnReady = true;
 
     sfx.checkpoint();
     this.spawnPuff(this.checkpoint.x, this.checkpoint.y, 1.3);
@@ -4086,7 +4088,8 @@ export default class Level1 extends Phaser.Scene {
     this.checkpoint2Active = true;
 
     this.checkpoint2.clearTint();
-    this.spawnPoint = { x: CHECKPOINT2_X * S, y: 548 * S };
+    this.spawnPoint = { x: CHECKPOINT2_X * S, y: 580 * S };
+    this.checkpointRespawnReady = true;
 
     sfx.checkpoint();
     this.spawnPuff(this.checkpoint2.x, this.checkpoint2.y, 1.3);
@@ -4571,6 +4574,7 @@ export default class Level1 extends Phaser.Scene {
     this.updateSurvivalHud();
 
     if (this.health <= 0) {
+      if (this.tryCheckpointRetry()) return;
       this.gameOver();
       return;
     }
@@ -4611,6 +4615,7 @@ export default class Level1 extends Phaser.Scene {
     this.updateSurvivalHud();
 
     if (this.health <= 0) {
+      if (this.tryCheckpointRetry()) return;
       this.gameOver();
       return;
     }
@@ -4636,7 +4641,7 @@ export default class Level1 extends Phaser.Scene {
     this.updateSurvivalHud();
     this.cameras.main.flash(100, 242, 107, 94);
 
-    if (this.health <= 0) this.gameOver();
+    if (this.health <= 0 && !this.tryCheckpointRetry()) this.gameOver();
   }
 
   hideEndHud() {
@@ -4735,6 +4740,30 @@ export default class Level1 extends Phaser.Scene {
       // ignore storage failures
     }
     console.info('BONJO RUN', JSON.stringify(run));
+  }
+
+  tryCheckpointRetry() {
+    if (!this.checkpointRespawnReady) return false;
+    this.checkpointRespawnReady = false;
+
+    this.health = this.maxHealth;
+    this.hunger = Math.max(this.hunger, 50);
+    this.dog.dead = false;
+    this.dog.body.reset(this.spawnPoint.x, this.spawnPoint.y);
+    this.dog.setVelocity(0, 0);
+    this.dog.setRotation(0);
+    this.dog.setAlpha(1);
+    this.dog.clearTint();
+    this.dog.invuln = 2;
+    this.dog.flaps = this.dog.maxFlaps;
+    this.dog.stamina = this.dog.maxStamina;
+    this.touch?.reset();
+    this.resetCombo();
+    this.updateSurvivalHud();
+    this.cameras.main.flash(180, 110, 198, 168);
+    this.showPhaseBanner(t('float.checkpoint'), '#6ec6a8');
+    this.floatText(this.dog.x, this.dog.y - 24 * S, t('float.checkpoint'), '#6ec6a8');
+    return true;
   }
 
   gameOver() {

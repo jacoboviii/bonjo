@@ -316,12 +316,13 @@ ignore the arc, and the pole itself is decorative.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
-knocks him back and grants 1.7 s of invulnerability. Pits cost a heart and respawn
-him at the last checkpoint. Hunger drains at 0.8/s; bones restore 12 and taco
-carts restore 28. At zero hunger, Bonjo loses a heart every 8 s until he eats.
-Dawn restores two hearts and 10 hunger, unless the porch gate broke overnight;
-repairing it costs that morning's heal and dawn concha. Checkpoint balloons
-restore one heart when first reached.
+knocks him back and grants 1.7 s of invulnerability. Falling out of the world
+respawns him at the last checkpoint. Hunger drains at 0.8/s; bones restore 12 and
+taco carts restore 28. At zero hunger, Bonjo loses a heart every 8 s until he
+eats. Dawn restores two hearts and 10 hunger, unless the porch gate broke
+overnight; repairing it costs that morning's heal and dawn concha. Checkpoint
+balloons restore one heart when first reached and hold one retry for the next
+defeat.
 
 Each level has two placed life hearts and a marked piñata with another. A life
 heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
@@ -361,9 +362,11 @@ when a rusher is on the way. Polo and the chihuahua live here. The street is the
 arena; the porch is where you catch your breath.
 
 ### Checkpoints
-Balloons at the midpoint and on the east block; touch one to set the respawn
-point after a fall or defeat and restore one heart. There is no goal balloon: the win condition is surviving
-Night 2 and repelling the top dog.
+Balloons at the midpoint and on the east block; touch one to restore one heart
+and arm a single retry at that balloon. If Bonjo loses all hearts, he revives
+there once with full health and IMPULSE; the retry is consumed. After the retry
+is used, the next defeat ends the run normally. There is no goal balloon: the win
+condition is surviving Night 2 and repelling the top dog.
 
 ---
 
