@@ -88,12 +88,12 @@ export const lasOrillas = {
   pinatas: [
     [1220, 515],
     { x: 3000, y: 525, life: true },
-    [4350, 520],
+    [4100, 520],
     [1850, 300],
   ],
 
   // Two placed life hearts per level; the marked piñata hides another.
-  lives: [[1850, 590], [3300, 590]],
+  lives: [[1850, 575], [3300, 575]],
   endReward: { x: 4360, y: 570, type: 'flap' },
 
   awningFacade: 'stall',

@@ -265,6 +265,9 @@ otherwise and lose a heart. At night it becomes an owl with its own flap frames.
 story.
 
 ### Piñatas
+Piñata and life-heart positions are authored above the pavement and clear
+of one-way ledges/roofs, so their bodies and ropes do not intersect platforms.
+
 Piñatas hang by ropes from utility poles and cross-street cables. Any contact hits one (350 ms cooldown):
 wobble, `¡ÉCHALE!`, one bone drops. Three hits burst it into `¡ÓRALE!` — a
 shower of bones plus a concha. A piñata with a small heart marker leaves a life

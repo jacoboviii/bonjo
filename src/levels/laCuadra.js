@@ -75,16 +75,16 @@ export const laCuadra = {
   ],
 
   pinatas: [
-    [240, 525],
+    [220, 525],
     [2150, 515],
-    { x: 3350, y: 525, life: true },
+    { x: 3450, y: 525, life: true },
     [3880, 515],
     [4650, 520],
-    [1460, 300],
+    [1600, 300],
   ],
 
   // Two placed life hearts per level; the marked piñata hides another.
-  lives: [[1380, 590], [3300, 590]],
+  lives: [[1380, 575], [3300, 575]],
   endReward: { x: 4910, y: 570, type: 'flap' },
 
   awningFacade: 'shopfront',
