@@ -2570,13 +2570,14 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar = this.add.graphics().setScrollFactor(0).setDepth(100);
 
     this.phaseText = this.add
-      .text(8 * S, this.compactLayout ? 19 * S : 48 * S, '', {
+      .text(0, 0, '', {
         fontFamily: 'monospace',
-        fontSize: this.compactLayout ? 5.4 * S : 8 * S,
+        fontSize: this.compactLayout ? 4.2 * S : 8 * S,
         color: '#fff4e0',
         stroke: '#2b1b3d',
         strokeThickness: 2 * S,
       })
+      .setOrigin(0, 0.5)
       .setScrollFactor(0)
       .setDepth(100);
 
@@ -2626,10 +2627,13 @@ export default class Level1 extends Phaser.Scene {
 
   layoutClockHud(W = this.scale.width) {
     if (this.clockGraphics) {
-      this.clockGraphics.setPosition(W - 50 * S, 13 * S);
+      this.clockGraphics.setPosition(W - 64 * S, 13 * S);
     }
     if (this.clockText) {
-      this.clockText.setPosition(W - 50 * S, 21 * S);
+      this.clockText.setPosition(W - 64 * S, 21 * S);
+    }
+    if (this.phaseText) {
+      this.phaseText.setPosition(W - 54 * S, 13 * S);
     }
   }
 
@@ -3428,7 +3432,7 @@ export default class Level1 extends Phaser.Scene {
 
     const label = this.phase === 'day' ? t('hud.day') : t('hud.night');
     const number = this.phase === 'day' ? this.dayNumber : this.nightsSurvived + 1;
-    const phaseLabel = `${label} ${number} · ${Math.ceil(Math.max(0, this.phaseTime))}s`;
+    const phaseLabel = `${label} ${number}`;
     if (this.gateText) {
       const gateLabel = this.gateBroken
         ? `${t('hud.gate')} 0/${this.gateMaxHealth}`
