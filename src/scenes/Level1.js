@@ -2270,23 +2270,18 @@ export default class Level1 extends Phaser.Scene {
     const W = this.scale.width;
 
     this.pips = this.add.graphics().setScrollFactor(0).setDepth(100);
-    this.staminaIcon = this.add
-      .image(0, 10 * S, 'conchaIcon')
-      .setOrigin(0, 0.5)
-      .setScrollFactor(0)
-      .setDepth(100)
-      .setAlpha(0.95);
-    this.staminaText = this.add
-      .text(0, 10 * S, '', {
-        fontFamily: 'monospace',
-        fontSize: 5 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
-        strokeThickness: 1.5 * S,
-      })
-      .setOrigin(0, 0.5)
-      .setScrollFactor(0)
-      .setDepth(100);
+    this.staminaIcons = [];
+    for (let i = 0; i < 3; i++) {
+      this.staminaIcons.push(
+        this.add
+          .image(142 * S + i * 13 * S, 10 * S, 'conchaIcon')
+          .setOrigin(0, 0.5)
+          .setScale(this.compactLayout ? 0.65 : 0.6)
+          .setScrollFactor(0)
+          .setDepth(100)
+          .setAlpha(0.95),
+      );
+    }
 
     this.bossTracker = this.add
       .container(0, 0)
@@ -3127,15 +3122,11 @@ export default class Level1 extends Phaser.Scene {
       }
     }
 
-    const staminaX = this.compactLayout
-      ? 142 * S
-      : (pipStartX + maxFlaps * pipGap + 2) * S;
-    this.staminaIcon
-      .setPosition(staminaX, 10 * S)
-      .setScale(this.compactLayout ? 0.65 : 0.6);
-    this.staminaText
-      .setPosition(staminaX + 10 * S, 10 * S)
-      .setText(`${this.dog?.stamina ?? 0}`);
+    const stamina = this.dog?.stamina ?? 0;
+    this.staminaIcons.forEach((icon, i) => {
+      icon.setTexture(i < stamina ? 'conchaIcon' : 'conchaEmpty');
+      icon.setAlpha(i < stamina ? 0.95 : 0.72);
+    });
 
     this.boneText.setText(`${t('hud.bones')} ${this.bonesCount}`);
 
@@ -4569,8 +4560,7 @@ export default class Level1 extends Phaser.Scene {
     this.spinTail?.destroy();
     this.spinTail = null;
     this.pips.setVisible(false);
-    this.staminaIcon?.setVisible(false);
-    this.staminaText?.setVisible(false);
+    this.staminaIcons?.forEach((icon) => icon.setVisible(false));
     this.boneText.setVisible(false);
     this.comboText?.setVisible(false);
     this.hint.setVisible(false);

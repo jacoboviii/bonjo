@@ -125,6 +125,7 @@ export function buildTextures(scene) {
   makeFood(scene);
   makeBoneIcon(scene);
   makeConchaIcon(scene);
+  makeConchaIconOutline(scene);
   makeBonjoHouse(scene);
   makeBonjoHouseWindows(scene);
   makePinata(scene);
@@ -2946,6 +2947,27 @@ function makeConchaIcon(scene) {
   g.fillRect(3, 2, 2, 1);
 
   g.generateTexture('conchaIcon', 16, 10);
+  g.destroy();
+}
+
+// Empty IMPULSE slot: the same concha silhouette, outline only.
+function makeConchaIconOutline(scene) {
+  const g = gfx(scene);
+  const OUTLINE = 0x704154;
+  const RIDGE = 0xd97a8e;
+
+  g.lineStyle(1, OUTLINE, 0.9);
+  g.strokeCircle(8, 3.5, 5.2);
+  g.lineBetween(2, 3.5, 2, 9);
+  g.lineBetween(14, 3.5, 14, 9);
+  g.lineBetween(1, 7, 1, 9);
+  g.lineBetween(15, 7, 15, 9);
+  g.lineBetween(1, 9, 15, 9);
+
+  g.lineStyle(0.7, RIDGE, 0.8);
+  for (let x = 5; x <= 11; x += 2) g.lineBetween(x, 1, x, 7);
+
+  g.generateTexture('conchaEmpty', 16, 10);
   g.destroy();
 }
 
