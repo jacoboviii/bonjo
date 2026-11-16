@@ -260,7 +260,7 @@ there to make them permanent.
 - **Objectives panel (O)** for the current goal, optional Polo/bell errands and a description of each HUD meter
 - **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase clock and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
-- **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges
+- **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges; starting an attack while rising preserves the jump
 - **Vertical rooftop routes** in both levels: layered fire escapes, laundry lines and roof ledges with high bones, conchas, piñatas and aerial hazards
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map

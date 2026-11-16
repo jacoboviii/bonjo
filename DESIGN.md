@@ -171,7 +171,9 @@ flying dog. A fresh
 S/↓ press starts the slide attack, on the ground or in the air. Double jumps use
 their own flap charges, which refill only on landing. IMPULSE is a separate
 slide-only stamina meter, earned by collecting conchas that enemies sometimes
-drop. Jump cut only applies to ground jumps, after the 90 ms minimum.
+drop. Jump cut only applies to ground jumps, after the 90 ms minimum. Starting
+a spin or slide while rising preserves the jump, and hit knockback keeps any
+existing upward velocity instead of replacing it.
 
 ### Flaps & IMPULSE
 Flap charges are the double-jump resource: Bonjo starts with two, spends one per

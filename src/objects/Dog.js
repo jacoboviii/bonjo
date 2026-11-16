@@ -312,6 +312,9 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.slideDir = this.facing || 1;
     this.slideSpeed = 300 * S;
     this.slideUntil = now + 280;
+    // An attack shouldn't cancel the upward half of a fresh jump. This also
+    // covers touch players who release jump to reach the action button.
+    if (this.body.velocity.y < 0) this.jumpCutReady = false;
     this.body.velocity.x = this.slideDir * this.slideSpeed;
     this.scene.onSlideStart?.(this);
   }

@@ -1715,6 +1715,9 @@ export default class Level1 extends Phaser.Scene {
     this.dog.spinStart = now;
     this.dog.spinUntil = now + SPIN_DURATION_MS;
     this.dog.spinDir = this.dog.facing >= 0 ? 1 : -1;
+    // Keep a fresh jump rising through the spin; otherwise releasing jump to
+    // tap the spin button can trigger the jump cut mid-attack.
+    if (this.dog.body.velocity.y < 0) this.dog.jumpCutReady = false;
 
     sfx.spin();
     this.spawnPuff(this.dog.x, this.dog.y, 1);
@@ -4794,8 +4797,12 @@ export default class Level1 extends Phaser.Scene {
       ? Math.sign(this.dog.x - source.x) || 1
       : -this.dog.facing;
 
+    // Keep any upward momentum from a jump or flap. Overwriting it with the
+    // small hit-knockback made an enemy hit right after a jump look like Bonjo
+    // had stopped rising; only add the upward nudge when he was not rising.
+    const risingVelocity = this.dog.body.velocity.y;
     this.dog.body.velocity.x = dir * 170 * S;
-    this.dog.body.velocity.y = -220 * S;
+    this.dog.body.velocity.y = Math.min(risingVelocity, -220 * S);
 
     this.cameras.main.shake(150, 0.007);
     this.cameras.main.flash(100, 242, 107, 94);
