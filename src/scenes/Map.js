@@ -399,7 +399,7 @@ export default class Map extends Phaser.Scene {
     this.detailKicker = this.add
       .text(this.detailX + 8 * U, this.detailY + 9 * U, t('map.landmark'), {
         fontFamily: FONT,
-        fontSize: this.compactLayout ? 4.2 * S : 3.8 * S,
+        fontSize: this.compactLayout ? 5 * S : 4.2 * S,
         color: FOLK_CSS.teal,
       })
       .setDepth(6);
@@ -417,7 +417,7 @@ export default class Map extends Phaser.Scene {
     this.detailStatus = this.add
       .text(this.detailX + 8 * U, this.detailY + 40 * U, '', {
         fontFamily: FONT,
-        fontSize: this.compactLayout ? 4.8 * S : 4.2 * S,
+        fontSize: this.compactLayout ? 5 * S : 4.4 * S,
         color: FOLK_CSS.teal,
       })
       .setDepth(6);
@@ -425,7 +425,7 @@ export default class Map extends Phaser.Scene {
     this.detailDesc = this.add
       .text(this.detailX + 8 * U, this.detailY + 54 * U, '', {
         fontFamily: FONT,
-        fontSize: this.compactLayout ? 4.8 * S : 4.2 * S,
+        fontSize: this.compactLayout ? 5 * S : 4.4 * S,
         color: FOLK_CSS.ink,
         lineSpacing: this.compactLayout ? 3 * U : 2 * U,
         wordWrap: { width: this.detailW - 16 * U },
@@ -439,7 +439,7 @@ export default class Map extends Phaser.Scene {
         '',
         {
           fontFamily: FONT,
-          fontSize: this.compactLayout ? 4.2 * S : 3.8 * S,
+          fontSize: this.compactLayout ? 5 * S : 4.2 * S,
           color: FOLK_CSS.muted,
         },
       )

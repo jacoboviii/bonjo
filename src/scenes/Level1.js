@@ -2465,7 +2465,7 @@ export default class Level1 extends Phaser.Scene {
     this.bossTrackerLabel = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 4.2 * S,
+        fontSize: 5 * S,
         color: FOLK_CSS.cream,
         backgroundColor: FOLK_CSS.ink,
         padding: { x: 3 * S, y: 2 * S },
@@ -2531,7 +2531,7 @@ export default class Level1 extends Phaser.Scene {
 
     const statusStyle = {
       fontFamily: FONT,
-      fontSize: 4.5 * S,
+      fontSize: 5 * S,
       color: FOLK_CSS.gold,
       stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
@@ -2565,7 +2565,7 @@ export default class Level1 extends Phaser.Scene {
     this.healthText = this.add
       .text(70 * S, 22 * S, `${this.health}/${this.maxHealth}`, {
         fontFamily: FONT,
-        fontSize: 4.5 * S,
+        fontSize: 5 * S,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
@@ -2593,7 +2593,7 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: this.compactLayout ? 4.2 * S : 8 * S,
+        fontSize: this.compactLayout ? 5 * S : 8 * S,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
@@ -2638,7 +2638,7 @@ export default class Level1 extends Phaser.Scene {
     this.clockText = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 4.6 * S,
+        fontSize: 5 * S,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
@@ -2860,7 +2860,7 @@ export default class Level1 extends Phaser.Scene {
     this.dialogHint = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 4 * S,
+        fontSize: 5 * S,
         color: FOLK_CSS.ink,
       })
       .setOrigin(1, 1)
@@ -3054,7 +3054,7 @@ export default class Level1 extends Phaser.Scene {
         ].join('\n'),
         {
           ...bodyStyle,
-          fontSize: 4.5 * S,
+          fontSize: 5 * S,
         },
       );
     this.objectivesClose = addMenuButton(this, {
@@ -5058,7 +5058,7 @@ export default class Level1 extends Phaser.Scene {
 
     const W = this.scale.width;
     const w = Math.min(W - 32 * U, 360 * U);
-    const h = 46 * U;
+    const h = 54 * U;
     const root = this.add
       .container(W / 2, 52 * S)
       .setScrollFactor(0)
@@ -5069,7 +5069,7 @@ export default class Level1 extends Phaser.Scene {
       .rectangle(0, 0, w, h, FOLK.ink, 0.9)
       .setStrokeStyle(1.5 * U, FOLK.mint, 0.95);
     const title = this.add
-      .text(0, -9 * U, t('respawn.title'), {
+      .text(0, -10 * U, t('respawn.title'), {
         fontFamily: FONT,
         fontSize: 6.2 * S,
         color: FOLK_CSS.mint,
@@ -5079,9 +5079,9 @@ export default class Level1 extends Phaser.Scene {
       })
       .setOrigin(0.5);
     const body = this.add
-      .text(0, 8 * U, t('respawn.body'), {
+      .text(0, 12 * U, t('respawn.body'), {
         fontFamily: FONT,
-        fontSize: 3.8 * S,
+        fontSize: 5 * S,
         color: FOLK_CSS.cream,
         align: 'center',
         wordWrap: { width: w - 24 * U },
@@ -5184,7 +5184,7 @@ export default class Level1 extends Phaser.Scene {
       epilogue = this.add
         .text(W / 2, 53 * S, epilogueText, {
           fontFamily: FONT,
-          fontSize: 4 * S,
+          fontSize: 5 * S,
           color: FOLK_CSS.ink,
           align: 'center',
           wordWrap: { width: cardW - 24 * U },
@@ -5195,7 +5195,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     const stats = this.add
-      .text(W / 2, epilogueText ? 66 * S : 64 * S, statsText, {
+      .text(W / 2, epilogueText ? 72 * S : 64 * S, statsText, {
         fontFamily: FONT,
         fontSize: 9 * S,
         color: FOLK_CSS.ink,
@@ -5205,7 +5205,7 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(202);
 
     const rank = this.add
-      .text(W / 2, 82 * S, rankText, {
+      .text(W / 2, epilogueText ? 86 * S : 82 * S, rankText, {
         fontFamily: FONT,
         fontSize: 8 * S,
         color: FOLK_CSS.teal,
@@ -5214,7 +5214,11 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
-    const promptY = this.compactLayout ? 96 * S : 100 * S;
+    const promptY = epilogueText
+      ? 100 * S
+      : this.compactLayout
+        ? 96 * S
+        : 100 * S;
     const promptButton = addMenuButton(this, {
       x: W / 2,
       y: promptY,
@@ -5302,7 +5306,7 @@ export default class Level1 extends Phaser.Scene {
     const mapButton = addMenuButton(this, {
       label: t(touch ? 'map.shortcutTouch' : 'map.shortcut'),
       variant: 'secondary',
-      fontSize: touch ? 6 * S : 4 * S,
+      fontSize: touch ? 6 * S : 5 * S,
       paddingX: touch ? 8 * U : 3 * U,
       paddingY: touch ? 6 * U : 2 * U,
       depth: 204,

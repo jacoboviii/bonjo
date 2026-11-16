@@ -534,6 +534,9 @@ Rules:
   monospace type, ink borders, paper fill, coral primary buttons and paper
   secondary buttons. The title, map, objectives, dialog, respawn and end
   screens should not introduce one-off button fills or near-matching colors.
+  Menu metadata stays at least `5 × SCALE` (15 px at the 3× render scale);
+  in-world building signs can remain `4.5 × SCALE` because they are framed by
+  the street art rather than read as a paragraph.
 - Input hints are conditional: `E · CLOSE` / `O · CLOSE` / `R · RETRY` on
   keyboard, `TAP · CLOSE` / `TAP · RETRY` on touch. The map shortcuts use
   `MAP · M` on desktop and `MAP` on touch.
