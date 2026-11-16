@@ -69,6 +69,7 @@ export function buildTextures(scene) {
   makeAgaveField(scene);
   makeFieldTree(scene, 'treeSmall', false);
   makeFieldTree(scene, 'treeLarge', true);
+  makeWaspNest(scene);
   makeCat(scene, 'cat', 0xd98a4f, 0xffd166);
   makeCat(scene, 'catGray', 0x6a5a70, 0xffd166);
   makeBird(scene);
@@ -1472,6 +1473,42 @@ function makeFieldTree(scene, key, large) {
   g.fillCircle(cx + 18, 34, large ? 7 : 3);
 
   g.generateTexture(key, W, H);
+  g.destroy();
+}
+
+// A papery wasp nest hanging from a field tree.
+function makeWaspNest(scene) {
+  const g = gfx(scene);
+  const W = 18;
+  const H = 16;
+
+  // twig and hanging stem
+  g.fillStyle(0x3a241f, 1);
+  g.fillRect(8, 0, 2, 4);
+  g.fillRect(5, 1, 3, 1);
+
+  // layered paper nest
+  g.fillStyle(0x6b4a35, 1);
+  g.fillCircle(9, 9, 6.5);
+  g.fillStyle(0x8a6a4a, 1);
+  g.fillCircle(9, 8.5, 5.5);
+  g.fillStyle(0xa8835e, 0.8);
+  g.fillRect(4, 8, 10, 3);
+  g.fillStyle(0x54382b, 1);
+  g.fillRect(5, 6, 8, 1);
+  g.fillRect(4, 11, 10, 1);
+  g.fillStyle(0x2b1b3d, 0.9);
+  g.fillCircle(9, 10, 2.2);
+
+  // a couple of warning wasps
+  g.fillStyle(0xffd166, 1);
+  g.fillRect(1, 5, 1, 1);
+  g.fillRect(16, 8, 1, 1);
+  g.fillStyle(0x1b1029, 1);
+  g.fillRect(2, 5, 1, 1);
+  g.fillRect(15, 8, 1, 1);
+
+  g.generateTexture('waspNest', W, H);
   g.destroy();
 }
 

@@ -98,11 +98,11 @@ export const lasOrillas = {
 
   awningFacade: 'stall',
   trees: [
-    { x: 620, size: 'small' },
+    { x: 620, size: 'small', nest: true },
     { x: 760, size: 'large' },
     { x: 1350, size: 'small' },
     { x: 2150, size: 'large' },
-    { x: 3400, size: 'small' },
+    { x: 3400, size: 'small', nest: true },
     { x: 3650, size: 'large' },
   ],
   awnings: [

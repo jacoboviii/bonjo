@@ -263,6 +263,7 @@ export default class Level1 extends Phaser.Scene {
     this.setupInteractables();
     this.createInput();
     this.createDog();
+    this.createWaspNests();
     this.createPickups();
     this.createFood();
     this.createLives();
@@ -2079,6 +2080,33 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.overlap(this.dog, this.tacoGroup, this.useTacoCart, null, this);
     this.physics.add.overlap(this.dog, this.trashGroup, this.lootTrash, null, this);
     this.physics.add.overlap(this.dog, this.bikeGroup, this.knockBike, null, this);
+  }
+
+  createWaspNests() {
+    const nestingTrees = TREES.filter((tree) => tree.nest);
+    if (!nestingTrees.length) return;
+
+    this.waspNestGroup = this.physics.add.staticGroup();
+    for (const tree of nestingTrees) {
+      const nest = this.waspNestGroup
+        .create((tree.x + 12) * S, 572 * S, 'waspNest')
+        .setDepth(3);
+      nest.body.setSize(12 * S, 12 * S);
+    }
+    this.physics.add.overlap(
+      this.dog,
+      this.waspNestGroup,
+      this.hitWaspNest,
+      null,
+      this,
+    );
+  }
+
+  hitWaspNest(dog, nest) {
+    if (!nest.active || dog.invuln > 0) return;
+    this.hurt(nest);
+    this.spawnPuff(nest.x, nest.y, 0.7);
+    sfx.hiss();
   }
 
   createPickups() {
