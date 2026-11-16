@@ -2096,7 +2096,9 @@ export default class Level1 extends Phaser.Scene {
       const nest = this.waspNestGroup
         .create((tree.x + 12) * S, 572 * S, 'waspNest')
         .setDepth(3);
-      nest.body.setSize(12 * S, 12 * S);
+      // Extend the sting zone well below the visual nest so Bonjo cannot
+      // simply walk underneath it.
+      nest.body.setSize(14 * S, 42 * S);
       nest.body.enable = false;
       const swarm = this.add
         .image(nest.x, nest.y, 'waspSwarm')
