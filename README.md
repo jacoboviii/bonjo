@@ -71,12 +71,13 @@ The game itself now starts in Spanish.
 - **Street lighting:** streetlamps and house windows are dark during the day,
   then switch on at night. Lamps cast warm light cones onto the pavement, and
   storefronts light up with colored neon signs (PAN, TIENDA, TACOS, FLORES...).
-  On WebGL, a small additive post-effect adds soft warm pools around the lit
-  lamps; it layers over the existing cones and fades away at dawn, so Canvas
-  keeps the original lamp sprites with no visual fallback cost. Three damaged
-  lamps use the same post art but warn with a flicker, then send a low electric
-  arc across the ground. Wait for the safe window or jump over it; contact costs
-  one heart and knocks Bonjo back.
+  On WebGL, a screen-space night pass darkens the world to a cool moonlit
+  ambient and lets the lamps carve warm pools out of it; Bonjo carries a faint
+  cool halo so he stays readable between lamps. The HUD and cards render on a
+  separate clean camera, and Canvas keeps the original flat night wash, cones
+  and glows. Three damaged lamps use the same post art but warn with a flicker,
+  then send a low electric arc across the ground. Wait for the safe window or
+  jump over it; contact costs one heart and knocks Bonjo back.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry bones, conchas and high piñatas;
   practice the flap-and-glide chain to reach them.
@@ -320,7 +321,7 @@ bonjo/
 │   │   └── Pinata.js       hanging piñata state + rope
 │   ├── ui/
 │   │   ├── TouchControls.js  on-screen phone buttons + multi-touch + drag
-│   │   └── LightingPostFX.js additive WebGL lamp-light pass
+│   │   └── LightingPostFX.js screen-space WebGL night lighting
 │   └── scenes/
 │       ├── Boot.js         builds textures, starts title
 │       ├── Title.js        BONJO title screen

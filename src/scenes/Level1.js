@@ -304,11 +304,11 @@ export default class Level1 extends Phaser.Scene {
     this.createPinatas();
     this.createAwnings();
     this.createCamera();
-    this.setupLightingFX();
     this.createHud();
     this.createInteractionUi();
     this.createDialogUi();
     this.createTuningPanel();
+    this.setupLightingFX();
     this.queueClockHint(this.showIntro() + 500);
     this.updateHud(0);
 
@@ -359,6 +359,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
     this.layoutClockHud(W);
     this.layoutLowHealthWarning(W);
+    this.uiCamera?.setViewport(0, 0, W, this.scale.height).setScroll(0, 0);
 
     this.touch?.relayout(W);
     this.layoutDialog(W);
@@ -2461,8 +2462,8 @@ export default class Level1 extends Phaser.Scene {
     if (!renderer?.pipelines) return;
 
     // Canvas and any WebGL device that rejects the post pipeline simply keep
-    // the painted lamp cones and glows. The shader is an enhancement, never a
-    // renderer requirement.
+    // the painted lamp cones, glows and flat night wash. The shader is an
+    // enhancement, never a renderer requirement.
     try {
       renderer.pipelines.addPostPipeline('LampLighting', LampLightingPipeline);
       this.cameras.main.setPostPipeline('LampLighting');
@@ -2473,11 +2474,82 @@ export default class Level1 extends Phaser.Scene {
       if (this.lampLightFX) {
         this.lampLightFX.intensity = 0;
         this.lampLightFX.lights = [];
+        this.lampLightFX.hero = { x: -9999, y: -9999, r: 1, s: 0 };
       }
     } catch (error) {
       console.warn('Lamp lighting postFX unavailable; using lamp sprites.', error);
       this.lampLightFX = null;
     }
+
+    if (!this.lampLightFX) return;
+
+    // The shader darkens the world at night, so the HUD needs its own clean
+    // camera. Without this split, cards and HUD text would sit inside the
+    // lighting pass and lose contrast whenever night falls.
+    const ui = this.cameras.add(
+      0,
+      0,
+      this.scale.width,
+      this.scale.height,
+      false,
+      'hud',
+    );
+    ui.setScroll(0, 0);
+    ui.setBackgroundColor('rgba(0,0,0,0)');
+    this.uiCamera = ui;
+
+    // Classify the display list by depth: HUD starts at 90, every world prop
+    // is at or below 61. New objects are sorted once their depth is set.
+    this.cameraSplitSeen = new Set();
+    this.pendingCameraObjects = [];
+    for (const object of this.children.list.slice()) {
+      this.assignCameraVisibility(object);
+    }
+
+    this.cameraObjectAdded = (gameObject) => {
+      this.pendingCameraObjects.push(gameObject);
+    };
+    this.sys.displayList.events.on(
+      Phaser.Scenes.Events.ADDED_TO_SCENE,
+      this.cameraObjectAdded,
+    );
+    this.events.on(
+      Phaser.Scenes.Events.POST_UPDATE,
+      this.syncCameraVisibility,
+      this,
+    );
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.sys.displayList.events.off(
+        Phaser.Scenes.Events.ADDED_TO_SCENE,
+        this.cameraObjectAdded,
+      );
+      this.events.off(
+        Phaser.Scenes.Events.POST_UPDATE,
+        this.syncCameraVisibility,
+        this,
+      );
+    });
+
+    // The main camera began fading in before the HUD camera existed.
+    ui.fadeIn(350, 27, 16, 41);
+  }
+
+  assignCameraVisibility(gameObject) {
+    if (!gameObject || this.cameraSplitSeen.has(gameObject)) return;
+    this.cameraSplitSeen.add(gameObject);
+    if ((gameObject.depth ?? 0) >= 90) {
+      this.cameras.main.ignore(gameObject);
+    } else {
+      this.uiCamera.ignore(gameObject);
+    }
+  }
+
+  syncCameraVisibility() {
+    if (!this.pendingCameraObjects?.length) return;
+    for (const object of this.pendingCameraObjects) {
+      this.assignCameraVisibility(object);
+    }
+    this.pendingCameraObjects.length = 0;
   }
 
   updateLightingFX(delta) {
@@ -2509,6 +2581,17 @@ export default class Level1 extends Phaser.Scene {
       });
     }
     fx.lights = lights;
+
+    if (this.dog && !this.dog.dead) {
+      fx.hero = {
+        x: this.dog.x - cam.scrollX,
+        y: cam.height - (this.dog.y - cam.scrollY - 10 * S),
+        r: 42 * S,
+        s: 0.28,
+      };
+    } else {
+      fx.hero = { x: -9999, y: -9999, r: 1, s: 0 };
+    }
   }
 
   createHud() {
@@ -3352,6 +3435,7 @@ export default class Level1 extends Phaser.Scene {
     this.resetMenuConfirm();
     this.closeObjectives();
     this.cameras.main.fadeOut(180, 27, 16, 41);
+    this.uiCamera?.fadeOut(180, 27, 16, 41);
     this.time.delayedCall(190, () => this.scene.start('Title'));
   }
 
@@ -3917,7 +4001,9 @@ export default class Level1 extends Phaser.Scene {
 
     this.tweens.add({
       targets: this.nightOverlay,
-      alpha: 0.62,
+      // WebGL moves the ambient darkness into the shader so the lamps can
+      // carve real pools out of it. Canvas keeps the original flat wash.
+      alpha: this.lampLightFX ? 0.08 : 0.62,
       duration: 900,
     });
     this.tweens.add({
@@ -5615,6 +5701,7 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
     this.cameras.main.fadeOut(180, 27, 16, 41);
+    this.uiCamera?.fadeOut(180, 27, 16, 41);
     this.time.delayedCall(190, () => {
       this.scene.start(next.scene, { levelId: next.id });
     });
