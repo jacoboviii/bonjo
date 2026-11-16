@@ -2241,6 +2241,7 @@ export default class Level1 extends Phaser.Scene {
       shard.y - 10 * S,
       `+${TIME_SHARD_SECONDS}s`,
       this.phase === 'day' ? FOLK_CSS.gold : FOLK_CSS.night,
+      1100,
     );
     sfx.checkpoint();
   }
@@ -3677,6 +3678,7 @@ export default class Level1 extends Phaser.Scene {
       this.showPhaseBanner(
         t(this.phase === 'day' ? 'hint.timeDay' : 'hint.timeNight'),
         this.phase === 'day' ? FOLK_CSS.gold : FOLK_CSS.night,
+        { duration: 300, hold: 1600 },
       );
     });
   }
@@ -4184,7 +4186,7 @@ export default class Level1 extends Phaser.Scene {
     });
   }
 
-  showPhaseBanner(text, color) {
+  showPhaseBanner(text, color, { duration = 250, hold = 700 } = {}) {
     if (this.phaseBanner?.active) {
       this.tweens.killTweensOf(this.phaseBanner);
       this.phaseBanner.destroy();
@@ -4211,8 +4213,8 @@ export default class Level1 extends Phaser.Scene {
     this.tweens.add({
       targets: this.phaseBanner,
       alpha: 1,
-      duration: 250,
-      hold: 700,
+      duration,
+      hold,
       yoyo: true,
       onComplete: () => this.phaseBanner?.destroy(),
     });
@@ -4289,8 +4291,8 @@ export default class Level1 extends Phaser.Scene {
     sfx.impact();
   }
 
-  floatText(x, y, message, color = FOLK_CSS.gold) {
-    const duration = ANIMAL_WORDS.has(message) ? 1500 : 700;
+  floatText(x, y, message, color = FOLK_CSS.gold, duration = null) {
+    const life = duration ?? (ANIMAL_WORDS.has(message) ? 1500 : 700);
     const label = this.add
       .text(x, y, message, {
         fontFamily: FONT,
@@ -4306,7 +4308,7 @@ export default class Level1 extends Phaser.Scene {
       targets: label,
       y: y - 12 * S,
       alpha: 0,
-      duration,
+      duration: life,
       ease: 'Quad.out',
       onComplete: () => label.destroy(),
     });
