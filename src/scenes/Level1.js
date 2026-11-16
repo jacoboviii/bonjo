@@ -1427,7 +1427,7 @@ export default class Level1 extends Phaser.Scene {
     this.grantStamina(1);
     this.updateSurvivalHud();
 
-    sfx.eat();
+    sfx.concha();
     this.spawnPuff(food.x, food.y, 0.7);
     this.floatText(food.x, food.y - 8 * S, t('float.charge'), FOLK_CSS.mint);
   }

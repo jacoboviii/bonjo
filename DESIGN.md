@@ -578,7 +578,7 @@ compressor keeps mobile speakers from clipping.
 | Rooster | three filtered, vibrating dawn calls |
 | Piñata hit / burst | wooden thock / crack + short arpeggio |
 | Awning | springy pitch-bend with vibrato |
-| Concha | layered crunch |
+| Concha | bright shell clink over a short crunch |
 | Night falls | low drone, wind and dark chime |
 | Dawn | rising filtered chime and breeze |
 | Hurt | impact thud + short pained cry |

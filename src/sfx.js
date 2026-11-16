@@ -220,6 +220,12 @@ export const sfx = {
     osc({ type: 'sine', f0: 1320, dur: 0.1, vol: 0.018, delay: 0.055 });
     noise({ dur: 0.035, vol: 0.009, type: 'highpass', f0: 2200, q: 0.8 });
   },
+  concha: () => {
+    // A bright shell clink over a short baked-crumb crunch.
+    osc({ type: 'triangle', f0: 660, f1: 990, dur: 0.075, vol: 0.03 });
+    osc({ type: 'sine', f0: 1320, dur: 0.1, vol: 0.022, delay: 0.045 });
+    noise({ dur: 0.045, vol: 0.018, type: 'bandpass', f0: 2100, f1: 900, q: 1.2, delay: 0.015 });
+  },
   steal: () => {
     osc({ type: 'square', f0: 880, f1: 1180, dur: 0.055, vol: 0.022 });
     osc({ type: 'square', f0: 1120, f1: 760, dur: 0.07, vol: 0.016, delay: 0.06 });
