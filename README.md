@@ -63,9 +63,10 @@ The contact sheet shows the English UI; the game itself now starts in Spanish.
   charges.
 - **Time shards:** glowing sun shards during the day and moon shards at night
   are scattered along the whole route. Each shard advances the phase clock by
-  four seconds; the clock stays frozen while Bonjo stands still. Fourteen shards
-  appear in every phase, so there is always enough time to reach the next phase
-  even if a few are missed.
+  four seconds; the clock stays frozen while Bonjo stands still. The small HUD
+  clock moves from 06:00 to 18:00 during the day and from 18:00 back to 06:00
+  at night. Fourteen shards appear in every phase, so there is always enough
+  time to reach the next phase even if a few are missed.
 - **Street lighting:** streetlamps and house windows are dark during the day,
   then switch on at night. Lamps cast warm light cones onto the pavement, and
   storefronts light up with colored neon signs (PAN, TIENDA, TACOS, FLORES...).
@@ -252,6 +253,7 @@ there to make them permanent.
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle driven by time shards**: collect sun shards to bring night, then moon shards to reach dawn while surviving the rival waves
 - **Time-shard exploration**: 14 sun or moon shards span each phase and each adds four seconds; standing still no longer advances the clock
+- **Time-of-day clock**: an analog clock with a digital `06:00 → 18:00 → 06:00` readout tracks the shard-driven day and turns from gold to moonlit blue at night
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
 - **Objectives panel (O)** for the current goal, optional Polo/bell errands and a description of each HUD meter

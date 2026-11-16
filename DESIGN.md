@@ -313,6 +313,10 @@ one removes four seconds from the phase clock and shows a `+4s` pickup; the
 clock does not tick on its own, so standing still freezes time. The clock only
 advances when Bonjo explores.
 
+The HUD clock maps each phase to half a day: day runs 06:00 → 18:00 and night
+runs 18:00 → 06:00. Collecting a shard moves both the analog hands and the
+digital readout forward. The face is gold in daylight and moonlit blue at night.
+
 Fourteen shards provide 56 seconds of phase time, which is more than the longest
 phase (41 s). The extra shards are a safety margin: a missed or awkwardly placed
 shard cannot soft-lock the run, and the player can always backtrack. Shards are
@@ -365,9 +369,8 @@ if Polo, the bell, the gate check or the two-rival night goal were skipped.
 Errand progress never resets, and the pause panel lists day and night checks as
 bonus objectives. The final night adds gate rushers and, at roughly 12 s of
 shard-time left, the top dog on the lawn in front of Casa. Repel it to win; the
-clock will wait at zero until it is down. The HUD always shows phase, shard
-clock, hearts/flaps/IMPULSE/hunger and gate health; objectives and errands live
-in the O panel.
+clock will wait at zero until it is down. The HUD always shows phase, shard clock, hearts/flaps/IMPULSE/hunger
+and gate health; objectives and errands live in the O panel.
 
 ### The porch
 Bonjo's house at the start of the street is a proper two-storey adobe home

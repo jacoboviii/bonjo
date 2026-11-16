@@ -46,6 +46,9 @@ const WASP_ACTIVE_SECONDS = 0.7;
 const WASP_CYCLE_SECONDS = WASP_WARN_SECONDS + WASP_ACTIVE_SECONDS + 1.4;
 const TIME_SHARD_SECONDS = 4;
 const TIME_SHARD_COUNT = 14;
+const DAY_START_MINUTES = 6 * 60;
+const NIGHT_START_MINUTES = 18 * 60;
+const HALF_DAY_MINUTES = 12 * 60;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
@@ -334,6 +337,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.hint) this.hint.x = W / 2;
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
+    this.layoutClockHud(W);
 
     this.touch?.relayout(W);
     this.layoutDialog(W);
@@ -2592,12 +2596,117 @@ export default class Level1 extends Phaser.Scene {
       this.gateText = null;
     }
 
+    this.createClockHud();
+
     this.createObjectivesUi();
     this.updateSurvivalHud();
 
     // On touch devices the buttons are the tutorial, and they occupy the
     // bottom of the screen where the keyboard hint would sit.
     if (this.touch?.visible) this.hint.setVisible(false);
+  }
+
+  createClockHud() {
+    this.clockGraphics = this.add.graphics().setScrollFactor(0).setDepth(100);
+    this.clockText = this.add
+      .text(0, 0, '', {
+        fontFamily: 'monospace',
+        fontSize: 4.6 * S,
+        color: '#fff4e0',
+        stroke: '#2b1b3d',
+        strokeThickness: 1.5 * S,
+      })
+      .setOrigin(0.5, 0)
+      .setScrollFactor(0)
+      .setDepth(100);
+
+    this.layoutClockHud(this.scale.width);
+    this.updateClockHud();
+  }
+
+  layoutClockHud(W = this.scale.width) {
+    if (this.clockGraphics) {
+      this.clockGraphics.setPosition(W - 50 * S, 13 * S);
+    }
+    if (this.clockText) {
+      this.clockText.setPosition(W - 50 * S, 21 * S);
+    }
+  }
+
+  getPhaseDuration() {
+    const timings = this.levelData.timings || {};
+    if (this.phase === 'day') {
+      return this.dayNumber > 1 ? (timings.day2 ?? 33) : (timings.day ?? 38);
+    }
+    return (
+      (timings.night ?? 31) +
+      Math.max(0, this.nightsSurvived) * (timings.nightStep ?? 5)
+    );
+  }
+
+  getTimeOfDayMinutes() {
+    const duration = Math.max(0.001, this.getPhaseDuration());
+    const progress = Phaser.Math.Clamp(1 - this.phaseTime / duration, 0, 1);
+    const start =
+      this.phase === 'day' ? DAY_START_MINUTES : NIGHT_START_MINUTES;
+    return (start + progress * HALF_DAY_MINUTES) % (24 * 60);
+  }
+
+  updateClockHud() {
+    if (!this.clockGraphics || !this.clockText) return;
+
+    const g = this.clockGraphics;
+    const night = this.phase === 'night';
+    const r = 6.5 * S;
+    const minutes = this.getTimeOfDayMinutes();
+    const handColor = night ? 0x9fd8ff : 0xffd166;
+
+    g.clear();
+    g.fillStyle(0x1b1029, 0.72);
+    g.fillCircle(0, 0, r);
+    g.lineStyle(1 * S, handColor, 0.95);
+    g.strokeCircle(0, 0, r);
+
+    for (let i = 0; i < 12; i++) {
+      const angle = -Math.PI / 2 + (i * Math.PI) / 6;
+      const inner = r * (i % 3 === 0 ? 0.7 : 0.82);
+      g.lineStyle((i % 3 === 0 ? 1.2 : 0.8) * S, 0xfff4e0, 0.7);
+      g.lineBetween(
+        Math.cos(angle) * inner,
+        Math.sin(angle) * inner,
+        Math.cos(angle) * r * 0.92,
+        Math.sin(angle) * r * 0.92,
+      );
+    }
+
+    const minuteAngle =
+      -Math.PI / 2 + ((minutes % 60) / 60) * Math.PI * 2;
+    const hourAngle =
+      -Math.PI / 2 + ((minutes % 720) / 720) * Math.PI * 2;
+
+    g.lineStyle(1.6 * S, 0xfff4e0, 0.95);
+    g.lineBetween(
+      0,
+      0,
+      Math.cos(minuteAngle) * r * 0.68,
+      Math.sin(minuteAngle) * r * 0.68,
+    );
+    g.lineStyle(2.4 * S, handColor, 1);
+    g.lineBetween(
+      0,
+      0,
+      Math.cos(hourAngle) * r * 0.46,
+      Math.sin(hourAngle) * r * 0.46,
+    );
+    g.fillStyle(handColor, 1);
+    g.fillCircle(0, 0, 1.5 * S);
+
+    const wholeMinutes = Math.floor(minutes);
+    const hh = String(Math.floor(wholeMinutes / 60)).padStart(2, '0');
+    const mm = String(wholeMinutes % 60).padStart(2, '0');
+    this.clockText
+      .setText(`${hh}:${mm}`)
+      .setColor(night ? '#9fd8ff' : '#fff4e0');
   }
 
   addHudHeart(index) {
@@ -3342,6 +3451,7 @@ export default class Level1 extends Phaser.Scene {
     }
     this.phaseText.setText(phaseLabel);
     this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
+    this.updateClockHud();
 
     this.updateGoalHud();
   }
@@ -4751,6 +4861,8 @@ export default class Level1 extends Phaser.Scene {
     this.hungerBar.setVisible(false);
     this.phaseText.setVisible(false);
     this.gateText?.setVisible(false);
+    this.clockGraphics?.setVisible(false);
+    this.clockText?.setVisible(false);
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);
     this.alphaCrown?.setVisible(false);
