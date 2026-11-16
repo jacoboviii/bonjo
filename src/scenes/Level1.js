@@ -299,8 +299,7 @@ export default class Level1 extends Phaser.Scene {
     this.createInteractionUi();
     this.createDialogUi();
     this.createTuningPanel();
-    this.showIntro();
-    this.queueClockHint(4300);
+    this.queueClockHint(this.showIntro() + 500);
     this.updateHud(0);
 
     // Dev-only handle so automated playtests can read the dog's state.
@@ -3399,6 +3398,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showIntro() {
+    const introDuration = 3000;
+    const storyDuration = 3600;
+
     this.introLabel = this.add
       .text(
         this.scale.width / 2,
@@ -3423,39 +3425,48 @@ export default class Level1 extends Phaser.Scene {
       duration: 400,
       hold: 2200,
       yoyo: true,
-      onComplete: () => this.introLabel?.destroy(),
+      onComplete: () => {
+        this.introLabel?.destroy();
+        this.introLabel = null;
+        if (this.levelData.storyIntroKey) this.showStoryIntro();
+      },
     });
 
-    if (this.levelData.storyIntroKey) {
-      this.storyLabel = this.add
-        .text(
-          this.scale.width / 2,
-          65 * S,
-          t(this.levelData.storyIntroKey),
-          {
-            fontFamily: FONT,
-            fontSize: 5.5 * S,
-            color: FOLK_CSS.cream,
-            stroke: FOLK_CSS.ink,
-            strokeThickness: 2 * S,
-            align: 'center',
-            wordWrap: { width: this.scale.width - 40 * U },
-          },
-        )
-        .setOrigin(0.5, 0)
-        .setScrollFactor(0)
-        .setDepth(100)
-        .setAlpha(0);
+    return introDuration + (this.levelData.storyIntroKey ? storyDuration : 0);
+  }
 
-      this.tweens.add({
-        targets: this.storyLabel,
-        alpha: 1,
-        duration: 400,
-        hold: 2800,
-        yoyo: true,
-        onComplete: () => this.storyLabel?.destroy(),
-      });
-    }
+  showStoryIntro() {
+    this.storyLabel = this.add
+      .text(
+        this.scale.width / 2,
+        53 * S,
+        t(this.levelData.storyIntroKey),
+        {
+          fontFamily: FONT,
+          fontSize: 8 * S,
+          color: FOLK_CSS.cream,
+          stroke: FOLK_CSS.ink,
+          strokeThickness: 2 * S,
+          align: 'center',
+          wordWrap: { width: this.scale.width - 40 * U },
+        },
+      )
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(100)
+      .setAlpha(0);
+
+    this.tweens.add({
+      targets: this.storyLabel,
+      alpha: 1,
+      duration: 400,
+      hold: 2800,
+      yoyo: true,
+      onComplete: () => {
+        this.storyLabel?.destroy();
+        this.storyLabel = null;
+      },
+    });
   }
 
   // --- per-frame helpers ---------------------------------------------------

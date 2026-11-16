@@ -61,7 +61,8 @@ reward is a quieter block, not a bigger crown. The old top dog rules by taking
 space. Bonjo makes space for everyone else, then rests.
 
 **Story delivery.** Each level has a short tension line at its opening and a
-peaceful epilogue on the win card. After completion, the map landmark switches
+peaceful epilogue on the win card. The level title appears first; the tension
+line follows at normal body size once the title has cleared. After completion, the map landmark switches
 from its objective description to a restored-place description. Rival defeat
 banners say they step aside, not fall. The story lives in the change of the
 place and the next line of dialogue, not in a cutscene.
