@@ -45,7 +45,7 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
     this.buffer = 0;
     this.maxFlaps = tuning.maxFlaps;
     this.flaps = this.maxFlaps;
-    this.maxStamina = 2;
+    this.maxStamina = 3;
     this.stamina = this.maxStamina;
     this.gliding = false;
     this.dead = false;
