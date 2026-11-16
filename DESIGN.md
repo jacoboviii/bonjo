@@ -144,20 +144,20 @@ are design pixels (1 design px = 3 render px).
 
 | Parameter | Value | Why |
 | --- | --- | --- |
-| Gravity | 1600 px/s² | snappy but readable fall |
-| Max fall | 700 | terminal velocity |
+| Gravity | 1500 px/s² | slightly floaty but readable fall |
+| Max fall | 680 | terminal velocity |
 | Run speed | 200 | ~1.0 screens/second |
 | Enemy speed | 0.8 | global patrol/chase/lunge/critter/crow multiplier |
 | Ground accel | 2400 | reaches top speed in ~0.11 s |
 | Air accel | 1500 | 70% air control |
 | Ground friction | 2600 | stops quickly, no ice |
 | Air friction | 500 | preserves momentum |
-| Jump impulse | 420 | ~55 px (3.4 tiles) |
-| Flap impulse | 380 | ~45 px per flap |
+| Jump impulse | 420 | ~59 px (3.7 tiles) |
+| Flap impulse | 380 | ~48 px per flap |
 | Flap charges | 2 | double jumps; refill on landing |
 | IMPULSE stamina | 3 | slide charges; earned from conchas and enemies |
-| Glide gravity | 400 | 25% of normal |
-| Glide max fall | 120 | slow, steerable descent |
+| Glide gravity | 350 | ~23% of normal |
+| Glide max fall | 105 | slower, steerable descent |
 | Jump cut | 0.45 | tap = short hop, hold = full jump |
 | Min jump hold | 90 ms | quick taps still give a real hop |
 | Coyote time | 100 ms | jump just after leaving a ledge |

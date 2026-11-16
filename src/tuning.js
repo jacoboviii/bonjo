@@ -8,12 +8,12 @@
 
 export const DEFAULTS = Object.freeze({
   // --- vertical movement -------------------------------------------------
-  gravity: 1600, // normal fall acceleration
-  maxFall: 700, // normal terminal velocity
+  gravity: 1500, // normal fall acceleration
+  maxFall: 680, // normal terminal velocity
 
   // --- glide -------------------------------------------------------------
-  glideGravity: 400, // much gentler fall while gliding
-  glideMaxFall: 120, // slow, floaty descent
+  glideGravity: 350, // much gentler fall while gliding
+  glideMaxFall: 105, // slow, floaty descent
 
 
   // --- enemies -----------------------------------------------------------
