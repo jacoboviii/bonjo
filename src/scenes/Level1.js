@@ -17,6 +17,7 @@ import {
   FOLK_CSS,
   FONT,
   MENU_TEXT,
+  GAME_TEXT,
 } from '../ui/FolkCard.js';
 import LampLightingPipeline from '../ui/LightingPostFX.js';
 import { t } from '../i18n.js';
@@ -626,7 +627,7 @@ export default class Level1 extends Phaser.Scene {
         this.alarmMarker = this.add
           .text(car.x * S, groundY - 34 * S, '!', {
             fontFamily: FONT,
-            fontSize: 8 * S,
+            fontSize: GAME_TEXT.heading,
             color: FOLK_CSS.gold,
             stroke: FOLK_CSS.ink,
             strokeThickness: 2 * S,
@@ -1179,7 +1180,8 @@ export default class Level1 extends Phaser.Scene {
     this.gateSign = this.add
       .text(GATE_X * S, 600 * S - 34 * S, t('porch.sign'), {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
@@ -2425,10 +2427,10 @@ export default class Level1 extends Phaser.Scene {
       .text(x, y, sign.text, {
         fontFamily: FONT,
         fontStyle: 'bold',
-        fontSize: 4.5 * S,
+        fontSize: GAME_TEXT.body,
         color: sign.color,
         stroke: FOLK_CSS.ink,
-        strokeThickness: 1.8 * S,
+        strokeThickness: 1.4 * S,
       })
       .setOrigin(0.5)
       .setDepth(61)
@@ -2623,7 +2625,8 @@ export default class Level1 extends Phaser.Scene {
     this.bossTrackerLabel = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.cream,
         backgroundColor: FOLK_CSS.ink,
         padding: { x: 3 * S, y: 2 * S },
@@ -2638,7 +2641,8 @@ export default class Level1 extends Phaser.Scene {
         `${t('hud.bones')} 0`,
         {
           fontFamily: FONT,
-          fontSize: this.compactLayout ? 6.5 * S : 8 * S,
+          fontStyle: 'bold',
+          fontSize: GAME_TEXT.body,
           color: FOLK_CSS.cream,
           stroke: FOLK_CSS.ink,
           strokeThickness: 2 * S,
@@ -2651,7 +2655,8 @@ export default class Level1 extends Phaser.Scene {
     this.comboText = this.add
       .text(W - 8 * S, 31 * S, '', {
         fontFamily: FONT,
-        fontSize: 7 * S,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.heading,
         color: FOLK_CSS.gold,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
@@ -2664,10 +2669,12 @@ export default class Level1 extends Phaser.Scene {
     this.hint = this.add
       .text(W / 2, 138 * S, t('level.hint'), {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
+        wordWrap: { width: W - 20 * S },
+        align: 'center',
       })
       .setOrigin(0.5, 1)
       .setScrollFactor(0)
@@ -2689,7 +2696,7 @@ export default class Level1 extends Phaser.Scene {
 
     const statusStyle = {
       fontFamily: FONT,
-      fontSize: 5 * S,
+      fontSize: GAME_TEXT.body,
       color: FOLK_CSS.gold,
       stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
@@ -2723,7 +2730,7 @@ export default class Level1 extends Phaser.Scene {
     this.healthText = this.add
       .text(70 * S, 22 * S, `${this.health}/${this.maxHealth}`, {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
@@ -2751,7 +2758,8 @@ export default class Level1 extends Phaser.Scene {
     this.phaseText = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: this.compactLayout ? 5 * S : 8 * S,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
@@ -2764,7 +2772,8 @@ export default class Level1 extends Phaser.Scene {
       this.gateText = this.add
         .text(8 * S, this.compactLayout ? 29 * S : 58 * S, '', {
           fontFamily: FONT,
-          fontSize: 6 * S,
+          fontStyle: 'bold',
+          fontSize: GAME_TEXT.body,
           color: FOLK_CSS.mint,
           stroke: FOLK_CSS.ink,
           strokeThickness: 2 * S,
@@ -2797,7 +2806,7 @@ export default class Level1 extends Phaser.Scene {
     this.clockText = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.cream,
         stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
@@ -3035,7 +3044,8 @@ export default class Level1 extends Phaser.Scene {
     this.interactPrompt = this.add
       .text(0, 0, '', {
         fontFamily: FONT,
-        fontSize: 5 * S,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.body,
         color: FOLK_CSS.ink,
         backgroundColor: FOLK_CSS.gold,
       })
@@ -3628,10 +3638,13 @@ export default class Level1 extends Phaser.Scene {
         t(this.levelData.introKey || 'level.intro'),
         {
           fontFamily: FONT,
-          fontSize: 12 * S,
+          fontStyle: 'bold',
+          fontSize: GAME_TEXT.display,
           color: FOLK_CSS.cream,
           stroke: FOLK_CSS.ink,
           strokeThickness: 3 * S,
+          align: 'center',
+          wordWrap: { width: this.scale.width - 40 * U },
         },
       )
       .setOrigin(0.5)
@@ -3663,7 +3676,8 @@ export default class Level1 extends Phaser.Scene {
         t(this.levelData.storyIntroKey),
         {
           fontFamily: FONT,
-          fontSize: 8 * S,
+          fontStyle: 'bold',
+          fontSize: GAME_TEXT.heading,
           color: FOLK_CSS.cream,
           stroke: FOLK_CSS.ink,
           strokeThickness: 2 * S,
@@ -4414,18 +4428,18 @@ export default class Level1 extends Phaser.Scene {
       this.phaseBanner.destroy();
     }
 
-    const fontSize = Math.min(
-      22 * S,
-      Math.max(10 * S, Math.floor((this.scale.width - 48) / (text.length * 0.62))),
-    );
+    const fontSize = GAME_TEXT.heading;
 
     this.phaseBanner = this.add
       .text(this.scale.width / 2, 72 * S, text, {
         fontFamily: FONT,
+        fontStyle: 'bold',
         fontSize,
         color,
         stroke: FOLK_CSS.ink,
         strokeThickness: Math.max(2, fontSize * 0.16),
+        align: 'center',
+        wordWrap: { width: this.scale.width - 40 * U },
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
@@ -4518,7 +4532,8 @@ export default class Level1 extends Phaser.Scene {
     const label = this.add
       .text(x, y, message, {
         fontFamily: FONT,
-        fontSize: 7 * S,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.heading,
         color,
         stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,

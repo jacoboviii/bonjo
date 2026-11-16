@@ -600,6 +600,13 @@ Rules:
   additional one-off sizes.
   In-world building signs can remain `4.5 × SCALE` because they are framed by
   the street art rather than read as a paragraph.
+- In-game copy uses the same role logic through `GAME_TEXT`: `display`
+  (`12 × SCALE`, 36 px) for the level intro, `heading` (`8 × SCALE`, 24 px)
+  for story cards, phase banners, floating combat text and combo callouts, and
+  `body` (`6 × SCALE`, 18 px) for HUD counts, clock/gate labels, prompts and
+  dynamic night signage. The 18 px body gives the HUD the same roughly 16 CSS px
+  floor on a 390 px-tall landscape phone. Static lettering baked into building
+  textures stays part of the art rather than the UI type scale.
 - Input hints are conditional: `E · CLOSE` / `O · CLOSE` / `R · RETRY` on
   keyboard, `TAP · CLOSE` / `TAP · RETRY` on touch. The map shortcuts use
   `MAP · M` on desktop and `MAP` on touch.

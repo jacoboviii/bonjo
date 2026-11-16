@@ -57,6 +57,15 @@ export const MENU_TEXT = {
   body: 6 * SCALE,
 };
 
+// In-game type uses the same role logic at a slightly tighter display size.
+// HUD and prompt copy share the 18 px body floor so it stays readable on a
+// 390 px-tall landscape phone.
+export const GAME_TEXT = {
+  display: 12 * SCALE,
+  heading: 8 * SCALE,
+  body: 6 * SCALE,
+};
+
 const BUTTON_STYLES = {
   primary: {
     fill: FOLK.coral,
