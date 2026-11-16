@@ -1,7 +1,12 @@
 import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
 import { t, getLang, setLang, toggleLang } from '../i18n.js';
-import { drawFolkCard } from '../ui/FolkCard.js';
+import {
+  drawFolkCard,
+  addMenuButton,
+  FOLK_CSS,
+  FONT,
+} from '../ui/FolkCard.js';
 import { parallaxScale } from '../motion.js';
 
 const S = SCALE;
@@ -109,30 +114,30 @@ export default class Title extends Phaser.Scene {
 
     this.add
       .text(W / 2, 28 * S, 'BONJO', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 64 * U,
-        color: '#c94f3d',
-        stroke: '#1d1326',
+        color: FOLK_CSS.coral,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 12 * U,
       })
       .setOrigin(0.5);
 
     this.add
       .text(W / 2, 48 * S, t('title.subtitle'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 16 * U,
-        color: '#1d1326',
-        stroke: '#f4dfb0',
+        color: FOLK_CSS.ink,
+        stroke: FOLK_CSS.paper,
         strokeThickness: 2 * U,
       })
       .setOrigin(0.5);
 
     this.add
       .text(W / 2, 64 * S, t('title.place'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 10 * U,
-        color: '#2f7f78',
-        stroke: '#f4dfb0',
+        color: FOLK_CSS.teal,
+        stroke: FOLK_CSS.paper,
         strokeThickness: 2 * U,
       })
       .setOrigin(0.5);
@@ -143,28 +148,19 @@ export default class Title extends Phaser.Scene {
     // mobile layout everywhere.
     const compactLayout = true;
 
-    const prompt = this.add
-      .text(
-        W / 2,
-        114 * S,
-        t(isTouch ? 'title.startTouch' : 'title.startKeyboard'),
-        {
-          fontFamily: 'monospace',
-          fontSize: 20 * U,
-          color: compactLayout ? '#fff4e0' : '#c94f3d',
-          stroke: '#1d1326',
-          strokeThickness: 5 * U,
-        },
-      )
-      .setOrigin(0.5);
-    if (compactLayout) {
-      prompt.setBackgroundColor('#c94f3d');
-      prompt.setPadding(7 * U, 4 * U, 7 * U, 4 * U);
-      prompt.setDepth(8);
-    }
+    const prompt = addMenuButton(this, {
+      x: W / 2,
+      y: 114 * S,
+      label: t(isTouch ? 'title.startTouch' : 'title.startKeyboard'),
+      variant: 'primary',
+      fontSize: 20 * U,
+      minWidth: 230 * U,
+      height: 34 * U,
+      depth: 8,
+    });
     this.tweens.add({
-      targets: prompt,
-      alpha: compactLayout ? 0.8 : 0.35,
+      targets: [prompt.bg, prompt.text],
+      alpha: 0.8,
       duration: 620,
       yoyo: true,
       repeat: -1,
@@ -173,10 +169,10 @@ export default class Title extends Phaser.Scene {
 
     const controls = this.add
       .text(W / 2, 133 * S, t('title.controls'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 12 * U,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
+        color: FOLK_CSS.cream,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 4 * U,
       })
       .setOrigin(0.5)
@@ -185,46 +181,40 @@ export default class Title extends Phaser.Scene {
 
     this.add
       .text(6 * S, 6 * S, t('title.version'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 12 * U,
-        color: '#fff4e0',
+        color: FOLK_CSS.cream,
       })
       .setAlpha(0.45);
 
     // --- EN / ES selector ------------------------------------------------
     const lang = getLang();
 
-    const makeLangButton = (x, code, y = 13 * S) => {
+    const makeLangButton = (x, code) => {
       const active = lang === code;
-      const button = this.add
-        .text(x, y, code.toUpperCase(), {
-          fontFamily: 'monospace',
-          fontSize: compactLayout ? 6 * S : 14 * U,
-          color: active ? '#c94f3d' : '#2f7f78',
-          backgroundColor: compactLayout ? '#f4dfb0' : undefined,
-          stroke: compactLayout ? '#1d1326' : '#f4dfb0',
-          strokeThickness: compactLayout ? 1.5 * U : 1 * U,
-        })
-        .setOrigin(0.5, 0)
-        .setDepth(20)
-        .setAlpha(active ? 1 : 0.78)
-        .setInteractive({ useHandCursor: true });
-
-      if (compactLayout) button.setPadding(7 * U, 6 * U, 7 * U, 6 * U);
-
-      button.on('pointerdown', (pointer, localX, localY, event) => {
-        event?.stopPropagation?.();
-        if (getLang() === code) return;
-        setLang(code);
-        this.scene.restart();
+      const button = addMenuButton(this, {
+        x,
+        y: 13 * S,
+        label: code.toUpperCase(),
+        variant: active ? 'primary' : 'secondary',
+        fontSize: 6 * S,
+        minWidth: 40 * U,
+        height: 24 * U,
+        paddingX: 5 * U,
+        paddingY: 2 * U,
+        onClick: () => {
+          if (getLang() === code) return;
+          setLang(code);
+          this.scene.restart();
+        },
       });
-
+      button.setAlpha(active ? 1 : 0.8);
       return button;
     };
 
     if (compactLayout) {
-      makeLangButton(W - 92 * U, 'en', 6 * S);
-      makeLangButton(W - 36 * U, 'es', 6 * S);
+      makeLangButton(W - 92 * U, 'en');
+      makeLangButton(W - 36 * U, 'es');
     } else {
       makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 54 * U, 'en');
       makeLangButton(W / 2 + Math.min(W - 64 * U, 340 * U) / 2 - 24 * U, 'es');

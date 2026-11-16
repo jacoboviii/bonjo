@@ -162,7 +162,7 @@ On a touch device the on-screen controls appear automatically:
 - In portrait, the game pauses behind a **rotate your phone** screen with a
   "play anyway" escape.
 - Landscape orientation is strongly recommended.
-- **EN / ES** language buttons are in the top-right of the title screen.
+- **EN / ES** language buttons are in the top-right of the title and map screens.
 - The game starts in **Spanish** by default; choose **EN** for English.
 
 On a desktop you can press **V** to show the touch buttons for testing.
@@ -250,6 +250,7 @@ there to make them permanent.
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
 - **Map hub**: a papel-lotería map of La Cuadra with CASA and Las Orillas playable, and Iglesia, Mercado and Parque marked as future routes
+- **Unified folk-paper interface**: title, map, objectives, dialog, respawn and end screens share the same ink/paper/coral palette, button hierarchy and monospace type; keyboard and touch prompts switch with the active input mode
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, field trees with jumpable branches and wasp nests, geese and an aggressive Chihuahua boss
 - **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
@@ -281,7 +282,7 @@ there to make them permanent.
 - **3× internal render resolution** for crisper pixel art without changing the screen layout
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
-- **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title, or press **L**. The choice is remembered.
+- **Spanish by default** (La Cuadra, México); toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
 - Title, top-dog finale, win and game-over screens
 
 **Not in this build:** full menu systems, save slots, gamepad, base upgrades,

@@ -10,7 +10,13 @@ import { makePlatformTexture, makeLedgeTexture } from '../art.js';
 import { SCALE } from '../scale.js';
 import { sfx } from '../sfx.js';
 import TouchControls from '../ui/TouchControls.js';
-import { drawFolkCard } from '../ui/FolkCard.js';
+import {
+  drawFolkCard,
+  addMenuButton,
+  FOLK,
+  FOLK_CSS,
+  FONT,
+} from '../ui/FolkCard.js';
 import { t } from '../i18n.js';
 import { markLevelComplete } from '../progress.js';
 import { getLevelData, getNextLevel } from '../levels/index.js';
@@ -186,6 +192,7 @@ export default class Level1 extends Phaser.Scene {
     this.won = false;
     this.gameOverFlag = false;
     this.guiOpen = true;
+    this.touchWasVisible = false;
     this.hintTimer = 16;
     this.checkpointActive = false;
     this.checkpoint2Active = false;
@@ -348,26 +355,33 @@ export default class Level1 extends Phaser.Scene {
   layoutEndScreen(W) {
     const e = this.endLayout;
     if (!e?.overlay?.active) return;
+    const cardW = Math.min(W - 64 * U, 440 * U);
+    e.cardW = cardW;
     e.overlay.setPosition(W / 2, 72 * S).setSize(W, 144 * S);
     if (e.card) {
-      drawFolkCard(e.card, W / 2, 144 * U, Math.min(W - 64 * U, 440 * U), 220 * U);
+      drawFolkCard(e.card, W / 2, 144 * U, cardW, 220 * U);
     }
     e.title.x = W / 2;
     e.stats.x = W / 2;
     if (e.epilogue) {
       e.epilogue.x = W / 2;
-      e.epilogue.setWordWrapWidth(Math.min(W - 64 * U, 440 * U) - 24 * U);
+      e.epilogue.setWordWrapWidth(cardW - 24 * U);
     }
     if (e.rank) e.rank.x = W / 2;
-    e.box.x = W / 2;
-    e.prompt.x = W / 2;
+    if (e.promptButton) {
+      e.promptButton.setPosition(W / 2, e.promptY);
+    }
     if (e.mapButton) {
       const touch = this.compactLayout;
-      const cardW = Math.min(W - 64 * U, 440 * U);
-      e.mapButton.setPosition(
-        touch ? W / 2 : W / 2 + cardW / 2 - 20 * U,
-        144 * U + 110 * U - (touch ? 8 * U : 18 * U),
-      );
+      const mapY =
+        144 * U +
+        110 * U -
+        (touch ? 8 * U : 18 * U) -
+        e.mapButton.h / 2;
+      const mapX = touch
+        ? W / 2
+        : W / 2 + cardW / 2 - 20 * U - e.mapButton.w / 2;
+      e.mapButton.setPosition(mapX, mapY);
     }
   }
 
@@ -478,7 +492,7 @@ export default class Level1 extends Phaser.Scene {
     const y = (this.levelData.enemySpawnY ?? 587) * S;
     this.alpha.body.reset(x, y);
     this.alpha.body.setVelocity(0, 0);
-    this.floatText(x, y - 24 * S, t('bark'), '#ffd166');
+    this.floatText(x, y - 24 * S, t('bark'), FOLK_CSS.gold);
   }
 
   keepDogInBounds() {
@@ -594,10 +608,10 @@ export default class Level1 extends Phaser.Scene {
         this.alarmCar = img;
         this.alarmMarker = this.add
           .text(car.x * S, groundY - 34 * S, '!', {
-            fontFamily: 'monospace',
+            fontFamily: FONT,
             fontSize: 8 * S,
-            color: '#ffd166',
-            stroke: '#2b1b3d',
+            color: FOLK_CSS.gold,
+            stroke: FOLK_CSS.ink,
             strokeThickness: 2 * S,
           })
           .setOrigin(0.5)
@@ -868,7 +882,7 @@ export default class Level1 extends Phaser.Scene {
       ) {
         cat.setData('nextHiss', now + 4200);
         sfx.hiss();
-        this.floatText(cat.x, cat.y - 18 * S, t('float.hiss'), '#f26b5e');
+        this.floatText(cat.x, cat.y - 18 * S, t('float.hiss'), FOLK_CSS.danger);
         this.tweens.add({
           targets: cat,
           scaleX: cat.scaleX * 0.85,
@@ -921,7 +935,7 @@ export default class Level1 extends Phaser.Scene {
           this.rooster.x,
           this.rooster.y - 26 * S,
           t('float.crow'),
-          '#ffd166',
+          FOLK_CSS.gold,
         );
         this.tweens.add({
           targets: this.rooster,
@@ -938,7 +952,7 @@ export default class Level1 extends Phaser.Scene {
         .find((r) => r?.active && !r.defeated);
       if (rival) {
         sfx.bark();
-        this.floatText(rival.x, rival.y - 20 * S, t('bark'), '#ffd166');
+        this.floatText(rival.x, rival.y - 20 * S, t('bark'), FOLK_CSS.gold);
         this.nextDistantBark = now + 5000 + Math.random() * 4000;
       }
     }
@@ -950,7 +964,7 @@ export default class Level1 extends Phaser.Scene {
 
     const dir = bird.x <= this.dog.x ? -1 : 1;
     sfx.chirp();
-    this.floatText(bird.x, bird.y - 16 * S, t('float.chirp'), '#ffd166');
+    this.floatText(bird.x, bird.y - 16 * S, t('float.chirp'), FOLK_CSS.gold);
     this.tweens.add({
       targets: bird,
       x: bird.x + dir * 38 * S,
@@ -1147,10 +1161,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.gateSign = this.add
       .text(GATE_X * S, 600 * S - 34 * S, t('porch.sign'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 5 * S,
-        color: '#fff4e0',
-        stroke: '#1b1029',
+        color: FOLK_CSS.cream,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
       })
       .setOrigin(0.5, 1)
@@ -1412,7 +1426,7 @@ export default class Level1 extends Phaser.Scene {
 
     sfx.eat();
     this.spawnPuff(food.x, food.y, 0.7);
-    this.floatText(food.x, food.y - 8 * S, t('float.charge'), '#6ec6a8');
+    this.floatText(food.x, food.y - 8 * S, t('float.charge'), FOLK_CSS.mint);
   }
 
   createLives() {
@@ -1488,7 +1502,7 @@ export default class Level1 extends Phaser.Scene {
       reward.x,
       reward.y - 10 * S,
       t('float.powerFlap'),
-      '#ffd166',
+      FOLK_CSS.gold,
     );
   }
 
@@ -1528,7 +1542,7 @@ export default class Level1 extends Phaser.Scene {
       // Leave the heart for later instead of wasting it at full health.
       if (this.time.now >= (life.getData('hintAt') || 0)) {
         life.setData('hintAt', this.time.now + 900);
-        this.floatText(life.x, life.y - 8 * S, t('float.lifeFull'), '#ffd166');
+        this.floatText(life.x, life.y - 8 * S, t('float.lifeFull'), FOLK_CSS.gold);
       }
       return;
     }
@@ -1541,7 +1555,7 @@ export default class Level1 extends Phaser.Scene {
       life.x,
       life.y - 8 * S,
       t(gained === 'max' ? 'float.lifeMax' : 'float.life'),
-      '#f26b5e',
+      FOLK_CSS.danger,
     );
   }
 
@@ -1580,7 +1594,7 @@ export default class Level1 extends Phaser.Scene {
     this.hunger = Math.min(this.maxHunger, this.hunger + 28);
     sfx.eat();
     this.spawnPuff(cart.x, cart.y - 12 * S, 0.8);
-    this.floatText(cart.x, cart.y - 26 * S, t('float.taco'), '#6ec6a8');
+    this.floatText(cart.x, cart.y - 26 * S, t('float.taco'), FOLK_CSS.mint);
     this.tweens.add({
       targets: cart,
       scaleY: 0.9,
@@ -1598,7 +1612,7 @@ export default class Level1 extends Phaser.Scene {
     this.spawnBoneAt(can.x - 5 * S, can.y - 8 * S);
     this.spawnBoneAt(can.x + 6 * S, can.y - 6 * S);
     sfx.burst();
-    this.floatText(can.x, can.y - 22 * S, t('float.crash'), '#ffd166');
+    this.floatText(can.x, can.y - 22 * S, t('float.crash'), FOLK_CSS.gold);
 
     this.tweens.add({
       targets: can,
@@ -1626,7 +1640,7 @@ export default class Level1 extends Phaser.Scene {
 
     const dir = dog.x <= bike.x ? 1 : -1;
     sfx.crash();
-    this.floatText(bike.x, bike.y - 16 * S, t('float.crash'), '#f26b5e');
+    this.floatText(bike.x, bike.y - 16 * S, t('float.crash'), FOLK_CSS.danger);
     this.spawnPuff(bike.x, bike.y, 0.6);
     this.tweens.add({
       targets: bike,
@@ -1643,7 +1657,7 @@ export default class Level1 extends Phaser.Scene {
     this.nextAlarm = this.time.now + 8000;
 
     sfx.alarm();
-    this.floatText(this.alarmCar.x, this.alarmCar.y - 38 * S, t('float.alarm'), '#ffd166');
+    this.floatText(this.alarmCar.x, this.alarmCar.y - 38 * S, t('float.alarm'), FOLK_CSS.gold);
     this.alarmCar.setTint(0xffd166);
     this.time.delayedCall(260, () => this.alarmCar?.clearTint());
     this.cameras.main.shake(120, 0.004);
@@ -1939,7 +1953,7 @@ export default class Level1 extends Phaser.Scene {
       this.polo.x,
       this.polo.y - 38 * S,
       t('float.gift'),
-      '#ffd166',
+      FOLK_CSS.gold,
     );
   }
 
@@ -1982,7 +1996,7 @@ export default class Level1 extends Phaser.Scene {
       Math.abs(this.dog.y - 600 * S) < 60 * S
     ) {
       this.gateErrandDone = true;
-      this.floatText(GATE_X * S, 560 * S, t('errands.gateDone'), '#6ec6a8');
+      this.floatText(GATE_X * S, 560 * S, t('errands.gateDone'), FOLK_CSS.mint);
       this.updateGoalHud();
     }
   }
@@ -1996,7 +2010,7 @@ export default class Level1 extends Phaser.Scene {
       this.bellPost.x,
       this.bellPost.y - 54 * S,
       t('float.bell'),
-      '#ffd166',
+      FOLK_CSS.gold,
     );
   }
 
@@ -2008,7 +2022,7 @@ export default class Level1 extends Phaser.Scene {
       this.chihuahua.x,
       this.chihuahua.y - 22 * S,
       t('bark'),
-      '#ffd166',
+      FOLK_CSS.gold,
     );
     this.tweens.add({
       targets: this.chihuahua,
@@ -2218,7 +2232,7 @@ export default class Level1 extends Phaser.Scene {
       shard.x,
       shard.y - 10 * S,
       `+${TIME_SHARD_SECONDS}s`,
-      this.phase === 'day' ? '#ffd166' : '#9fd8ff',
+      this.phase === 'day' ? FOLK_CSS.gold : FOLK_CSS.night,
     );
     sfx.checkpoint();
   }
@@ -2386,11 +2400,11 @@ export default class Level1 extends Phaser.Scene {
     const y = sign.y * S;
     const text = this.add
       .text(x, y, sign.text, {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontStyle: 'bold',
         fontSize: 4.5 * S,
         color: sign.color,
-        stroke: '#1b1029',
+        stroke: FOLK_CSS.ink,
         strokeThickness: 1.8 * S,
       })
       .setOrigin(0.5)
@@ -2448,10 +2462,10 @@ export default class Level1 extends Phaser.Scene {
       .setStrokeStyle(1.5 * S, 0x1b1029, 1);
     this.bossTrackerLabel = this.add
       .text(0, 0, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 4.2 * S,
-        color: '#fff4e0',
-        backgroundColor: '#1b1029',
+        color: FOLK_CSS.cream,
+        backgroundColor: FOLK_CSS.ink,
         padding: { x: 3 * S, y: 2 * S },
       })
       .setOrigin(0, 0.5);
@@ -2463,10 +2477,10 @@ export default class Level1 extends Phaser.Scene {
         this.compactLayout ? 17 * S : 5 * S,
         `${t('hud.bones')} 0`,
         {
-          fontFamily: 'monospace',
+          fontFamily: FONT,
           fontSize: this.compactLayout ? 6.5 * S : 8 * S,
-          color: '#fff4e0',
-          stroke: '#2b1b3d',
+          color: FOLK_CSS.cream,
+          stroke: FOLK_CSS.ink,
           strokeThickness: 2 * S,
         },
       )
@@ -2476,10 +2490,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.comboText = this.add
       .text(W - 8 * S, 31 * S, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 7 * S,
-        color: '#ffd166',
-        stroke: '#2b1b3d',
+        color: FOLK_CSS.gold,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
       })
       .setOrigin(1, 0)
@@ -2489,10 +2503,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.hint = this.add
       .text(W / 2, 138 * S, t('level.hint'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 5 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
+        color: FOLK_CSS.cream,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
       })
       .setOrigin(0.5, 1)
@@ -2514,10 +2528,10 @@ export default class Level1 extends Phaser.Scene {
     }
 
     const statusStyle = {
-      fontFamily: 'monospace',
+      fontFamily: FONT,
       fontSize: 4.5 * S,
-      color: '#ffd166',
-      stroke: '#2b1b3d',
+      color: FOLK_CSS.gold,
+      stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
     };
     this.statusFlapLabel = this.add
@@ -2548,10 +2562,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.healthText = this.add
       .text(70 * S, 22 * S, `${this.health}/${this.maxHealth}`, {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 4.5 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
+        color: FOLK_CSS.cream,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
       })
       .setOrigin(0, 0.5)
@@ -2576,10 +2590,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.phaseText = this.add
       .text(0, 0, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: this.compactLayout ? 4.2 * S : 8 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
+        color: FOLK_CSS.cream,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
       })
       .setOrigin(0, 0.5)
@@ -2589,10 +2603,10 @@ export default class Level1 extends Phaser.Scene {
     if (this.features.gateDefense !== false) {
       this.gateText = this.add
         .text(8 * S, this.compactLayout ? 29 * S : 58 * S, '', {
-          fontFamily: 'monospace',
+          fontFamily: FONT,
           fontSize: 6 * S,
-          color: '#6ec6a8',
-          stroke: '#2b1b3d',
+          color: FOLK_CSS.mint,
+          stroke: FOLK_CSS.ink,
           strokeThickness: 2 * S,
         })
         .setScrollFactor(0)
@@ -2621,10 +2635,10 @@ export default class Level1 extends Phaser.Scene {
     this.clockGraphics = this.add.graphics().setScrollFactor(0).setDepth(100);
     this.clockText = this.add
       .text(0, 0, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 4.6 * S,
-        color: '#fff4e0',
-        stroke: '#2b1b3d',
+        color: FOLK_CSS.cream,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
       })
       .setOrigin(0.5, 0)
@@ -2723,7 +2737,7 @@ export default class Level1 extends Phaser.Scene {
     const mm = String(wholeMinutes % 60).padStart(2, '0');
     this.clockText
       .setText(`${hh}:${mm}`)
-      .setColor(night ? '#9fd8ff' : '#fff4e0');
+      .setColor(night ? FOLK_CSS.night : FOLK_CSS.cream);
   }
 
   flashClock() {
@@ -2795,10 +2809,10 @@ export default class Level1 extends Phaser.Scene {
   createInteractionUi() {
     this.interactPrompt = this.add
       .text(0, 0, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 5 * S,
-        color: '#1b1029',
-        backgroundColor: '#ffd166',
+        color: FOLK_CSS.ink,
+        backgroundColor: FOLK_CSS.gold,
       })
       .setOrigin(0.5, 1)
       .setDepth(20)
@@ -2827,25 +2841,25 @@ export default class Level1 extends Phaser.Scene {
     this.dialogCard = this.add.graphics();
     this.dialogName = this.add
       .text(0, 0, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 6 * S,
-        color: '#ffd166',
-        backgroundColor: '#1d1326',
+        color: FOLK_CSS.gold,
+        backgroundColor: FOLK_CSS.ink,
       })
       .setOrigin(0, 0);
     this.dialogName.setPadding(3 * S, 1 * S, 3 * S, 1 * S);
 
     this.dialogBody = this.add.text(0, 0, '', {
-      fontFamily: 'monospace',
+      fontFamily: FONT,
       fontSize: 6 * S,
-      color: '#2b1b3d',
+      color: FOLK_CSS.ink,
       lineSpacing: 2 * S,
     });
     this.dialogHint = this.add
       .text(0, 0, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 4 * S,
-        color: '#2b1b3d',
+        color: FOLK_CSS.ink,
       })
       .setOrigin(1, 1)
       .setAlpha(0.55);
@@ -2993,28 +3007,28 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesCard = this.add.graphics();
 
     const titleStyle = {
-      fontFamily: 'monospace',
+      fontFamily: FONT,
       fontSize: 8 * S,
-      color: '#c94f3d',
-      stroke: '#1d1326',
+      color: FOLK_CSS.coral,
+      stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
     };
     const headingStyle = {
-      fontFamily: 'monospace',
+      fontFamily: FONT,
       fontSize: 5.5 * S,
-      color: '#2f7f78',
+      color: FOLK_CSS.teal,
     };
     const bodyStyle = {
-      fontFamily: 'monospace',
+      fontFamily: FONT,
       fontSize: 5 * S,
-      color: '#2b1b3d',
+      color: FOLK_CSS.ink,
       lineSpacing: 2 * S,
     };
     const goalStyle = {
-      fontFamily: 'monospace',
+      fontFamily: FONT,
       fontSize: 7 * S,
-      color: '#6ec6a8',
-      stroke: '#2b1b3d',
+      color: FOLK_CSS.mint,
+      stroke: FOLK_CSS.ink,
       strokeThickness: 1.5 * S,
     };
 
@@ -3041,26 +3055,18 @@ export default class Level1 extends Phaser.Scene {
           fontSize: 4.5 * S,
         },
       );
-    this.objectivesClose = this.add
-      .text(0, 0, t('objectives.close'), {
-        fontFamily: 'monospace',
-        fontSize: this.compactLayout ? 5 * S : 4 * S,
-        color: this.compactLayout ? '#fff4e0' : '#2b1b3d',
-        backgroundColor: this.compactLayout ? '#1b1029' : undefined,
-      })
-      .setOrigin(1, 0)
-      .setAlpha(this.compactLayout ? 1 : 0.6)
-      .setScrollFactor(0)
-      .setDepth(160)
-      .setVisible(false)
-      .setInteractive({ useHandCursor: true });
-    this.objectivesClose.setPadding(
-      this.compactLayout ? 6 * U : 2 * S,
-      this.compactLayout ? 8 * U : 1 * S,
-      this.compactLayout ? 6 * U : 2 * S,
-      this.compactLayout ? 8 * U : 1 * S,
-    );
-    this.objectivesClose.on('pointerdown', () => this.closeObjectives());
+    this.objectivesClose = addMenuButton(this, {
+      label: this.touch?.visible
+        ? t('objectives.closeTouch')
+        : t('objectives.close'),
+      variant: 'dark',
+      fontSize: this.compactLayout ? 5 * S : 4 * S,
+      paddingX: this.compactLayout ? 6 * U : 2 * S,
+      paddingY: this.compactLayout ? 8 * U : 1 * S,
+      depth: 160,
+      scrollFactor: 0,
+      onClick: () => this.closeObjectives(),
+    }).setVisible(false);
 
     this.objectivesRoot.add([
       this.objectivesCard,
@@ -3106,8 +3112,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesPowersHead.setPosition(left, top + 172 * U);
     this.objectivesPowers.setPosition(left, top + 186 * U).setWordWrapWidth(wrap);
     this.objectivesClose.setPosition(
-      W / 2 + w / 2 - 16 * U,
-      this.scale.height / 2 - h / 2 + 13 * U,
+      W / 2 + w / 2 - 16 * U - this.objectivesClose.w / 2,
+      this.scale.height / 2 - h / 2 + 13 * U + this.objectivesClose.h / 2,
     );
   }
 
@@ -3124,7 +3130,14 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesOpen = true;
     this.objectivesWasTouch = !!this.touch?.visible;
     this.objectivesButton.setVisible(false);
-    this.objectivesClose.setVisible(true);
+    this.objectivesClose
+      .setLabel(
+        this.objectivesWasTouch
+          ? t('objectives.closeTouch')
+          : t('objectives.close'),
+      )
+      .setVisible(true);
+    this.layoutObjectives(this.scale.width);
     this.interactPrompt?.setVisible(false);
     this.interactBubble?.setVisible(false);
     this.touch?.show(false);
@@ -3155,21 +3168,19 @@ export default class Level1 extends Phaser.Scene {
     if (!this.objectivesNowGoal) return;
 
     let text = t(this.levelData.goalKey || 'goal.survive');
-    let color = '#6ec6a8';
+    let color = FOLK_CSS.mint;
     if (this.alphaActive && !this.alphaDefeated) {
       text = t(this.levelData.boss?.goalKey || 'goal.alpha', {
         hits: this.alpha?.health ?? 5,
         max: this.alpha?.maxHealth ?? 5,
       });
-      color = '#ffd166';
+      color = FOLK_CSS.gold;
     } else if (this.alphaDefeated && this.alphaEnding) {
       text = t('goal.dawnNow');
-      color = '#b5533a';
+      color = FOLK_CSS.dawn;
     } else if (this.phase === 'night' && this.phaseTime <= 10) {
-      text = t('goal.dawn', {
-        seconds: Math.ceil(Math.max(0, this.phaseTime)),
-      });
-      color = '#ffd166';
+      text = t('goal.dawn');
+      color = FOLK_CSS.gold;
     }
 
     this.objectivesNowGoal.setText(text).setColor(color);
@@ -3189,12 +3200,12 @@ export default class Level1 extends Phaser.Scene {
         .setText(
           `${t('errands.day')} · ${check(!this.poloGift)} ${t('name.polo')}  ${check(this.bellRung)} ${t('name.bell')}`,
         )
-        .setColor(dayDone ? '#2f7f78' : '#2b1b3d');
+        .setColor(dayDone ? FOLK_CSS.teal : FOLK_CSS.ink);
       this.objectivesErrandsDesc
         .setText(
           `${t('errands.night')} · ${check(this.gateErrandDone)} ${t('hud.gate')}  ${check(this.nightRivalsSubdued >= 2)} ${t('errands.rivals')} ${this.nightRivalsSubdued}/2`,
         )
-        .setColor(nightDone ? '#2f7f78' : '#2b1b3d');
+        .setColor(nightDone ? FOLK_CSS.teal : FOLK_CSS.ink);
     }
   }
 
@@ -3261,10 +3272,10 @@ export default class Level1 extends Phaser.Scene {
         50 * S,
         t(this.levelData.introKey || 'level.intro'),
         {
-          fontFamily: 'monospace',
+          fontFamily: FONT,
           fontSize: 12 * S,
-          color: '#fff4e0',
-          stroke: '#2b1b3d',
+          color: FOLK_CSS.cream,
+          stroke: FOLK_CSS.ink,
           strokeThickness: 3 * S,
         },
       )
@@ -3289,10 +3300,10 @@ export default class Level1 extends Phaser.Scene {
           65 * S,
           t(this.levelData.storyIntroKey),
           {
-            fontFamily: 'monospace',
+            fontFamily: FONT,
             fontSize: 5.5 * S,
-            color: '#fff4e0',
-            stroke: '#2b1b3d',
+            color: FOLK_CSS.cream,
+            stroke: FOLK_CSS.ink,
             strokeThickness: 2 * S,
             align: 'center',
             wordWrap: { width: this.scale.width - 40 * U },
@@ -3470,9 +3481,9 @@ export default class Level1 extends Phaser.Scene {
     });
     this.healthText
       ?.setText(`${this.health}/${this.maxHealth}`)
-      .setColor(this.health <= 1 ? '#f26b5e' : '#fff4e0');
-    this.statusHealthLabel?.setColor(this.health <= 1 ? '#f26b5e' : '#ffd166');
-    this.statusHungerLabel?.setColor(this.hunger < 25 ? '#f26b5e' : '#ffd166');
+      .setColor(this.health <= 1 ? FOLK_CSS.danger : FOLK_CSS.cream);
+    this.statusHealthLabel?.setColor(this.health <= 1 ? FOLK_CSS.danger : FOLK_CSS.gold);
+    this.statusHungerLabel?.setColor(this.hunger < 25 ? FOLK_CSS.danger : FOLK_CSS.gold);
 
     this.hungerBar.clear();
     this.hungerBar.fillStyle(0x2b1b3d, 0.8);
@@ -3502,7 +3513,7 @@ export default class Level1 extends Phaser.Scene {
       this.gateText
         .setText(gateLabel)
         .setVisible(showGate)
-        .setColor(critical ? '#f26b5e' : warning ? '#ffd166' : '#6ec6a8')
+        .setColor(critical ? FOLK_CSS.danger : warning ? FOLK_CSS.gold : FOLK_CSS.mint)
         .setAlpha(
           this.gateAlert
             ? 0.62 + 0.38 * Math.abs(Math.sin(this.time.now / 150))
@@ -3510,7 +3521,7 @@ export default class Level1 extends Phaser.Scene {
         );
     }
     this.phaseText.setText(phaseLabel);
-    this.phaseText.setColor(this.phase === 'night' ? '#ffd166' : '#fff4e0');
+    this.phaseText.setColor(this.phase === 'night' ? FOLK_CSS.gold : FOLK_CSS.cream);
     this.updateClockHud();
 
     this.updateGoalHud();
@@ -3521,7 +3532,7 @@ export default class Level1 extends Phaser.Scene {
       if (this.won || this.gameOverFlag) return;
       this.showPhaseBanner(
         t(this.phase === 'day' ? 'hint.timeDay' : 'hint.timeNight'),
-        this.phase === 'day' ? '#ffd166' : '#9fd8ff',
+        this.phase === 'day' ? FOLK_CSS.gold : FOLK_CSS.night,
       );
     });
   }
@@ -3647,7 +3658,7 @@ export default class Level1 extends Phaser.Scene {
       duration: 900,
     });
 
-    this.showPhaseBanner(`${t('hud.night')} ${this.nightsSurvived + 1}`, '#ffd166');
+    this.showPhaseBanner(`${t('hud.night')} ${this.nightsSurvived + 1}`, FOLK_CSS.gold);
     this.queueClockHint(1400);
     sfx.bell();
     sfx.night();
@@ -3733,7 +3744,7 @@ export default class Level1 extends Phaser.Scene {
       duration: 900,
     });
 
-    this.showPhaseBanner(`${t('hud.day')} ${this.dayNumber}`, '#6ec6a8');
+    this.showPhaseBanner(`${t('hud.day')} ${this.dayNumber}`, FOLK_CSS.mint);
     this.queueClockHint(gateWasBroken ? 3000 : 1400);
     sfx.bell();
     sfx.day();
@@ -3747,7 +3758,7 @@ export default class Level1 extends Phaser.Scene {
     } else {
       this.time.delayedCall(1050, () => {
         if (!this.won && !this.gameOverFlag) {
-          this.showPhaseBanner(t('gate.repair'), '#f26b5e');
+          this.showPhaseBanner(t('gate.repair'), FOLK_CSS.danger);
         }
       });
     }
@@ -3853,7 +3864,7 @@ export default class Level1 extends Phaser.Scene {
     this.runStats.waves += 1;
 
     this.spawnPuff(sx * S, 580 * S, 1);
-    this.floatText(sx * S, 558 * S, t('bark'), '#ffd166');
+    this.floatText(sx * S, 558 * S, t('bark'), FOLK_CSS.gold);
     sfx.bark();
     this.alertChihuahua();
   }
@@ -3886,9 +3897,9 @@ export default class Level1 extends Phaser.Scene {
       },
     );
     this.rivalGroup.add(rival);
-    this.floatText(500 * S, 558 * S, t('bark'), '#ffd166');
+    this.floatText(500 * S, 558 * S, t('bark'), FOLK_CSS.gold);
     this.gateAlert = true;
-    this.showPhaseBanner(t('gate.alert'), '#f26b5e');
+    this.showPhaseBanner(t('gate.alert'), FOLK_CSS.danger);
     this.alertChihuahua();
   }
 
@@ -3960,9 +3971,9 @@ export default class Level1 extends Phaser.Scene {
       this.alphaCrown = null;
     }
 
-    this.showPhaseBanner(t(boss.titleKey || 'alpha.title'), '#ffd166');
+    this.showPhaseBanner(t(boss.titleKey || 'alpha.title'), FOLK_CSS.gold);
     this.spawnPuff(this.alpha.x, 580 * S, 1.5);
-    this.floatText(this.alpha.x, 558 * S, t('bark'), '#ffd166');
+    this.floatText(this.alpha.x, 558 * S, t('bark'), FOLK_CSS.gold);
     sfx.bark();
     this.alertChihuahua();
     this.updateGoalHud();
@@ -3982,7 +3993,7 @@ export default class Level1 extends Phaser.Scene {
       GATE_X * S,
       560 * S,
       `${t('hud.gate')} ${this.gateHealth}/${this.gateMaxHealth}`,
-      '#f26b5e',
+      FOLK_CSS.danger,
     );
     sfx.stomp();
     this.alertChihuahua();
@@ -3992,7 +4003,7 @@ export default class Level1 extends Phaser.Scene {
       this.gateBroken = true;
       this.porchGate?.setTint(0x6a5a76).setAlpha(0.55);
       this.gateSign?.setVisible(false);
-      this.showPhaseBanner(t('gate.broken'), '#f26b5e');
+      this.showPhaseBanner(t('gate.broken'), FOLK_CSS.danger);
       this.cameras.main.flash(160, 242, 107, 94);
       if (rival?.active) {
         rival.defeated = true;
@@ -4018,7 +4029,7 @@ export default class Level1 extends Phaser.Scene {
     this.alphaCrown = null;
     this.showPhaseBanner(
       t(this.levelData.boss?.defeatKey || 'alpha.cleared'),
-      '#ffd166',
+      FOLK_CSS.gold,
     );
     sfx.burst();
     this.alertChihuahua();
@@ -4042,10 +4053,10 @@ export default class Level1 extends Phaser.Scene {
 
     this.phaseBanner = this.add
       .text(this.scale.width / 2, 72 * S, text, {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize,
         color,
-        stroke: '#2b1b3d',
+        stroke: FOLK_CSS.ink,
         strokeThickness: Math.max(2, fontSize * 0.16),
       })
       .setOrigin(0.5)
@@ -4134,14 +4145,14 @@ export default class Level1 extends Phaser.Scene {
     sfx.impact();
   }
 
-  floatText(x, y, message, color = '#ffd166') {
+  floatText(x, y, message, color = FOLK_CSS.gold) {
     const duration = ANIMAL_WORDS.has(message) ? 1500 : 700;
     const label = this.add
       .text(x, y, message, {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 7 * S,
         color,
-        stroke: '#2b1b3d',
+        stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
       })
       .setOrigin(0.5)
@@ -4177,7 +4188,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   onSlideBlocked() {
-    this.floatText(this.dog.x, this.dog.y - 16 * S, t('float.tired'), '#f26b5e');
+    this.floatText(this.dog.x, this.dog.y - 16 * S, t('float.tired'), FOLK_CSS.danger);
   }
 
   spawnSlideAfterimage(dog) {
@@ -4329,7 +4340,7 @@ export default class Level1 extends Phaser.Scene {
     this.spawnPuff(this.checkpoint.x, this.checkpoint.y, 1.3);
     this.floatText(this.checkpoint.x, this.checkpoint.y - 16 * S, t('float.checkpoint'));
     if (this.healHealth(1)) {
-      this.floatText(this.checkpoint.x, this.checkpoint.y - 26 * S, t('float.life'), '#f26b5e');
+      this.floatText(this.checkpoint.x, this.checkpoint.y - 26 * S, t('float.life'), FOLK_CSS.danger);
     }
   }
 
@@ -4353,7 +4364,7 @@ export default class Level1 extends Phaser.Scene {
         this.checkpoint2.x,
         this.checkpoint2.y - 26 * S,
         t('float.life'),
-        '#f26b5e',
+        FOLK_CSS.danger,
       );
     }
   }
@@ -4526,7 +4537,7 @@ export default class Level1 extends Phaser.Scene {
 
     sfx.steal();
     this.critterVoice(squirrel);
-    this.floatText(squirrel.x, squirrel.y - 22 * S, t('float.hey'), '#ffd166');
+    this.floatText(squirrel.x, squirrel.y - 22 * S, t('float.hey'), FOLK_CSS.gold);
   }
 
   dropSquirrelBone(squirrel) {
@@ -4539,7 +4550,7 @@ export default class Level1 extends Phaser.Scene {
 
     bone.enableBody(true, squirrel.x, squirrel.y - 6 * S, true, true);
     bone.body.setSize(8 * S, 6 * S);
-    this.floatText(squirrel.x, squirrel.y - 20 * S, t('float.bone'), '#fff4e0');
+    this.floatText(squirrel.x, squirrel.y - 20 * S, t('float.bone'), FOLK_CSS.cream);
   }
 
   squirrelEscapes(squirrel) {
@@ -4553,7 +4564,7 @@ export default class Level1 extends Phaser.Scene {
       squirrel.carried.destroy();
       squirrel.carried = null;
       squirrel.carrying = false;
-      this.floatText(squirrel.x, squirrel.y - 20 * S, t('float.gone'), '#f26b5e');
+      this.floatText(squirrel.x, squirrel.y - 20 * S, t('float.gone'), FOLK_CSS.danger);
     }
 
     this.spawnPuff(squirrel.x, squirrel.y, 0.8);
@@ -4651,7 +4662,7 @@ export default class Level1 extends Phaser.Scene {
           rival.x,
           rival.y - 16 * S,
           `${rival.health}/${rival.maxHealth}`,
-          '#ffd166',
+          FOLK_CSS.gold,
         );
         return false;
       }
@@ -4684,14 +4695,14 @@ export default class Level1 extends Phaser.Scene {
     ) {
       this.nightRivalsSubdued += 1;
       if (this.nightRivalsSubdued === 2) {
-        this.floatText(rival.x, rival.y - 28 * S, t('errands.rivalsDone'), '#6ec6a8');
+        this.floatText(rival.x, rival.y - 28 * S, t('errands.rivalsDone'), FOLK_CSS.mint);
         this.updateGoalHud();
       }
     }
     this.maybeDropConcha(rival.x, rival.y - 8 * S);
     sfx.yelp();
     this.spawnPuff(rival.x, rival.y, rival.role === 'alpha' ? 1.5 : 1);
-    this.floatText(rival.x, rival.y - 12 * S, `+${reward}`, '#ffd166');
+    this.floatText(rival.x, rival.y - 12 * S, `+${reward}`, FOLK_CSS.gold);
 
     this.tweens.add({
       targets: rival,
@@ -4729,7 +4740,7 @@ export default class Level1 extends Phaser.Scene {
       pinata.x,
       pinata.y - 22 * S,
       pinata.hits >= 3 ? t('float.orale') : t('float.echale'),
-      '#ffd166',
+      FOLK_CSS.gold,
     );
 
     if (pinata.hits >= 3) {
@@ -4837,7 +4848,7 @@ export default class Level1 extends Phaser.Scene {
       this.bonesCount -= 1;
       source.stolenBones = 1;
       source.setTint(0xd6a8ff);
-      this.floatText(source.x, source.y - 24 * S, t('float.stolen'), '#f26b5e');
+      this.floatText(source.x, source.y - 24 * S, t('float.stolen'), FOLK_CSS.danger);
     }
 
     sfx.hurt();
@@ -4942,6 +4953,7 @@ export default class Level1 extends Phaser.Scene {
     this.alphaCrown?.setVisible(false);
     this.gui?.hide();
     this.closeDialog();
+    this.touchWasVisible = !!this.touch?.visible;
     this.touch?.show(false);
   }
 
@@ -5025,7 +5037,7 @@ export default class Level1 extends Phaser.Scene {
     this.updateSurvivalHud();
     this.cameras.main.flash(180, 110, 198, 168);
     this.spawnImpactBurst(this.dog.x, this.dog.y, {
-      color: 0x6ec6a8,
+      color: FOLK.mint,
       radius: 22 * S,
       width: 2.5 * S,
       duration: 320,
@@ -5052,23 +5064,23 @@ export default class Level1 extends Phaser.Scene {
       .setAlpha(0);
 
     const panel = this.add
-      .rectangle(0, 0, w, h, 0x1b1029, 0.9)
-      .setStrokeStyle(1.5 * U, 0x6ec6a8, 0.95);
+      .rectangle(0, 0, w, h, FOLK.ink, 0.9)
+      .setStrokeStyle(1.5 * U, FOLK.mint, 0.95);
     const title = this.add
       .text(0, -9 * U, t('respawn.title'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 6.2 * S,
-        color: '#6ec6a8',
-        stroke: '#1b1029',
+        color: FOLK_CSS.mint,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 2 * S,
         align: 'center',
       })
       .setOrigin(0.5);
     const body = this.add
       .text(0, 8 * U, t('respawn.body'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 3.8 * S,
-        color: '#fff4e0',
+        color: FOLK_CSS.cream,
         align: 'center',
         wordWrap: { width: w - 24 * U },
       })
@@ -5110,86 +5122,123 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showGameOverOverlay() {
+    const elapsed = ((this.time.now - this.startedAt) / 1000).toFixed(1);
+    this.showEndOverlay({
+      titleText: t('gameover.title'),
+      titleColor: FOLK_CSS.coral,
+      statsText: t('gameover.stats', {
+        bones: this.bonesCount,
+        nights: this.nightsSurvived,
+        time: elapsed,
+      }),
+      rankText: t('run.score', { score: this.score, rank: this.rank }),
+      promptText: t(
+        this.touchWasVisible ? 'gameover.againTouch' : 'gameover.again',
+      ),
+      onActivate: () => this.scene.restart(),
+    });
+  }
+
+  showEndOverlay({
+    titleText,
+    titleColor,
+    epilogueText = null,
+    statsText,
+    rankText,
+    promptText,
+    onActivate,
+  }) {
     const W = this.scale.width;
     const cardW = Math.min(W - 64 * U, 440 * U);
-    const titleText = t('gameover.title');
     const titleSize = Math.min(
       18 * S,
       Math.max(10 * S, Math.floor((cardW - 48 * U) / (titleText.length * 0.62))),
     );
 
     const overlay = this.add
-      .rectangle(W / 2, 72 * S, W, 144 * S, 0x120a1c, 0.82)
+      .rectangle(W / 2, 72 * S, W, 144 * S, FOLK.ink, 0.82)
       .setScrollFactor(0)
       .setDepth(200);
 
-    this.enableReplay(overlay, () => this.scene.restart());
+    this.enableReplay(overlay, onActivate);
 
-    const card = this.add
-      .graphics()
-      .setScrollFactor(0)
-      .setDepth(201);
+    const card = this.add.graphics().setScrollFactor(0).setDepth(201);
     drawFolkCard(card, W / 2, 144 * U, cardW, 220 * U);
 
     const title = this.add
       .text(W / 2, 40 * S, titleText, {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: titleSize,
-        color: '#c94f3d',
-        stroke: '#1d1326',
+        color: titleColor,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 3 * S,
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
 
+    let epilogue = null;
+    if (epilogueText) {
+      epilogue = this.add
+        .text(W / 2, 53 * S, epilogueText, {
+          fontFamily: FONT,
+          fontSize: 4 * S,
+          color: FOLK_CSS.ink,
+          align: 'center',
+          wordWrap: { width: cardW - 24 * U },
+        })
+        .setOrigin(0.5, 0)
+        .setScrollFactor(0)
+        .setDepth(202);
+    }
+
     const stats = this.add
-      .text(
-        W / 2,
-        64 * S,
-        t('gameover.stats', {
-          bones: this.bonesCount,
-          nights: this.nightsSurvived,
-        }),
-        {
-          fontFamily: 'monospace',
-          fontSize: 9 * S,
-          color: '#1d1326',
-        },
-      )
+      .text(W / 2, epilogueText ? 66 * S : 64 * S, statsText, {
+        fontFamily: FONT,
+        fontSize: 9 * S,
+        color: FOLK_CSS.ink,
+      })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
 
     const rank = this.add
-      .text(W / 2, 82 * S, t('run.score', { score: this.score, rank: this.rank }), {
-        fontFamily: 'monospace',
+      .text(W / 2, 82 * S, rankText, {
+        fontFamily: FONT,
         fontSize: 8 * S,
-        color: '#2f7f78',
+        color: FOLK_CSS.teal,
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(202);
 
     const promptY = this.compactLayout ? 96 * S : 100 * S;
-    const box = this.add
-      .rectangle(W / 2, promptY, 170 * S, 18 * S, 0xc94f3d, 1)
-      .setStrokeStyle(2 * S, 0x1d1326, 1)
-      .setScrollFactor(0)
-      .setDepth(202);
+    const promptButton = addMenuButton(this, {
+      x: W / 2,
+      y: promptY,
+      label: promptText,
+      variant: 'primary',
+      fontSize: 8 * S,
+      minWidth: 160 * S,
+      height: 18 * S,
+      depth: 202,
+      scrollFactor: 0,
+    });
 
-    const prompt = this.add
-      .text(W / 2, promptY, t('gameover.again'), {
-        fontFamily: 'monospace',
-        fontSize: 8 * S,
-        color: '#fff4e0',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(203);
-
-    const mapButton = this.addEndMapButton(W);
-    this.endLayout = { overlay, card, title, stats, rank, box, prompt, mapButton };
+    const mapButton = this.addEndMapButton();
+    this.endLayout = {
+      overlay,
+      card,
+      title,
+      epilogue,
+      stats,
+      rank,
+      promptButton,
+      promptY,
+      cardW,
+      mapButton,
+    };
+    this.layoutEndScreen(W);
   }
 
   win() {
@@ -5226,136 +5275,37 @@ export default class Level1 extends Phaser.Scene {
 
   showWinOverlay() {
     const elapsed = ((this.time.now - this.startedAt) / 1000).toFixed(1);
-    const W = this.scale.width;
-    const cardW = Math.min(W - 64 * U, 440 * U);
-    const titleText = t(this.levelData.winTitleKey || 'win.title');
-    const titleSize = Math.min(
-      18 * S,
-      Math.max(10 * S, Math.floor((cardW - 48 * U) / (titleText.length * 0.62))),
-    );
-
-    const overlay = this.add
-      .rectangle(W / 2, 72 * S, W, 144 * S, 0x120a1c, 0.82)
-      .setScrollFactor(0)
-      .setDepth(200);
-
-    this.enableReplay(overlay, () => this.advanceAfterWin());
-
-    const card = this.add
-      .graphics()
-      .setScrollFactor(0)
-      .setDepth(201);
-    drawFolkCard(card, W / 2, 144 * U, cardW, 220 * U);
-
-    const title = this.add
-      .text(W / 2, 40 * S, titleText, {
-        fontFamily: 'monospace',
-        fontSize: titleSize,
-        color: '#2f7f78',
-        stroke: '#1d1326',
-        strokeThickness: 3 * S,
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(202);
-
-    const epilogue = this.add
-      .text(
-        W / 2,
-        53 * S,
-        t(this.levelData.winEpilogueKey || 'win.casaEpilogue'),
-        {
-          fontFamily: 'monospace',
-          fontSize: 4 * S,
-          color: '#2b1b3d',
-          align: 'center',
-          wordWrap: { width: cardW - 24 * U },
-        },
-      )
-      .setOrigin(0.5, 0)
-      .setScrollFactor(0)
-      .setDepth(202);
-
-    const stats = this.add
-      .text(W / 2, 66 * S, t('win.stats', { bones: this.bonesCount, nights: this.nightsSurvived, time: elapsed }), {
-        fontFamily: 'monospace',
-        fontSize: 9 * S,
-        color: '#1d1326',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(202);
-
-    const rank = this.add
-      .text(W / 2, 82 * S, t('run.score', { score: this.score, rank: this.rank }), {
-        fontFamily: 'monospace',
-        fontSize: 8 * S,
-        color: '#c94f3d',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(202);
-
     const nextLevel = getNextLevel(this.levelId);
-    const promptText = nextLevel
-      ? t('win.next', { level: t(nextLevel.nameKey) })
-      : t('win.returnMap');
-    const promptY = this.compactLayout ? 96 * S : 100 * S;
-    const prompt = this.add
-      .text(W / 2, promptY, promptText, {
-        fontFamily: 'monospace',
-        fontSize: 8 * S,
-        color: '#fff4e0',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(203);
-    const box = this.add
-      .rectangle(
-        W / 2,
-        promptY,
-        Math.max(170 * S, prompt.width + 24 * S),
-        18 * S,
-        0xc94f3d,
-        1,
-      )
-      .setStrokeStyle(2 * S, 0x1d1326, 1)
-      .setScrollFactor(0)
-      .setDepth(202);
-
-    const mapButton = this.addEndMapButton(W);
-    this.endLayout = { overlay, card, title, epilogue, stats, rank, box, prompt, mapButton };
+    this.showEndOverlay({
+      titleText: t(this.levelData.winTitleKey || 'win.title'),
+      titleColor: FOLK_CSS.teal,
+      epilogueText: t(
+        this.levelData.winEpilogueKey || 'win.casaEpilogue',
+      ),
+      statsText: t('win.stats', {
+        bones: this.bonesCount,
+        nights: this.nightsSurvived,
+        time: elapsed,
+      }),
+      rankText: t('run.score', { score: this.score, rank: this.rank }),
+      promptText: nextLevel
+        ? t('win.next', { level: t(nextLevel.nameKey) })
+        : t('win.returnMap'),
+      onActivate: () => this.advanceAfterWin(),
+    });
   }
 
-  addEndMapButton(W) {
-    const touch = this.compactLayout;
-    const cardW = Math.min(W - 64 * U, 440 * U);
-    const mapButton = this.add
-      .text(
-        touch ? W / 2 : W / 2 + cardW / 2 - 20 * U,
-        144 * U + 110 * U - (touch ? 8 * U : 18 * U),
-        t('map.shortcut'),
-        {
-          fontFamily: 'monospace',
-          fontSize: touch ? 6 * S : 4 * S,
-          color: '#fff4e0',
-          backgroundColor: '#1b1029',
-        },
-      )
-      .setPadding(
-        touch ? 8 * U : 3 * U,
-        touch ? 8 * U : 1.5 * U,
-        touch ? 8 * U : 3 * U,
-        touch ? 8 * U : 1.5 * U,
-      )
-      .setOrigin(touch ? 0.5 : 1, 1)
-      .setScrollFactor(0)
-      .setDepth(204)
-      .setInteractive({ useHandCursor: true });
-
-    mapButton.on('pointerdown', (pointer, x, y, event) => {
-      event?.stopPropagation?.();
-      this.scene.start('Map');
+  addEndMapButton() {
+    const touch = this.touchWasVisible;
+    const mapButton = addMenuButton(this, {
+      label: t(touch ? 'map.shortcutTouch' : 'map.shortcut'),
+      variant: 'secondary',
+      fontSize: touch ? 6 * S : 4 * S,
+      paddingX: touch ? 8 * U : 3 * U,
+      paddingY: touch ? 6 * U : 2 * U,
+      depth: 204,
+      scrollFactor: 0,
+      onClick: () => this.scene.start('Map'),
     });
     return mapButton;
   }

@@ -2,8 +2,14 @@ import Phaser from 'phaser';
 import { SCALE } from '../scale.js';
 import { LEVELS } from '../levels/index.js';
 import { readProgress, levelProgress } from '../progress.js';
-import { t } from '../i18n.js';
-import { drawFolkCard, FOLK } from '../ui/FolkCard.js';
+import { t, getLang, setLang } from '../i18n.js';
+import {
+  drawFolkCard,
+  addMenuButton,
+  FOLK,
+  FOLK_CSS,
+  FONT,
+} from '../ui/FolkCard.js';
 import { sfx } from '../sfx.js';
 
 const S = SCALE;
@@ -23,7 +29,7 @@ export default class Map extends Phaser.Scene {
     // The map always uses the larger mobile-friendly layout.
     this.compactLayout = true;
     this.progress = readProgress();
-    this.selectedId = 'laCuadra';
+    this.selectedId = this.scene.settings?.data?.selectedId || 'laCuadra';
     this.nodeViews = [];
 
     const W = this.scale.width;
@@ -68,10 +74,10 @@ export default class Map extends Phaser.Scene {
   createHeader(W, H) {
     this.add
       .text(W / 2, this.boardTop + 12 * U, t('map.title'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: 8 * S,
-        color: '#c94f3d',
-        stroke: '#1d1326',
+        color: FOLK_CSS.coral,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 1.5 * S,
       })
       .setOrigin(0.5, 0)
@@ -79,29 +85,54 @@ export default class Map extends Phaser.Scene {
 
     this.add
       .text(W / 2, this.boardTop + 34 * U, t('map.subtitle'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: this.compactLayout ? 5.5 * S : 4.5 * S,
-        color: '#2f7f78',
+        color: FOLK_CSS.teal,
       })
       .setOrigin(0.5, 0)
       .setDepth(4);
 
-    this.backButton = this.add
-      .text(8 * S, 7 * S, t('map.back'), {
-        fontFamily: 'monospace',
-        fontSize: this.compactLayout ? 5.5 * S : 4.5 * S,
-        color: '#1d1326',
-        backgroundColor: '#f4dfb0',
-      })
-      .setPadding(
-        this.compactLayout ? 7 * U : 4 * U,
-        this.compactLayout ? 7 * U : 2 * U,
-        this.compactLayout ? 7 * U : 4 * U,
-        this.compactLayout ? 7 * U : 2 * U,
-      )
-      .setDepth(20)
-      .setInteractive({ useHandCursor: true });
-    this.backButton.on('pointerdown', () => this.goBack());
+    this.backButton = addMenuButton(this, {
+      label: t('map.back'),
+      variant: 'secondary',
+      fontSize: this.compactLayout ? 5.5 * S : 4.5 * S,
+      paddingX: 7 * U,
+      paddingY: 5 * U,
+      onClick: () => this.goBack(),
+    });
+    this.backButton.setPosition(
+      8 * S + this.backButton.w / 2,
+      7 * S + this.backButton.h / 2,
+    );
+
+    this.createLanguageSelector(W);
+  }
+
+  createLanguageSelector(W) {
+    const lang = getLang();
+    const makeButton = (x, code) => {
+      const active = lang === code;
+      const button = addMenuButton(this, {
+        x,
+        y: 13 * S,
+        label: code.toUpperCase(),
+        variant: active ? 'primary' : 'secondary',
+        fontSize: 6 * S,
+        minWidth: 40 * U,
+        height: 24 * U,
+        paddingX: 5 * U,
+        paddingY: 2 * U,
+        onClick: () => {
+          if (getLang() === code) return;
+          setLang(code);
+          this.scene.restart({ selectedId: this.selectedId });
+        },
+      });
+      button.setAlpha(active ? 1 : 0.8);
+    };
+
+    makeButton(W - 92 * U, 'en');
+    makeButton(W - 36 * U, 'es');
   }
 
   createMapPaper(W, H) {
@@ -205,10 +236,10 @@ export default class Map extends Phaser.Scene {
       const icon = this.drawLandmarkIcon(level.icon, x, y, locked ? 0.5 : 1);
       const label = this.add
         .text(x, y + 16 * U, t(level.nameKey), {
-          fontFamily: 'monospace',
+          fontFamily: FONT,
           fontSize: this.compactLayout ? 5.2 * S : 4.5 * S,
-          color: locked ? '#6a5a70' : '#2b1b3d',
-          stroke: '#f4dfb0',
+          color: locked ? FOLK_CSS.muted : FOLK_CSS.ink,
+          stroke: FOLK_CSS.paper,
           strokeThickness: 1.5 * S,
         })
         .setOrigin(0.5, 0)
@@ -219,10 +250,10 @@ export default class Map extends Phaser.Scene {
       if (progress.cleared) {
         stamp = this.add
           .text(x + 12 * U, y - 15 * U, '✓', {
-            fontFamily: 'monospace',
+            fontFamily: FONT,
             fontSize: 5 * S,
-            color: '#2f7f78',
-            stroke: '#f4dfb0',
+            color: FOLK_CSS.teal,
+            stroke: FOLK_CSS.paper,
             strokeThickness: 1 * S,
           })
           .setOrigin(0.5)
@@ -367,35 +398,35 @@ export default class Map extends Phaser.Scene {
 
     this.detailKicker = this.add
       .text(this.detailX + 8 * U, this.detailY + 9 * U, t('map.landmark'), {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: this.compactLayout ? 4.2 * S : 3.8 * S,
-        color: '#2f7f78',
+        color: FOLK_CSS.teal,
       })
       .setDepth(6);
 
     this.detailTitle = this.add
       .text(this.detailX + 8 * U, this.detailY + 22 * U, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: this.compactLayout ? 7.5 * S : 7 * S,
-        color: '#c94f3d',
-        stroke: '#1d1326',
+        color: FOLK_CSS.coral,
+        stroke: FOLK_CSS.ink,
         strokeThickness: 1.2 * S,
       })
       .setDepth(6);
 
     this.detailStatus = this.add
       .text(this.detailX + 8 * U, this.detailY + 40 * U, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: this.compactLayout ? 4.8 * S : 4.2 * S,
-        color: '#2f7f78',
+        color: FOLK_CSS.teal,
       })
       .setDepth(6);
 
     this.detailDesc = this.add
       .text(this.detailX + 8 * U, this.detailY + 54 * U, '', {
-        fontFamily: 'monospace',
+        fontFamily: FONT,
         fontSize: this.compactLayout ? 4.8 * S : 4.2 * S,
-        color: '#2b1b3d',
+        color: FOLK_CSS.ink,
         lineSpacing: this.compactLayout ? 3 * U : 2 * U,
         wordWrap: { width: this.detailW - 16 * U },
       })
@@ -407,9 +438,9 @@ export default class Map extends Phaser.Scene {
         this.detailY + this.detailH - (this.compactLayout ? 62 * U : 52 * U),
         '',
         {
-          fontFamily: 'monospace',
+          fontFamily: FONT,
           fontSize: this.compactLayout ? 4.2 * S : 3.8 * S,
-          color: '#5b4a52',
+          color: FOLK_CSS.muted,
         },
       )
       .setDepth(6);
@@ -417,33 +448,17 @@ export default class Map extends Phaser.Scene {
     const playHeight = this.compactLayout ? 34 * U : 16 * U;
     const playCenterY =
       this.detailY + this.detailH - (this.compactLayout ? 30 * U : 25 * U);
-    this.playBg = this.add
-      .rectangle(
-        this.detailX + this.detailW / 2,
-        playCenterY,
-        this.detailW - 16 * U,
-        playHeight,
-        FOLK.coral,
-        1,
-      )
-      .setStrokeStyle(1.5 * U, FOLK.ink, 1)
-      .setDepth(6)
-      .setInteractive({ useHandCursor: true });
-    this.playBg.on('pointerdown', () => this.playSelected());
-
-    this.playText = this.add
-      .text(
-        this.playBg.x,
-        this.playBg.y,
-        t('map.play'),
-        {
-          fontFamily: 'monospace',
-          fontSize: this.compactLayout ? 6 * S : 4.5 * S,
-          color: FOLK.cream,
-        },
-      )
-      .setOrigin(0.5)
-      .setDepth(7);
+    this.playButton = addMenuButton(this, {
+      x: this.detailX + this.detailW / 2,
+      y: playCenterY,
+      label: t('map.play'),
+      variant: 'primary',
+      fontSize: this.compactLayout ? 6 * S : 4.5 * S,
+      minWidth: this.detailW - 16 * U,
+      height: playHeight,
+      depth: 6,
+      onClick: () => this.playSelected(),
+    });
   }
 
   selectLevel(id) {
@@ -464,7 +479,7 @@ export default class Map extends Phaser.Scene {
             ? t('map.cleared')
             : t('map.current'),
       )
-      .setColor(locked ? '#6a5a70' : progress.cleared ? '#2f7f78' : '#ffa94d');
+      .setColor(locked ? FOLK_CSS.muted : progress.cleared ? FOLK_CSS.teal : FOLK_CSS.coral);
     this.detailDesc.setText(
       t(progress.cleared && level.peaceKey ? level.peaceKey : level.descKey),
     );
@@ -472,10 +487,11 @@ export default class Map extends Phaser.Scene {
       progress.best ? t('map.best', { score: progress.best }) : '',
     );
 
-    this.playBg.setFillStyle(locked ? 0x8a7a8f : FOLK.coral, 1);
-    this.playBg.input.enabled = !locked;
-    this.playText.setText(locked ? t('map.comingSoon') : t('map.play'));
-    this.playText.setAlpha(locked ? 0.8 : 1);
+    this.playButton.bg.setFillStyle(locked ? FOLK.muted : FOLK.coral, 1);
+    this.playButton.setEnabled(!locked);
+    this.playButton.text.setText(
+      locked ? t('map.comingSoon') : t('map.play'),
+    );
 
     sfx.click?.();
   }
@@ -501,6 +517,10 @@ export default class Map extends Phaser.Scene {
     this.input.keyboard.on('keydown-ENTER', () => this.playSelected());
     this.input.keyboard.on('keydown-ESC', () => this.goBack());
     this.input.keyboard.on('keydown-B', () => this.goBack());
+    this.input.keyboard.on('keydown-L', () => {
+      setLang(getLang() === 'en' ? 'es' : 'en');
+      this.scene.restart({ selectedId: this.selectedId });
+    });
   }
 
   playSelected() {

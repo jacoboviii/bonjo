@@ -527,6 +527,13 @@ Rules:
 - Friendly NPC dialog uses the same paper card, pauses gameplay while open and
   excludes its duration from the run timer, with the speaker's name in an
   ink nameplate inside the window instead of a floating world label.
+- Menu surfaces share the `FOLK` / `FOLK_CSS` tokens in `ui/FolkCard.js`:
+  monospace type, ink borders, paper fill, coral primary buttons and paper
+  secondary buttons. The title, map, objectives, dialog, respawn and end
+  screens should not introduce one-off button fills or near-matching colors.
+- Input hints are conditional: `E · CLOSE` / `O · CLOSE` / `R · RETRY` on
+  keyboard, `TAP · CLOSE` / `TAP · RETRY` on touch. The map shortcuts use
+  `MAP · M` on desktop and `MAP` on touch.
 - Avoid sombrero/serape clichés; the specificity is architecture, papel picado,
   church, fields and language.
 

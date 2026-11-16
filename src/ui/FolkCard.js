@@ -19,7 +19,143 @@ export const FOLK = {
   magenta: 0xb54a78,
   cobalt: 0x244a7a,
   cream: 0xfff4e0,
+  muted: 0x6a5a70,
 };
+
+// CSS-string and type tokens for Phaser Text styles. Keep menu copy in this
+// palette instead of giving each screen its own near-matching color.
+export const FOLK_CSS = {
+  ink: '#1d1326',
+  paper: '#f4dfb0',
+  paperLight: '#f8e9c6',
+  coral: '#e85a4f',
+  terracotta: '#c46b4a',
+  marigold: '#f2b544',
+  teal: '#2f7f78',
+  mint: '#7fc7a3',
+  magenta: '#b54a78',
+  cobalt: '#244a7a',
+  cream: '#fff4e0',
+  muted: '#6a5a70',
+  gold: '#ffd166',
+  night: '#9fd8ff',
+  danger: '#f26b5e',
+  dawn: '#b5533a',
+};
+
+export const FONT = 'monospace';
+
+const BUTTON_STYLES = {
+  primary: {
+    fill: FOLK.coral,
+    text: FOLK_CSS.cream,
+    textStroke: FOLK_CSS.ink,
+    border: FOLK.ink,
+  },
+  secondary: {
+    fill: FOLK.paper,
+    text: FOLK_CSS.ink,
+    border: FOLK.ink,
+  },
+  dark: {
+    fill: FOLK.ink,
+    text: FOLK_CSS.cream,
+    border: FOLK.coral,
+  },
+};
+
+/**
+ * Shared paper/folk menu button. Keeping the fill, border, type and touch
+ * padding in one place prevents the title, map and end screens from drifting
+ * into slightly different button styles.
+ */
+export function addMenuButton(
+  scene,
+  {
+    x = 0,
+    y = 0,
+    label = '',
+    variant = 'primary',
+    fontSize = 6 * SCALE,
+    minWidth = 0,
+    height = 0,
+    paddingX = 12 * U,
+    paddingY = 7 * U,
+    depth = 20,
+    scrollFactor = 0,
+    onClick = null,
+  } = {},
+) {
+  const style = BUTTON_STYLES[variant] || BUTTON_STYLES.primary;
+  const textStyle = {
+    fontFamily: FONT,
+    fontSize,
+    color: style.text,
+    align: 'center',
+  };
+  if (style.textStroke) {
+    textStyle.stroke = style.textStroke;
+    textStyle.strokeThickness = 1.5 * U;
+  }
+
+  const text = scene.add
+    .text(x, y, label, textStyle)
+    .setOrigin(0.5)
+    .setScrollFactor(scrollFactor)
+    .setDepth(depth + 1);
+
+  const w = Math.max(minWidth, Math.ceil(text.width + paddingX * 2));
+  const h = height || Math.ceil(text.height + paddingY * 2);
+  const bg = scene.add
+    .rectangle(x, y, w, h, style.fill, 1)
+    .setStrokeStyle(1.5 * U, style.border, 1)
+    .setScrollFactor(scrollFactor)
+    .setDepth(depth);
+
+  if (onClick) {
+    bg.setInteractive({ useHandCursor: true });
+    bg.on('pointerdown', (pointer, localX, localY, event) => {
+      event?.stopPropagation?.();
+      onClick(pointer);
+    });
+  }
+
+  const button = { bg, text, w, h, variant };
+  button.setPosition = (nextX, nextY) => {
+    bg.setPosition(nextX, nextY);
+    text.setPosition(nextX, nextY);
+    return button;
+  };
+  button.setVisible = (visible) => {
+    bg.setVisible(visible);
+    text.setVisible(visible);
+    return button;
+  };
+  button.setAlpha = (alpha) => {
+    bg.setAlpha(alpha);
+    text.setAlpha(alpha);
+    return button;
+  };
+  button.setEnabled = (enabled) => {
+    if (bg.input) bg.input.enabled = enabled;
+    button.setAlpha(enabled ? 1 : 0.72);
+    return button;
+  };
+  button.setLabel = (nextLabel) => {
+    text.setText(nextLabel);
+    const nextWidth = Math.max(
+      minWidth,
+      Math.ceil(text.width + paddingX * 2),
+    );
+    const nextHeight = height || Math.ceil(text.height + paddingY * 2);
+    bg.setSize(nextWidth, nextHeight);
+    button.w = nextWidth;
+    button.h = nextHeight;
+    return button;
+  };
+
+  return button;
+}
 
 const FLAG_COLORS = [FOLK.coral, FOLK.mint, FOLK.marigold, FOLK.magenta];
 
