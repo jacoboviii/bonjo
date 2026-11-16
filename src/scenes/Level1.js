@@ -197,6 +197,12 @@ export default class Level1 extends Phaser.Scene {
     this.gameOverFlag = false;
     this.guiOpen = true;
     this.touchWasVisible = false;
+    // Scene instances and their old display groups survive scene.start();
+    // clear cached references before rebuilding them for a fresh run.
+    this.timeShardGroup = null;
+    this.respawnNotice = null;
+    this.endLayout = null;
+    this.endTransition = false;
     this.hintTimer = 16;
     this.checkpointActive = false;
     this.checkpoint2Active = false;
