@@ -2774,10 +2774,10 @@ export default class Level1 extends Phaser.Scene {
       .setVisible(true);
     this.tweens.add({
       targets: this.clockGlow,
-      scale: 2.1,
+      scale: 2.35,
       alpha: 0,
-      duration: 420,
-      ease: 'Quad.out',
+      duration: 900,
+      ease: 'Sine.out',
       onComplete: () => this.clockGlow?.setVisible(false),
     });
 
@@ -2785,20 +2785,20 @@ export default class Level1 extends Phaser.Scene {
     this.clockGraphics.setScale(1).setAlpha(1);
     this.tweens.add({
       targets: this.clockGraphics,
-      scale: 1.16,
-      duration: 120,
+      scale: 1.18,
+      duration: 220,
       yoyo: true,
-      ease: 'Quad.out',
+      ease: 'Sine.out',
     });
 
     this.tweens.killTweensOf(this.clockText);
     this.clockText.setScale(1).setAlpha(1);
     this.tweens.add({
       targets: this.clockText,
-      scale: 1.16,
-      duration: 120,
+      scale: 1.18,
+      duration: 220,
       yoyo: true,
-      ease: 'Quad.out',
+      ease: 'Sine.out',
     });
   }
 
