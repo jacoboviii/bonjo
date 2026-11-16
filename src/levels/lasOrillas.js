@@ -97,6 +97,14 @@ export const lasOrillas = {
   endReward: { x: 4360, y: 570, type: 'flap' },
 
   awningFacade: 'stall',
+  trees: [
+    { x: 620, size: 'small' },
+    { x: 760, size: 'large' },
+    { x: 1350, size: 'small' },
+    { x: 2150, size: 'large' },
+    { x: 3400, size: 'small' },
+    { x: 3650, size: 'large' },
+  ],
   awnings: [
     [560, 578],
     [1620, 578],
@@ -138,6 +146,9 @@ export const lasOrillas = {
   ],
 
   ledges: [
+    { x: 760, y: 500, w: 90, kind: 'tree' },
+    { x: 2150, y: 500, w: 90, kind: 'tree' },
+    { x: 3650, y: 490, w: 100, kind: 'tree' },
     { x: 300, y: 500, w: 90, kind: 'laundry' },
     { x: 980, y: 470, w: 100, kind: 'fire' },
     { x: 1600, y: 500, w: 110, kind: 'laundry' },

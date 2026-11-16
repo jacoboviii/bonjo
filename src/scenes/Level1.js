@@ -112,6 +112,7 @@ let NIGHT_FLIERS;
 let FOREGROUND_HOUSES;
 let AGAVE_FIELDS;
 let AGAVES;
+let TREES;
 
 function applyLevelData(level) {
   WORLD_W = level.world.width * S;
@@ -150,6 +151,7 @@ function applyLevelData(level) {
   FOREGROUND_HOUSES = level.foregroundHouses;
   AGAVE_FIELDS = level.agaveFields;
   AGAVES = level.agaves;
+  TREES = level.trees || [];
 }
 
 applyLevelData(laCuadra);
@@ -252,6 +254,7 @@ export default class Level1 extends Phaser.Scene {
     this.buildLevel();
     this.createForegroundHouses();
     this.createLedges();
+    this.createTrees();
     this.createInteractiveProps();
     this.createSparkPoles();
     if (this.features.porch !== false) this.createPorch();
@@ -952,6 +955,16 @@ export default class Level1 extends Phaser.Scene {
         .setAngle(0);
       bird.setData('scattered', false);
     });
+  }
+
+  createTrees() {
+    for (const tree of TREES) {
+      const key = tree.size === 'large' ? 'treeLarge' : 'treeSmall';
+      this.add
+        .image(tree.x * S, 600 * S, key)
+        .setOrigin(0.5, 1)
+        .setDepth(0.4);
+    }
   }
 
   createInteractiveProps() {

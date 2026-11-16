@@ -67,6 +67,8 @@ export function buildTextures(scene) {
   makeAgave(scene, 'agave', false);
   makeAgave(scene, 'agaveBloom', true);
   makeAgaveField(scene);
+  makeFieldTree(scene, 'treeSmall', false);
+  makeFieldTree(scene, 'treeLarge', true);
   makeCat(scene, 'cat', 0xd98a4f, 0xffd166);
   makeCat(scene, 'catGray', 0x6a5a70, 0xffd166);
   makeBird(scene);
@@ -932,6 +934,19 @@ export function makeLedgeTexture(scene, key, w, kind = 'fire') {
     g.fillStyle(0x2b1b3d, 0.8);
     g.fillRect(4, 22, 2, 2);
     g.fillRect(w - 6, 22, 2, 2);
+  } else if (kind === 'tree') {
+    // leafy branch / standable limb
+    g.fillStyle(0x3a241f, 1);
+    g.fillRect(0, 2, w, 5);
+    g.fillStyle(0x8a4f3a, 1);
+    g.fillRect(2, 3, w - 4, 2);
+    g.fillStyle(0x315f54, 1);
+    for (let x = 3; x < w; x += 12) {
+      g.fillCircle(x, 3, 5);
+      g.fillCircle(x + 6, 6, 4);
+    }
+    g.fillStyle(0x4f8a79, 1);
+    for (let x = 8; x < w; x += 18) g.fillCircle(x, 4, 3);
   } else if (kind === 'laundry') {
     // posts and line
     g.fillStyle(0x2b1b3d, 1);
@@ -1402,6 +1417,61 @@ function makeAgaveField(scene) {
   plant(82, 20, 0.7);
 
   g.generateTexture('agaveField', W, H);
+  g.destroy();
+}
+
+// Field trees for Las Orillas. Large trees get a one-way branch in the level
+// data; the trunk here is decorative and sits behind the player.
+function makeFieldTree(scene, key, large) {
+  const g = gfx(scene);
+  const W = large ? 80 : 34;
+  const H = large ? 170 : 56;
+  const cx = W / 2;
+  const trunkTop = large ? 62 : 24;
+
+  // trunk and root flare
+  g.fillStyle(0x3a241f, 1);
+  g.fillRect(cx - (large ? 6 : 3), trunkTop, large ? 12 : 6, H - trunkTop);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(cx - (large ? 4 : 2), trunkTop, large ? 8 : 4, H - trunkTop);
+  g.fillStyle(0xd9b26a, 0.55);
+  g.fillRect(cx - (large ? 3 : 1), trunkTop + 4, 1, H - trunkTop - 8);
+
+  // branches
+  g.fillStyle(0x5a3328, 1);
+  if (large) {
+    g.fillTriangle(cx, 72, cx - 27, 58, cx - 10, 78);
+    g.fillTriangle(cx, 92, cx + 30, 74, cx + 10, 98);
+    g.fillTriangle(cx, 58, cx + 22, 42, cx + 8, 66);
+  } else {
+    g.fillTriangle(cx, 34, cx - 12, 25, cx - 4, 38);
+    g.fillTriangle(cx, 38, cx + 12, 27, cx + 4, 42);
+  }
+
+  // leafy canopy clusters
+  const clusters = large
+    ? [
+        [cx - 22, 48, 23, 0x315f54],
+        [cx + 22, 46, 25, 0x3f7a67],
+        [cx, 28, 28, 0x4f8a79],
+        [cx - 33, 68, 17, 0x2f5f54],
+        [cx + 34, 66, 18, 0x315f54],
+      ]
+    : [
+        [cx - 8, 18, 12, 0x315f54],
+        [cx + 8, 16, 13, 0x3f7a67],
+        [cx, 9, 11, 0x4f8a79],
+      ];
+  for (const [x, y, r, color] of clusters) {
+    g.fillStyle(color, 1);
+    g.fillCircle(x, y, r);
+  }
+  // highlight leaves
+  g.fillStyle(0x7fb8a0, 0.65);
+  g.fillCircle(cx - 12, 24, large ? 8 : 4);
+  g.fillCircle(cx + 18, 34, large ? 7 : 3);
+
+  g.generateTexture(key, W, H);
   g.destroy();
 }
 

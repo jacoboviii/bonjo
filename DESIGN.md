@@ -418,6 +418,7 @@ Losing all hearts ends the run: "THE BLOCK WINS."
 
 - Continuous field floor with no pit gaps; houses and props sit on solid ground.
 - Agave rows and crop-line dressing.
+- Small field trees frame the lots; large trees carry one-way branches that Bonjo can jump onto from the fields.
 - Geese replace the squirrel bone-thief slot, including at night. They waddle,
   flutter between patrol points and honk when startled or caught stealing.
 - **Three nights**, ending with an aggressive **Chihuahua boss** instead of the top dog.
