@@ -27,29 +27,53 @@ function calculateWidth() {
   return Math.max(GAME_W, Math.min(1280, Math.round(GAME_H * aspect)));
 }
 
-const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  parent: 'game',
-  width: GAME_WIDTH,
-  height: GAME_HEIGHT,
-  backgroundColor: '#1b1029',
-  pixelArt: true,
-  roundPixels: true,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 0 }, // gravity is applied by the dog, so it can change
-      debug: false,
-    },
-  },
-  scene: [Boot, Title, Map, Level1],
-});
+let game;
 
-if (import.meta.env.DEV) window.__game = game;
+function createGame() {
+  return new Phaser.Game({
+    type: Phaser.AUTO,
+    parent: 'game',
+    width: GAME_WIDTH,
+    height: GAME_HEIGHT,
+    backgroundColor: '#1b1029',
+    pixelArt: true,
+    roundPixels: true,
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    physics: {
+      default: 'arcade',
+      arcade: {
+        gravity: { y: 0 }, // gravity is applied by the dog, so it can change
+        debug: false,
+      },
+    },
+    scene: [Boot, Title, Map, Level1],
+  });
+}
+
+async function bootGame() {
+  // Phaser bakes text into canvas textures at creation time. Make sure the
+  // pixel face is available before Title builds its first label.
+  try {
+    await Promise.race([
+      Promise.all([
+        document.fonts.load('400 16px "Pixelify Sans"'),
+        document.fonts.load('700 16px "Pixelify Sans"'),
+        document.fonts.ready,
+      ]),
+      new Promise((resolve) => setTimeout(resolve, 1500)),
+    ]);
+  } catch {
+    // The CSS stack still has a readable sans-serif fallback.
+  }
+
+  game = createGame();
+  if (import.meta.env.DEV) window.__game = game;
+  game.events.once('ready', syncRotateHint);
+  syncRotateHint();
+}
 
 // ---------------------------------------------------------------------------
 // Portrait hint for phones. Sleep the game loop while the overlay is up so a
@@ -66,7 +90,7 @@ const isTouchDevice = () =>
 const isPortrait = () => window.innerHeight > window.innerWidth;
 
 function syncRotateHint() {
-  if (!rotateHint) return;
+  if (!rotateHint || !game) return;
 
   const show = isTouchDevice() && isPortrait() && !rotateDismissed;
   rotateHint.classList.toggle('show', show);
@@ -96,6 +120,7 @@ const onViewportChange = () => {
     // Browser chrome and rotation can change the usable aspect after boot.
     // Resize the internal canvas so FIT fills the new viewport, then let the
     // active scene re-anchor anything that depends on this.scale.width.
+    if (!game) return;
     const width = calculateWidth();
     if (Math.abs(width - game.scale.width) > 1) {
       // ScaleManager caches the FIT aspect ratio from boot. Update it before
@@ -107,17 +132,17 @@ const onViewportChange = () => {
 };
 window.addEventListener('resize', onViewportChange);
 window.addEventListener('orientationchange', onViewportChange);
-game.events.once('ready', syncRotateHint);
-syncRotateHint();
 
 // The game boots asynchronously. If this script runs before the loop starts,
 // the first sleep() is a no-op - keep checking until the loop is up so a
 // portrait phone really is paused behind the hint.
 const portraitGuard = setInterval(() => {
-  if (game.loop.running) {
+  if (game?.loop.running) {
     syncRotateHint();
     clearInterval(portraitGuard);
   }
 }, 150);
 setTimeout(() => clearInterval(portraitGuard), 6000);
+
+bootGame();
 

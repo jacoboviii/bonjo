@@ -3261,7 +3261,7 @@ export default class Level1 extends Phaser.Scene {
       fontSize: MENU_TEXT.heading,
       color: FOLK_CSS.mint,
       stroke: FOLK_CSS.ink,
-      strokeThickness: 1.5 * S,
+      strokeThickness: 1 * S,
     };
 
     this.objectivesNowHead = this.add.text(0, 0, t('objectives.now'), headingStyle);

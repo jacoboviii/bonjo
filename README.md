@@ -254,10 +254,11 @@ there to make them permanent.
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing; at one heart the screen edges pulse red and a **LAST HEART** warning appears
 - **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
 - **Map hub**: a hand-painted street map of Lumbral with CASA and Las Orillas playable, and Parroquia, Mercado and Jardín Hidalgo marked as future routes
-- **Modern folk interface**: rounded cream cards, bold sans-serif type, a
-  three-tier menu type scale plus a mobile-safe HUD/game type scale, soft
-  shadows, guardian paw badge, flat coral/paper buttons and conditional
-  keyboard/touch prompts across title, map, pause, dialog and end screens
+- **Modern folk interface**: rounded cream cards, self-hosted Pixelify Sans
+  pixel type, a three-tier menu type scale plus a mobile-safe HUD/game type
+  scale, soft shadows, guardian paw badge, flat coral/paper buttons and
+  conditional keyboard/touch prompts across title, map, pause, dialog and end
+  screens
 - **Las Orillas**: a three-night field level with a continuous floor, farmhouse roofs, agave rows, field trees with jumpable branches and wasp nests, geese and an aggressive Chihuahua boss
 - **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
@@ -305,6 +306,8 @@ bonjo/
 ├── index.html              page shell + canvas styling + portrait guard
 ├── vite.config.js
 ├── package.json
+├── public/
+│   └── fonts/              self-hosted Pixelify Sans (SIL OFL)
 ├── src/
 │   ├── main.js             Phaser config (432px tall, width follows aspect)
 │   ├── scale.js            SCALE=3 (432px render of a 256×144 design view)
@@ -323,6 +326,7 @@ bonjo/
 │   │   ├── Crow.js         rare aerial hazard
 │   │   └── Pinata.js       hanging piñata state + rope
 │   ├── ui/
+│   │   ├── FolkCard.js      pixel type tokens, cards, buttons and palette
 │   │   ├── TouchControls.js  on-screen phone buttons + multi-touch + drag
 │   │   └── LightingPostFX.js screen-space WebGL night lighting
 │   └── scenes/
@@ -332,6 +336,9 @@ bonjo/
 │       └── Level1.js       shared level runtime; reads Lumbral's level configs
 └── dist/                   production build (after `npm run build`)
 ```
+
+UI type uses the self-hosted **Pixelify Sans** (Stefie Justprince, SIL OFL 1.1);
+the license is included at `public/fonts/OFL.txt`.
 
 The game renders at a fixed **432px height** (3× the 256×144 design view), with a
 width derived from the device's landscape aspect ratio: **768px at 16:9**, up to

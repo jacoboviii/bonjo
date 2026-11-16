@@ -512,11 +512,11 @@ strongest dog finally getting to be unnecessary.
 A limited folk-print palette (ink, cream paper, terracotta, coral, marigold,
 teal, magenta, cobalt) with cool, low-contrast backgrounds and warm, saturated
 gameplay layers. Day is clear cobalt-blue; night is deep indigo with warm
-windows. Menus use rounded cream cards, soft shadows, thin ink rules, bold
-sans-serif type and a single guardian paw badge. String lights belong to the
-world and night lighting, not to card trim. Agave, milpa rows and agricultural
-lots are recurring motifs. Avoid detail for its own sake: strong silhouettes, a few
-values, and readable foreground/background separation.
+windows. Menus use rounded cream cards, soft shadows, thin ink rules, a
+self-hosted Pixelify Sans pixel face and a single guardian paw badge. String
+lights belong to the world and night lighting, not to card trim. Agave, milpa
+rows and agricultural lots are recurring motifs. Avoid detail for its own sake:
+strong silhouettes, a few values, and readable foreground/background separation.
 
 ### Identity: guardian first, Lumbral second
 
@@ -588,10 +588,10 @@ Rules:
   excludes its duration from the run timer, with the speaker's name in an
   ink nameplate inside the window instead of a floating world label.
 - Menu surfaces share the `FOLK` / `FOLK_CSS` tokens in `ui/FolkCard.js`:
-  bold sans-serif type, soft cream surfaces, thin ink rules, coral primary
-  buttons and paper-tinted secondary buttons. The title, map, objectives,
-  dialog, respawn and end screens should not introduce one-off button fills or
-  near-matching colors.
+  self-hosted Pixelify Sans pixel type, soft cream surfaces, thin ink rules,
+  coral primary buttons and paper-tinted secondary buttons. The title, map,
+  objectives, dialog, respawn and end screens should not introduce one-off
+  button fills or near-matching colors.
   Menus use three role-based sizes from `MENU_TEXT` in `ui/FolkCard.js`:
   `display` (`14 × SCALE`, 42 px), `heading` (`8 × SCALE`, 24 px) and
   `body` (`6 × SCALE`, 18 px). The body size is the mobile floor: at a
@@ -599,7 +599,10 @@ Rules:
   common mobile minimum. Hierarchy comes from weight, color and spacing, not
   additional one-off sizes.
   In-world building signs can remain `4.5 × SCALE` because they are framed by
-  the street art rather than read as a paragraph.
+  the street art rather than read as a paragraph; dynamic night signage uses
+  the game body size. Pixelify Sans is self-hosted under `public/fonts` (SIL
+  OFL 1.1, license included) and loaded before Phaser boots, so text textures
+  bake in the pixel face rather than a system fallback.
 - In-game copy uses the same role logic through `GAME_TEXT`: `display`
   (`12 × SCALE`, 36 px) for the level intro, `heading` (`8 × SCALE`, 24 px)
   for story cards, phase banners, floating combat text and combo callouts, and

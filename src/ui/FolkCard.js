@@ -46,7 +46,7 @@ export const FOLK_CSS = {
 };
 
 export const FONT =
-  '"Trebuchet MS", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
+  '"Pixelify Sans", "Trebuchet MS", "Segoe UI", Arial, sans-serif';
 
 // Menu type uses a compact three-step role scale: display, heading and body.
 // The mobile body floor is 18 px internally, which lands at roughly 16 CSS px
