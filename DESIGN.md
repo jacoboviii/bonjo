@@ -322,8 +322,10 @@ Fourteen shards provide 56 seconds of phase time, which is more than the longest
 phase (41 s). The extra shards are a safety margin: a missed or awkwardly placed
 shard cannot soft-lock the run, and the player can always backtrack. Shards are
 cleared when the phase changes and respawn in the new phase's sun/moon style.
-Night waves still arrive on a real-time six-second cadence, while gate-rusher
-and top-dog thresholds use shard-driven phase time.
+When the final boss appears, the remaining shards are removed so the fight, not
+shard collection, finishes the night. Night waves still arrive on a real-time
+six-second cadence, while gate-rusher and top-dog thresholds use shard-driven
+phase time.
 
 ### Street lighting and sparking lamps
 Streetlamps, house/shop windows and storefront signs are dark during the day.

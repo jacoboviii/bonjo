@@ -3843,6 +3843,10 @@ export default class Level1 extends Phaser.Scene {
     this.alphaActive = true;
     this.waveSpawned = this.waveTotal;
 
+    // The boss is the finale. Clear the remaining shards so the fight, not
+    // shard collection, decides the night.
+    this.timeShardGroup?.clear(true, true);
+
     let platform;
     let sx;
     if (this.levelData.bossSpawnX != null) {
