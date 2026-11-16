@@ -2139,8 +2139,18 @@ export default class Level1 extends Phaser.Scene {
   }
 
   hitWaspNest(dog, nest) {
-    if (!nest.active || dog.invuln > 0 || !nest.body.enable) return;
+    if (
+      this.won ||
+      this.gameOverFlag ||
+      dog.dead ||
+      !nest.active ||
+      dog.invuln > 0 ||
+      !nest.body.enable
+    ) {
+      return;
+    }
     this.hurt(nest);
+    if (this.gameOverFlag || this.won) return;
     this.spawnPuff(nest.x, nest.y, 0.7);
     sfx.hiss();
   }
@@ -4631,6 +4641,9 @@ export default class Level1 extends Phaser.Scene {
 
   hideEndHud() {
     this.closeObjectives();
+    for (const wasp of this.waspNests || []) {
+      if (wasp.nest?.body) wasp.nest.body.enable = false;
+    }
     this.bossTracker?.setVisible(false);
     this.slideAura?.destroy();
     this.slideAura = null;
