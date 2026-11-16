@@ -17,6 +17,7 @@ import {
   FOLK_CSS,
   FONT,
 } from '../ui/FolkCard.js';
+import LampLightingPipeline from '../ui/LightingPostFX.js';
 import { t } from '../i18n.js';
 import { markLevelComplete } from '../progress.js';
 import { getLevelData, getNextLevel } from '../levels/index.js';
@@ -303,6 +304,7 @@ export default class Level1 extends Phaser.Scene {
     this.createPinatas();
     this.createAwnings();
     this.createCamera();
+    this.setupLightingFX();
     this.createHud();
     this.createInteractionUi();
     this.createDialogUi();
@@ -435,6 +437,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.updateCamera(delta);
+    this.updateLightingFX(delta);
     this.updateBossTracker();
     this.updateHud(delta);
     this.updateInteractions();
@@ -2451,6 +2454,61 @@ export default class Level1 extends Phaser.Scene {
     // street.
     this.cameraBaseScrollY = cam.scrollY;
     cam.fadeIn(350, 27, 16, 41);
+  }
+
+  setupLightingFX() {
+    const renderer = this.game.renderer;
+    if (!renderer?.pipelines) return;
+
+    // Canvas and any WebGL device that rejects the post pipeline simply keep
+    // the painted lamp cones and glows. The shader is an enhancement, never a
+    // renderer requirement.
+    try {
+      renderer.pipelines.addPostPipeline('LampLighting', LampLightingPipeline);
+      this.cameras.main.setPostPipeline('LampLighting');
+      this.lampLightFX = this.cameras.main.getPostPipeline('LampLighting');
+      if (Array.isArray(this.lampLightFX)) {
+        this.lampLightFX = this.lampLightFX[0];
+      }
+      if (this.lampLightFX) {
+        this.lampLightFX.intensity = 0;
+        this.lampLightFX.lights = [];
+      }
+    } catch (error) {
+      console.warn('Lamp lighting postFX unavailable; using lamp sprites.', error);
+      this.lampLightFX = null;
+    }
+  }
+
+  updateLightingFX(delta) {
+    const fx = this.lampLightFX;
+    if (!fx) return;
+
+    // The existing night wash still owns ambient darkness. This pass only
+    // adds the warm pool around each lamp, so it can fade independently at
+    // dawn without changing the scene's base exposure.
+    const target = this.phase === 'night' ? 1 : 0;
+    const blend = 1 - Math.pow(0.0025, delta / 1000);
+    fx.intensity = Phaser.Math.Linear(fx.intensity, target, blend);
+    fx.time = this.time.now / 1000;
+
+    const cam = this.cameras.main;
+    const lights = [];
+    for (const glow of this.lampGlows || []) {
+      if (lights.length >= 8) break;
+      // Follow the lamp sprite's own state so sparking poles dim their shader
+      // pool during the live-wire phase instead of glowing at full strength.
+      const alpha = glow.visible ? glow.alpha : 0;
+      if (alpha <= 0.01) continue;
+      lights.push({
+        x: glow.x - cam.scrollX,
+        // PostFX quad coordinates are bottom-up, so flip the camera-space Y.
+        y: cam.height - (glow.y - cam.scrollY),
+        r: 54 * S,
+        s: 0.36 * alpha,
+      });
+    }
+    fx.lights = lights;
   }
 
   createHud() {

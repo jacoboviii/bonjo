@@ -344,12 +344,19 @@ phase time.
 Streetlamps, house/shop windows and storefront signs are dark during the day.
 At night they fade in: lamps cast a conical beam from the bulb to the pavement,
 foreground house windows glow, and colored neon shop signs (PAN, TIENDA, TACOS,
-FLORES...) float above the awnings. Three defective lamps use the same lamp post art
-as the normal ones, but their cone dims and their cycle runs 1.2 s of warning
-flicker, 0.7 s of live ground arc, then 1.4 s of cooldown. The arc is only ~20
-design px tall, so a normal jump clears it; waiting also works. Contact costs one
-heart and knocks Bonjo away, using the normal invulnerability window. Enemies
-ignore the arc, and the pole itself is decorative.
+FLORES...) float above the awnings. On WebGL, a compact camera post-effect
+(`src/ui/LightingPostFX.js`) adds a soft additive warm pool around each lit lamp.
+It complements rather than replaces the painted cones and the flat night wash:
+there is no full-screen bloom, blur or darkened overlay, and the pass caps at
+eight screen-space lights. The pool follows each lamp sprite's alpha, so a
+sparking lamp dims its light during the live-wire phase. Canvas rendering skips
+the pipeline and keeps the original cone and glow sprites unchanged. Three
+defective lamps use the same lamp post art as the normal ones, but their cone
+dims and their cycle runs 1.2 s of warning flicker, 0.7 s of live ground arc,
+then 1.4 s of cooldown. The arc is only ~20 design px tall, so a normal jump
+clears it; waiting also works. Contact costs one heart and knocks Bonjo away,
+using the normal invulnerability window. Enemies ignore the arc, and the pole
+itself is decorative.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
