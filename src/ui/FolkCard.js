@@ -153,6 +153,18 @@ export function addMenuButton(
     button.h = nextHeight;
     return button;
   };
+  button.setVariant = (nextVariant) => {
+    const nextStyle = BUTTON_STYLES[nextVariant] || BUTTON_STYLES.primary;
+    bg.setFillStyle(nextStyle.fill, 1);
+    bg.setStrokeStyle(1.5 * U, nextStyle.border, 1);
+    text.setColor(nextStyle.text);
+    text.setStroke(
+      nextStyle.textStroke || '',
+      nextStyle.textStroke ? 1.5 * U : 0,
+    );
+    button.variant = nextVariant;
+    return button;
+  };
 
   return button;
 }

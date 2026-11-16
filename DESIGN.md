@@ -114,7 +114,7 @@ the conchas and piñatas you missed.
 | F | Talk / ring / interact | Talk / ring / interact |
 | Map: SPACE / ENTER | Play selected landmark | Play selected landmark |
 | Map: ESC / B | Back to title | Back to title |
-| O | Objectives panel (pauses) | Objectives panel (pauses) |
+| O | Pause panel · Objectives / Instructions | Pause panel · Objectives / Instructions |
 | T | Tuning panel | Tuning panel |
 | R | Restart / next level after win | Restart / next level after win |
 | Touch ◀ ▶ | Run (slide between) | Steer |
@@ -371,9 +371,10 @@ IMPULSE; the same two icon textures are used by the course pickups. Icons and
 pips show health, flap charges, IMPULSE stamina and hunger. The title, map, HUD
 and end screens use the same mobile-first layout on desktop and touch devices.
 An off-screen boss arrow points toward the top dog and labels its Casa location.
-The **O / OBJETIVOS** panel pauses the game and explains the current goal,
-optional day/night errands and each HUD meter, including dawn warnings and the
-top-dog hit count. Errands do not gate the clock: the phase advances only when
+The **O / OBJETIVOS** pause panel pauses the game and splits into two tabs:
+**Objectives** for the current goal and optional day/night errands, and
+**Instructions** for controls and each HUD meter, including dawn warnings and
+the top-dog hit count. Errands do not gate the clock: the phase advances only when
 sun or moon shards are collected, so waiting freezes it. Dawn still arrives even
 if Polo, the bell, the gate check or the two-rival night goal were skipped.
 Errand progress never resets, and the pause panel lists day and night checks as

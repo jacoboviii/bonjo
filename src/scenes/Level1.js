@@ -2986,6 +2986,7 @@ export default class Level1 extends Phaser.Scene {
 
   createObjectivesUi() {
     const W = this.scale.width;
+    this.objectivesTab = 'objectives';
 
     this.objectivesButton = this.add
       .image(
@@ -3015,13 +3016,6 @@ export default class Level1 extends Phaser.Scene {
 
     this.objectivesCard = this.add.graphics();
 
-    const titleStyle = {
-      fontFamily: FONT,
-      fontSize: 8 * S,
-      color: FOLK_CSS.coral,
-      stroke: FOLK_CSS.ink,
-      strokeThickness: 1.5 * S,
-    };
     const headingStyle = {
       fontFamily: FONT,
       fontSize: 5.5 * S,
@@ -3041,14 +3035,33 @@ export default class Level1 extends Phaser.Scene {
       strokeThickness: 1.5 * S,
     };
 
-    this.objectivesTitle = this.add.text(0, 0, t('objectives.title'), titleStyle).setOrigin(0.5, 0);
     this.objectivesNowHead = this.add.text(0, 0, t('objectives.now'), headingStyle);
     this.objectivesNowGoal = this.add.text(0, 0, t('goal.survive'), goalStyle);
     this.objectivesNowDesc = this.add.text(0, 0, t('objectives.nowDesc'), bodyStyle);
     this.objectivesErrandsHead = this.add.text(0, 0, t('objectives.errands'), headingStyle);
     this.objectivesErrandsLine = this.add.text(0, 0, t('objectives.errandsLine'), bodyStyle);
     this.objectivesErrandsDesc = this.add.text(0, 0, t('objectives.errandsDesc'), bodyStyle);
-    this.objectivesPowersHead = this.add.text(0, 0, t('objectives.powers'), headingStyle);
+
+    this.instructionsControlsHead = this.add.text(
+      0,
+      0,
+      t('instructions.controlsHead'),
+      headingStyle,
+    );
+    this.instructionsControls = this.add.text(
+      0,
+      0,
+      this.touch?.visible
+        ? t('instructions.controlsTouch')
+        : t('instructions.controls'),
+      bodyStyle,
+    );
+    this.objectivesPowersHead = this.add.text(
+      0,
+      0,
+      t('instructions.survivalHead'),
+      headingStyle,
+    );
     this.objectivesPowers = this.add
       .text(
         0,
@@ -3058,12 +3071,34 @@ export default class Level1 extends Phaser.Scene {
           t('objectives.flapsDesc'),
           t('objectives.staminaDesc'),
           t('objectives.hungerDesc'),
+          t('objectives.timeDesc'),
         ].join('\n'),
-        {
-          ...bodyStyle,
-          fontSize: 5 * S,
-        },
+        bodyStyle,
       );
+    this.objectivesTabButtons = {
+      objectives: addMenuButton(this, {
+        label: t('objectives.title'),
+        variant: 'primary',
+        fontSize: 5 * S,
+        height: 24 * U,
+        paddingX: 8 * U,
+        paddingY: 2 * U,
+        depth: 160,
+        scrollFactor: 0,
+        onClick: () => this.setObjectivesTab('objectives'),
+      }).setVisible(false),
+      instructions: addMenuButton(this, {
+        label: t('instructions.title'),
+        variant: 'secondary',
+        fontSize: 5 * S,
+        height: 24 * U,
+        paddingX: 8 * U,
+        paddingY: 2 * U,
+        depth: 160,
+        scrollFactor: 0,
+        onClick: () => this.setObjectivesTab('instructions'),
+      }).setVisible(false),
+    };
     this.objectivesClose = addMenuButton(this, {
       label: this.touch?.visible
         ? t('objectives.closeTouch')
@@ -3077,19 +3112,28 @@ export default class Level1 extends Phaser.Scene {
       onClick: () => this.closeObjectives(),
     }).setVisible(false);
 
-    this.objectivesRoot.add([
-      this.objectivesCard,
-      this.objectivesTitle,
+    this.objectivesTabObjects = [
       this.objectivesNowHead,
       this.objectivesNowGoal,
       this.objectivesNowDesc,
       this.objectivesErrandsHead,
       this.objectivesErrandsLine,
       this.objectivesErrandsDesc,
+    ];
+    this.instructionsTabObjects = [
+      this.instructionsControlsHead,
+      this.instructionsControls,
       this.objectivesPowersHead,
       this.objectivesPowers,
+    ];
+
+    this.objectivesRoot.add([
+      this.objectivesCard,
+      ...this.objectivesTabObjects,
+      ...this.instructionsTabObjects,
     ]);
 
+    this.setObjectivesTab('objectives');
     this.layoutObjectives(W);
   }
 
@@ -3111,18 +3155,51 @@ export default class Level1 extends Phaser.Scene {
     const top = -h / 2;
     const left = -w / 2 + 30 * U;
     const wrap = w - 60 * U;
-    this.objectivesTitle.setPosition(0, top + 12 * U);
     this.objectivesNowHead.setPosition(left, top + 48 * U);
     this.objectivesNowGoal.setPosition(left, top + 64 * U);
     this.objectivesNowDesc.setPosition(left, top + 84 * U).setWordWrapWidth(wrap);
     this.objectivesErrandsHead.setPosition(left, top + 112 * U);
     this.objectivesErrandsLine.setPosition(left, top + 128 * U);
     this.objectivesErrandsDesc.setPosition(left, top + 146 * U).setWordWrapWidth(wrap);
-    this.objectivesPowersHead.setPosition(left, top + 172 * U);
-    this.objectivesPowers.setPosition(left, top + 186 * U).setWordWrapWidth(wrap);
+
+    this.instructionsControlsHead.setPosition(left, top + 48 * U);
+    this.instructionsControls
+      .setPosition(left, top + 64 * U)
+      .setWordWrapWidth(wrap);
+    this.objectivesPowersHead.setPosition(left, top + 112 * U);
+    this.objectivesPowers
+      .setPosition(left, top + 128 * U)
+      .setWordWrapWidth(wrap);
+
+    const tabY = this.scale.height / 2 + top + 26 * U;
+    const tabStart = W / 2 - w / 2 + 30 * U;
+    const objectivesTab = this.objectivesTabButtons.objectives;
+    const instructionsTab = this.objectivesTabButtons.instructions;
+    objectivesTab.setPosition(tabStart + objectivesTab.w / 2, tabY);
+    instructionsTab.setPosition(
+      tabStart + objectivesTab.w + 10 * U + instructionsTab.w / 2,
+      tabY,
+    );
+
     this.objectivesClose.setPosition(
       W / 2 + w / 2 - 16 * U - this.objectivesClose.w / 2,
       this.scale.height / 2 - h / 2 + 13 * U + this.objectivesClose.h / 2,
+    );
+  }
+
+  setObjectivesTab(tab) {
+    if (!this.objectivesTabButtons) return;
+    this.objectivesTab = tab === 'instructions' ? 'instructions' : 'objectives';
+    const showObjectives = this.objectivesTab === 'objectives';
+    this.objectivesTabObjects?.forEach((item) => item.setVisible(showObjectives));
+    this.instructionsTabObjects?.forEach((item) =>
+      item.setVisible(!showObjectives),
+    );
+    this.objectivesTabButtons.objectives.setVariant(
+      showObjectives ? 'primary' : 'secondary',
+    );
+    this.objectivesTabButtons.instructions.setVariant(
+      showObjectives ? 'secondary' : 'primary',
     );
   }
 
@@ -3139,6 +3216,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesOpen = true;
     this.objectivesWasTouch = !!this.touch?.visible;
     this.objectivesButton.setVisible(false);
+    this.objectivesTabButtons.objectives.setVisible(true);
+    this.objectivesTabButtons.instructions.setVisible(true);
     this.objectivesClose
       .setLabel(
         this.objectivesWasTouch
@@ -3146,6 +3225,7 @@ export default class Level1 extends Phaser.Scene {
           : t('objectives.close'),
       )
       .setVisible(true);
+    this.setObjectivesTab(this.objectivesTab);
     this.layoutObjectives(this.scale.width);
     this.interactPrompt?.setVisible(false);
     this.interactBubble?.setVisible(false);
@@ -3164,6 +3244,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesOpen = false;
     this.objectivesScrim.setVisible(false);
     this.objectivesRoot.setVisible(false);
+    this.objectivesTabButtons.objectives.setVisible(false);
+    this.objectivesTabButtons.instructions.setVisible(false);
     this.objectivesClose.setVisible(false);
     this.objectivesButton.setVisible(true);
     if (this.objectivesWasTouch) this.touch?.show(true);
@@ -4942,6 +5024,8 @@ export default class Level1 extends Phaser.Scene {
     this.objectivesButton?.setVisible(false);
     this.objectivesScrim?.setVisible(false);
     this.objectivesRoot?.setVisible(false);
+    this.objectivesTabButtons?.objectives.setVisible(false);
+    this.objectivesTabButtons?.instructions.setVisible(false);
     this.objectivesClose?.setVisible(false);
     this.interactBubble?.setVisible(false);
     this.hearts.forEach((heart) => heart.setVisible(false));

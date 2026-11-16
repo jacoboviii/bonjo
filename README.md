@@ -154,7 +154,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-right:** action cluster — ▲ flap, ✦ spin and ▼ slide, with spin beside jump
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
 - **top bar:** flap charges, IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
-- **top-right:** the **pause** button opens the objectives panel and pauses play
+- **top-right:** the **pause** button opens the two-tab pause panel (Objectives / Instructions) and pauses play
 - The title, map, HUD and end screens use the same mobile-first layout on desktop and touch devices; a mouse or keyboard still works everywhere.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
 - On the end screen, **tap anywhere / press R** to move to the next playable level after a win, or retry the current level after a loss. The **MAPA / MAP** button returns to the hub.
@@ -259,7 +259,7 @@ there to make them permanent.
 - **Time-of-day clock**: an analog clock with a digital `06:00 → 18:00 → 06:00` readout tracks the shard-driven day and turns from gold to moonlit blue at night
 - **Blue-Hour La Cuadra art direction**: limited folk-print palette, lotería-style title/end cards and papel picado trim
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
-- **Objectives panel (O)** for the current goal, optional Polo/bell errands and a description of each HUD meter
+- **Two-tab pause panel (O)**: Objectives for the current goal and optional Polo/bell errands; Instructions for controls and each HUD meter
 - **Compact status HUD** for flap charges, IMPULSE stamina, health and hunger, using the same mobile-first layout on desktop and touch screens; phase clock and gate remain on-screen
 - **Rival roles** — distinct fast, thief and brute dog art, telegraphed lunge attacks, gate rushers, the La Cuadra **top dog** arriving at Casa with an off-screen locator arrow, and the Las Orillas **Chihuahua boss**
 - **Context actions** — a separate talk button near NPCs and bells; the always-available tail-sweep button dazes, nudges back and damages nearby rivals, bone thieves and crows; down-input slides work on the ground and in the air, deal two points and spend one IMPULSE pip each; double jumps use separate flap charges; starting an attack while rising preserves the jump
