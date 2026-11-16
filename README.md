@@ -380,7 +380,7 @@ files):
 | `awning` | 120×36 | striped bounce canopy |
 | `boneIcon`, `conchaIcon` | 42×30 / 48×30 | course pickups + HUD icons |
 | `sun` / `moon` | 144×144 | day sun and night moon |
-| `sunShard` / `moonShard` | 16×16 | collectible time shards that advance the phase clock |
+| `sunShard` / `moonShard` | 16×16 | rayed sun and crescent-moon collectibles that advance the phase clock |
 | `speechBubble` | 42×36 | floating touch interaction prompt |
 | `btn-slide`, `pauseIcon` | 96×96 / 42×42 | charge-action and pause button icons |
 | `heart` | 15×15 | health HUD |
