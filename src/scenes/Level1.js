@@ -2187,11 +2187,12 @@ export default class Level1 extends Phaser.Scene {
       const x = 180 + i * ((worldWidth - 360) / (TIME_SHARD_COUNT - 1));
       const y = 585 - (i % 4) * 20;
       const shard = this.timeShardGroup.create(x * S, y * S, key);
-      shard.setDepth(7).setScale(0.9);
+      // Time shards glow through the night overlay, so keep them above it.
+      shard.setDepth(9.7).setScale(0.9);
       shard.body.setSize(10 * S, 10 * S);
       this.tweens.add({
         targets: shard,
-        alpha: 0.55,
+        alpha: 0.7,
         scaleX: 1.05,
         scaleY: 1.05,
         duration: 650 + (i % 3) * 80,
