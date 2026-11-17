@@ -269,6 +269,9 @@ export default class Level1 extends Phaser.Scene {
     this.gateCallUsed = false;
     this.gateCallAchievementPending = false;
     this.gateDefenseAchievement = false;
+    this.gatePromptOpen = false;
+    this.gatePromptPausedAt = 0;
+    this.gatePromptWasTouch = false;
     this.achievementToast = null;
     this.combo = 0;
     this.comboTimer = 0;
@@ -390,6 +393,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.touch?.relayout(W);
     this.layoutDialog(W);
+    this.layoutGatePrompt(W);
     this.layoutObjectives(W);
     this.layoutEndScreen(W);
   }
@@ -428,6 +432,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+    if (this.gatePromptOpen) return;
     if (this.objectivesOpen) return;
     if (this.dialogOpen) {
       if (this.consumeInteractPress() || this.consumeActionPress()) {
@@ -2131,8 +2136,84 @@ export default class Level1 extends Phaser.Scene {
     this.gateCallButton.setEnabled(visible);
   }
 
+  openGatePrompt() {
+    if (
+      this.gatePromptOpen ||
+      !this.gateAlert ||
+      this.gateBroken ||
+      this.gateCallUsed ||
+      this.won ||
+      this.gameOverFlag ||
+      this.dog?.dead ||
+      this.objectivesOpen ||
+      this.dialogOpen
+    ) {
+      return;
+    }
+    if (!this.gatePromptRoot) return;
+
+    this.gatePromptOpen = true;
+    this.gatePromptWasTouch = !!this.touch?.visible;
+    this.gatePromptPausedAt = this.time.now;
+    this.setGateCallVisible(false);
+    this.interactPrompt?.setVisible(false);
+    this.interactBubble?.setVisible(false);
+    this.touch?.show(false);
+    this.gatePromptScrim.setVisible(true);
+    this.gatePromptScrim.input.enabled = true;
+    this.gatePromptRoot.setVisible(true);
+    this.gatePromptYes.setVisible(true).setEnabled(true);
+    this.gatePromptNo.setVisible(true).setEnabled(true);
+    this.physics.world.pause();
+    this.time.paused = true;
+    this.tweens.pauseAll();
+  }
+
+  closeGatePrompt() {
+    if (!this.gatePromptOpen) return;
+    this.gatePromptOpen = false;
+    this.gatePromptScrim.setVisible(false);
+    this.gatePromptScrim.input.enabled = false;
+    this.gatePromptRoot.setVisible(false);
+    this.gatePromptYes.setVisible(false).setEnabled(false);
+    this.gatePromptNo.setVisible(false).setEnabled(false);
+    if (this.gatePromptPausedAt) {
+      // Keep menu-reading time out of the run score.
+      this.startedAt += this.time.now - this.gatePromptPausedAt;
+      this.gatePromptPausedAt = 0;
+    }
+    this.physics.world.resume();
+    this.time.paused = false;
+    this.tweens.resumeAll();
+    if (this.gatePromptWasTouch) this.touch?.show(true);
+    this.gatePromptWasTouch = false;
+  }
+
+  answerGatePrompt(yes) {
+    if (!this.gatePromptOpen) return;
+    this.closeGatePrompt();
+    if (yes) this.acceptGateCall();
+    else this.failGateDefense();
+  }
+
+  failGateDefense() {
+    if (this.gateBroken || this.won || this.gameOverFlag) return;
+    this.gateCallUsed = true;
+    this.gateCallAchievementPending = false;
+    this.setGateCallVisible(false);
+
+    const rusher = this.rivalGroup
+      ?.getChildren()
+      .find((rival) => rival.role === 'rusher' && rival.active && !rival.defeated);
+    this.gateHealth = 1;
+    this.damageGate(rusher || null);
+    this.gateAlert = false;
+    this.showPhaseBanner(t('gate.failed'), FOLK_CSS.danger, { hold: 1200 });
+  }
+
   acceptGateCall() {
     if (
+      this.gatePromptOpen ||
       !this.gateAlert ||
       this.gateBroken ||
       this.gateCallUsed ||
@@ -2236,6 +2317,7 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.input.keyboard.on('keydown-R', () => {
+      if (this.gatePromptOpen) return;
       if (this.won) {
         this.advanceAfterWin();
         return;
@@ -2244,13 +2326,28 @@ export default class Level1 extends Phaser.Scene {
       this.scene.restart();
     });
     this.input.keyboard.on('keydown-E', () => {
+      if (this.gatePromptOpen) return;
       this.armSpinGrace();
       this.actionQueued = true;
     });
     this.input.keyboard.on('keydown-F', () => {
+      if (this.gatePromptOpen) return;
       this.interactQueued = true;
     });
-    this.input.keyboard.on('keydown-G', () => this.acceptGateCall());
+    this.input.keyboard.on('keydown-G', () => this.openGatePrompt());
+    this.input.keyboard.on('keydown-Y', () => {
+      if (this.gatePromptOpen) this.answerGatePrompt(true);
+    });
+    this.input.keyboard.on('keydown-N', () => {
+      if (this.gatePromptOpen) {
+        this.answerGatePrompt(false);
+        return;
+      }
+      // Dev helper: skip to the next phase without waiting.
+      if (import.meta.env.DEV && !this.won && !this.gameOverFlag) {
+        this.phaseTime = 0;
+      }
+    });
     this.input.keyboard.on('keydown-O', () => this.toggleObjectives());
     this.input.keyboard.on('keydown-M', () => {
       if (this.won || this.gameOverFlag) this.scene.start('Map');
@@ -2259,12 +2356,6 @@ export default class Level1 extends Phaser.Scene {
       if (this.dialogOpen) this.closeDialog();
     });
 
-    // Dev helper: skip to the next phase without waiting.
-    if (import.meta.env.DEV) {
-      this.input.keyboard.on('keydown-N', () => {
-        if (!this.won && !this.gameOverFlag) this.phaseTime = 0;
-      });
-    }
     this.input.keyboard.on('keydown-V', () => this.touch?.toggle());
   }
 
@@ -3057,10 +3148,11 @@ export default class Level1 extends Phaser.Scene {
         paddingY: 5 * U,
         depth: 140,
         scrollFactor: 0,
-        onClick: () => this.acceptGateCall(),
+        onClick: () => this.openGatePrompt(),
       });
       this.gateCallButton.setPosition(this.scale.width / 2, 42 * S);
       this.setGateCallVisible(false);
+      this.createGatePromptUi();
     } else {
       this.gateCallButton = null;
     }
@@ -3073,6 +3165,99 @@ export default class Level1 extends Phaser.Scene {
     // On touch devices the buttons are the tutorial, and they occupy the
     // bottom of the screen where the keyboard hint would sit.
     if (this.touch?.visible) this.hint.setVisible(false);
+  }
+
+  createGatePromptUi() {
+    const W = this.scale.width;
+    const H = this.scale.height;
+
+    this.gatePromptScrim = this.add
+      .rectangle(0, 0, W, H, FOLK.ink, 0.72)
+      .setOrigin(0)
+      .setScrollFactor(0)
+      .setDepth(170)
+      .setVisible(false)
+      .setInteractive();
+    this.gatePromptScrim.input.enabled = false;
+
+    this.gatePromptRoot = this.add
+      .container(0, 0)
+      .setScrollFactor(0)
+      .setDepth(171)
+      .setVisible(false);
+    this.gatePromptCard = this.add.graphics();
+    this.gatePromptTitle = this.add
+      .text(0, 0, t('gate.question'), {
+        fontFamily: FONT,
+        fontStyle: 'bold',
+        fontSize: MENU_TEXT.heading,
+        color: FOLK_CSS.danger,
+        align: 'center',
+      })
+      .setOrigin(0.5);
+    this.gatePromptBody = this.add
+      .text(0, 0, t('gate.questionBody'), {
+        fontFamily: FONT,
+        fontSize: MENU_TEXT.body,
+        color: FOLK_CSS.ink,
+        align: 'center',
+      })
+      .setOrigin(0.5, 0);
+    this.gatePromptRoot.add([
+      this.gatePromptCard,
+      this.gatePromptTitle,
+      this.gatePromptBody,
+    ]);
+
+    this.gatePromptYes = addMenuButton(this, {
+      label: t(
+        this.touch?.visible ? 'gate.questionYesTouch' : 'gate.questionYes',
+      ),
+      variant: 'primary',
+      fontSize: MENU_TEXT.body,
+      paddingX: 8 * U,
+      paddingY: 5 * U,
+      depth: 172,
+      scrollFactor: 0,
+      onClick: () => this.answerGatePrompt(true),
+    })
+      .setVisible(false)
+      .setEnabled(false);
+    this.gatePromptNo = addMenuButton(this, {
+      label: t(
+        this.touch?.visible ? 'gate.questionNoTouch' : 'gate.questionNo',
+      ),
+      variant: 'dark',
+      fontSize: MENU_TEXT.body,
+      paddingX: 8 * U,
+      paddingY: 5 * U,
+      depth: 172,
+      scrollFactor: 0,
+      onClick: () => this.answerGatePrompt(false),
+    })
+      .setVisible(false)
+      .setEnabled(false);
+
+    this.layoutGatePrompt(W);
+  }
+
+  layoutGatePrompt(W = this.scale.width) {
+    if (!this.gatePromptRoot) return;
+    const H = this.scale.height;
+    const w = Math.min(W - 40 * U, 420 * U);
+    const h = 156 * U;
+    this.gatePromptScrim.setPosition(0, 0).setSize(W, H);
+    this.gatePromptRoot.setPosition(W / 2, H / 2);
+    drawFolkCard(this.gatePromptCard, 0, 0, w, h);
+    this.gatePromptTitle
+      .setPosition(0, -h / 2 + 34 * U)
+      .setWordWrapWidth(w - 32 * U);
+    this.gatePromptBody
+      .setPosition(0, -h / 2 + 62 * U)
+      .setWordWrapWidth(w - 40 * U);
+    const buttonY = H / 2 + h / 2 - 28 * U;
+    this.gatePromptYes.setPosition(W / 2 - w / 4, buttonY);
+    this.gatePromptNo.setPosition(W / 2 + w / 4, buttonY);
   }
 
   createClockHud() {
@@ -3402,6 +3587,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showDialog(nameKey, textKey) {
+    if (this.gatePromptOpen) return;
     const firstOpen = !this.dialogOpen;
     this.dialogOpen = true;
     this.dialogName.setText(t(nameKey));
@@ -3714,13 +3900,15 @@ export default class Level1 extends Phaser.Scene {
   }
 
   toggleObjectives() {
-    if (this.won || this.gameOverFlag) return;
+    if (this.gatePromptOpen || this.won || this.gameOverFlag) return;
     if (this.objectivesOpen) this.closeObjectives();
     else this.openObjectives();
   }
 
   openObjectives() {
-    if (this.objectivesOpen || this.won || this.gameOverFlag) return;
+    if (this.gatePromptOpen || this.objectivesOpen || this.won || this.gameOverFlag) {
+      return;
+    }
     if (this.dialogOpen) this.closeDialog();
 
     this.objectivesOpen = true;

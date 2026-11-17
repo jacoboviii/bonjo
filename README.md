@@ -97,12 +97,13 @@ The game itself now starts in Spanish.
   An open **CASA gateway** and painted threshold mark the line. Normal rivals
   stop there; gate rushers try to chew the gate down. Subdue the rusher before it
   lands three bites. When a rush begins, a **DEFEND GATE** prompt appears: press
-  **G** or tap it to answer the call and fast-travel to the porch once that
-  night. Answer the call and save the gate to earn the **GATEKEEPER**
-  achievement and a score bonus. If the gate breaks, the porch is open until
-  dawn and the morning repair costs Bonjo that day's dawn heal and dawn concha.
-  Polo offers one concha per level, the bell grants a life heart once per run,
-  and the chihuahua barks warnings.
+  **G** or tap it to pause the game on a yes/no call. **YES** fast-travels Bonjo
+  to the porch once that night; **NO** abandons the gate, breaks it, and shows a
+  failed-defense message. Answer yes and save the gate to earn the
+  **GATEKEEPER** achievement and a score bonus. If the gate breaks, the porch is
+  open until dawn and the morning repair costs Bonjo that day's dawn heal and
+  dawn concha. Polo offers one concha per level, the bell grants a life heart
+  once per run, and the chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
   hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
   used only for the slide attack; flap charges for double jumps are separate and
@@ -153,7 +154,7 @@ ssh -L 5173:127.0.0.1:5173 you@your-server
 | **S** / **↓** | Slide attack (spends 1 IMPULSE pip, heavy damage) | Air slide attack (spends 1 IMPULSE pip) |
 | **E** / touch spin | Tail-sweep attack nearby rivals | — |
 | **F** / touch talk | Talk to friendly NPCs, ring the bell | — |
-| **G** / DEFEND GATE prompt | Answer a gate rush and fast-travel to the porch | — |
+| **G** / DEFEND GATE prompt | Open the paused yes/no gate call; **Y** accepts, **N** declines | — |
 | **O** | Open/close objectives | Open/close objectives |
 | **T** | Show/hide the tuning panel | |
 | **R** | Restart the level | |
@@ -171,7 +172,7 @@ On a touch device the on-screen controls appear automatically:
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
 - The camera includes a short visual margin beyond each end barrier, so Bonjo can stay centered and clear of the thumb controls; his movement barrier remains at the level edge.
 - **top bar:** flap charges, IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
-- **top-center during a gate rush:** a **DEFEND GATE** button answers the call and fast-travels Bonjo to the porch
+- **top-center during a gate rush:** a **DEFEND GATE** button opens a paused YES/NO call; YES fast-travels, NO abandons the gate
 - **top-right:** the **pause** button opens the two-tab pause panel (Objectives / Instructions) and pauses play
 - The title, map, HUD and end screens use the same mobile-first layout on desktop and touch devices; a mouse or keyboard still works everywhere.
 - On the **map**, tap a landmark to inspect it, then tap **JUGAR / PLAY**.
@@ -289,7 +290,7 @@ there to make them permanent.
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
-- **Porch gate defense** with gate health, a one-per-night **DEFEND GATE** fast-travel call, and a compromised safe zone if it breaks; answering the call and saving the gate earns **GATEKEEPER** plus a score bonus
+- **Porch gate defense** with gate health, a one-per-night **DEFEND GATE** yes/no fast-travel call, and a compromised safe zone if it breaks; YES + a successful defense earns **GATEKEEPER** plus a score bonus, while NO abandons the gate
 - **Named NPC dialog cards** that pause the action; the cat, chihuahua and rooster cycle through several lines, and optional day/night errands keep checkmarks in the pause panel
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows
