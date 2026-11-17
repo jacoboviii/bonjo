@@ -221,7 +221,6 @@ export default class Level1 extends Phaser.Scene {
     // clear cached references before rebuilding them for a fresh run.
     this.timeShardGroup = null;
     this.lowHealthActive = false;
-    this.lowHealthHeartRing = null;
     this.respawnNotice = null;
     this.endLayout = null;
     this.endTransition = false;
@@ -2886,7 +2885,6 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.createClockHud();
-    this.createLowHealthWarning();
 
     this.createObjectivesUi();
     this.updateSurvivalHud();
@@ -3053,57 +3051,26 @@ export default class Level1 extends Phaser.Scene {
     });
   }
 
-  createLowHealthWarning() {
-    // A pulsing ring around the remaining HUD heart reads as a heartbeat
-    // without tinting the whole screen or duplicating the heart silhouette.
-    this.lowHealthHeartRing = this.add
-      .circle(0, 0, 10, 0x000000, 0)
-      .setOrigin(0.5)
-      .setStrokeStyle(1.5 * S, FOLK.danger, 0.95)
-      .setScrollFactor(0)
-      .setDepth(99)
-      .setVisible(false)
-      .setAlpha(0);
-  }
-
   setLowHealthWarning(active) {
-    if (!this.lowHealthHeartRing || !this.hearts?.length) return;
+    if (!this.hearts?.length) return;
     if (this.lowHealthActive === active) return;
     this.lowHealthActive = active;
 
     const heart = this.hearts[0];
-    const ring = this.lowHealthHeartRing;
     const baseScale = heart.getData('baseScale') || heart.scaleX;
-    this.tweens.killTweensOf([heart, ring]);
+    this.tweens.killTweensOf(heart);
 
     if (!active) {
       heart.setScale(baseScale);
-      ring.setVisible(false).setAlpha(0);
       return;
     }
 
     heart.setScale(baseScale);
-    ring
-      .setPosition(heart.x + heart.displayWidth / 2, heart.y)
-      .setRadius(heart.displayWidth * 0.7)
-      .setScale(1)
-      .setAlpha(0.9)
-      .setVisible(true);
     this.tweens.add({
       targets: heart,
-      scaleX: baseScale * 1.22,
-      scaleY: baseScale * 1.22,
+      scaleX: baseScale * 1.28,
+      scaleY: baseScale * 1.28,
       duration: 420,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.inOut',
-    });
-    this.tweens.add({
-      targets: ring,
-      scaleX: 1.8,
-      scaleY: 1.8,
-      alpha: 0.2,
-      duration: 620,
       yoyo: true,
       repeat: -1,
       ease: 'Sine.inOut',

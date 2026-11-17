@@ -371,7 +371,7 @@ window. Enemies ignore the arc, and the pole itself is decorative.
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,
 knocks him back and grants 1.7 s of invulnerability. Dropping to one heart makes
-the remaining HUD heart pulse with a soft red halo instead of tinting the screen
+the remaining HUD heart pulse instead of tinting the screen
 edges. Falling out of the world respawns him at the last checkpoint. Hunger
 drains at 0.8/s; bones restore 12 and taco carts restore 28. At zero hunger,
 Bonjo loses a heart every 8 s until he eats. Dawn restores two hearts and 10
