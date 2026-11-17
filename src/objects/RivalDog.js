@@ -53,6 +53,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
     this.nextAttack = 0;
     this.stunUntil = 0;
     this.stunSlideUntil = 0;
+    this.contactGraceUntil = 0;
     this.stolenBones = 0;
 
     this.body.setVelocityX(-this.baseSpeed * tuning.enemySpeed);

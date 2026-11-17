@@ -92,6 +92,7 @@ export default class TouchControls {
     }
     if (name === 'interact') {
       if (this.dialogMode) return;
+      this.scene.armSpinGrace?.();
       this.actionQueued = true;
       this.flash(name);
       return;

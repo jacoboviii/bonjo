@@ -1792,6 +1792,7 @@ export default class Level1 extends Phaser.Scene {
     }
     this.spinBufferAt = 0;
     this.nextSpinAt = now + SPIN_COOLDOWN_MS;
+    this.dog.dodgeUntil = Math.max(this.dog.dodgeUntil, now + 180);
 
     this.dog.spinStart = now;
     this.dog.spinUntil = now + SPIN_DURATION_MS;
@@ -2011,6 +2012,24 @@ export default class Level1 extends Phaser.Scene {
     return pressed;
   }
 
+  armSpinGrace() {
+    if (
+      !this.dog ||
+      this.won ||
+      this.gameOverFlag ||
+      this.dog.dead ||
+      this.dialogOpen ||
+      this.objectivesOpen
+    ) {
+      return;
+    }
+    // Input callbacks can arrive before the next physics step. Give the
+    // queued tail sweep a tiny grace window so touching a rival on the press
+    // frame does not turn into contact damage before the attack starts.
+    if (this.time.now < this.nextSpinAt) return;
+    this.dog.dodgeUntil = Math.max(this.dog.dodgeUntil, this.time.now + 180);
+  }
+
   givePoloGift() {
     this.poloGift = false;
     this.poloIcon.setVisible(false);
@@ -2225,6 +2244,7 @@ export default class Level1 extends Phaser.Scene {
       this.scene.restart();
     });
     this.input.keyboard.on('keydown-E', () => {
+      this.armSpinGrace();
       this.actionQueued = true;
     });
     this.input.keyboard.on('keydown-F', () => {
@@ -5253,6 +5273,11 @@ export default class Level1 extends Phaser.Scene {
       return;
     }
 
+    // A dazed rival is not a hazard. Without this, Bonjo could hit with the
+    // tail sweep, stay in contact, then take a hit the moment the sweep ended.
+    if (rival.stunUntil > this.time.now) return;
+    if (rival.contactGraceUntil > this.time.now) return;
+
     this.hurt(rival);
   }
 
@@ -5276,6 +5301,13 @@ export default class Level1 extends Phaser.Scene {
 
   damageRival(rival, amount = 1, opts = {}) {
     if (rival.defeated || !rival.active) return false;
+
+    // A successful hit buys Bonjo a beat to reposition. This also prevents a
+    // rival pinned against a turf edge from counter-hitting at stun expiry.
+    rival.contactGraceUntil = Math.max(
+      rival.contactGraceUntil,
+      this.time.now + 900,
+    );
 
     if (rival.maxHealth > 1) {
       const now = this.time.now;

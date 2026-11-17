@@ -217,7 +217,9 @@ briefly damage-immune during each slide. Every connecting tail sweep or slide th
 dust burst and light camera kick; the slide's version is the heaviest. The spin
 starts immediately, snaps through one rotation in 260 ms and has a ~420 ms
 cooldown; one press during that recovery is buffered so it fires as soon as the
-cooldown ends. It subdues bone-thief critters and crows, and can hit a piñata.
+cooldown ends. A short input grace keeps contact from interrupting the sweep
+on the press frame. It subdues bone-thief critters and crows, and can hit a
+piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
 is flap, spin and slide, with spin beside jump; the talk button appears above
@@ -234,9 +236,11 @@ They stop at the edges of their turf rather than running into pits. Sliding
 into one or hitting it with the spin subsumes it: yelp, +1 bone and a 40%
 chance of a concha; it flees home. Landing on one from above is a safe bounce,
 not an attack. Any other contact costs a heart and knocks Bonjo back
-horizontally, without popping him into a bounce. A stomp only counts when his
-feet cross above the target's top, and the bounce has a short grace window so
-the same overlapping body cannot hurt him on the way up. No gore, no defeat
+horizontally, without popping him into a bounce. Dazed rivals cannot deal
+contact damage, and a landed sweep or slide adds a short contact grace, so the
+exchange cannot immediately turn into a counter-hit. A stomp only counts when
+his feet cross above the target's top, and the bounce has a short grace window
+so the same overlapping body cannot hurt him on the way up. No gore, no defeat
 state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and
