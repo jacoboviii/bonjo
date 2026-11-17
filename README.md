@@ -75,11 +75,13 @@ The game itself now starts in Spanish.
   storefronts light up with colored neon signs (PAN, TIENDA, TACOS, FLORES...).
   On WebGL, a screen-space night pass darkens the world to a cool moonlit
   ambient and lets the lamps carve warm pools out of it; Bonjo carries a faint
-  cool halo so he stays readable between lamps. The HUD and cards render on a
-  separate clean camera, and Canvas keeps the original flat night wash, cones
-  and glows. Three damaged lamps use the same post art but warn with a flicker,
-  then send a low electric arc across the ground. Wait for the safe window or
-  jump over it; contact costs one heart and knocks Bonjo back.
+  cool halo so he stays readable between lamps. The same pass adds a light
+  selective bloom to sun/moon shards, lamp bulbs, neon signs and the sun/moon,
+  while live sparking lamps shift to a cold blue glow. The HUD and cards render
+  on a separate clean camera, and Canvas keeps the original flat night wash,
+  cones and glows. Three damaged lamps use the same post art but warn with a
+  flicker, then send a low electric arc across the ground. Wait for the safe
+  window or jump over it; contact costs one heart and knocks Bonjo back.
 - **High routes:** one-way fire escapes, laundry lines and terracotta rooftops
   climb above the street. Higher tiers carry bones, conchas and high piñatas;
   practice the flap-and-glide chain to reach them.

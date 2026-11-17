@@ -348,18 +348,21 @@ foreground house windows glow, and colored neon shop signs (PAN, TIENDA, TACOS,
 FLORES...) float above the awnings. On WebGL, a screen-space night pass
 (`src/ui/LightingPostFX.js`) replaces the flat full-scene wash with a cool
 moonlit ambient. Each lit lamp carves a warm pool out of that darkness, and
-Bonjo carries a faint cool halo so he stays readable between lamps. The world
-and lighting are rendered by the main camera; the HUD and every card render on
-a second clean camera, so text never sits inside the darkening pass. The pass
-caps at eight screen-space lamps and follows each lamp sprite's alpha, so a
-sparking lamp dims its pool during the live-wire phase. Canvas rendering skips
-the pipeline, the HUD camera and the shader ambient, keeping the original flat
-night wash, cone and glow sprites unchanged. Three defective lamps use the same
-lamp post art as the normal ones, but their cone dims and their cycle runs 1.2 s
-of warning flicker, 0.7 s of live ground arc, then 1.4 s of cooldown. The arc is
-only ~20 design px tall, so a normal jump clears it; waiting also works. Contact
-costs one heart and knocks Bonjo away, using the normal invulnerability window.
-Enemies ignore the arc, and the pole itself is decorative.
+Bonjo carries a faint cool halo so he stays readable between lamps. The same
+pass runs a lightweight selective bloom on up to eight emissive points:
+sun/moon shards, lamp bulbs, neon signs and the sun or moon. Live sparking
+lamps switch their pool and bloom to a cold blue-white. The world and lighting
+are rendered by the main camera; the HUD and every card render on a second clean
+camera, so text never sits inside the darkening pass. The pass caps at eight
+screen-space lamps and eight bloom points, and follows each lamp sprite's alpha,
+so a sparking lamp dims its pool during the live-wire phase. Canvas rendering
+skips the pipeline, the HUD camera and the shader ambient, keeping the original
+flat night wash, cone and glow sprites unchanged. Three defective lamps use the
+same lamp post art as the normal ones, but their cone dims and their cycle runs
+1.2 s of warning flicker, 0.7 s of live ground arc, then 1.4 s of cooldown. The
+arc is only ~20 design px tall, so a normal jump clears it; waiting also works.
+Contact costs one heart and knocks Bonjo away, using the normal invulnerability
+window. Enemies ignore the arc, and the pole itself is decorative.
 
 ### Health, life hearts & hunger
 Bonjo has **3 hearts** and a hunger bar (0–100). Enemy contact costs one heart,

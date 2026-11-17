@@ -64,6 +64,21 @@ const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
 
+// Small emissive points feed the world-camera bloom pass.
+const WARM_LIGHT_COLOR = { r: 1, g: 0.78, b: 0.48 };
+const SPARK_LIGHT_COLOR = { r: 0.56, g: 0.84, b: 1 };
+const SUN_BLOOM_COLOR = { r: 1, g: 0.84, b: 0.38 };
+const MOON_BLOOM_COLOR = { r: 0.68, g: 0.84, b: 1 };
+const BLOOM_MAX = 8;
+
+function colorFromHex(hex) {
+  return {
+    r: ((hex >> 16) & 0xff) / 255,
+    g: ((hex >> 8) & 0xff) / 255,
+    b: (hex & 0xff) / 255,
+  };
+}
+
 const CAT_LINES = [
   'dialog.cat',
   'dialog.cat.2',
@@ -2566,9 +2581,9 @@ export default class Level1 extends Phaser.Scene {
     const fx = this.lampLightFX;
     if (!fx) return;
 
-    // The existing night wash still owns ambient darkness. This pass only
-    // adds the warm pool around each lamp, so it can fade independently at
-    // dawn without changing the scene's base exposure.
+    // The existing night wash still owns ambient darkness. This pass adds the
+    // lamp pools, Bonjo halo and selective bloom without changing the scene's
+    // base exposure; it can fade independently at dawn.
     const target = this.phase === 'night' ? 1 : 0;
     const blend = 1 - Math.pow(0.0025, delta / 1000);
     fx.intensity = Phaser.Math.Linear(fx.intensity, target, blend);
@@ -2582,15 +2597,112 @@ export default class Level1 extends Phaser.Scene {
       // pool during the live-wire phase instead of glowing at full strength.
       const alpha = glow.visible ? glow.alpha : 0;
       if (alpha <= 0.01) continue;
+      const spark = this.sparkPoles?.find((pole) => pole.glow === glow);
       lights.push({
         x: glow.x - cam.scrollX,
         // PostFX quad coordinates are bottom-up, so flip the camera-space Y.
         y: cam.height - (glow.y - cam.scrollY),
         r: 54 * S,
         s: 0.36 * alpha,
+        color: spark?.live ? SPARK_LIGHT_COLOR : WARM_LIGHT_COLOR,
       });
     }
     fx.lights = lights;
+
+    // Selective point bloom. The shader adds a soft halo around emissive
+    // gameplay elements only; the world camera means HUD text stays crisp.
+    const bloom = [];
+    const pushBloom = (screenX, screenY, radius, strength, color) => {
+      if (bloom.length >= BLOOM_MAX || strength <= 0.01) return;
+      if (
+        screenX < -radius ||
+        screenX > cam.width + radius ||
+        screenY < -radius ||
+        screenY > cam.height + radius
+      ) {
+        return;
+      }
+      bloom.push({
+        x: screenX,
+        y: screenY,
+        r: radius,
+        s: strength,
+        color,
+      });
+    };
+    const pushWorldBloom = (worldX, worldY, radius, strength, color) =>
+      pushBloom(
+        worldX - cam.scrollX,
+        cam.height - (worldY - cam.scrollY),
+        radius,
+        strength,
+        color,
+      );
+
+    const shardColor =
+      this.phase === 'day' ? SUN_BLOOM_COLOR : MOON_BLOOM_COLOR;
+    for (const shard of this.timeShardGroup?.getChildren() || []) {
+      if (!shard.active || !shard.visible) continue;
+      pushWorldBloom(shard.x, shard.y, 18 * S, 0.5, shardColor);
+      if (bloom.length >= BLOOM_MAX) break;
+    }
+
+    if (this.phase === 'day' && this.sun?.visible && this.sun.alpha > 0.05) {
+      pushBloom(
+        this.sun.x - cam.scrollX * this.sun.scrollFactorX,
+        this.sun.y - cam.scrollY * this.sun.scrollFactorY,
+        28 * S,
+        0.18 * this.sun.alpha,
+        SUN_BLOOM_COLOR,
+      );
+    } else if (
+      this.phase === 'night' &&
+      this.moon?.visible &&
+      this.moon.alpha > 0.05
+    ) {
+      pushBloom(
+        this.moon.x - cam.scrollX * this.moon.scrollFactorX,
+        this.moon.y - cam.scrollY * this.moon.scrollFactorY,
+        40 * S,
+        0.3 * this.moon.alpha,
+        MOON_BLOOM_COLOR,
+      );
+    }
+
+    for (const spark of this.sparkPoles || []) {
+      if (bloom.length >= BLOOM_MAX) break;
+      if (!spark.live || !spark.glow?.visible) continue;
+      pushWorldBloom(
+        spark.glow.x,
+        spark.glow.y,
+        30 * S,
+        0.55,
+        SPARK_LIGHT_COLOR,
+      );
+    }
+
+    if (this.phase === 'night') {
+      for (const sign of SHOP_SIGNS || []) {
+        if (bloom.length >= BLOOM_MAX) break;
+        pushWorldBloom(
+          sign.x * S,
+          sign.y * S,
+          22 * S,
+          0.3,
+          colorFromHex(sign.glow),
+        );
+      }
+    }
+
+    for (const glow of this.lampGlows || []) {
+      if (bloom.length >= BLOOM_MAX) break;
+      const alpha = glow.visible ? glow.alpha : 0;
+      if (alpha <= 0.01) continue;
+      const spark = this.sparkPoles?.find((pole) => pole.glow === glow);
+      if (spark?.live) continue;
+      pushWorldBloom(glow.x, glow.y, 22 * S, 0.34 * alpha, WARM_LIGHT_COLOR);
+    }
+    fx.bloom = bloom;
 
     if (this.dog && !this.dog.dead) {
       fx.hero = {
