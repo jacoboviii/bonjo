@@ -456,6 +456,7 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.updateCamera(delta);
+    this.touch?.updateOcclusion();
     this.updateLightingFX(delta);
     this.updateBossTracker();
     this.updateHud(delta);

@@ -25,6 +25,7 @@ export default class TouchControls {
     this.buttons = {};
     this.baseScale = {};
     this.baseAlpha = 0.5;
+    this.occluded = new Set();
 
     // which pointer is dragging the left/right pair, and which pointer holds
     // the jump/down buttons
@@ -57,6 +58,50 @@ export default class TouchControls {
     if (this.buttons.interact) this.buttons.interact.x = width - 128 * U;
     if (this.buttons.slide) this.buttons.slide.x = width - 212 * U;
     if (this.buttons.talk) this.buttons.talk.x = width - 128 * U;
+  }
+
+  // Keep the controls usable at the level edges, where the camera can no
+  // longer center Bonjo and a big translucent button can cover him.
+  updateOcclusion() {
+    const dog = this.scene.dog;
+    const camera = this.scene.cameras.main;
+    if (!this.visible || !dog?.active || dog.dead || !camera) return;
+
+    const bounds = dog.getBounds();
+    const pad = 6 * U;
+    const left = bounds.left - camera.scrollX - pad;
+    const right = bounds.right - camera.scrollX + pad;
+    const top = bounds.top - camera.scrollY - pad;
+    const bottom = bounds.bottom - camera.scrollY + pad;
+
+    for (const [name, img] of Object.entries(this.buttons)) {
+      if (!img.visible) {
+        if (this.occluded.delete(name)) img.setAlpha(this.baseAlpha);
+        continue;
+      }
+
+      const nx = Math.max(left, Math.min(img.x, right));
+      const ny = Math.max(top, Math.min(img.y, bottom));
+      const radius = img.displayWidth / 2;
+      const hit = Math.hypot(img.x - nx, img.y - ny) < radius;
+      const held = this.isHeld(name);
+
+      if (hit) {
+        this.occluded.add(name);
+        const target = held ? 0.68 : 0.24;
+        img.setAlpha(img.alpha + (target - img.alpha) * 0.3);
+      } else if (this.occluded.delete(name)) {
+        img.setAlpha(held ? 0.92 : this.baseAlpha);
+      }
+    }
+  }
+
+  isHeld(name) {
+    if (name === 'left') return this.state.left;
+    if (name === 'right') return this.state.right;
+    if (name === 'jump') return this.state.jumpHeld;
+    if (name === 'slide') return this.state.down;
+    return false;
   }
 
   addButton(name, x, y, texture, scale) {
@@ -222,6 +267,7 @@ export default class TouchControls {
     this.actionQueued = false;
     this.dirPointer = null;
     this.pointerHandlers.clear();
+    this.occluded.clear();
 
     for (const name of Object.keys(this.buttons)) {
       this.buttons[name].setAlpha(this.baseAlpha).setScale(this.baseScale[name]);

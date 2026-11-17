@@ -221,7 +221,9 @@ cooldown ends. It subdues bone-thief critters and crows, and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
 is flap, spin and slide, with spin beside jump; the talk button appears above
-that cluster when an NPC or bell prompt is nearby.
+that cluster when an NPC or bell prompt is nearby. At course edges, where the
+camera cannot center Bonjo, any button overlapping him fades to a faint tappable
+state until he moves clear.
 
 ### Rival dogs (main enemy)
 The first level has a light daytime patrol of four rivals, four critters and
