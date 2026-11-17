@@ -221,7 +221,7 @@ export default class Level1 extends Phaser.Scene {
     // clear cached references before rebuilding them for a fresh run.
     this.timeShardGroup = null;
     this.lowHealthActive = false;
-    this.lowHealthTween = null;
+    this.lowHealthHeartRing = null;
     this.respawnNotice = null;
     this.endLayout = null;
     this.endTransition = false;
@@ -377,7 +377,6 @@ export default class Level1 extends Phaser.Scene {
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
     this.layoutClockHud(W);
-    this.layoutLowHealthWarning(W);
     this.uiCamera?.setViewport(0, 0, W, this.scale.height).setScroll(0, 0);
 
     this.touch?.relayout(W);
@@ -3073,53 +3072,55 @@ export default class Level1 extends Phaser.Scene {
   }
 
   createLowHealthWarning() {
-    const makeEdge = () =>
-      this.add
-        .rectangle(0, 0, 1, 1, FOLK.danger, 0)
-        .setScrollFactor(0)
-        .setDepth(90)
-        .setVisible(false);
-    this.lowHealthEdges = {
-      top: makeEdge(),
-      bottom: makeEdge(),
-      left: makeEdge(),
-      right: makeEdge(),
-    };
-    this.layoutLowHealthWarning(this.scale.width);
-  }
-
-  layoutLowHealthWarning(W = this.scale.width) {
-    if (!this.lowHealthEdges) return;
-    const H = this.scale.height;
-    const edge = 5 * S;
-    this.lowHealthEdges.top
-      .setPosition(W / 2, edge / 2)
-      .setSize(W, edge);
-    this.lowHealthEdges.bottom
-      .setPosition(W / 2, H - edge / 2)
-      .setSize(W, edge);
-    this.lowHealthEdges.left
-      .setPosition(edge / 2, H / 2)
-      .setSize(edge, H);
-    this.lowHealthEdges.right
-      .setPosition(W - edge / 2, H / 2)
-      .setSize(edge, H);
+    // A pulsing ring around the remaining HUD heart reads as a heartbeat
+    // without tinting the whole screen or duplicating the heart silhouette.
+    this.lowHealthHeartRing = this.add
+      .circle(0, 0, 10, 0x000000, 0)
+      .setOrigin(0.5)
+      .setStrokeStyle(1.5 * S, FOLK.danger, 0.95)
+      .setScrollFactor(0)
+      .setDepth(99)
+      .setVisible(false)
+      .setAlpha(0);
   }
 
   setLowHealthWarning(active) {
-    if (!this.lowHealthEdges) return;
-    const targets = Object.values(this.lowHealthEdges);
+    if (!this.lowHealthHeartRing || !this.hearts?.length) return;
     if (this.lowHealthActive === active) return;
     this.lowHealthActive = active;
-    this.tweens.killTweensOf(targets);
+
+    const heart = this.hearts[0];
+    const ring = this.lowHealthHeartRing;
+    const baseScale = heart.getData('baseScale') || heart.scaleX;
+    this.tweens.killTweensOf([heart, ring]);
+
     if (!active) {
-      targets.forEach((edge) => edge.setAlpha(0).setVisible(false));
+      heart.setScale(baseScale);
+      ring.setVisible(false).setAlpha(0);
       return;
     }
-    targets.forEach((edge) => edge.setAlpha(0.12).setVisible(true));
-    this.lowHealthTween = this.tweens.add({
-      targets,
-      alpha: 0.32,
+
+    heart.setScale(baseScale);
+    ring
+      .setPosition(heart.x + heart.displayWidth / 2, heart.y)
+      .setRadius(heart.displayWidth * 0.7)
+      .setScale(1)
+      .setAlpha(0.9)
+      .setVisible(true);
+    this.tweens.add({
+      targets: heart,
+      scaleX: baseScale * 1.22,
+      scaleY: baseScale * 1.22,
+      duration: 420,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+    this.tweens.add({
+      targets: ring,
+      scaleX: 1.8,
+      scaleY: 1.8,
+      alpha: 0.2,
       duration: 620,
       yoyo: true,
       repeat: -1,
@@ -3127,16 +3128,8 @@ export default class Level1 extends Phaser.Scene {
     });
   }
 
-  announceLowHealth(previousHealth) {
-    if (previousHealth > 1 && this.health === 1) {
-      this.showPhaseBanner(t('warning.lastHeart'), FOLK_CSS.danger, {
-        duration: 250,
-        hold: 1400,
-      });
-    }
-  }
-
   addHudHeart(index) {
+    const scale = this.compactLayout ? 1.35 : 1.1;
     const heart = this.add
       .image(
         (this.compactLayout ? 36 + index * 10 : 30 + index * 12) * S,
@@ -3144,9 +3137,10 @@ export default class Level1 extends Phaser.Scene {
         'heart',
       )
       .setOrigin(0, 0.5)
-      .setScale(this.compactLayout ? 1.35 : 1.1)
+      .setScale(scale)
       .setScrollFactor(0)
       .setDepth(100);
+    heart.setData('baseScale', scale);
     this.hearts.push(heart);
     return heart;
   }
@@ -5331,7 +5325,6 @@ export default class Level1 extends Phaser.Scene {
     if (this.dog.dodgeUntil > this.time.now) return;
     if (this.dog.stompGraceUntil > this.time.now) return;
 
-    const previousHealth = this.health;
     this.resetCombo();
     this.health -= 1;
     this.runStats.damage += 1;
@@ -5342,7 +5335,6 @@ export default class Level1 extends Phaser.Scene {
       this.gameOver();
       return;
     }
-    this.announceLowHealth(previousHealth);
 
     if (
       source?.role === 'thief' &&
@@ -5378,7 +5370,6 @@ export default class Level1 extends Phaser.Scene {
   fall() {
     if (this.won || this.gameOverFlag) return;
 
-    const previousHealth = this.health;
     this.resetCombo();
     this.health -= 1;
     this.runStats.falls += 1;
@@ -5389,7 +5380,6 @@ export default class Level1 extends Phaser.Scene {
       this.gameOver();
       return;
     }
-    this.announceLowHealth(previousHealth);
 
     this.dog.body.reset(this.spawnPoint.x, this.spawnPoint.y);
     this.dog.setVelocity(0, 0);
@@ -5406,7 +5396,6 @@ export default class Level1 extends Phaser.Scene {
   starve() {
     if (this.won || this.gameOverFlag) return;
 
-    const previousHealth = this.health;
     this.resetCombo();
     this.health -= 1;
     this.runStats.starved += 1;
@@ -5417,10 +5406,10 @@ export default class Level1 extends Phaser.Scene {
       this.gameOver();
       return;
     }
-    this.announceLowHealth(previousHealth);
   }
 
   hideEndHud() {
+    this.setLowHealthWarning(false);
     this.closeObjectives();
     for (const wasp of this.waspNests || []) {
       if (wasp.nest?.body) wasp.nest.body.enable = false;
