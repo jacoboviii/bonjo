@@ -1252,10 +1252,10 @@ export default class Level1 extends Phaser.Scene {
       .setDepth(4)
       .setAlpha(0.9);
     this.bellIcon = this.add
-      .image(BELL_X * S, 600 * S - 48 * S, 'bell')
-      .setScale(0.9)
+      .image(BELL_X * S, 600 * S - 38 * S, 'bell')
+      .setScale(1)
       .setDepth(4)
-      .setAlpha(0.9);
+      .setAlpha(0.95);
 
     this.tweens.add({
       targets: [this.poloIcon, this.bellIcon],
@@ -2062,15 +2062,40 @@ export default class Level1 extends Phaser.Scene {
 
   ringBell() {
     this.bellRung = true;
-    this.bellIcon.setVisible(false);
     sfx.bell();
-    this.spawnFoodAt(this.bellPost.x, 582 * S);
+    this.tweens.add({
+      targets: this.bellIcon,
+      angle: 8,
+      duration: 90,
+      yoyo: true,
+      repeat: 3,
+      ease: 'Sine.inOut',
+      onComplete: () => this.bellIcon?.setAngle(0),
+    });
+    const gained = this.gainLife();
     this.floatText(
       this.bellPost.x,
       this.bellPost.y - 54 * S,
       t('float.bell'),
       FOLK_CSS.gold,
     );
+    if (gained) {
+      sfx.life();
+      this.spawnPuff(this.bellPost.x, this.bellPost.y - 28 * S, 1.1);
+      this.floatText(
+        this.bellPost.x,
+        this.bellPost.y - 74 * S,
+        t(gained === 'max' ? 'float.lifeMax' : 'float.life'),
+        FOLK_CSS.danger,
+      );
+    } else {
+      this.floatText(
+        this.bellPost.x,
+        this.bellPost.y - 74 * S,
+        t('float.lifeFull'),
+        FOLK_CSS.gold,
+      );
+    }
   }
 
   alertChihuahua() {
@@ -4180,7 +4205,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateSign?.setVisible(true);
 
     this.poloIcon?.setVisible(this.poloGift);
-    this.bellIcon?.setVisible(!this.bellRung);
+    this.bellIcon?.setVisible(true);
 
     this.tweens.killTweensOf([this.sun, this.moon]);
     this.tweens.add({

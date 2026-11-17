@@ -313,8 +313,8 @@ health, no-hit and time into a score and an S–D rank.
 ### Street props and errands
 Taco carts restore hunger; trash cans burst into bones; bicycles can be knocked
 over; the marked parked car's alarm stuns nearby rivals. During the day Polo
-tosses a concha, the bell grants another, and the chihuahua barks warnings at
-night. These are all optional, but they reward learning the block.
+tosses a concha, the bell grants a life heart, and the chihuahua barks warnings
+at night. These are all optional, but they reward learning the block.
 
 ### Time shards
 The phase clock is **shard-driven**. Each day/night phase spawns a fresh pool of
@@ -378,9 +378,10 @@ heal and dawn concha. Checkpoint
 balloons restore one heart when first reached and hold one retry for the next
 defeat.
 
-Each level has two placed life hearts and a marked piñata with another. A life
-heart raises the max from 3 to 4 and fills the new heart; once at 4, it heals
-one missing heart. At full health it stays in the world for later. Their pickup
+Each level has two placed life hearts and a marked piñata with another. In La
+Cuadra, ringing the Casa bell grants one more life heart per run. A life heart
+raises the max from 3 to 4 and fills the new heart; once at 4, it heals one
+missing heart. At full health it stays in the world for later. Their pickup
 body is wider than the visual, making them easier to catch.
 
 ### Day, night & waves
@@ -677,7 +678,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog, Chihuahua boss
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
 - **Defense:** porch gate with health and a compromised safe zone
-- **NPCs/quests:** named dialog cards, Polo's concha, bell blessing, chihuahua warnings
+- **NPCs/quests:** named dialog cards, Polo's concha, bell life heart, chihuahua warnings
 - **Scoring:** bone combo, rivals, power-ups, no-hit/time bonuses, S–D rank
 - **End reward:** Golden Wing token at the far end of each level grants +1 flap charge for the run
 - Rival dogs (bark/chase/subdue); squirrels/skunks in La Cuadra; geese in Las Orillas; two crows/owls; Chihuahua boss

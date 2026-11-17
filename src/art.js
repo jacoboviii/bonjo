@@ -1266,44 +1266,82 @@ function makeChihuahuaBoss(scene, key, pose) {
 
 function makeBell(scene) {
   const g = gfx(scene);
-  const W = 14;
-  const H = 14;
+  const W = 18;
+  const H = 18;
+
+  // Hanger, dark bell silhouette, gold body and clapper.
   g.fillStyle(0x2b1b3d, 1);
-  g.fillRect(3, 1, 8, 2);
-  g.fillRect(4, 3, 6, 5);
-  g.fillTriangle(3, 8, 11, 8, 7, 12);
+  g.fillRect(8, 0, 2, 2);
+  g.fillRect(7, 1, 4, 1);
+  g.fillRect(5, 2, 8, 1);
+  g.fillRect(4, 3, 10, 2);
+  g.fillRect(3, 5, 12, 7);
+  g.fillRect(2, 12, 14, 2);
+  g.fillRect(4, 14, 10, 1);
+
   g.fillStyle(GOLD, 1);
-  g.fillRect(4, 3, 5, 4);
-  g.fillRect(5, 7, 3, 2);
+  g.fillRect(5, 4, 8, 2);
+  g.fillRect(4, 6, 10, 5);
+  g.fillRect(3, 11, 12, 2);
+  g.fillRect(8, 15, 2, 2);
+
   g.fillStyle(0xffcf6a, 1);
-  g.fillRect(5, 4, 2, 1);
+  g.fillRect(5, 5, 2, 3);
+  g.fillRect(9, 4, 1, 2);
+  g.fillRect(4, 6, 1, 3);
+
+  g.fillStyle(0xfff4e0, 1);
+  g.fillRect(6, 5, 1, 2);
+  g.fillRect(10, 5, 1, 2);
+
   g.fillStyle(0x2b1b3d, 1);
-  g.fillRect(6, 12, 2, 2);
+  g.fillRect(8, 16, 2, 1);
+
   g.generateTexture('bell', W, H);
   g.destroy();
 }
 
 function makeBellPost(scene) {
   const g = gfx(scene);
-  const W = 18;
-  const H = 42;
+  const W = 32;
+  const H = 54;
+
+  // Stone foot.
   g.fillStyle(0x2b1b3d, 1);
-  g.fillRect(7, 10, 4, 32);
-  g.fillRect(4, 38, 10, 4);
-  g.fillRect(1, 9, 16, 3);
-  g.fillStyle(0xd9b26a, 1);
-  g.fillRect(2, 4, 1, 6);
-  g.fillRect(15, 4, 1, 6);
-  g.fillRect(2, 4, 14, 2);
+  g.fillRect(2, 50, 28, 4);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(3, 49, 26, 1);
+  g.fillStyle(0xc98a5e, 1);
+  g.fillRect(4, 51, 24, 1);
+
+  // Twin wooden uprights.
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(3, 10, 4, 40);
+  g.fillRect(25, 10, 4, 40);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(4, 12, 2, 36);
+  g.fillRect(26, 12, 2, 36);
+  g.fillStyle(0xc98a5e, 1);
+  g.fillRect(4, 13, 1, 28);
+  g.fillRect(26, 13, 1, 28);
+
+  // Crossbeam and gold caps.
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(1, 8, 30, 4);
+  g.fillStyle(0x8a4f3a, 1);
+  g.fillRect(2, 9, 28, 2);
   g.fillStyle(GOLD, 1);
-  g.fillRect(7, 6, 4, 4);
-  g.fillTriangle(6, 10, 12, 10, 9, 14);
-  g.fillStyle(0xffcf6a, 1);
-  g.fillRect(7, 7, 2, 1);
-  g.fillStyle(0x1b1029, 1);
-  g.fillRect(8, 14, 2, 3);
+  g.fillRect(3, 5, 2, 3);
+  g.fillRect(27, 5, 2, 3);
+  g.fillRect(6, 8, 2, 2);
+  g.fillRect(24, 8, 2, 2);
+
+  // Hanging ring and rope for the separate bell icon.
+  g.fillStyle(0x2b1b3d, 1);
+  g.fillRect(15, 12, 2, 8);
   g.fillStyle(0xd9b26a, 1);
-  g.fillRect(9, 17, 1, 15);
+  g.fillRect(16, 13, 1, 6);
+
   g.generateTexture('bellpost', W, H);
   g.destroy();
 }

@@ -98,13 +98,14 @@ The game itself now starts in Spanish.
   stop there; gate rushers try to chew the gate down. Subdue the rusher before it
   lands three bites. If the gate breaks, the porch is open until dawn and the
   morning repair costs Bonjo that day's dawn heal and dawn concha. Polo offers
-  one concha per level, the bell grants another blessing, and the chihuahua barks
-  warnings.
+  one concha per level, the bell grants a life heart once per run, and the
+  chihuahua barks warnings.
 - **Survival:** Bonjo has **3 hearts** and a **hunger bar**. Bones restore
   hunger; an empty bar starts costing health. Conchas charge the IMPULSE stamina
   used only for the slide attack; flap charges for double jumps are separate and
   refill on landing. Each level has two placed **life hearts** and
-  at least one marked piñata hides another. The first raises max health to four;
+  at least one marked piñata hides another; the Casa bell grants one more life
+  heart per run. The first raises max health to four;
   later hearts heal, and a full-health heart waits for you. Checkpoints heal one
   heart and give one retry at that balloon if Bonjo is defeated; a respawn card
   explains that the retry was used and that the next defeat ends the run. Dawn
@@ -189,8 +190,8 @@ over bikes and trip the marked car alarm. Press **F** (or tap the talk button)
 near Polo, the chihuahua, a cat or the daytime rooster to talk; use it at the
 bell to ring it. Day errands are Polo’s concha and the bell; night errands are
 checking the gate and subduing two rivals. Errands are optional side goals now:
-Polo and the bell pay conchas, while the night goals fill in pause-panel
-checkmarks. None of them gates the phase clock; time advances only when Bonjo
+Polo pays a concha and the bell grants a life heart, while the night goals fill
+in pause-panel checkmarks. None of them gates the phase clock; time advances only when Bonjo
 collects sun or moon shards, so waiting freezes it. Dialog cards pause the game until you close them. Press **E** (or tap the spin button) to make Bonjo plant his
 paws and whip his fluffy tail in a quick sweep that dazes, nudges back and
 damages nearby rivals, bone thieves and crows. The tail arc and its damage
@@ -420,7 +421,7 @@ files):
 | `gate` | 108×90 | porch gate |
 | `tacocart` | 132×90 | hunger refill |
 | `polo` / `chihuahua` | 48×84 / 42×42 | day NPC / warning ally |
-| `bell`, `bellpost` | 42×42, 54×126 | day blessing |
+| `bell`, `bellpost` | 54×54, 96×162 | day life blessing |
 | `crown` | 42×27 | top-dog marker |
 | `agave`, `agaveBloom` | 78×78, 78×114 | blue-green street/field plants |
 | `agaveField` | 270×78 | tilled field patch |
