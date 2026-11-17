@@ -226,22 +226,23 @@ export const laCuadra = {
   ],
 
   // Hand-placed so shards hang above the pavement and stay clear of the
-  // foreground facades (x: 1040, 2040, 3040, 4550). Day and night use
-  // separate routes so the moon-shard run does not retrace the sun-shard run.
+  // foreground facades (x: 1040, 2040, 3040, 4550) and one-way ledges. Day
+  // and night use separate routes so the moon-shard run does not retrace the
+  // sun-shard run.
   timeShards: {
     day: [
-      [360, 520], [520, 500], [820, 480],
+      [410, 520], [700, 500], [820, 480],
       [1220, 520], [1560, 500], [1820, 480],
-      [2220, 520], [2500, 500], [2750, 480],
-      [3230, 520], [3500, 500], [3820, 480],
+      [2220, 520], [2500, 500], [2860, 480],
+      [3230, 520], [3500, 500], [3940, 480],
       [4200, 520], [4820, 500],
     ],
     night: [
-      [280, 500], [640, 480], [920, 520],
+      [220, 500], [700, 480], [920, 520],
       [1380, 500], [1700, 480], [1920, 520],
       [2380, 500], [2620, 480], [2920, 520],
-      [3360, 500], [3660, 480], [4080, 520],
-      [4460, 500], [4720, 480],
+      [3440, 500], [3660, 480], [4080, 520],
+      [4460, 500], [4680, 480],
     ],
   },
 
