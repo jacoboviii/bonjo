@@ -218,11 +218,7 @@ export default class RivalDog extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocityX(0);
         this.setFlipX(false);
         this.setTexture(this.idleTexture);
-        if (
-          this.scene.time.now > this.nextAttack &&
-          !this.scene.gatePromptOpen &&
-          this.scene.time.now >= (this.scene.gateAttackLockUntil || 0)
-        ) {
+        if (this.scene.time.now > this.nextAttack && !this.scene.gatePromptOpen) {
           this.nextAttack = this.scene.time.now + 1500;
           this.bark();
           this.scene.damageGate?.(this);

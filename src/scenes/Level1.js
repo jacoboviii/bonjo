@@ -36,7 +36,6 @@ const U = S / 2;
 const SPIN_COOLDOWN_MS = 420;
 const SPIN_DURATION_MS = 260;
 const SPIN_RING_MS = 220;
-const GATE_ALERT_LOCK_MS = 1200;
 
 // Words spoken by animals linger longer than combat/UI numbers.
 const ANIMAL_WORDS = new Set([
@@ -267,7 +266,6 @@ export default class Level1 extends Phaser.Scene {
     this.gateBroken = false;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
-    this.gateAttackLockUntil = 0;
     this.gateCallUsed = false;
     this.gateCallAchievementPending = false;
     this.gateDefenseAchievement = false;
@@ -389,7 +387,6 @@ export default class Level1 extends Phaser.Scene {
     if (this.hint) this.hint.x = W / 2;
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
-    this.gateCallButton?.setPosition(W / 2, 42 * S);
     this.layoutClockHud(W);
     this.uiCamera?.setViewport(0, 0, W, this.scale.height).setScroll(0, 0);
 
@@ -2132,12 +2129,6 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
-  setGateCallVisible(visible) {
-    if (!this.gateCallButton) return;
-    this.gateCallButton.setVisible(visible);
-    this.gateCallButton.setEnabled(visible);
-  }
-
   openGatePrompt() {
     if (
       this.gatePromptOpen ||
@@ -2157,7 +2148,6 @@ export default class Level1 extends Phaser.Scene {
     this.gatePromptOpen = true;
     this.gatePromptWasTouch = !!this.touch?.visible;
     this.gatePromptPausedAt = this.time.now;
-    this.setGateCallVisible(false);
     this.interactPrompt?.setVisible(false);
     this.interactBubble?.setVisible(false);
     this.touch?.show(false);
@@ -2202,12 +2192,10 @@ export default class Level1 extends Phaser.Scene {
     if (this.gateBroken || this.won || this.gameOverFlag) return;
     this.gateCallUsed = true;
     this.gateCallAchievementPending = false;
-    this.setGateCallVisible(false);
 
     const rusher = this.rivalGroup
       ?.getChildren()
       .find((rival) => rival.role === 'rusher' && rival.active && !rival.defeated);
-    this.gateAttackLockUntil = 0;
     this.gateHealth = 1;
     this.damageGate(rusher || null);
     this.gateAlert = false;
@@ -2231,7 +2219,6 @@ export default class Level1 extends Phaser.Scene {
 
     this.gateCallUsed = true;
     this.gateCallAchievementPending = true;
-    this.setGateCallVisible(false);
 
     const x = (GATE_X + 32) * S;
     const y = 580 * S;
@@ -2337,7 +2324,6 @@ export default class Level1 extends Phaser.Scene {
       if (this.gatePromptOpen) return;
       this.interactQueued = true;
     });
-    this.input.keyboard.on('keydown-G', () => this.openGatePrompt());
     this.input.keyboard.on('keydown-Y', () => {
       if (this.gatePromptOpen) this.answerGatePrompt(true);
     });
@@ -3140,25 +3126,7 @@ export default class Level1 extends Phaser.Scene {
       this.gateText = null;
     }
 
-    if (this.features.gateDefense !== false) {
-      this.gateCallButton = addMenuButton(this, {
-        label: this.touch?.visible
-          ? t('gate.callTouch')
-          : t('gate.call'),
-        variant: 'primary',
-        fontSize: GAME_TEXT.body,
-        paddingX: 8 * U,
-        paddingY: 5 * U,
-        depth: 140,
-        scrollFactor: 0,
-        onClick: () => this.openGatePrompt(),
-      });
-      this.gateCallButton.setPosition(this.scale.width / 2, 42 * S);
-      this.setGateCallVisible(false);
-      this.createGatePromptUi();
-    } else {
-      this.gateCallButton = null;
-    }
+    if (this.features.gateDefense !== false) this.createGatePromptUi();
 
     this.createClockHud();
 
@@ -4430,9 +4398,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateRusherSpawned = false;
     this.createTimeShards();
     this.gateAlert = false;
-    this.gateAttackLockUntil = 0;
     this.gateCallAchievementPending = false;
-    this.setGateCallVisible(false);
     this.closeDialog();
     this.setNightCreatures(true);
     this.setStreetLights(true);
@@ -4522,9 +4488,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
-    this.gateAttackLockUntil = 0;
     this.gateCallAchievementPending = false;
-    this.setGateCallVisible(false);
     this.closeDialog();
     this.setNightCreatures(false);
     this.setStreetLights(false);
@@ -4731,9 +4695,8 @@ export default class Level1 extends Phaser.Scene {
     this.rivalGroup.add(rival);
     this.floatText(500 * S, 558 * S, t('bark'), FOLK_CSS.gold);
     this.gateAlert = true;
-    this.gateAttackLockUntil = this.time.now + GATE_ALERT_LOCK_MS;
-    this.setGateCallVisible(!this.gateCallUsed);
-    this.showPhaseBanner(t('gate.alert'), FOLK_CSS.danger);
+    // The one-time rescue opens immediately, without an alert banner first.
+    if (!this.gateCallUsed) this.openGatePrompt();
     this.alertChihuahua();
   }
 
@@ -4814,13 +4777,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   damageGate(rival = null) {
-    if (
-      this.gatePromptOpen ||
-      this.time.now < this.gateAttackLockUntil ||
-      this.gateBroken ||
-      this.won ||
-      this.gameOverFlag
-    ) {
+    if (this.gatePromptOpen || this.gateBroken || this.won || this.gameOverFlag) {
       return;
     }
 
@@ -4843,7 +4800,6 @@ export default class Level1 extends Phaser.Scene {
 
     if (this.gateHealth <= 0) {
       this.gateBroken = true;
-      this.setGateCallVisible(false);
       this.gateCallAchievementPending = false;
       this.porchGate?.setTint(0x6a5a76).setAlpha(0.55);
       this.gateSign?.setVisible(false);
@@ -5543,7 +5499,6 @@ export default class Level1 extends Phaser.Scene {
       this.onAlphaDefeated();
     } else if (rival.role === 'rusher') {
       this.gateAlert = false;
-      this.setGateCallVisible(false);
       if (this.gateCallAchievementPending && !this.gateBroken) {
         this.unlockGateAchievement();
       }
