@@ -417,8 +417,13 @@ and painted threshold mark that line: Bonjo walks through the open leaves,
 normal rivals stop at the threshold, and gate rushers chew the gate down. If it
 breaks the safe zone is open until dawn, and the morning repair costs the dawn
 heal and dawn concha. A compact gate meter appears in the night HUD and pulses
-when a rusher is on the way. Polo and the chihuahua live here. The street is the
-arena; the porch is where you catch your breath.
+when a rusher is on the way. The alert also raises a **DEFEND GATE** call:
+pressing **G** or tapping the HUD prompt fast-travels Bonjo to the porch once
+per night, with a flash, a puff and brief invulnerability. If the call was used
+and the rusher is subdued before the gate breaks, the run unlocks the
+**GATEKEEPER** achievement (toast and end-screen tag) and a 150-point bonus.
+Polo and the chihuahua live here. The street is the arena; the porch is where
+you catch your breath.
 
 ### Checkpoints
 Balloons at the midpoint and on the east block; touch one to restore one heart
@@ -678,7 +683,7 @@ Music later: one loop per barrio, low-passed, with marimba/requinto colors.
 - **Survival:** 3 hearts (expandable to 4 with life hearts), bone-fed hunger bar, concha-charged stamina, shard-driven day/night clock, waves, top-dog finale in La Cuadra and a three-night Chihuahua-boss win in Las Orillas
 - **Roles:** fast dogs, bone thieves, brutes, gate rushers, crowned top dog, Chihuahua boss
 - **Level:** two blocks, one-way fire escapes/laundry lines, second checkpoint, interactive taco carts/trash/bikes/car alarm
-- **Defense:** porch gate with health and a compromised safe zone
+- **Defense:** porch gate with health, a one-per-night DEFEND GATE fast-travel call, and a compromised safe zone; saving the gate after answering the call unlocks GATEKEEPER and a score bonus
 - **NPCs/quests:** named dialog cards, Polo's concha, bell life heart, chihuahua warnings
 - **Scoring:** bone combo, rivals, power-ups, no-hit/time bonuses, S–D rank
 - **End reward:** Golden Wing token at the far end of each level grants +1 flap charge for the run

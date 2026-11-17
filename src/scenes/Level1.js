@@ -266,6 +266,10 @@ export default class Level1 extends Phaser.Scene {
     this.gateBroken = false;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
+    this.gateCallUsed = false;
+    this.gateCallAchievementPending = false;
+    this.gateDefenseAchievement = false;
+    this.achievementToast = null;
     this.combo = 0;
     this.comboTimer = 0;
     this.maxCombo = 0;
@@ -380,6 +384,7 @@ export default class Level1 extends Phaser.Scene {
     if (this.hint) this.hint.x = W / 2;
     if (this.introLabel?.active) this.introLabel.x = W / 2;
     if (this.phaseBanner?.active) this.phaseBanner.x = W / 2;
+    this.gateCallButton?.setPosition(W / 2, 42 * S);
     this.layoutClockHud(W);
     this.uiCamera?.setViewport(0, 0, W, this.scale.height).setScroll(0, 0);
 
@@ -2101,6 +2106,85 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
+  setGateCallVisible(visible) {
+    if (!this.gateCallButton) return;
+    this.gateCallButton.setVisible(visible);
+    this.gateCallButton.setEnabled(visible);
+  }
+
+  acceptGateCall() {
+    if (
+      !this.gateAlert ||
+      this.gateBroken ||
+      this.gateCallUsed ||
+      this.won ||
+      this.gameOverFlag ||
+      this.dog?.dead ||
+      this.objectivesOpen ||
+      this.dialogOpen
+    ) {
+      return;
+    }
+
+    this.gateCallUsed = true;
+    this.gateCallAchievementPending = true;
+    this.setGateCallVisible(false);
+
+    const x = (GATE_X + 32) * S;
+    const y = 580 * S;
+    this.dog.body.reset(x, y);
+    this.dog.setVelocity(0, 0);
+    this.dog.facing = -1;
+    this.dog.setFlipX(true);
+    this.dog.invuln = Math.max(this.dog.invuln, 1.2);
+    this.cameras.main.centerOn(x, 570 * S);
+    this.cameras.main.flash(150, 255, 209, 102);
+    this.spawnPuff(x, y, 1.1);
+    this.floatText(x, y - 38 * S, t('gate.arrived'), FOLK_CSS.gold);
+    sfx.checkpoint();
+  }
+
+  unlockGateAchievement() {
+    if (this.gateBroken) return;
+    this.gateCallAchievementPending = false;
+    if (this.gateDefenseAchievement) return;
+    this.gateDefenseAchievement = true;
+    this.showAchievementToast(t('achievement.gatekeeper'));
+    sfx.checkpoint();
+  }
+
+  showAchievementToast(name) {
+    const W = this.scale.width;
+    this.achievementToast?.destroy();
+    const toast = this.add
+      .text(W / 2, 52 * S, t('achievement.unlocked', { name }), {
+        fontFamily: FONT,
+        fontStyle: 'bold',
+        fontSize: GAME_TEXT.body,
+        color: FOLK_CSS.cream,
+        backgroundColor: FOLK_CSS.ink,
+        padding: { x: 8 * U, y: 4 * U },
+        align: 'center',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(140)
+      .setAlpha(0);
+    this.achievementToast = toast;
+    this.tweens.add({
+      targets: toast,
+      y: toast.y - 8 * S,
+      alpha: 1,
+      duration: 180,
+      hold: 1500,
+      yoyo: true,
+      onComplete: () => {
+        toast.destroy();
+        if (this.achievementToast === toast) this.achievementToast = null;
+      },
+    });
+  }
+
   alertChihuahua() {
     if (!this.chihuahua?.active || this.time.now < this.nextAllyBark) return;
     this.nextAllyBark = this.time.now + 900;
@@ -2146,6 +2230,7 @@ export default class Level1 extends Phaser.Scene {
     this.input.keyboard.on('keydown-F', () => {
       this.interactQueued = true;
     });
+    this.input.keyboard.on('keydown-G', () => this.acceptGateCall());
     this.input.keyboard.on('keydown-O', () => this.toggleObjectives());
     this.input.keyboard.on('keydown-M', () => {
       if (this.won || this.gameOverFlag) this.scene.start('Map');
@@ -2939,6 +3024,25 @@ export default class Level1 extends Phaser.Scene {
         .setVisible(false);
     } else {
       this.gateText = null;
+    }
+
+    if (this.features.gateDefense !== false) {
+      this.gateCallButton = addMenuButton(this, {
+        label: this.touch?.visible
+          ? t('gate.callTouch')
+          : t('gate.call'),
+        variant: 'primary',
+        fontSize: GAME_TEXT.body,
+        paddingX: 8 * U,
+        paddingY: 5 * U,
+        depth: 140,
+        scrollFactor: 0,
+        onClick: () => this.acceptGateCall(),
+      });
+      this.gateCallButton.setPosition(this.scale.width / 2, 42 * S);
+      this.setGateCallVisible(false);
+    } else {
+      this.gateCallButton = null;
     }
 
     this.createClockHud();
@@ -4115,6 +4219,9 @@ export default class Level1 extends Phaser.Scene {
     this.gateRusherSpawned = false;
     this.createTimeShards();
     this.gateAlert = false;
+    this.gateCallUsed = false;
+    this.gateCallAchievementPending = false;
+    this.setGateCallVisible(false);
     this.closeDialog();
     this.setNightCreatures(true);
     this.setStreetLights(true);
@@ -4204,6 +4311,9 @@ export default class Level1 extends Phaser.Scene {
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
+    this.gateCallUsed = false;
+    this.gateCallAchievementPending = false;
+    this.setGateCallVisible(false);
     this.closeDialog();
     this.setNightCreatures(false);
     this.setStreetLights(false);
@@ -4410,6 +4520,7 @@ export default class Level1 extends Phaser.Scene {
     this.rivalGroup.add(rival);
     this.floatText(500 * S, 558 * S, t('bark'), FOLK_CSS.gold);
     this.gateAlert = true;
+    this.setGateCallVisible(true);
     this.showPhaseBanner(t('gate.alert'), FOLK_CSS.danger);
     this.alertChihuahua();
   }
@@ -4512,6 +4623,8 @@ export default class Level1 extends Phaser.Scene {
 
     if (this.gateHealth <= 0) {
       this.gateBroken = true;
+      this.setGateCallVisible(false);
+      this.gateCallAchievementPending = false;
       this.porchGate?.setTint(0x6a5a76).setAlpha(0.55);
       this.gateSign?.setVisible(false);
       this.showPhaseBanner(t('gate.broken'), FOLK_CSS.danger);
@@ -5189,6 +5302,11 @@ export default class Level1 extends Phaser.Scene {
       this.onAlphaDefeated();
     } else if (rival.role === 'rusher') {
       this.gateAlert = false;
+      this.setGateCallVisible(false);
+      if (this.gateCallAchievementPending && !this.gateBroken) {
+        this.unlockGateAchievement();
+      }
+      this.gateCallAchievementPending = false;
     } else if (rival.role === 'brute') {
       reward = 2;
     }
@@ -5486,6 +5604,7 @@ export default class Level1 extends Phaser.Scene {
         ? 100
         : 0;
     const alphaBonus = this.alphaDefeated ? 150 : 0;
+    const gatekeeperBonus = this.gateDefenseAchievement ? 150 : 0;
 
     return (
       this.bonesCount * 10 +
@@ -5495,7 +5614,8 @@ export default class Level1 extends Phaser.Scene {
       this.powerUps * 100 +
       timeBonus +
       noHit +
-      alphaBonus
+      alphaBonus +
+      gatekeeperBonus
     );
   }
 
@@ -5525,6 +5645,7 @@ export default class Level1 extends Phaser.Scene {
       maxCombo: this.maxCombo,
       rivals: this.rivalsSubdued,
       alpha: this.alphaDefeated,
+      gatekeeper: this.gateDefenseAchievement,
       ...this.runStats,
     };
 
@@ -5720,8 +5841,11 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(202);
 
+    const rankLabel = this.gateDefenseAchievement
+      ? `${rankText} · ${t('achievement.gatekeeperShort')}`
+      : rankText;
     const rank = this.add
-      .text(W / 2, epilogueText ? 86 * S : 82 * S, rankText, {
+      .text(W / 2, epilogueText ? 86 * S : 82 * S, rankLabel, {
         fontFamily: FONT,
         fontStyle: 'bold',
         fontSize: MENU_TEXT.heading,
