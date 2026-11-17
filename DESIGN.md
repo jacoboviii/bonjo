@@ -37,7 +37,7 @@ same route, the same corners, the same smells. He likes his walks. The town name
 blends *lumbre* (hearth-light) and *umbral* (threshold): the warm light Bonjo
 keeps burning at the edge of home.
 
-**Lumbral, Guanajuato** is the town at the center of the game: a low, warm Bajío
+**Lumbral** is the town at the center of the game: a low, warm Bajío
 settlement of rectilinear streets, adobe and cantera, a single unfinished bell
 tower, agricultural fields and strings of warm lights. Bonjo's **La Cuadra** is
 its home block: flat-roofed houses, a tienda awning, dogs behind every gate.
@@ -594,8 +594,8 @@ Rules:
   button fills or near-matching colors.
   Menus use three role-based sizes from `MENU_TEXT` in `ui/FolkCard.js`:
   `display` (`14 × SCALE`, 42 px), `heading` (`8 × SCALE`, 24 px) and
-  `body` (`6 × SCALE`, 18 px). The body size is the mobile floor: at a
-  390 px-tall landscape phone it resolves to about 16 CSS px, matching the
+  `body` (`6.5 × SCALE`, 19.5 px). The body size is the mobile floor: at a
+  390 px-tall landscape phone it resolves to about 17.5 CSS px, matching the
   common mobile minimum. Hierarchy comes from weight, color and spacing, not
   additional one-off sizes.
   In-world building signs can remain `4.5 × SCALE` because they are framed by

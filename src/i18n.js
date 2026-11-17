@@ -10,7 +10,7 @@ const SUPPORTED = ['en', 'es'];
 const strings = {
   en: {
     'title.subtitle': 'the guardian chow of Lumbral',
-    'title.place': 'LUMBRAL · GUANAJUATO',
+    'title.place': 'LUMBRAL · BAJÍO',
     'title.startKeyboard': 'PRESS SPACE · PLAY',
     'title.startTouch': 'TAP · PLAY',
     'title.controls': 'A/D move · SPACE jump/flap · S slide · E spin · F talk · T tuning',
@@ -200,7 +200,7 @@ const strings = {
   },
   es: {
     'title.subtitle': 'el chow guardián de Lumbral',
-    'title.place': 'LUMBRAL · GUANAJUATO',
+    'title.place': 'LUMBRAL · BAJÍO',
     'title.startKeyboard': 'PULSA ESPACIO · JUGAR',
     'title.startTouch': 'TOCA · JUGAR',
     'title.controls': 'A/D mover · ESPACIO salto/aleteo · S deslizar · E giro · F hablar · T ajustes',

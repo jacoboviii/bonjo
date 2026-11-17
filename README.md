@@ -1,7 +1,7 @@
 # Bonjo 🐕
 
 **Bonjo is the guardian chow of Lumbral.** A proud, fluffy black chow who likes
-his walks through the Bajío town of Lumbral, Guanajuato — and does not appreciate
+his walks through the Bajío town of Lumbral — and does not appreciate
 the neighbor dogs from other houses trying to take his turf.
 
 A **turf-defense survival platformer**: by day, scavenge the barrio for bones
@@ -33,7 +33,7 @@ The game itself now starts in Spanish.
 
 ## The world
 
-- **Setting:** **Lumbral, Guanajuato**, in the Bajío. Level 1, **La Cuadra**,
+- **Setting:** **Lumbral**, in the Bajío. Level 1, **La Cuadra**,
   is Bonjo's home block: flat-roofed houses, the unfinished single bell tower of
   Santa María de Guadalupe, warm string lights, adobe walls and terracotta roofs
   under a clear blue day sky. The garbanzo and blue-green agave fields at the
@@ -290,7 +290,7 @@ there to make them permanent.
 - **3× internal render resolution** for crisper pixel art without changing the screen layout
 - All art generated in code (no image/audio files)
 - Keyboard + on-screen touch controls, portrait guard
-- **Spanish by default** (Lumbral, Guanajuato); toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
+- **Spanish by default**; toggle **EN / ES** on the title or map, or press **L**. The choice is remembered.
 - Title, top-dog finale, win and game-over screens
 
 **Not in this build:** full menu systems, save slots, gamepad, base upgrades,

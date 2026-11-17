@@ -49,12 +49,12 @@ export const FONT =
   '"Pixelify Sans", "Trebuchet MS", "Segoe UI", Arial, sans-serif';
 
 // Menu type uses a compact three-step role scale: display, heading and body.
-// The mobile body floor is 18 px internally, which lands at roughly 16 CSS px
-// on a 390 px-tall landscape phone.
+// The mobile body floor is 19.5 px internally, which lands at roughly 17.5 CSS
+// px on a 390 px-tall landscape phone.
 export const MENU_TEXT = {
   display: 14 * SCALE,
   heading: 8 * SCALE,
-  body: 6 * SCALE,
+  body: 6.5 * SCALE,
 };
 
 // In-game type uses the same role logic at a slightly tighter display size.
