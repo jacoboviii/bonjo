@@ -119,7 +119,8 @@ let LEDGE_FOODS;
 let TACO_CARTS;
 let TRASH_SPOTS;
 let SPARK_POLES;
-let TIME_SHARDS;
+let DAY_TIME_SHARDS;
+let NIGHT_TIME_SHARDS;
 let SHOP_SIGNS;
 let GATE_X;
 let POLO_X;
@@ -159,7 +160,8 @@ function applyLevelData(level) {
   TACO_CARTS = level.tacoCarts;
   TRASH_SPOTS = level.trashSpots;
   SPARK_POLES = level.sparkPoles || [];
-  TIME_SHARDS = level.timeShards || [];
+  DAY_TIME_SHARDS = level.timeShards?.day || [];
+  NIGHT_TIME_SHARDS = level.timeShards?.night || [];
   SHOP_SIGNS = level.shopSigns || [];
   GATE_X = level.gateX;
   POLO_X = level.poloX;
@@ -2219,13 +2221,18 @@ export default class Level1 extends Phaser.Scene {
 
     const key = this.phase === 'day' ? 'sunShard' : 'moonShard';
     const worldWidth = WORLD_W / S;
+    const phaseSlot = this.phase === 'day' ? 0 : 1;
     // Authored positions keep shards airborne and out of the foreground
-    // facades. Fall back to a safe high band for future level data.
+    // facades. Day and night have independent routes so moon shards do not
+    // simply retrace the sun-shard line.
     const fallback = Array.from({ length: TIME_SHARD_COUNT }, (_, i) => [
-      180 + i * ((worldWidth - 360) / (TIME_SHARD_COUNT - 1)),
-      520 - (i % 3) * 20,
+      180 + phaseSlot * 50 +
+        i * ((worldWidth - 360 - phaseSlot * 50) / (TIME_SHARD_COUNT - 1)),
+      520 - ((i + phaseSlot) % 3) * 20,
     ]);
-    const positions = TIME_SHARDS.length ? TIME_SHARDS : fallback;
+    const authored =
+      this.phase === 'day' ? DAY_TIME_SHARDS : NIGHT_TIME_SHARDS;
+    const positions = authored.length ? authored : fallback;
     positions.forEach(([x, y], i) => {
       const shard = this.timeShardGroup.create(x * S, y * S, key);
       // Time shards glow through the night overlay, so keep them above it.

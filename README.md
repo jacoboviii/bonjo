@@ -62,12 +62,14 @@ The game itself now starts in Spanish.
   Land on one to bounce high and use it as a jump aid; it does not restore flap
   charges.
 - **Time shards:** glowing sun shards during the day and moon shards at night
-  are scattered along the whole route. Each shard advances the phase clock by
-  four seconds; the clock stays frozen while Bonjo stands still. The small HUD
-  clock moves from 06:00 to 18:00 during the day and from 18:00 back to 06:00
-  at night, and it pulses when a shard is collected. Fourteen shards appear in
-  every phase, so there is always enough time to reach the next phase even if a
-  few are missed. Remaining shards disappear when the final boss arrives.
+  are scattered along the whole route. Sun and moon shards use separate
+  hand-placed routes, so the night run does not simply retrace the day run.
+  Each shard advances the phase clock by four seconds; the clock stays frozen
+  while Bonjo stands still. The small HUD clock moves from 06:00 to 18:00 during
+  the day and from 18:00 back to 06:00 at night, and it pulses when a shard is
+  collected. Fourteen shards appear in every phase, so there is always enough
+  time to reach the next phase even if a few are missed. Remaining shards
+  disappear when the final boss arrives.
 - **Street lighting:** streetlamps and house windows are dark during the day,
   then switch on at night. Lamps cast warm light cones onto the pavement, and
   storefronts light up with colored neon signs (PAN, TIENDA, TACOS, FLORES...).
@@ -263,7 +265,7 @@ there to make them permanent.
 - **La Cuadra street**: one continuous, flat pavement with no raised levels or lethal floor gaps; verticality comes from awnings and the high rooftop routes
 - **Saved progress**: completed levels and best scores persist in localStorage and show on the map
 - **Day/night cycle driven by time shards**: collect sun shards to bring night, then moon shards to reach dawn while surviving the rival waves
-- **Time-shard exploration**: 14 sun or moon shards span each phase and each adds four seconds; standing still no longer advances the clock
+- **Time-shard exploration**: 14 sun or moon shards span each phase on separate day/night routes, and each adds four seconds; standing still no longer advances the clock
 - **Time-of-day clock**: an analog clock with a digital `06:00 → 18:00 → 06:00` readout tracks the shard-driven day and turns from gold to moonlit blue at night
 - **Blue-Hour Lumbral art direction**: warm sand paper, ink-blue outlines, coral accents, guardian paw cards and string-lit streets
 - **Ambient wildlife**: day birds, a dawn rooster, alley cats, hooting owls, bats, and a night shift of skunks in La Cuadra or geese in Las Orillas
