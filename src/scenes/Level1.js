@@ -63,6 +63,7 @@ const HALF_DAY_MINUTES = 12 * 60;
 const SPARK_WARN_SECONDS = 1.2;
 const SPARK_LIVE_SECONDS = 0.7;
 const SPARK_CYCLE_SECONDS = SPARK_WARN_SECONDS + SPARK_LIVE_SECONDS + 1.4;
+const CAMERA_EDGE_PAD = 150; // design px of visual world beyond each barrier
 
 // Small emissive points feed the world-camera bloom pass.
 const WARM_LIGHT_COLOR = { r: 1, g: 0.78, b: 0.48 };
@@ -299,6 +300,7 @@ export default class Level1 extends Phaser.Scene {
     this.createNightFliers();
     this.createBoundary();
     this.buildLevel();
+    this.createEdgeGround();
     this.createForegroundHouses();
     this.createLedges();
     this.createTrees();
@@ -455,7 +457,6 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.updateCamera(delta);
-    this.touch?.updateOcclusion();
     this.updateLightingFX(delta);
     this.updateBossTracker();
     this.updateHud(delta);
@@ -704,6 +705,29 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.platforms.refresh();
+  }
+
+  createEdgeGround() {
+    const pad = CAMERA_EDGE_PAD;
+    const groundH = 300;
+    const worldW = WORLD_W / S;
+    const edges = [
+      { x: -pad, seed: 0x1ed6e },
+      { x: worldW, seed: 0x2f8a1 },
+    ];
+
+    for (const edge of edges) {
+      const key = `edgeGround_${this.levelId}_${edge.x}_${pad}`;
+      makePlatformTexture(this, key, pad, groundH, edge.seed);
+      const img = this.add
+        .image(
+          (edge.x + pad / 2) * S,
+          (600 + groundH / 2) * S,
+          key,
+        )
+        .setDepth(1);
+      if (this.levelData.platformTint) img.setTint(this.levelData.platformTint);
+    }
   }
 
   createForegroundHouses() {
@@ -2464,7 +2488,12 @@ export default class Level1 extends Phaser.Scene {
 
   createCamera() {
     const cam = this.cameras.main;
-    cam.setBounds(0, 0, WORLD_W, WORLD_H);
+    cam.setBounds(
+      -CAMERA_EDGE_PAD * S,
+      0,
+      WORLD_W + CAMERA_EDGE_PAD * 2 * S,
+      WORLD_H,
+    );
     // Let the camera scroll at sub-pixel precision. Phaser rounds a
     // roundPixels camera with floor(), so a lerped follow can stall up to
     // 10px short of its target and then creep there in visible 1px steps.

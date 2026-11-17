@@ -221,9 +221,7 @@ cooldown ends. It subdues bone-thief critters and crows, and can hit a piñata.
 
 On touch, all five controls use the same button size. The bottom-right cluster
 is flap, spin and slide, with spin beside jump; the talk button appears above
-that cluster when an NPC or bell prompt is nearby. At course edges, where the
-camera cannot center Bonjo, any button overlapping him fades to a faint tappable
-state until he moves clear.
+that cluster when an NPC or bell prompt is nearby.
 
 ### Rival dogs (main enemy)
 The first level has a light daytime patrol of four rivals, four critters and
@@ -434,7 +432,9 @@ balloon: the win condition is surviving Night 2 and repelling the top dog.
 
 World 5000×900 design px. The camera shows 144 design units vertically (432px
 render); visible width follows the internal canvas width (256 units at 16:9,
-wider on phones).
+wider on phones). A short visual margin extends beyond both end barriers so the
+camera can keep Bonjo centered near the edges without moving his movement
+barrier; the extra ground is visual only.
 Ground line y=600. The background is a tiled town under a clear blue day sky:
 blue mountains, fields/agave, low houses whose windows light up at night, a church tower and
 cross, warm string lights. A closer parallax storefront row adds awnings,

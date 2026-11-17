@@ -163,7 +163,7 @@ On a touch device the on-screen controls appear automatically:
 - **bottom-left:** ◀ ▶ run (slide between them without lifting)
 - **bottom-right:** action cluster — ▲ flap, ✦ spin and ▼ slide, with spin beside jump
 - **above the action cluster:** a talk button appears when an NPC or bell prompt is in range
-- At course edges, buttons fade when Bonjo would otherwise be hidden underneath them; they stay tappable.
+- The camera includes a short visual margin beyond each end barrier, so Bonjo can stay centered and clear of the thumb controls; his movement barrier remains at the level edge.
 - **top bar:** flap charges, IMPULSE stamina, health, hunger, bones and the day/gate readout live in one compact strip
 - **top-right:** the **pause** button opens the two-tab pause panel (Objectives / Instructions) and pauses play
 - The title, map, HUD and end screens use the same mobile-first layout on desktop and touch devices; a mouse or keyboard still works everywhere.
