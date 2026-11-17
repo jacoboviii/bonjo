@@ -99,7 +99,8 @@ The game itself now starts in Spanish.
   lands three bites. When a rush begins, a **DEFEND GATE** prompt appears: press
   **G** or tap it to pause the game on a yes/no call. **YES** fast-travels Bonjo
   to the porch once per run; **NO** abandons the gate, breaks it, and shows a
-  failed-defense message. Once answered, the call is spent for the run. Answer yes and save the gate to earn the
+  failed-defense message. Once answered, the call is spent for the run. The gate
+  cannot take damage while the alert banner or yes/no prompt is up. Answer yes and save the gate to earn the
   **GATEKEEPER** achievement and a score bonus. If the gate breaks, the porch is
   open until dawn and the morning repair costs Bonjo that day's dawn heal and
   dawn concha. Polo offers one concha per level, the bell grants a life heart

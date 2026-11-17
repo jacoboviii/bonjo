@@ -36,6 +36,7 @@ const U = S / 2;
 const SPIN_COOLDOWN_MS = 420;
 const SPIN_DURATION_MS = 260;
 const SPIN_RING_MS = 220;
+const GATE_ALERT_LOCK_MS = 1200;
 
 // Words spoken by animals linger longer than combat/UI numbers.
 const ANIMAL_WORDS = new Set([
@@ -266,6 +267,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateBroken = false;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
+    this.gateAttackLockUntil = 0;
     this.gateCallUsed = false;
     this.gateCallAchievementPending = false;
     this.gateDefenseAchievement = false;
@@ -2205,6 +2207,7 @@ export default class Level1 extends Phaser.Scene {
     const rusher = this.rivalGroup
       ?.getChildren()
       .find((rival) => rival.role === 'rusher' && rival.active && !rival.defeated);
+    this.gateAttackLockUntil = 0;
     this.gateHealth = 1;
     this.damageGate(rusher || null);
     this.gateAlert = false;
@@ -4427,6 +4430,7 @@ export default class Level1 extends Phaser.Scene {
     this.gateRusherSpawned = false;
     this.createTimeShards();
     this.gateAlert = false;
+    this.gateAttackLockUntil = 0;
     this.gateCallAchievementPending = false;
     this.setGateCallVisible(false);
     this.closeDialog();
@@ -4518,6 +4522,7 @@ export default class Level1 extends Phaser.Scene {
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
+    this.gateAttackLockUntil = 0;
     this.gateCallAchievementPending = false;
     this.setGateCallVisible(false);
     this.closeDialog();
@@ -4726,6 +4731,7 @@ export default class Level1 extends Phaser.Scene {
     this.rivalGroup.add(rival);
     this.floatText(500 * S, 558 * S, t('bark'), FOLK_CSS.gold);
     this.gateAlert = true;
+    this.gateAttackLockUntil = this.time.now + GATE_ALERT_LOCK_MS;
     this.setGateCallVisible(!this.gateCallUsed);
     this.showPhaseBanner(t('gate.alert'), FOLK_CSS.danger);
     this.alertChihuahua();
@@ -4808,7 +4814,15 @@ export default class Level1 extends Phaser.Scene {
   }
 
   damageGate(rival = null) {
-    if (this.gateBroken || this.won || this.gameOverFlag) return;
+    if (
+      this.gatePromptOpen ||
+      this.time.now < this.gateAttackLockUntil ||
+      this.gateBroken ||
+      this.won ||
+      this.gameOverFlag
+    ) {
+      return;
+    }
 
     this.gateHealth -= 1;
     this.porchGate?.setTint(0xff6b6b);

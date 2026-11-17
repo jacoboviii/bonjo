@@ -427,7 +427,8 @@ pressing **G** or tapping the HUD prompt pauses the game on a YES/NO question.
 YES fast-travels Bonjo to the porch once per run, with a flash, a puff and
 brief invulnerability; NO abandons the gate, breaks it at once and shows a
 failed-defense message. Once answered, the call is spent for the rest of the
-run. If YES was chosen and the rusher is subdued before the gate breaks, the
+run. The gate is protected while the alert banner or the call prompt is up.
+If YES was chosen and the rusher is subdued before the gate breaks, the
 run unlocks the **GATEKEEPER** achievement (toast and end-screen tag) and a
 150-point bonus.
 Polo and the chihuahua live here. The street is the arena; the porch is where
