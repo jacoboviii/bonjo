@@ -98,8 +98,8 @@ The game itself now starts in Spanish.
   stop there; gate rushers try to chew the gate down. Subdue the rusher before it
   lands three bites. When a rush begins, a **DEFEND GATE** prompt appears: press
   **G** or tap it to pause the game on a yes/no call. **YES** fast-travels Bonjo
-  to the porch once that night; **NO** abandons the gate, breaks it, and shows a
-  failed-defense message. Answer yes and save the gate to earn the
+  to the porch once per run; **NO** abandons the gate, breaks it, and shows a
+  failed-defense message. Once answered, the call is spent for the run. Answer yes and save the gate to earn the
   **GATEKEEPER** achievement and a score bonus. If the gate breaks, the porch is
   open until dawn and the morning repair costs Bonjo that day's dawn heal and
   dawn concha. Polo offers one concha per level, the bell grants a life heart
@@ -290,7 +290,7 @@ there to make them permanent.
 - **End-of-level Golden Wing**: reach the far end of either level for a run-long extra flap charge (and a third HUD pip)
 - **Story beats**: each level opens with a one-line tension beat and ends with a peaceful epilogue; completed landmarks show their restored description on the map
 - **Interactive street props** — taco carts, lootable trash, knockable bikes, car alarm stuns
-- **Porch gate defense** with gate health, a one-per-night **DEFEND GATE** yes/no fast-travel call, and a compromised safe zone if it breaks; YES + a successful defense earns **GATEKEEPER** plus a score bonus, while NO abandons the gate
+- **Porch gate defense** with gate health, a one-per-run **DEFEND GATE** yes/no fast-travel call, and a compromised safe zone if it breaks; YES + a successful defense earns **GATEKEEPER** plus a score bonus, while NO abandons the gate
 - **Named NPC dialog cards** that pause the action; the cat, chihuahua and rooster cycle through several lines, and optional day/night errands keep checkmarks in the pause panel
 - **Scoring**: bone combo, subdued rivals, no-hit and time bonuses; S–D rank on the end screen
 - **Squirrels/skunks** in La Cuadra and **geese** in Las Orillas that steal bones; two crows

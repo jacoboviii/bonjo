@@ -4427,7 +4427,6 @@ export default class Level1 extends Phaser.Scene {
     this.gateRusherSpawned = false;
     this.createTimeShards();
     this.gateAlert = false;
-    this.gateCallUsed = false;
     this.gateCallAchievementPending = false;
     this.setGateCallVisible(false);
     this.closeDialog();
@@ -4519,7 +4518,6 @@ export default class Level1 extends Phaser.Scene {
     this.waveTotal = 0;
     this.gateRusherSpawned = false;
     this.gateAlert = false;
-    this.gateCallUsed = false;
     this.gateCallAchievementPending = false;
     this.setGateCallVisible(false);
     this.closeDialog();
@@ -4728,7 +4726,7 @@ export default class Level1 extends Phaser.Scene {
     this.rivalGroup.add(rival);
     this.floatText(500 * S, 558 * S, t('bark'), FOLK_CSS.gold);
     this.gateAlert = true;
-    this.setGateCallVisible(true);
+    this.setGateCallVisible(!this.gateCallUsed);
     this.showPhaseBanner(t('gate.alert'), FOLK_CSS.danger);
     this.alertChihuahua();
   }
