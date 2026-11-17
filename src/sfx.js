@@ -469,15 +469,31 @@ export const sfx = {
     osc({ type: 'sawtooth', f0: 330, f1: 140, dur: 0.2, vol: 0.018, delay: 0.04 });
   },
   zap: () => {
-    noise({ dur: 0.12, vol: 0.024, type: 'highpass', f0: 2600, f1: 900, q: 1.2 });
-    osc({
-      type: 'sawtooth',
-      f0: 1300,
-      f1: 180,
-      dur: 0.14,
-      vol: 0.016,
-      filter: { type: 'bandpass', f0: 2200, f1: 900, q: 1.4 },
+    // A staccato electric crackle rather than a breathy hiss: a handful of
+    // very short high snaps, a buzzing arc, then a tiny low discharge.
+    [0, 0.026, 0.052, 0.082].forEach((delay, i) => {
+      noise({
+        dur: 0.016,
+        vol: 0.024 - i * 0.003,
+        type: 'highpass',
+        f0: 5200 - i * 350,
+        f1: 1800,
+        q: 0.8,
+        attack: 0.001,
+        delay,
+      });
     });
+    osc({
+      type: 'square',
+      f0: 1650,
+      f1: 240,
+      dur: 0.11,
+      vol: 0.012,
+      attack: 0.002,
+      filter: { type: 'bandpass', f0: 2800, f1: 720, q: 1.1 },
+      vibrato: { rate: 46, depth: 95 },
+    });
+    thump(86, 0.018, 0.07);
   },
   stomp: () => {
     thump(70, 0.05, 0.16);

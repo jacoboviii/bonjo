@@ -647,6 +647,7 @@ compressor keeps mobile speakers from clipping.
 | Bonjo tail sweep | quick cloth whoosh + bright two-note chime |
 | Attack connect | dry impact tick + low body thump |
 | Cat hiss | breathy band-passed noise |
+| Sparking lamp | staccato high snaps, buzzing arc and a low electric discharge |
 | Bird scatter / chirp | quick shimmering sine chirps |
 | Crow caw | filtered squawk with a second throaty pulse |
 | Owl hoot | two soft, close sine hoots with breath |
