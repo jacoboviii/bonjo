@@ -233,10 +233,11 @@ same height, they bark (`¡GUAU!`), hop, and chase at ~120 px/s (patrol ~55).
 They stop at the edges of their turf rather than running into pits. Sliding
 into one or hitting it with the spin subsumes it: yelp, +1 bone and a 40%
 chance of a concha; it flees home. Landing on one from above is a safe bounce,
-not an attack. Any other contact costs a heart and knocks Bonjo back. The stomp
-bounce has a short grace window so the same overlapping body cannot hurt Bonjo
-on the way up. No gore, no
-defeat state beyond "runs home."
+not an attack. Any other contact costs a heart and knocks Bonjo back
+horizontally, without popping him into a bounce. A stomp only counts when his
+feet cross above the target's top, and the bounce has a short grace window so
+the same overlapping body cannot hurt him on the way up. No gore, no defeat
+state beyond "runs home."
 
 When a rival gets within ~125 px it plants its feet, crouches, flashes and
 shows `!` for about 0.6 s, then lunges at roughly 190 px/s. The wind-up is the

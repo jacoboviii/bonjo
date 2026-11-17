@@ -4996,15 +4996,24 @@ export default class Level1 extends Phaser.Scene {
 
   isStomping(target) {
     if (!target.body) return false;
+    if (this.dog.stompGraceUntil > this.time.now) return false;
+    // Require Bonjo's feet to be above the target and to have crossed the
+    // target's top from above. A centre comparison counted side contact as a
+    // stomp because Bonjo's body is taller than a rival's, which turned enemy
+    // charges into repeated bounces.
+    const feet = this.dog.body.bottom;
+    const previousFeet = this.dog.body.prev.y + this.dog.body.height;
+    const targetTop = target.body.top;
     return (
       this.dog.body.velocity.y > 10 * S &&
-      this.dog.body.center.y < target.body.center.y
+      feet <= targetTop + 10 * S &&
+      previousFeet <= targetTop + 10 * S
     );
   }
 
   isAboveEnemy(target) {
     if (!target.body) return false;
-    return this.dog.body.bottom <= target.body.top + 8 * S;
+    return this.dog.body.bottom <= target.body.top + 10 * S;
   }
 
   bounceOffEnemy() {
@@ -5490,12 +5499,16 @@ export default class Level1 extends Phaser.Scene {
       ? Math.sign(this.dog.x - source.x) || 1
       : -this.dog.facing;
 
-    // Keep any upward momentum from a jump or flap. Overwriting it with the
-    // small hit-knockback made an enemy hit right after a jump look like Bonjo
-    // had stopped rising; only add the upward nudge when he was not rising.
+    // Keep any upward momentum from a jump or flap, but never turn a grounded
+    // hit into a launch. The old upward nudge made repeated enemy contact look
+    // like Bonjo was jumping on his own.
     const risingVelocity = this.dog.body.velocity.y;
-    this.dog.body.velocity.x = dir * 170 * S;
-    this.dog.body.velocity.y = Math.min(risingVelocity, -220 * S);
+    this.dog.body.velocity.x = dir * 360 * S;
+    this.dog.body.velocity.y = Math.min(risingVelocity, 0);
+    this.dog.stompGraceUntil = Math.max(
+      this.dog.stompGraceUntil,
+      this.time.now + 320,
+    );
 
     this.cameras.main.shake(150, 0.007);
     this.cameras.main.flash(100, 242, 107, 94);
