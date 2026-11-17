@@ -101,7 +101,7 @@ void main () {
  * A screen-space night-lighting and selective-bloom pass. On WebGL the HUD is
  * rendered by a second camera, so this only affects the world: ambient darkness
  * is multiplied in, street lamps carve warm or spark-blue pools out of it, and
- * a small set of emissive points (shards, lamps, signs, sun/moon) receive a soft
+ * a small set of emissive points (shards, lamps and signs) receive a soft
  * additive bloom. Nothing here blurs or darkens the UI.
  */
 export default class LampLightingPipeline extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {

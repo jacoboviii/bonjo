@@ -2646,28 +2646,9 @@ export default class Level1 extends Phaser.Scene {
       if (bloom.length >= BLOOM_MAX) break;
     }
 
-    if (this.phase === 'day' && this.sun?.visible && this.sun.alpha > 0.05) {
-      pushBloom(
-        this.sun.x - cam.scrollX * this.sun.scrollFactorX,
-        this.sun.y - cam.scrollY * this.sun.scrollFactorY,
-        28 * S,
-        0.18 * this.sun.alpha,
-        SUN_BLOOM_COLOR,
-      );
-    } else if (
-      this.phase === 'night' &&
-      this.moon?.visible &&
-      this.moon.alpha > 0.05
-    ) {
-      pushBloom(
-        this.moon.x - cam.scrollX * this.moon.scrollFactorX,
-        this.moon.y - cam.scrollY * this.moon.scrollFactorY,
-        40 * S,
-        0.3 * this.moon.alpha,
-        MOON_BLOOM_COLOR,
-      );
-    }
-
+    // The sun and moon keep their baked halos in the background layers. They
+    // deliberately do not join the screen-space bloom, which cannot respect
+    // building depth and would shine through roofs.
     for (const spark of this.sparkPoles || []) {
       if (bloom.length >= BLOOM_MAX) break;
       if (!spark.live || !spark.glow?.visible) continue;

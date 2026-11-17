@@ -350,10 +350,12 @@ FLORES...) float above the awnings. On WebGL, a screen-space night pass
 moonlit ambient. Each lit lamp carves a warm pool out of that darkness, and
 Bonjo carries a faint cool halo so he stays readable between lamps. The same
 pass runs a lightweight selective bloom on up to eight emissive points:
-sun/moon shards, lamp bulbs, neon signs and the sun or moon. Live sparking
-lamps switch their pool and bloom to a cold blue-white. The world and lighting
-are rendered by the main camera; the HUD and every card render on a second clean
-camera, so text never sits inside the darkening pass. The pass caps at eight
+sun/moon shards, lamp bulbs, neon signs and live spark arcs. Live sparking
+lamps switch their pool and bloom to a cold blue-white. The sun and moon keep
+their baked halos in the background layers, so their shine is occluded by
+buildings instead of painting over them. The world and lighting are rendered
+by the main camera; the HUD and every card render on a second clean camera, so
+text never sits inside the darkening pass. The pass caps at eight
 screen-space lamps and eight bloom points, and follows each lamp sprite's alpha,
 so a sparking lamp dims its pool during the live-wire phase. Canvas rendering
 skips the pipeline, the HUD camera and the shader ambient, keeping the original
