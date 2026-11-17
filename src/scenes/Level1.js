@@ -125,6 +125,7 @@ let CHECKPOINT2_X;
 let CHECKPOINT_Y;
 let FOODS;
 let LIVES;
+let FINAL_NIGHT_LIVES;
 let END_REWARD;
 let PARKED_CARS;
 let BIKES;
@@ -166,6 +167,7 @@ function applyLevelData(level) {
   CHECKPOINT_Y = level.checkpoints.y;
   FOODS = level.foods;
   LIVES = level.lives || [];
+  FINAL_NIGHT_LIVES = level.finalNightLives || [];
   END_REWARD = level.endReward || null;
   PARKED_CARS = level.parkedCars;
   BIKES = level.bikes;
@@ -273,6 +275,7 @@ export default class Level1 extends Phaser.Scene {
     this.rank = 'D';
     this.poloGift = true;
     this.bellRung = false;
+    this.finalNightLivesSpawned = false;
     this.gateErrandDone = false;
     this.nightRivalsSubdued = 0;
     this.nextAlarm = 0;
@@ -4115,6 +4118,16 @@ export default class Level1 extends Phaser.Scene {
     this.closeDialog();
     this.setNightCreatures(true);
     this.setStreetLights(true);
+
+    if (
+      this.nightsSurvived === this.nightsToSurvive - 1 &&
+      !this.finalNightLivesSpawned
+    ) {
+      this.finalNightLivesSpawned = true;
+      for (const [x, y] of FINAL_NIGHT_LIVES) {
+        this.spawnLifeAt(x * S, y * S);
+      }
+    }
 
     this.poloIcon?.setVisible(false);
     this.bellIcon?.setVisible(false);

@@ -83,8 +83,10 @@ export const laCuadra = {
     [1600, 300],
   ],
 
-  // Two placed life hearts per level; the marked piñata hides another.
-  lives: [[1380, 575], [3300, 575]],
+  // Two placed life hearts per level; the marked piñata hides another. The
+  // final night also seeds three more hearts along the route.
+  lives: [[400, 575], [4700, 575]],
+  finalNightLives: [[900, 575], [2200, 575], [3800, 575]],
   endReward: { x: 4910, y: 570, type: 'flap' },
 
   awningFacade: 'shopfront',

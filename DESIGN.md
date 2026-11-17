@@ -378,11 +378,12 @@ heal and dawn concha. Checkpoint
 balloons restore one heart when first reached and hold one retry for the next
 defeat.
 
-Each level has two placed life hearts and a marked piñata with another. In La
-Cuadra, ringing the Casa bell grants one more life heart per run. A life heart
-raises the max from 3 to 4 and fills the new heart; once at 4, it heals one
-missing heart. At full health it stays in the world for later. Their pickup
-body is wider than the visual, making them easier to catch.
+Each level starts with two placed life hearts on early and late routes, plus a
+marked piñata with another; three more are scattered across the level when the
+final night begins. In La Cuadra, ringing the Casa bell grants one more life
+heart per run. A life heart raises the max from 3 to 4 and fills the new heart;
+once at 4, it heals one missing heart. At full health it stays in the world for
+later. Their pickup body is wider than the visual, making them easier to catch.
 
 ### Day, night & waves
 Day 1 needs 38 s of collected sun-shard time, Night 1 needs 31 s of moon-shard

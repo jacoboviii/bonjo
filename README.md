@@ -105,7 +105,8 @@ The game itself now starts in Spanish.
   used only for the slide attack; flap charges for double jumps are separate and
   refill on landing. Each level has two placed **life hearts** and
   at least one marked piñata hides another; the Casa bell grants one more life
-  heart per run. The first raises max health to four;
+  heart per run, and three extra hearts are scattered across the level when the
+  final night begins. The first raises max health to four;
   later hearts heal, and a full-health heart waits for you. Checkpoints heal one
   heart and give one retry at that balloon if Bonjo is defeated; a respawn card
   explains that the retry was used and that the next defeat ends the run. Dawn
@@ -260,7 +261,7 @@ there to make them permanent.
 - **Flap charges** are the double-jump resource and refill on landing; **IMPULSE stamina** only gates the slide and refills with conchas dropped by enemies
 - Walk cycle (4-frame), denser 40×40 hero sprite; sits and pants after a short standing beat when idle
 - **Health (3 hearts, up to 4 with life hearts) + hunger bar**, bone food, concha stamina charges, checkpoint healing and stronger dawn healing; at one heart the remaining HUD heart pulses
-- **Two life hearts** placed in every level plus one hidden in a marked piñata; the first raises max health, later hearts heal
+- **Life hearts** placed across early, mid and late routes in every level, with three more scattered in when the final night begins; one is hidden in a marked piñata. The first raises max health, later hearts heal
 - **Map hub**: a hand-painted street map of Lumbral with CASA and Las Orillas playable, and Parroquia, Mercado and Jardín Hidalgo marked as future routes
 - **Modern folk interface**: rounded cream cards, self-hosted Pixelify Sans
   pixel type, a three-tier menu type scale plus a mobile-safe HUD/game type
